@@ -14,16 +14,35 @@ const calculateSeats = (classes) => {
     return totalSeats
 }
 
-const createSeats = (seats) => {
+const createSeats = (totalSeats, columns) => {
+    const newSeats = [];
+    let num = 1;
+    for(let i = 0; i < totalSeats / columns; i++){
+        for(let j = 0; j < columns; j++){
+            const letter = String.fromCharCode(65 + j);
+                newSeats.push({
+                    seatNumber: `${letter}${num}`,
+            });
+        }
+        num++;
+    }
+    return newSeats;
+};
 
-
-}
-
-const createClasses = (classes) => {
-    return classes.map(classObj => new ClassSchema({
-        class: classObj.class,
-        seats: createSeats(classObj.seats)
-    }))
+const createClasses = (classes, seats) => {
+    let offset = 0;
+    const newClasses = classes.map(classObj => {
+        const classSeats = [];
+        for(let i=0; i <classObj.seats; i++){
+            classSeats.push(seats[offset]);
+            offset++;
+        }
+        return {
+            className: classObj.className,
+            seats: classSeats
+        }
+    })
+    return newClasses;
 }
 
 export const create_flight = async (req, res) => {
@@ -37,16 +56,17 @@ export const create_flight = async (req, res) => {
         if (calculateSeats(classes) !== airplane.passengerSeatingCapacity) {
             throw new Error(`The total number of seats must match the seating capacity of the plane. Total plane seating capacity is ${airplane.passengerSeatingCapacity}`);
         }
-
+        const newSeats = createSeats(airplane.passengerSeatingCapacity, airplane.columns);
+        const newClasses = createClasses(classes, newSeats);
         const flightData = {
             ...data,
             pilot: { name: pilot_name},
             airplane,
+            classes: newClasses
         }
-
-        console.log(flightData);
-
-        //const newFlight = new Flight();
+        const newFlight = new Flight(flightData);
+        await newFlight.save();
+        res.status(200).json(newFlight)
 
     }catch(err){
         const errors = errorHandler(err)
