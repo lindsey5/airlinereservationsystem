@@ -1,0 +1,115 @@
+.home-page{
+    display: flex;
+    justify-content: center;
+}
+
+.home-page header{
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    background-color: white;
+    padding: 10px;
+}
+
+.home-page header > div{
+    display: flex;
+    align-items: center;
+}
+
+.home-page header ul{
+    list-style-type: none;
+    display: flex;
+}
+
+.home-page header li{
+    color:  red;
+    margin: 0 20px;
+    font-size: 18px;
+    cursor: pointer;
+}
+
+.home-page header li:hover{
+    text-decoration: underline;
+}
+
+.home-page header .book-btn:hover{
+    background-color: rgb(255, 175, 175);
+}
+
+.home-page .home{
+    background-image: url('/icons/bg.webp');
+    background-position: center;
+    background-size: cover;
+    background-repeat: no-repeat;
+    margin-top: 70px;
+    width: 100vw;
+    height: 60vh;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.home .container{
+    width: 60%;
+    background: rgba(255, 255, 255, 0.2);
+    backdrop-filter: blur(10px);
+    border-radius: 20px;
+    border: 1px solid rgba(255, 255, 255, 0.3);
+    padding: 60px 30px;
+    display: flex;
+    flex-direction: column;
+}
+
+.container .select-container select{
+    outline: none;
+    width: 100px;
+    font-size: 15px;
+    font-weight: 500;
+}
+
+.home .container .search-form{
+    margin-top: 20px;
+    width: 100%;
+    display: grid;
+    grid-template-columns: 2fr 2fr 2fr 60px;
+    background-color: white;
+    box-sizing: border-box;
+    border: 2px solid rgb(201, 201, 201);
+}
+
+.container .search-form > div{
+    background-color: white;
+    cursor: pointer;
+    padding: 5px;
+    border-right: 1px solid rgb(180, 180, 180);
+    display: flex;
+    align-items: center;
+}
+
+.container .from-container > img, 
+.container .to-container > img{
+    width: 25px;
+    height: 25px;
+    margin-right: 20px;
+}
+
+.container .search-form > div span{
+    color: grey;
+}
+
+.container .search-form > div h4{
+    margin: 5px 0;
+}
+
+.container .search-container{
+    justify-content: center;
+}
+
+.container .search-container img{
+    width: 70%;
+    height: 70%;
+}
