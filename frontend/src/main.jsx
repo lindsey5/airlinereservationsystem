@@ -15,7 +15,7 @@ import GenerateSeats from './generateSeats';
 const router = createBrowserRouter(
   createRoutesFromElements(
     <>
-      <Route path="/" element={<GenerateSeats />} />
+      <Route path="/" element={<Home />} />
       <Route path='/Admin/'>
         <Route element={<AdminLayout />}>
 

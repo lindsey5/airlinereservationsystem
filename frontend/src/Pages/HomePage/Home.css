@@ -1,23 +1,34 @@
 .home-page{
     display: flex;
-    justify-content: center;
+    flex-direction: column;
+    align-items: center;
 }
 
 .home-page header{
     display: flex;
     justify-content: space-between;
-    align-items: center;
     position: fixed;
     top: 0;
     left: 0;
     right: 0;
     background-color: white;
+    align-items: center;
     padding: 10px;
+    z-index: 1;
+}
+
+.home-page header img{
+    width: 100px;
+    height: 50px;
 }
 
 .home-page header > div{
     display: flex;
     align-items: center;
+}
+
+.home-page header > div > h2{
+    color: red;
 }
 
 .home-page header ul{
@@ -36,18 +47,13 @@
     text-decoration: underline;
 }
 
-.home-page header .book-btn:hover{
-    background-color: rgb(255, 175, 175);
-}
-
 .home-page .home{
     background-image: url('/icons/bg.webp');
     background-position: center;
     background-size: cover;
     background-repeat: no-repeat;
-    margin-top: 70px;
-    width: 100vw;
-    height: 60vh;
+    width: 100%;
+    height: 70vh;
     display: flex;
     justify-content: center;
     align-items: center;
@@ -88,6 +94,10 @@
     border-right: 1px solid rgb(180, 180, 180);
     display: flex;
     align-items: center;
+}
+
+.container .search-form > div:hover{
+    background-color: rgb(235, 235, 235);
 }
 
 .container .from-container > img, 

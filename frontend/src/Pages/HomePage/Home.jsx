@@ -1,16 +1,19 @@
+import PopularCity from './PopularCity';
 import './Home.css';
 
 const Home = () => {
     return (
         <main className='home-page'>
             <header>
-                <img src="" alt="" />
                 <div>
-                    <ul>
-                        <li>Login</li>
-                        <li>Signup</li>
-                    </ul>
+                    <img src="/icons/Circle Logo.png" alt="" />
+                    <h2>TCU Airlines</h2>
                 </div>
+                <ul>
+                    <li>Login</li>
+                    <li>Signup</li>
+                    <li>About</li>
+                </ul>
             </header>
             <section className='home'>
                 <div className='container'>
@@ -52,9 +55,7 @@ const Home = () => {
                     </div>
                 </div>
             </section>
-            <section>
-
-            </section>
+            <PopularCity />
         </main>
     )
 }

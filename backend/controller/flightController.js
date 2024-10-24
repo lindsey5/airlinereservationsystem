@@ -1,7 +1,5 @@
-import { Schema } from "mongoose";
 import Airplane from "../model/airplane.js";
 import Flight from "../model/flight.js"
-import ClassSchema from "../model/Schema/ClassSchema.js";
 import { errorHandler } from "../utils/errorHandler.js";
 
 const calculateSeats = (classes) => {
@@ -13,7 +11,7 @@ const calculateSeats = (classes) => {
     
     return totalSeats
 }
-
+//This function generateSeats with seathNumber based on total seats and columns of the airplane
 const createSeats = (totalSeats, columns) => {
     const newSeats = [];
     let num = 1;
@@ -29,6 +27,7 @@ const createSeats = (totalSeats, columns) => {
     return newSeats;
 };
 
+// This function generate class objects
 const createClasses = (classes, seats) => {
     let offset = 0;
     const newClasses = classes.map(classObj => {
@@ -39,7 +38,8 @@ const createClasses = (classes, seats) => {
         }
         return {
             className: classObj.className,
-            seats: classSeats
+            price: classObj.price,
+            seats: classSeats,
         }
     })
     return newClasses;
@@ -72,5 +72,80 @@ export const create_flight = async (req, res) => {
         const errors = errorHandler(err)
         res.status(400).json({errors});
     }
-
 }
+
+export const get_flight = async (req, res) => {
+    try{
+        const id = req.params.id;
+        const flight = await Flight.findById(id);
+        if(!flight){
+            throw new Error('Flight not found');
+        }
+        res.status(200).json({flight});
+    }catch(err){
+        const errors = errorHandler(err)
+        res.status(400).json({errors});
+    }
+}
+
+export const get_popular_destination = async (req, res) => {
+    try{
+        const flights = await Flight.aggregate([
+            {
+                $group: {
+                    _id: "$arrival.city", 
+                    totalArrivals: { $sum: 1 }
+                }
+            },
+            {
+                $sort: { totalArrivals: -1 }
+            },
+            {
+                $limit: 9
+            }
+        ]);
+        if(!flights){
+            throw new Error('No flights available');
+        }
+        res.status(200).json(flights);
+    }catch(err){
+        const errors = errorHandler(err)
+        res.status(400).json({errors});
+    }
+}
+/*
+{
+    "flightNumber": "ABC1234",
+  "airplane_id": "671a2505c5f7525b56fb38fb",
+  "pilot_name": "Lindsey Samson",
+  "airline": "Airline1",
+  "departure": {
+    "airport": "NAIA",
+    "city": "Manila",
+    "time": "2024-10-20T12:00:00Z"  
+  },
+  "arrival": {
+    "airport": "JFK",
+    "city": "New York",
+    "time": "2024-10-21T16:00:00Z"
+  },
+  "classes": [
+    {
+      "className": "First",
+      "seats": 20,
+      "price": 10000
+    },
+    {
+      "className": "Business",
+      "seats": 30,
+      "price": 5000
+    },
+     {
+      "className": "Economy",
+      "seats": 50,
+      "price": 3000
+    }
+  ]
+}
+
+*/

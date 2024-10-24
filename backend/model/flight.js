@@ -26,6 +26,7 @@ const FlightSchema = new Schema({
             required: true,
         },
     },
+    status: { type: String, default: 'Available'},
     arrival: {
         airport: {type: String, required: true},
         city: {type: String, required: true},

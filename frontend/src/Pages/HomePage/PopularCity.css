@@ -1,0 +1,64 @@
+.available-flights-parent{
+    display: flex;
+    align-items: center;
+    flex-direction: column;
+    width: 100%;
+    box-sizing: border-box;
+    padding: 10px;
+}
+
+.available-flights-parent > .top-div{
+    display: flex;
+    align-items: center;
+}
+
+.available-flights-parent > .top-div img{
+    width: 100px;
+    height: 50px;
+}
+
+.available-flights-parent > .top-div h1{
+    font-size: 30px;
+}
+
+.available-flights-parent .available-flights-container{
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 20px;
+    width: 80%;
+}
+
+.available-flights-container > div{
+    margin: 5px;
+    border: 2px solid rgb(230, 230, 230);
+}
+
+.available-flights-container > div img{
+    width: 100%;
+    height: 300px;
+}
+
+.available-flights-container > div > div {
+    padding: 20px 10px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.available-flights-container > div > div span{
+    font-size: 20px;
+}
+
+.available-flights-container > div > div .book-btn{
+    background-color: red;
+    width: 120px;
+    height: 30px;
+    color: white;
+    border: none;
+    border-radius: 20px;
+    cursor: pointer;
+}
+
+.available-flights-container > div > div .book-btn:hover{
+    background-color: rgb(255, 188, 188);
+}
