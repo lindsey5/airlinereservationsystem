@@ -1,41 +1,45 @@
 import mongoose from "mongoose";
+import airplaneSchema from "./Schema/AirplaneSchema.js";
+import ClassSchema from "./Schema/ClassSchema.js";
 const Schema = mongoose.Schema;
 
-const PassengerSchema = new Schema({
-    name: String,
-    ticketNumber: String,
-    baggage: String,
-})
-
-const SeatSchema = new Schema({
-    seatNumber: String,
-    status: { type: String, enum: ['available', 'booked'], default: 'available' },
-    passenger: PassengerSchema
-  });
-  
-  const ClassSchema = new Schema({
-    class: String,
-    seats: [SeatSchema]
-  });
-  
-  const FlightSchema = new Schema({
-    flightNumber: String,
-    airline: String,
+const FlightSchema = new Schema({
+    flightNumber: {
+        type: String,
+        required: true,
+    },
+    airline: {
+        type: String,
+        required: true,
+    },
     departure: {
-      airport: String,
-      city: String,
-      time: Date
+        airport: {
+            type: String,
+            required: true,
+        },
+        city: {
+            type: String,
+            required: true,
+        },
+        time: {
+            type: Date,
+            required: true,
+        },
     },
     arrival: {
-      airport: String,
-      city: String,
-      time: Date
+        airport: {type: String, required: true},
+        city: {type: String, required: true},
+        time: {type: Date, required: true},
     },
-    aircraft: {
-      model: String,
-      seatingCapacity: Number
+    airplane: {type: airplaneSchema, required: true},
+    pilot: {
+      name: {type: String, required: true},
     },
-    classes: [ClassSchema]
-  }, {timeStamps: true});
+    classes: {
+        type: [ClassSchema],  // Array of ClassSchema
+        required: true,       // Mark the field as required
+    }
+}, { timestamps: true });
 
-export default Flight = mongoose.model('Flight', FlightSchema);
+const Flight = mongoose.model('Flight', FlightSchema);
+export default Flight;

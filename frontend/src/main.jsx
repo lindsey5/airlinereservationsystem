@@ -10,11 +10,12 @@ import {
 } from "react-router-dom";
 import Home from './Pages/HomePage/Home';
 import AdminLayout from './Layouts/AdminLayout';
+import GenerateSeats from './generateSeats';
 
 const router = createBrowserRouter(
   createRoutesFromElements(
     <>
-      <Route path="/" element={<Home />} />
+      <Route path="/" element={<GenerateSeats />} />
       <Route path='/Admin/'>
         <Route element={<AdminLayout />}>
 
@@ -32,5 +33,3 @@ createRoot(document.getElementById('root')).render(
    <RouterProvider router={router} />
   </StrictMode>,
 )
-
-VZleHvgOoxGux97F
