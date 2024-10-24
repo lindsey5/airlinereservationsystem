@@ -10,7 +10,6 @@ import {
 } from "react-router-dom";
 import Home from './Pages/HomePage/Home';
 import AdminLayout from './Layouts/AdminLayout';
-import GenerateSeats from './generateSeats';
 
 const router = createBrowserRouter(
   createRoutesFromElements(
