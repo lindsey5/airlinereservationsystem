@@ -5,6 +5,7 @@ import dotenv from 'dotenv';
 import airplaneRoutes from './routes/airplaneRoutes.js';
 import flightRoutes from './routes/flightRoutes.js';
 import cors from 'cors';
+import path from 'path';
 
 dotenv.config();
 const PORT = process.env.PORT; 
@@ -29,6 +30,17 @@ app.use(express.json());
 
 app.use('/api/airplane', airplaneRoutes);
 app.use('/api/flight', flightRoutes);
+
+const __dirname = path.resolve();
+
+// Now you can use __dirname
+if (process.env.NODE_ENV === "production") {
+  app.use(express.static(path.join(__dirname, "/frontend/dist")));
+  app.get("*", (req, res) => {
+    res.sendFile(path.resolve(__dirname, "frontend", "dist", "index.html"));
+  });
+}
+
 
 //listen for express
 app.listen(PORT, () => {
