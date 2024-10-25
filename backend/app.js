@@ -4,6 +4,7 @@ import mongoose from 'mongoose';
 import dotenv from 'dotenv';
 import airplaneRoutes from './routes/airplaneRoutes.js';
 import flightRoutes from './routes/flightRoutes.js';
+import userRoutes from './routes/userRoutes.js';
 import cors from 'cors';
 import path from 'path';
 import { errorHandler } from './utils/errorHandler.js';
@@ -32,6 +33,8 @@ app.use(express.json());
 
 app.use('/api/airplane', airplaneRoutes);
 app.use('/api/flight', flightRoutes);
+app.use('/', userRoutes);
+
 app.get('/api/departure/countries', async (req, res) => {
     try{
         const countries = await Flight.aggregate([
