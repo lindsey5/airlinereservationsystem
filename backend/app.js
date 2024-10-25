@@ -6,6 +6,8 @@ import airplaneRoutes from './routes/airplaneRoutes.js';
 import flightRoutes from './routes/flightRoutes.js';
 import cors from 'cors';
 import path from 'path';
+import { errorHandler } from './utils/errorHandler.js';
+import Flight from './model/flight.js';
 
 dotenv.config();
 const PORT = process.env.PORT; 
@@ -30,6 +32,65 @@ app.use(express.json());
 
 app.use('/api/airplane', airplaneRoutes);
 app.use('/api/flight', flightRoutes);
+app.get('/api/departure/countries', async (req, res) => {
+    try{
+        const countries = await Flight.aggregate([
+            {
+                $group: {
+                    _id: "$departure.country",
+                }
+            },
+            {
+                $project: {
+                    _id: 0,           
+                    country: "$_id"   
+                }
+            }
+        ])
+        res.status(200).json(countries);
+    }catch(err){
+        console.log(err);
+        res.status(400).json({error: err.message});
+    }
+});
+
+app.get('/api/arrival/countries', async (req, res) => {
+    try{
+        const countries = await Flight.aggregate([
+            {
+                $group: {
+                    _id: "$arrival.country",
+                }
+            },
+            {
+                $project: {
+                    _id: 0,           
+                    country: "$_id"   
+                }
+            }
+        ])
+        res.status(200).json(countries);
+    }catch(err){
+        console.log(err);
+        res.status(400).json({error: err.message});
+    }
+});
+
+app.get('/api/cities/:country', async (req, res) => {
+    try{
+        const country = req.params.country;
+        const response = await fetch(`https://countries.apirest.cl/v1/${country}`);
+        if(response.ok){
+            const result = await response.json();
+            const cities = result.states.map(state => state.name);
+            res.status(200).json(cities);
+        }
+    }catch(err){
+        const errors = errorHandler(err);
+        console.log(errors);
+        res.status(400).json(errors);
+    }
+});
 
 const __dirname = path.resolve();
 
@@ -40,7 +101,6 @@ if (process.env.NODE_ENV === "production") {
     res.sendFile(path.resolve(__dirname, "frontend", "dist", "index.html"));
   });
 }
-
 
 //listen for express
 app.listen(PORT, () => {

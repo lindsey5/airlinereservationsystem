@@ -27,7 +27,7 @@ const createSeats = (totalSeats, columns) => {
     return newSeats;
 };
 
-// This function generate class objects
+// This function generate flight classes
 const createClasses = (classes, seats) => {
     let offset = 0;
     const newClasses = classes.map(classObj => {
@@ -91,21 +91,17 @@ export const get_flight = async (req, res) => {
 export const get_popular_destination = async (req, res) => {
     try{
         const flights = await Flight.aggregate([
-            {
-                $group: {
-                    _id: "$arrival.city", 
-                    totalArrivals: { $sum: 1 }
+            {$group: 
+                {
+                _id: "$arrival.city", 
+                totalArrivals: { $sum: 1 }
                 }
             },
-            {
-                $sort: { totalArrivals: -1 }
-            },
-            {
-                $limit: 9
-            }
+            { $sort: { totalArrivals: -1 } },
+            { $limit: 12 }
         ]);
         if(!flights){
-            throw new Error('No flights available');
+            throw new Error('No popular destination found');
         }
         res.status(200).json(flights);
     }catch(err){
@@ -115,19 +111,20 @@ export const get_popular_destination = async (req, res) => {
 }
 /*
 {
-    "flightNumber": "ABC1234",
   "airplane_id": "671a2505c5f7525b56fb38fb",
   "pilot_name": "Lindsey Samson",
-  "airline": "Airline1",
+  "airline": "Cebu Pacific",
   "departure": {
-    "airport": "NAIA",
-    "city": "Manila",
-    "time": "2024-10-20T12:00:00Z"  
+    "airport": "Davao International Airport",
+    "city": "Davao",
+    "country": "Philippines",
+    "time": "2024-10-26T12:00:00Z"  
   },
   "arrival": {
-    "airport": "JFK",
-    "city": "New York",
-    "time": "2024-10-21T16:00:00Z"
+    "airport": "Manila International Airport",
+    "city": "Manila",
+    "country": "Philippines",
+    "time": "2024-10-30T16:00:00Z"
   },
   "classes": [
     {
@@ -147,5 +144,4 @@ export const get_popular_destination = async (req, res) => {
     }
   ]
 }
-
 */

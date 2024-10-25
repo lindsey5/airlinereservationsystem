@@ -1,0 +1,130 @@
+.container{
+    width: 60%;
+    background: rgba(255, 255, 255, 0.2);
+    backdrop-filter: blur(10px);
+    border-radius: 20px;
+    border: 1px solid rgba(255, 255, 255, 0.3);
+    padding: 60px 30px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    margin: 50px;
+}
+
+.container .select-container{
+    width: 100%;
+}
+
+.container .select-container select{
+    outline: none;
+    width: 100px;
+    font-size: 15px;
+    font-weight: 500;
+}
+
+.container .search-form{
+    margin-top: 20px;
+    width: 100%;
+    display: grid;
+    grid-template-columns: 2fr 2fr 2fr 50px;
+    background-color: white;
+    box-sizing: border-box;
+    border: 2px solid rgb(201, 201, 201);
+}
+
+.container .search-form > div{
+    background-color: white;
+    cursor: pointer;
+    padding: 5px;
+    border-right: 1px solid rgb(180, 180, 180);
+    display: flex;
+    align-items: center;
+    position: relative;
+}
+
+.container .search-form > div:hover{
+    background-color: rgb(235, 235, 235);
+}
+
+.container .search-form .remove-btn{
+    font-size: 25px;
+    background-color: red;
+    color: white;
+    cursor: pointer;
+    border: none;
+}
+
+.container .search-form .remove-btn:hover{
+    background-color: rgb(255, 138, 138);
+}
+
+.container .from-container > img, 
+.container .to-container > img{
+    width: 25px;
+    height: 25px;
+    margin-right: 20px;
+}
+
+.container .search-form > div > div >  span{
+    color: grey;
+}
+
+.container .search-form > div > div > h4{
+    margin: 5px 0;
+}
+
+.container .search-container{
+    justify-content: center;
+}
+
+.container .search-container img{
+    width: 70%;
+    height: 70%;
+}
+
+.search-form .countries-container,
+.search-form .cities-container{
+    width: 100%;
+    max-height: 200px;
+    position: absolute;
+    display: flex;
+    flex-direction: column;
+    overflow-y: auto;
+    background-color: white;
+    top: calc(100% + 2px);
+    cursor: auto;
+    z-index: 1;
+    left: 0;
+    border: 1px solid grey;
+}
+
+.search-form .countries-container > span,
+.search-form .cities-container > span{
+    padding: 5px;
+    cursor: pointer;
+}
+
+.search-form .countries-container > span:hover,
+.search-form .cities-container > span:hover{
+    background-color: rgb(235, 235, 235);
+}
+
+.container .buttons-container > button{
+    padding: 10px;
+    cursor: pointer;
+    margin-top: 30px;
+}
+
+.container .buttons-container .search-btn{
+    width: 100px;
+    color: white;
+    border: none;
+    margin-left: 20px;
+}
+
+.container .buttons-container{
+    width: 100%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
