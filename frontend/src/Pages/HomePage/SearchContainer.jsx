@@ -284,15 +284,18 @@ const SearchContainer = () => {
                             <div>
                                 <span>Departure Date & Time:</span>
                                 <Datetime
+                                    inputProps={{ style: { width: '90%' } }}
                                     value={flight.DepartureDateTime}
                                     onChange={date => setDepartureDateAndTime(date, i)}
                                 />
                             </div>
                         </div>
+                        <div>
                         {flightType === 'Multi City' && i > 0 && 
                             <button className='remove-btn' onClick={() => setCount((prevCounter) => prevCounter - 1)}>
                             X
                             </button>}
+                        </div>
                     </div>
             ))}
             <div className="buttons-container">

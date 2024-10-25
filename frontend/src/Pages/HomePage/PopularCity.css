@@ -62,3 +62,17 @@
 .available-flights-container > div > div .book-btn:hover{
     background-color: rgb(255, 188, 188);
 }
+
+@media  screen and (max-width: 820px) {
+    .available-flights-parent .available-flights-container{
+        grid-template-columns: repeat(2, 1fr);
+        width: 90%;
+    }
+    
+}
+
+@media  screen and (max-width: 560px){
+    .available-flights-parent .available-flights-container{
+        grid-template-columns: 1fr;
+    }
+}
