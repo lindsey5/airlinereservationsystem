@@ -153,4 +153,13 @@
     .container .search-form .remove-btn{
         width: 30px;
     }
+
+    .container .search-form > div{
+        border: none;
+    }
+
+    .container .search-form > .from-container,
+    .container .search-form > .to-container{
+        border-bottom: 1px solid rgb(180, 180, 180);
+    }
 }
