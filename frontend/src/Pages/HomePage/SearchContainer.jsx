@@ -214,10 +214,8 @@ const SearchContainer = () => {
             if(!flight.FromCountry || !flight.ToCountry || !flight.ToCity || !flight.FromCity){
                 flag = false;
             }
-            console.log(flag)
         });
         setValidation(flag);
-        console.log(flights);
     }, [flights]);
 
 

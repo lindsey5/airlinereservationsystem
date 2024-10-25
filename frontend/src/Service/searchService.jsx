@@ -4,7 +4,8 @@ export const searchFlight = async(flights, flightClass, flightType) => {
             departureCountry: flight.FromCountry,
             departureCity: flight.FromCity,
             arrivalCountry: flight.ToCountry,
-            arrivalCity: flight.ToCity
+            arrivalCity: flight.ToCity,
+            departureTime: flight.DepartureDateTime
         }
     });
     try{
