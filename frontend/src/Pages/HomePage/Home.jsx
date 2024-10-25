@@ -1,6 +1,6 @@
 import PopularCity from './PopularCity';
 import './Home.css';
-import SelectContainer from './SelectContainer';
+import SearchContainer from './SearchContainer';
 
 const Home = () => {
     return (
@@ -17,7 +17,7 @@ const Home = () => {
                 </ul>
             </header>
             <section className='home'>
-                <SelectContainer />
+                <SearchContainer />
             </section>
             <PopularCity />
         </main>

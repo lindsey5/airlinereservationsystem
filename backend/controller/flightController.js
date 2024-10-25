@@ -1,5 +1,6 @@
 import Airplane from "../model/airplane.js";
 import Flight from "../model/flight.js"
+import { multi_city_search, one_way_search, round_trip_search } from "../service/flightSearchService.js";
 import { errorHandler } from "../utils/errorHandler.js";
 
 const calculateSeats = (classes) => {
@@ -105,6 +106,26 @@ export const get_popular_destination = async (req, res) => {
         }
         res.status(200).json(flights);
     }catch(err){
+        const errors = errorHandler(err)
+        res.status(400).json({errors});
+    }
+}
+
+export const search_flight = async (req, res) => {
+    try{
+        const { searchData, flightClass, flightType } = req.body;
+        let searchResults;
+        if(flightType === 'One Way'){
+            searchResults = await one_way_search(searchData[0], flightClass);
+        }else if(flightType === 'Round Trip'){
+            searchResults = await round_trip_search(searchData[0], flightClass);
+        }else {
+            searchResults = await multi_city_search(searchData, flightClass);
+        }
+
+        res.status(200).json(searchResults);
+    }catch(err){
+        console.log(err);
         const errors = errorHandler(err)
         res.status(400).json({errors});
     }

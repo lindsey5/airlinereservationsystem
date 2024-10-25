@@ -1,14 +1,18 @@
 import { useEffect, useState } from "react";
 import useFetch from "../../hooks/useFetch";
-import './SelectContainer.css';
+import './SearchContainer.css';
+import { searchFlight } from "../../Service/searchService";
+import Datetime from 'react-datetime';
+import "react-datetime/css/react-datetime.css";
 
-const SelectContainer = () => {
+const SearchContainer = () => {
     const [count, setCount] = useState(1);
     const { data: departureCountries } = useFetch('/api/departure/countries');
     const { data: arrivalCountries } = useFetch('/api/arrival/countries');
     const [flightType, setFlightType] = useState('One Way');
     const [flights, setFlights] = useState([]);
     const [validation, setValidation] = useState(false);
+    const [flightClass, setFlightClass] = useState('Economy'); 
 
     const toggleShowCountries = (index, route) => {
         setFlights((prevFlights) =>
@@ -145,6 +149,14 @@ const SelectContainer = () => {
         );
     };
 
+    const setDepartureDateAndTime = (date, index) => {
+        setFlights((prevFlights) =>
+            prevFlights.map((flight, i) =>
+                i === index ? { ...flight, DepartureDateTime: date._d } : flight
+            )
+        );
+    };
+
     const CitiesContainer = ({ cities, route, index }) => {
         return (
             <div className="cities-container">
@@ -180,23 +192,34 @@ const SelectContainer = () => {
                 ToCities: null,
                 FromCity: null,
                 ToCity: null,
+                DepartureDateTime: new Date()
             }))
         );
     }, [count]);
 
     useEffect(() => {
-        let flag = false;
-        flights.forEach(flight => {
-            if(flight.FromCountry && flight.ToCountry && flight.ToCity && flight.FromCity){
-                flag = true;
+        let flag = true;
+        flights.forEach((flight, i) => {
+            
+            if(i > 0){
+                const prevIndexDate = new Date(flights[i-1].DepartureDateTime);
+                prevIndexDate.setDate(prevIndexDate.getDate() + 1);
+
+                if(i > 0 && flight.DepartureDateTime <= prevIndexDate){
+                    flag = false;
+                }
             }
+
+
+            if(!flight.FromCountry || !flight.ToCountry || !flight.ToCity || !flight.FromCity){
+                flag = false;
+            }
+            console.log(flag)
         });
         setValidation(flag);
+        console.log(flights);
     }, [flights]);
 
-    useEffect(() =>{
-        console.log(validation)
-    },[validation])
 
     return (
         <div className="container">
@@ -210,10 +233,13 @@ const SelectContainer = () => {
                     <option value="Round Trip">Round Trip</option>
                     <option value="Multi City">Multi City</option>
                 </select>
-                <select>
-                    <option value="">Economy</option>
-                    <option value="">Business</option>
-                    <option value="">First</option>
+                <select
+                    name="flightClass"
+                    onChange={(e) => setFlightClass(e.target.value)}
+                >
+                    <option value="Economy">Economy</option>
+                    <option value="Business">Business</option>
+                    <option value="First">First</option>
                 </select>
             </div>
             {flights.map((flight, i) => (
@@ -256,7 +282,11 @@ const SelectContainer = () => {
                         </div>
                         <div className="depart-container">
                             <div>
-                                <span>Departure Time:</span>
+                                <span>Departure Date & Time:</span>
+                                <Datetime
+                                    value={flight.DepartureDateTime}
+                                    onChange={date => setDepartureDateAndTime(date, i)}
+                                />
                             </div>
                         </div>
                         {flightType === 'Multi City' && i > 0 && 
@@ -274,10 +304,16 @@ const SelectContainer = () => {
                     + Add another flight
                 </button>
             )}
-            <button className='search-btn' disabled={validation ? false : true} style={{backgroundColor: validation ? 'red' : ''}}>Search</button>
+            <button 
+                className='search-btn' 
+                onClick={() => searchFlight(flights, flightClass, flightType)}
+                disabled={validation ? false : true} 
+                style={{backgroundColor: validation ? 'red' : ''}}>
+                Search
+            </button>
             </div>
         </div>
     );
 };
 
-export default SelectContainer;
+export default SearchContainer;
