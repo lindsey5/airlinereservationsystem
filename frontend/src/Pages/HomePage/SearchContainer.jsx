@@ -2,7 +2,7 @@ import { useContext, useEffect, useState } from "react";
 import './SearchContainer.css';
 import { searchFlight } from "../../Service/searchService";
 import { SearchContext } from "../../Context/SearchContext";
-import SearchForms from "./SearchForms";
+import SearchForms from "../../Components/Search/SearchForms";
 
 const SearchContainer = () => {
     const { state, dispatch} = useContext(SearchContext);

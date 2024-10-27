@@ -1,8 +1,10 @@
 import PopularCity from './PopularCity';
 import './Home.css';
-import SearchContainer from '../../Components/Search/SearchContainer';
+import SearchContainer from './SearchContainer';
+import { useNavigate } from 'react-router-dom';
 
 const Home = () => {
+    const navigate = useNavigate();
     return (
         <main className='home-page'>
             <header>
@@ -11,7 +13,7 @@ const Home = () => {
                     <h2>TCU Airlines</h2>
                 </div>
                 <ul>
-                    <li>Login</li>
+                    <li onClick={() => navigate('/User/Login')}>Login</li>
                     <li>Signup</li>
                     <li>About</li>
                 </ul>
