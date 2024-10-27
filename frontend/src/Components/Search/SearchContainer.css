@@ -47,8 +47,13 @@
     align-items: center;
 }
 
-.container .search-form > div:not(:last-child):hover{
+.container .search-form > .to-container, 
+.container .search-form > .from-container{
     background-color: rgb(235, 235, 235);
+    cursor: pointer;
+}
+
+.container .search-form input[type ="date"]{
     cursor: pointer;
 }
 

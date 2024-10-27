@@ -10,6 +10,7 @@ import {
 } from "react-router-dom";
 import Home from './Pages/HomePage/Home';
 import AdminLayout from './Layouts/AdminLayout';
+import { SearchContextProvider } from './Context/SearchContext';
 
 const router = createBrowserRouter(
   createRoutesFromElements(
@@ -29,6 +30,8 @@ const router = createBrowserRouter(
 
 createRoot(document.getElementById('root')).render(
   <StrictMode>
-   <RouterProvider router={router} />
+    <SearchContextProvider>
+      <RouterProvider router={router} />
+    </SearchContextProvider>
   </StrictMode>,
 )

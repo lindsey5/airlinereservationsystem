@@ -1,6 +1,6 @@
 import PopularCity from './PopularCity';
 import './Home.css';
-import SearchContainer from './SearchContainer';
+import SearchContainer from '../../Components/Search/SearchContainer';
 
 const Home = () => {
     return (
