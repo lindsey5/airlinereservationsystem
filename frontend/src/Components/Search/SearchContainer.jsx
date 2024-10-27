@@ -1,5 +1,4 @@
 import { useContext, useEffect, useState } from "react";
-import useFetch from "../../hooks/useFetch";
 import './SearchContainer.css';
 import { searchFlight } from "../../Service/searchService";
 import { SearchContext } from "../../Context/SearchContext";
@@ -46,7 +45,7 @@ const SearchContainer = () => {
             )}
             <button 
                 className='search-btn' 
-                onClick={() => searchFlight(state.flights)}
+                onClick={() => searchFlight(state)}
                 disabled={state.isValid ? false : true} 
                 style={{backgroundColor: state.isValid ? 'red' : ''}}>
                 Search

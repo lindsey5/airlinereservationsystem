@@ -38,7 +38,6 @@
     border-right: 1px solid rgb(180, 180, 180);
     display: flex;
     align-items: center;
-    position: relative;
 }
 
 .container .search-form > div:last-child{
@@ -51,6 +50,7 @@
 .container .search-form > .from-container{
     background-color: rgb(235, 235, 235);
     cursor: pointer;
+    position: relative;
 }
 
 .container .search-form input[type ="date"]{

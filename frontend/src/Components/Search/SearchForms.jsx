@@ -1,6 +1,8 @@
 import useFetch from "../../hooks/useFetch";
 import { SearchContext } from "../../Context/SearchContext";
 import { useContext, useEffect } from "react";
+import DatePicker from 'react-datepicker';
+import "react-datepicker/dist/react-datepicker.css";
 
 const SearchForms = () =>{
     const { data: departureCountries } = useFetch('/api/departure/countries');
@@ -52,16 +54,15 @@ const SearchForms = () =>{
         state.flights.forEach((flight, i) => {
             
             if(i > 0){
-                const prevIndexDate = state.flights[i-1].DepartureDate;
+                const prevIndexDate = state.flights[i-1].DepartureTime;
 
-                if(i > 0 && flight.DepartureDate <= prevIndexDate){
+                if(i > 0 && flight.DepartureTime <= prevIndexDate){
                     flag = false;
                 }
             }
-            const formattedDate = new Date().toISOString().split('T')[0];
             if(!flight.FromCountry 
                 || !flight.ToCountry || !flight.ToCity || !flight.FromCity 
-                ||  flight.DepartureDate < formattedDate
+                ||  flight.DepartureTime < new Date()
             ){
                 flag = false;
             }
@@ -115,9 +116,11 @@ const SearchForms = () =>{
                 <div className="depart-container">
                     <div>
                         <span>Departure Date:</span>
-                        <input type="date"  
-                        value={flight.DepartureDate}
-                        onChange={(e) => dispatch({ type: 'SET_DEPARTURE_DATE', date: e.target.value, index: i})}
+                        <DatePicker
+                            selected={flight.DepartureTime}
+                            onChange={(date) => dispatch({ type: 'SET_DEPARTURE_TIME', date, index: i})}
+                            showTimeSelect
+                            dateFormat="Pp" // formats date and time
                         />
                     </div>
                 </div>

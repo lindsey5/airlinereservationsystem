@@ -1,13 +1,15 @@
-export const searchFlight = async(flights, flightClass, flightType) => {
-    const searchData = flights.map(flight => {
+export const searchFlight = async(state) => {
+    const searchData = state.flights.map(flight => {
+        console.log(departureTime)
         return{
             departureCountry: flight.FromCountry,
             departureCity: flight.FromCity,
             arrivalCountry: flight.ToCountry,
             arrivalCity: flight.ToCity,
-            departureTime: flight.DepartureDateTime
+            departureTime
         }
     });
+
     try{
         const response = await fetch('/api/flight/search',
             {
@@ -17,8 +19,8 @@ export const searchFlight = async(flights, flightClass, flightType) => {
                 },
                 body: JSON.stringify({
                     searchData,
-                    flightClass,
-                    flightType
+                    flightClass: state.flightClass,
+                    flightType: state.flightType
                 }),
             }
         );

@@ -34,8 +34,8 @@ const SearchReducer = (state, action) => {
             return { ...state, count: action.count}
         case 'RESET_SHOW_COUNTRIES':
             return { ...state, flights: resetShowCountries(state, action)}
-        case 'SET_DEPARTURE_DATE':
-            return { ...state, flights: setDepartureDate(state, action)}
+        case 'SET_DEPARTURE_TIME':
+            return { ...state, flights: setDepartureTime(state, action)}
         case 'SET_FLIGHT_TYPE':
             return {...state, flightType: action.flightType}
         case 'SET_FLIGHT_CLASS':
@@ -63,7 +63,6 @@ export const SearchContextProvider = ({ children }) => {
 };
 
 const setFlights = (state) => {
-    const formattedDate = new Date().toISOString().split('T')[0];
     const flights = Array.from({ length: state.count }, (_, i) => ({
         showFromCountries: false,
         showToCountries: false,
@@ -75,7 +74,7 @@ const setFlights = (state) => {
         ToCities: null,
         FromCity: state.flights[i]?.FromCity || null,
         ToCity: state.flights[i]?.ToCity || null,
-        DepartureDate: state.flights[i]?.DepartureDate || formattedDate
+        DepartureTime: state.flights[i]?.DepartureTime || new Date()
     }));
     return flights;
 };
@@ -160,8 +159,8 @@ const setCity = (state, action) => {
     )
 }
 
-const setDepartureDate = (state, action) => {
+const setDepartureTime = (state, action) => {
     return state.flights.map((flight, i) =>
-            i === action.index ? { ...flight, DepartureDate: action.date } : flight
+            i === action.index ? { ...flight, DepartureTime: action.date } : flight
         )
 };
