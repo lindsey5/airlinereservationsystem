@@ -1,8 +1,12 @@
-import { useState } from 'react'
+import { useState, useEffect } from 'react'
 import './UserLogin.css'
 
 const UserLogin = () => {
     const [showPassword, setShowPassword] = useState(false);
+
+    useEffect(() => {
+        document.title = "User Login";
+    },[]);
 
     return (
         <main className="user-login-page">
