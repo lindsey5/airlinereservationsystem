@@ -35,21 +35,21 @@ const SearchContainer = () => {
             </div>
             <SearchForms />
             <div className="buttons-container">
-            {state.flightType === 'Multi City' && (
-                <button
-                    className="add-flight-btn"
-                    onClick={() => dispatch({ type: 'ADD_COUNT'})}
-                >
-                    + Add another flight
+                {state.flightType === 'Multi City' && (
+                    <button
+                        className="add-flight-btn"
+                        onClick={() => dispatch({ type: 'ADD_COUNT'})}
+                    >
+                        + Add another flight
+                    </button>
+                )}
+                <button 
+                    className='search-btn' 
+                    onClick={() => searchFlight(state)}
+                    disabled={state.isValid ? false : true} 
+                    style={{backgroundColor: state.isValid ? 'red' : ''}}>
+                    Search
                 </button>
-            )}
-            <button 
-                className='search-btn' 
-                onClick={() => searchFlight(state)}
-                disabled={state.isValid ? false : true} 
-                style={{backgroundColor: state.isValid ? 'red' : ''}}>
-                Search
-            </button>
             </div>
         </div>
     );

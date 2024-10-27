@@ -3,6 +3,7 @@ import { SearchContext } from "../../Context/SearchContext";
 import { useContext, useEffect } from "react";
 import DatePicker from 'react-datepicker';
 import "react-datepicker/dist/react-datepicker.css";
+import './SearchForm.css'
 
 const SearchForms = () =>{
     const { data: departureCountries } = useFetch('/api/departure/countries');

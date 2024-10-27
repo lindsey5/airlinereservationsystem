@@ -1,0 +1,110 @@
+.search-form{
+    margin-top: 20px;
+    width: 100%;
+    display: grid;
+    grid-template-columns: 2fr 2fr 1fr 0.5fr;
+    background-color: white;
+    box-sizing: border-box;
+    border: 2px solid rgb(201, 201, 201);
+}
+
+.search-form > div{
+    background-color: white;
+    padding: 5px;
+    border-right: 1px solid rgb(180, 180, 180);
+    display: flex;
+    align-items: center;
+}
+
+.search-form > div:last-child{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.search-form > .to-container, 
+.search-form > .from-container{
+    cursor: pointer;
+    position: relative;
+}
+
+.search-form > .to-container:hover, 
+.search-form > .from-container:hover{
+    background-color: rgb(235, 235, 235);
+}
+
+.search-form input[type ="date"]{
+    cursor: pointer;
+}
+
+.search-form .remove-btn{
+    font-size: 25px;
+    width: 30px;
+    height: 30px;
+    background-color: red;
+    color: white;
+    cursor: pointer;
+    border: none;
+}
+
+.search-form .remove-btn:hover{
+    background-color: rgb(255, 138, 138);
+}
+
+.from-container > img, 
+.to-container > img{
+    width: 25px;
+    height: 25px;
+    margin-right: 20px;
+}
+
+.search-form span{
+    color: grey;
+}
+
+.search-form h4{
+    margin: 5px 0;
+}
+
+.search-form .countries-container,
+.search-form .cities-container{
+    width: 100%;
+    max-height: 200px;
+    position: absolute;
+    display: flex;
+    flex-direction: column;
+    overflow-y: auto;
+    background-color: white;
+    top: calc(100% + 2px);
+    cursor: auto;
+    z-index: 1;
+    left: 0;
+    border: 1px solid grey;
+}
+
+.search-form .countries-container > span,
+.search-form .cities-container > span{
+    padding: 5px;
+    cursor: pointer;
+}
+
+.search-form .countries-container > span:hover,
+.search-form .cities-container > span:hover{
+    background-color: rgb(235, 235, 235);
+}
+
+@media  screen and (max-width: 510px){
+    .search-form .remove-btn{
+        width: 30px;
+    }
+    
+    .search-form > div{
+        border: none;
+    }
+    
+    .search-form > .from-container,
+    .search-form > .to-container{
+        border-bottom: 1px solid rgb(180, 180, 180);
+    }
+
+}
