@@ -12,6 +12,16 @@
     background-size: cover;
     background-repeat: no-repeat;
     clip-path: polygon(0 0, 100% 0, 70% 100%, 0% 100%);
+    animation: slide-login-left-section 0.8s ease-in-out;
+  }
+
+  @keyframes slide-login-left-section{
+    from{
+      width: 0;
+    }
+    to{
+      width: 55%;
+    }
   }
 
   .user-login-page .right-section{
@@ -21,7 +31,6 @@
     align-items: center;
     background-color: rgb(250, 250, 250);
   }
-
 
   .user-login-page .login-container{
     display: flex;
@@ -35,6 +44,17 @@
     box-shadow: 0 0 10px 2px rgb(168, 168, 168);
     padding: 50px;
     box-sizing: border-box;
+    opacity: 0;
+    animation: slide-login-container 0.8s ease-in-out 1s forwards;
+  }
+
+  @keyframes slide-login-container{
+    from{
+      opacity: 0;
+    }
+    to{
+      opacity: 1;
+    }
   }
 
   .user-login-page .input-container{
