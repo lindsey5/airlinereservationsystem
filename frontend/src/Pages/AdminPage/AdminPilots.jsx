@@ -1,38 +1,98 @@
+import useFetch from '../../hooks/useFetch';
 import './AdminPilots.css'
+import PilotForm from '../../Components/Admin/PilotForm';
+import { useEffect, useState } from 'react';
+import { addPilot, deletePilot, updatePilot } from '../../Service/Admin/AdminPilotService';
 
 const AdminPilots = () => {
+    const { data } = useFetch('/api/pilot/pilots');
+    const [showAddPilot, setShowAddPilot] = useState(false);
+    const [pilotData, setPilotData] = useState(false);
+    const [showEditPilot, setShowEditPilot] = useState(false);
+    const [pilots, setPilots] = useState();
+    const [searchTerm, setSearchTerm] = useState('');
+
+    useEffect(() => {
+        if(data){
+            setPilots(data);
+        }
+    }, [data])
+
+
+    const filterTable = (pilot) => {
+        const lowerCaseSearchTerm = searchTerm.toLowerCase(); 
+        return (
+            pilot._id.includes(lowerCaseSearchTerm) ||
+            pilot.firstname.toLowerCase().includes(lowerCaseSearchTerm) ||
+            pilot.lastname.toLowerCase().includes(lowerCaseSearchTerm) || 
+            pilot.age.toString().includes(lowerCaseSearchTerm) ||
+            new Date(pilot.dateOfBirth).toISOString().split('T')[0].includes(lowerCaseSearchTerm) ||
+            pilot.nationality.toLowerCase().includes(lowerCaseSearchTerm) ||
+            pilot.status.toLowerCase().includes(lowerCaseSearchTerm)
+        );
+    };
+
+    useEffect(() => {
+        if(data && searchTerm){
+            setPilots(data.filter(filterTable))
+        }else{
+            setPilots(data)
+        }
+    }, [searchTerm])
+    
     return (
         <section className="admin-pilots">
+            {showAddPilot && <PilotForm close={() => setShowAddPilot(false)} handleSubmit={addPilot} title={'Add Pilot'}/>}
+            {showEditPilot && <PilotForm close={() => setShowEditPilot(false)} handleSubmit={updatePilot} data={pilotData} title={'Update Pilot'}/>}
             <h1>Pilots</h1>
+            <input type="search" placeholder='Search' onChange={(e) => setSearchTerm(e.target.value)}/>
             <div className='table-container'>
             <table>
                 <thead>
-                    <th>Id</th>
-                    <th>Name</th>
-                    <th>Age</th>
-                    <th>Date of Birth</th>
-                    <th>Nationality</th>
-                    <th>Email</th>
-                    <th>Phone</th>
-                    <th>Status</th>
-                    <th>Action</th>
+                    <tr>
+                        <th>Id</th>
+                        <th>Name</th>
+                        <th>Age</th>
+                        <th>Date of Birth</th>
+                        <th>Nationality</th>
+                        <th>Status</th>
+                        <th>Action</th>
+                    </tr>
                 </thead>
                 <tbody>
-                <tr>
-                    <td>123456789</td>
-                    <td>Lindsey Samson</td>
-                    <td>21</td>
-                    <td>August 3, 2003</td>
-                    <td>Filipino</td>
-                    <td>lindseysamson5@gmail.com</td>
-                    <td>09505505306</td>
-                    <td>Available</td>
-                </tr>
-                
+                {pilots && pilots.map(pilot => 
+                    <tr>
+                        <td>{pilot._id}</td>
+                        <td>{pilot.firstname} {pilot.lastname}</td>
+                        <td>{pilot.age}</td>
+                        <td>{new Date(pilot.dateOfBirth).toISOString().split('T')[0]}</td>
+                        <td>{pilot.nationality}</td>
+                        <td>{pilot.status}</td>
+                        <td>
+                            <button onClick={() =>{
+                                setShowEditPilot(true);
+                                setPilotData({
+                                    id: pilot._id,
+                                    firstname: pilot.firstname,
+                                    lastname: pilot.lastname,
+                                    age: pilot.age,
+                                    dateOfBirth: new Date(pilot.dateOfBirth).toISOString().split('T')[0],
+                                    nationality: pilot.nationality,
+                                    status: pilot.status,
+                                })
+                            }}>
+                                <img src="/icons/editing.png"/>
+                            </button>
+                            <button onClick={() => deletePilot(pilot._id)}>
+                                <img src="/icons/delete.png"/>
+                            </button>
+                        </td>
+                    </tr>
+                )}
             </tbody>
             </table>
             </div>
-            <button className='add-btn'>Add Pilot</button>
+            <button className='add-btn' onClick={() => setShowAddPilot(true)}>Add Pilot</button>
         </section>
     )
 }

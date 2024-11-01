@@ -3,15 +3,21 @@
     padding-top: 70px;
     width: 100%;
     height: calc(100vh - 70px);
-    position: relative;
 }
 
 .admin-pilots > h1{
     font-size: 30px;
 }
 
+.admin-pilots > input[type = 'search']{
+    width: 300px;
+    height: 30px;
+    margin-bottom: 30px;
+    outline: none;
+}
+
 .admin-pilots .table-container{
-    width: 100%;
+    width: 95%;
     height: 70%;
     overflow-y: auto;
     overflow-x: auto;
@@ -37,15 +43,25 @@
     text-align: center;
 }
 
+.admin-pilots td > button{
+    border: none;
+    background-color: white;
+    cursor: pointer;
+}
+
+.admin-pilots td > button img{
+    width: 25px;
+    height: 25px;
+}
+
 .admin-pilots .add-btn{
-    top: 90%;
-    left: 20px;
+    margin-top: 20px;
     background-color: #ff3131;
     position: absolute;
     color: white;
     border: none;
-    font-size: 18px;
-    padding: 5px 10px;
+    font-size: 16px;
+    padding: 7px 15px;
     cursor: pointer;
 }
 

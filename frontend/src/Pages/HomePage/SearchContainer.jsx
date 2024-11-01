@@ -13,7 +13,7 @@ const SearchContainer = () => {
     };
 
     return (
-        <div className="container">
+        <div className="search-container">
             <div className="select-container">
                 <select
                     name="flightType"
