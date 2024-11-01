@@ -14,6 +14,11 @@ const AirPlaneSchema = new Schema({
         type: Number,
         required: true,
     },
+    status: {
+        type: String,
+        enum: ['Available', 'In flight', 'Unavailable'], 
+        default: 'Available'
+    }
 })
 
 export default AirPlaneSchema

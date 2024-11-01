@@ -5,6 +5,7 @@
     width: 100%;
     box-sizing: border-box;
     padding: 10px;
+    background-color: #fff2e6;
 }
 
 .available-flights-parent > .top-div{
@@ -13,12 +14,13 @@
 }
 
 .available-flights-parent > .top-div img{
-    width: 100px;
-    height: 50px;
+    width: 80px;
+    height: 80px;
 }
 
 .available-flights-parent > .top-div h1{
     font-size: 30px;
+    color: #ff3131;
 }
 
 .available-flights-parent .available-flights-container{

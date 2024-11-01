@@ -18,8 +18,8 @@
 }
 
 .home-page header img{
-    width: 100px;
-    height: 50px;
+    width: 60px;
+    height: 60px;
 }
 
 .home-page header > div{
@@ -27,8 +27,12 @@
     align-items: center;
 }
 
-.home-page header > div > h2{
+.home-page header > div > h3{
     color: red;
+}
+
+.home-page header > div > h3 span{
+    color: #ffbd59;
 }
 
 .home-page header ul{
@@ -57,7 +61,7 @@
     display: flex;
     justify-content: center;
     align-items: center;
-    margin-top: 80px;
+    margin-top: 70px;
 }
 
 @media  screen and (max-width: 500px) {

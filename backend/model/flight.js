@@ -20,6 +20,7 @@ const FlightSchema = new Schema({
     },
     airplane: {type: airplaneSchema, required: true},
     pilot: {
+      id: { type: Number, required: true},
       name: { type: String, required: true },
     },
     classes: { type: [ClassSchema], required: true,}

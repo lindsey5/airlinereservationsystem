@@ -9,8 +9,8 @@ const Home = () => {
         <main className='home-page'>
             <header>
                 <div>
-                    <img src="/icons/Circle Logo.png" alt="" />
-                    <h2>TCU Airlines</h2>
+                    <img src="/icons/tcu_airlines-logo (2).png" alt="" />
+                    <h3><span>TCU</span> AIRLINES</h3>
                 </div>
                 <ul>
                     <li onClick={() => navigate('/User/Login')}>Login</li>

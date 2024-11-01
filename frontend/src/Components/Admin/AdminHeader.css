@@ -1,0 +1,25 @@
+.admin-header{
+    position: fixed;
+    top: 0;
+    right: 0;
+    left: 0;
+    height: 56px;
+    background-color: white;
+    border-bottom: 2px solid rgb(235, 235, 235);
+    padding: 10px;
+    z-index: 2;
+}
+
+.admin-header .logo-container{
+    display: flex;
+    align-items: center;
+    font-size: 25px;
+    font-weight: 600;
+    color: #ff3131;
+}
+
+.admin-header .logo-container > img{
+    width: 60px;
+    height: 60px;
+    margin-right: 10px;
+}

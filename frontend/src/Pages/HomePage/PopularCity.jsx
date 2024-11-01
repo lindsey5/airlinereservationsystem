@@ -24,7 +24,7 @@ const AvailableFlightsSection = () => {
             const response = await fetch(`https://pixabay.com/api/?key=46701607-d51d8d8ab7e9bf8a22e03cd3c&q=${city} city&image_type=photo`);
             if(response.ok){
                 const result = await response.json();
-                return result.hits[6].largeImageURL;
+                return result.hits[9].largeImageURL;
             }
         }catch(err){
             console.error(err)
@@ -38,7 +38,7 @@ const AvailableFlightsSection = () => {
     return(
         <section className='available-flights-parent'>
                 <div className='top-div'>
-                    <img src="/icons/Circle Logo.png" alt="" />
+                    <img src="/icons/tcu_airlines-logo (2).png" alt="" />
                     <h1>Popular Cities</h1>
                 </div>
                 <div className="available-flights-container">
