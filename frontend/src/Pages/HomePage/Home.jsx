@@ -13,7 +13,7 @@ const Home = () => {
                     <h3><span>TCU</span> AIRLINES</h3>
                 </div>
                 <ul>
-                    <li onClick={() => navigate('/User/Login')}>Login</li>
+                    <li onClick={() => navigate('/user/login')}>Login</li>
                     <li>Signup</li>
                     <li>About</li>
                 </ul>

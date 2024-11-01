@@ -21,10 +21,10 @@ const AdminPilots = () => {
 
     const filterTable = (pilot) => {
         const lowerCaseSearchTerm = searchTerm.toLowerCase(); 
+        const fullname = pilot.firstname.toLowerCase() + ' ' + pilot.lastname.toLowerCase();
         return (
+            fullname.includes(lowerCaseSearchTerm) ||
             pilot._id.includes(lowerCaseSearchTerm) ||
-            pilot.firstname.toLowerCase().includes(lowerCaseSearchTerm) ||
-            pilot.lastname.toLowerCase().includes(lowerCaseSearchTerm) || 
             pilot.age.toString().includes(lowerCaseSearchTerm) ||
             new Date(pilot.dateOfBirth).toISOString().split('T')[0].includes(lowerCaseSearchTerm) ||
             pilot.nationality.toLowerCase().includes(lowerCaseSearchTerm) ||

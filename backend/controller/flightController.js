@@ -113,7 +113,7 @@ export const get_popular_destination = async (req, res) => {
 
 export const search_flight = async (req, res) => {
     try{
-        const { searchData, flightClass, flightType } = req.body;
+        const { searchData, flightClass } = req.body;
         const searchResults = await searchFlights(searchData, flightClass);
         res.status(200).json(searchResults);
     }catch(err){

@@ -6,7 +6,7 @@ const AdminSideBar = () => {
     return (
         <section className="admin-sidebar">
             <ul>
-                <Link to={'Dashboard'}>
+                <Link to={'dashboard'}>
                     <li>
                     <img src="/icons/dashboards.png" alt="" />
                     Dashboard
@@ -24,7 +24,7 @@ const AdminSideBar = () => {
                     Flights
                     </li>
                 </Link>
-                <Link to={'Pilots'}>
+                <Link to={'pilots'}>
                     <li>
                     <img src="/icons/hat.png" alt="" />
                     Pilots
