@@ -4,6 +4,7 @@ import { useEffect, useState } from 'react';
 import { addPilot, deletePilot, updatePilot } from '../../Service/Admin/AdminPilotService';
 import AdminPagination from '../../Components/Admin/Pagination/AdminPagination';
 import useAdminPaginationReducer from '../../hooks/adminPaginationReduces';
+import { dataStatus } from '../../utils/dataStatus';
 
 const AdminPilots = () => {
     const [showAddPilot, setShowAddPilot] = useState(false);
@@ -69,7 +70,7 @@ const AdminPilots = () => {
                         <td>{pilot.age}</td>
                         <td>{new Date(pilot.dateOfBirth).toISOString().split('T')[0]}</td>
                         <td>{pilot.nationality}</td>
-                        <td>{pilot.status}</td>
+                        {dataStatus(pilot.status)}
                         <td>
                             <button onClick={() =>{
                                 setShowEditPilot(true);

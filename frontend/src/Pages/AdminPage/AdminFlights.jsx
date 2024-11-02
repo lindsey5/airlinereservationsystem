@@ -3,6 +3,7 @@ import { useState, useEffect } from "react";
 import AdminPagination from "../../Components/Admin/Pagination/AdminPagination";
 import './AdminPage.css'
 import {formatDate} from '../../utils/formatDate';
+import { dataStatus } from "../../utils/dataStatus";
 
 const AdminFlights = () => {
     const [flights, setFlights] = useState();
@@ -69,7 +70,7 @@ const AdminFlights = () => {
                                 <td>{departureTime}</td>
                                 <td>{flight.arrival.airport} ({flight.arrival.airport_code})</td>
                                 <td>{arrivalTime}</td>
-                                <td>{flight.status}</td>
+                                {dataStatus(flight.status)}
                             </tr>
                         )
                     }

@@ -98,6 +98,7 @@ const AirplaneForm = ({handleSubmit, data, close, title}) =>{
                             onFocus={handleFocus}
                             onBlur={handleBlur}
                             placeholder='Status'
+                            style={{width: '100%'}}
                             required
                         />
                         <span>Status</span>

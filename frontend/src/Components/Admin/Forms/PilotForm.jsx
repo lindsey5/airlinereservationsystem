@@ -35,7 +35,7 @@ const PilotForm = ({handleSubmit, data, close, title}) => {
             <form onSubmit={handleSubmit}>
             {pilotData?.id && 
             <>
-                <h4>ID:{pilotData.id}</h4>
+                <p style={{color: 'rgb(184, 184, 184)', marginBottom: '30px'}}>ID:{pilotData.id}</p>
                 <input type="hidden" name="id" value={pilotData.id}/>
             </>
             }

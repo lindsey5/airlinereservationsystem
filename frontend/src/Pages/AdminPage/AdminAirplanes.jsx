@@ -4,6 +4,7 @@ import AirplaneForm from '../../Components/Admin/Forms/AirplaneForm';
 import { addAirplane, deleteAirplane, updateAirplane } from '../../Service/Admin/AdminAirplaneService';
 import useAdminPaginationReducer from '../../hooks/adminPaginationReduces';
 import AdminPagination from '../../Components/Admin/Pagination/AdminPagination';
+import { dataStatus } from '../../utils/dataStatus';
 
 const AdminAirplanes = () => {
     const [airplanes, setAirplanes] = useState();
@@ -65,7 +66,7 @@ const AdminAirplanes = () => {
                         <td>{airplane.model}</td>
                         <td>{airplane.passengerSeatingCapacity}</td>
                         <td>{airplane.columns}</td>
-                        <td>{airplane.status}</td>
+                        {dataStatus(airplane.status)}
                         <td>
                             <button onClick={() =>{
                                 setShowEditAirplane(true)

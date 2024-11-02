@@ -4,7 +4,7 @@
     width: 100%;
     height: calc(100vh - 70px);
     position: relative;
-    background-color: rgb(250, 250, 250);
+    background-color: rgb(247, 247, 247);
 }
 
 .admin-page > h1{
@@ -30,6 +30,7 @@
 .admin-page .table-container table{
     width: 100%;
     border-collapse: collapse;
+    background-color: white;
 }
 
 .admin-page .table-container table th{
@@ -41,7 +42,6 @@
 
 .admin-page .table-container table td{
     padding: 8px;
-    background-color: white;
     border-bottom: 1px solid rgb(236, 236, 236);
     text-align: center;
 }
@@ -70,4 +70,19 @@
 
 .admin-page .add-btn:hover{
     background-color: #ffbaba;
+}
+
+.green-td{
+    color: green;
+    background-color: rgb(213, 255, 213);
+}
+
+.blue-td{
+    color: blue;
+    background-color: rgb(199, 230, 255);
+}
+
+.red-td{
+    color: red;
+    background-color: rgb(255, 215, 215);
 }
