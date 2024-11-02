@@ -53,6 +53,7 @@ const AdminAirplanes = () => {
                     <tr>
                         <th>Id</th>
                         <th>Model</th>
+                        <th>Current Location</th>
                         <th>Passenger Seat Capacity</th>
                         <th>Columns</th>
                         <th>Status</th>
@@ -64,6 +65,7 @@ const AdminAirplanes = () => {
                     <tr key={airplane._id}>
                         <td>{airplane._id}</td>
                         <td>{airplane.model}</td>
+                        <td>{airplane.currentLocation}</td>
                         <td>{airplane.passengerSeatingCapacity}</td>
                         <td>{airplane.columns}</td>
                         {dataStatus(airplane.status)}
@@ -75,7 +77,8 @@ const AdminAirplanes = () => {
                                     model: airplane.model,
                                     seatCapacity: airplane.passengerSeatingCapacity,
                                     columns: airplane.columns,
-                                    status: airplane.status
+                                    status: airplane.status,
+                                    currentLocation: airplane.currentLocation
                                 })
                             }}>
                                 <img src="/icons/editing.png"/>

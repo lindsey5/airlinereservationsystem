@@ -6,6 +6,7 @@ const AirplaneForm = ({handleSubmit, data, close, title}) =>{
         model: '',
         seatCapacity: '',
         columns: '',
+        currentLocation: '',
     }) 
 
     useEffect(() => {
@@ -84,6 +85,21 @@ const AirplaneForm = ({handleSubmit, data, close, title}) =>{
                     required
                 />
                 <span>Seats Column</span>
+            </div>
+            <div className='input-container'>
+                <input
+                    className='input'
+                    type="text"
+                    name="currentLocation"
+                    value={airplaneData.currentLocation}
+                    onChange={(e) => setAirplaneData(prevData => ({...prevData, currentLocation: e.target.value})) }
+                    onFocus={handleFocus}
+                    onBlur={handleBlur}
+                    placeholder='Current Location / Airport'
+                    style={{width: '100%'}}
+                    required
+                />
+                <span>Current Location / Airport</span>
             </div>
             {airplaneData?.id && 
                     <div className='input-container'>

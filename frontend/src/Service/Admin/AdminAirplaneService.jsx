@@ -56,7 +56,8 @@ export const updateAirplane = async (e) => {
         model: formData.get('model'),
         passengerSeatingCapacity: formData.get('seat-capacity'),
         columns: formData.get('seats-column'),
-        status: formData.get('status')
+        status: formData.get('status'),
+        currentLocation: formData.get('currentLocation')
     }
 
     if(confirm('Click ok to continue')){

@@ -6,6 +6,10 @@ const AirPlaneSchema = new Schema({
         type: String,
         required: true,
     },
+    currentLocation: {
+        type: String,
+        required: true
+    },
     passengerSeatingCapacity: {
         type: Number,
         required: true,
