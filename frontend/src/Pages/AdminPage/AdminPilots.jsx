@@ -1,8 +1,8 @@
 import './AdminPage.css'
-import PilotForm from '../../Components/Admin/PilotForm';
+import PilotForm from '../../Components/Admin/Forms/PilotForm';
 import { useEffect, useState } from 'react';
 import { addPilot, deletePilot, updatePilot } from '../../Service/Admin/AdminPilotService';
-import AdminPagination from '../../Components/Admin/AdminPagination';
+import AdminPagination from '../../Components/Admin/Pagination/AdminPagination';
 import useAdminPaginationReducer from '../../hooks/adminPaginationReduces';
 
 const AdminPilots = () => {
@@ -34,6 +34,10 @@ const AdminPilots = () => {
         fetchPilots();
 
     },[state.currentPage, searchTerm])
+
+    useEffect(() => {
+        document.title = "Pilots | Admin";
+    }, []);
     
     return (
         <main className="admin-page">

@@ -3,12 +3,11 @@ export const errorHandler = (err) => {
 
     if (err.errors) {
         for (const key in err.errors) {
-            errors.push(err.errors[key].message);
+            errors.push(key.message);
         }
     } else {
-        // Handle other types of errors, e.g. validation or custom errors
+        err.message.includes('duplicate key') ? errors.push(`${JSON.stringify(err.errorResponse.keyValue)} is already exist`) : 
         errors.push(err.message);
     }
-
     return errors;
 };

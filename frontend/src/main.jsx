@@ -16,6 +16,7 @@ import AdminDashboard from './Pages/AdminPage/AdminDashboard';
 import AdminPilots from './Pages/AdminPage/AdminPilots';
 import AdminAirplanes from './Pages/AdminPage/AdminAirplanes';
 import AdminFlights from './Pages/AdminPage/AdminFlights';
+import AdminAirports from './Pages/AdminPage/AdminAirports';
 
 const router = createBrowserRouter(
   createRoutesFromElements(
@@ -30,6 +31,7 @@ const router = createBrowserRouter(
           <Route path='pilots' element={<AdminPilots />} />
           <Route path='airplanes' element={<AdminAirplanes />} />
           <Route path='flights' element={<AdminFlights />} />
+          <Route path='airports' element={<AdminAirports />} />
         </Route>
       </Route>
       

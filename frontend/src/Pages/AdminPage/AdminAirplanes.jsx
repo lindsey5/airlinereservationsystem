@@ -1,9 +1,9 @@
 import { useEffect, useState } from 'react';
 import './AdminPage.css'
-import AirplaneForm from '../../Components/Admin/AirplaneForm';
+import AirplaneForm from '../../Components/Admin/Forms/AirplaneForm';
 import { addAirplane, deleteAirplane, updateAirplane } from '../../Service/Admin/AdminAirplaneService';
 import useAdminPaginationReducer from '../../hooks/adminPaginationReduces';
-import AdminPagination from '../../Components/Admin/AdminPagination';
+import AdminPagination from '../../Components/Admin/Pagination/AdminPagination';
 
 const AdminAirplanes = () => {
     const [airplanes, setAirplanes] = useState();
@@ -34,6 +34,10 @@ const AdminAirplanes = () => {
         fetchAirplanes();
 
     },[state.currentPage, searchTerm])
+
+    useEffect(() => {
+        document.title = "Airplanes | Admin";
+    }, []);
 
     return (
         <main className="admin-page">

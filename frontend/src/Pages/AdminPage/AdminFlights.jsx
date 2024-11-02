@@ -1,10 +1,8 @@
 import useAdminPaginationReducer from "../../hooks/adminPaginationReduces";
 import { useState, useEffect } from "react";
-import AdminPagination from "../../Components/Admin/AdminPagination";
+import AdminPagination from "../../Components/Admin/Pagination/AdminPagination";
 import './AdminPage.css'
 import {formatDate} from '../../utils/formatDate';
-import mongoose from "mongoose";
-const { ObjectId } = mongoose.Types;
 
 const AdminFlights = () => {
     const [flights, setFlights] = useState();
@@ -12,7 +10,7 @@ const AdminFlights = () => {
     const {state, dispatch} = useAdminPaginationReducer();
 
     useEffect(() => {
-        const fetchPilots = async () => {
+        const fetchFlights = async () => {
             dispatch({type: 'SET_DISABLED_NEXT_BTN', payload: true})
             dispatch({type: 'SET_DISABLED_PREV_BTN', payload: true})
             try{
@@ -29,9 +27,13 @@ const AdminFlights = () => {
             }
         }
 
-        fetchPilots();
+        fetchFlights();
 
     },[state.currentPage, searchTerm])
+
+    useEffect(() => {
+        document.title = "Flights | Admin";
+    }, []);
 
     return (
         <main className="admin-page">
@@ -59,7 +61,7 @@ const AdminFlights = () => {
                         const arrivalTime = formatDate(flight.arrival.time);
 
                         return (
-                            <tr>
+                            <tr key={flight._id}>
                                 <td>{flight._id}</td>
                                 <td>{flight.airline}</td>
                                 <td>{flight.gate_number}</td>

@@ -73,11 +73,11 @@ export const get_airplanes = async (req, res) => {
 
 export const delete_airplane = async (req, res) => {
     try{
-        const pilot = await Airplane.findByIdAndDelete(req.params.id);
-        if(!pilot){
+        const airplane = await Airplane.findByIdAndDelete(req.params.id);
+        if(!airplane){
             throw new Error('Airplane not found')
         }
-        res.status(200).json({message: 'Pilot successfully deleted', Airplane});
+        res.status(200).json({message: 'Airplane successfully deleted', airplane});
 
     }catch(err){
         const errors = errorHandler(err);

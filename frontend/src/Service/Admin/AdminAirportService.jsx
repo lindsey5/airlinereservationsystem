@@ -1,37 +1,39 @@
-export const addAirplane = async (e) => {
+export const addAirport = async (e) => {
     e.preventDefault();
     const formData = new FormData(e.target);
-    const newAirplane = {
-        model: formData.get('model'),
-        passengerSeatingCapacity: formData.get('seat-capacity'),
-        columns: formData.get('seats-column')
+    const newAirport = {
+        airport: formData.get('airport'),
+        airport_code: formData.get('airport_code'),
+        city: formData.get('city'),
+        country: formData.get('country'),
     }
+    
     try{
-        const response = await fetch('/api/airplane',{
+        const response = await fetch('/api/airport',{
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json',
             },
-            body: JSON.stringify(newAirplane),
+            body: JSON.stringify(newAirport),
         })
-        
         const result = await response.json();
         if(response.ok){
             window.location.reload()
         }
 
         if(result.errors){
-            alert(result.errors[0])
+            alert(result.errors[0]);
         }
+
     }catch(err){
         alert('Error adding pilot')
     }
 }
 
-export const deleteAirplane = async (id) => {
-    if(confirm('Remove Airplane?')){
+export const deleteAirport = async (id) => {
+    if(confirm('Remove Airport?')){
          try{
-             const response = await fetch(`/api/airplane/${id}`,{
+             const response = await fetch(`/api/airport/${id}`,{
                  method: 'DELETE',
                  headers: {
                      'Content-Type': 'application/json',
@@ -42,26 +44,26 @@ export const deleteAirplane = async (id) => {
                  window.location.reload()
              }
          }catch(err){
-             alert('Error deleting airplane')
+             alert('Error deleting airport')
          }
     }
-
  }
 
-export const updateAirplane = async (e) => {
+
+ export const updateAirport = async (e) => {
     e.preventDefault();
     const formData = new FormData(e.target);
     const id = formData.get('id');
     const newData = {
-        model: formData.get('model'),
-        passengerSeatingCapacity: formData.get('seat-capacity'),
-        columns: formData.get('seats-column'),
-        status: formData.get('status')
+        airport: formData.get('airport'),
+        airport_code: formData.get('airport_code'),
+        city: formData.get('city'),
+        country: formData.get('country'),
     }
 
     if(confirm('Click ok to continue')){
         try{
-            const response = await fetch(`/api/airplane/${id}`,{
+            const response = await fetch(`/api/airport/${id}`,{
                 method: 'PUT',
                 headers: {
                     'Content-Type': 'application/json',

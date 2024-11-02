@@ -40,7 +40,7 @@ export const deletePilot = async (id) => {
                 window.location.reload()
             }
         }catch(err){
-            alert('Error adding pilot')
+            alert('Error deleting pilot')
         }
    }
 
@@ -78,7 +78,7 @@ export const updatePilot = async (e) => {
             }
             
         }catch(err){
-            alert(err)
+            alert('Error updating pilot')
         }
    }
     
