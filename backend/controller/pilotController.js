@@ -21,16 +21,15 @@ export const get_pilots = async (req, res) => {
     const limit = parseInt(req.query.limit) || 10; 
     const skip = (page - 1) * limit;
     const searchTerm = req.query.searchTerm;
-    console.log(searchTerm)
     try{
-
         const searchCriteria = searchTerm
         ? {
             $or: [
                 { _id: ObjectId.isValid(searchTerm) ? new ObjectId(searchTerm) : null },
                 { firstname: { $regex: new RegExp(searchTerm, 'i') } },
                 { lastname: { $regex: new RegExp(searchTerm, 'i') } },
-                { nationality: { $regex: new RegExp(searchTerm, 'i') } }
+                { nationality: { $regex: new RegExp(searchTerm, 'i') } },
+                {status: { $regex: new RegExp(searchTerm, 'i') }}
             ]
         }
         : {};

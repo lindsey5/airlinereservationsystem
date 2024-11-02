@@ -84,7 +84,7 @@ const AdminAirplanes = () => {
                 </tbody>
             </table>
             </div>
-            <button className='add-btn' onClick={() => setShowAddAirplane(true)}>Add Pilot</button>
+            <button className='add-btn' onClick={() => setShowAddAirplane(true)}>Add Airplane</button>
         </main>
     )
 

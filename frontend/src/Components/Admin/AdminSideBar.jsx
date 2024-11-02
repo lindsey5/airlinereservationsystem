@@ -18,7 +18,7 @@ const AdminSideBar = () => {
                     Airplanes
                     </li>
                 </Link>
-                <Link>
+                <Link to={'flights'}>
                     <li>
                     <img src="/icons/plane.png" alt="" />
                     Flights

@@ -47,7 +47,8 @@ const AdminPilots = () => {
                 <thead>
                     <tr>
                         <th>Id</th>
-                        <th>Name</th>
+                        <th>Firstname</th>
+                        <th>Lastname</th>
                         <th>Age</th>
                         <th>Date of Birth</th>
                         <th>Nationality</th>
@@ -59,7 +60,8 @@ const AdminPilots = () => {
                 {pilots && pilots.map(pilot => 
                     <tr key={pilot._id}>
                         <td>{pilot._id}</td>
-                        <td>{pilot.firstname} {pilot.lastname}</td>
+                        <td>{pilot.firstname}</td>
+                        <td>{pilot.lastname}</td>
                         <td>{pilot.age}</td>
                         <td>{new Date(pilot.dateOfBirth).toISOString().split('T')[0]}</td>
                         <td>{pilot.nationality}</td>
