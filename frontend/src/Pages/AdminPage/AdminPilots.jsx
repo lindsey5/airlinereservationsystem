@@ -1,5 +1,5 @@
 import useFetch from '../../hooks/useFetch';
-import './AdminPilots.css'
+import './AdminPage.css'
 import PilotForm from '../../Components/Admin/PilotForm';
 import { useEffect, useState } from 'react';
 import { addPilot, deletePilot, updatePilot } from '../../Service/Admin/AdminPilotService';
@@ -24,7 +24,7 @@ const AdminPilots = () => {
         const fullname = pilot.firstname.toLowerCase() + ' ' + pilot.lastname.toLowerCase();
         return (
             fullname.includes(lowerCaseSearchTerm) ||
-            pilot._id.includes(lowerCaseSearchTerm) ||
+            pilot._id.toLowerCase().includes(lowerCaseSearchTerm) ||
             pilot.age.toString().includes(lowerCaseSearchTerm) ||
             new Date(pilot.dateOfBirth).toISOString().split('T')[0].includes(lowerCaseSearchTerm) ||
             pilot.nationality.toLowerCase().includes(lowerCaseSearchTerm) ||
@@ -41,7 +41,7 @@ const AdminPilots = () => {
     }, [searchTerm])
     
     return (
-        <section className="admin-pilots">
+        <main className="admin-page">
             {showAddPilot && <PilotForm close={() => setShowAddPilot(false)} handleSubmit={addPilot} title={'Add Pilot'}/>}
             {showEditPilot && <PilotForm close={() => setShowEditPilot(false)} handleSubmit={updatePilot} data={pilotData} title={'Update Pilot'}/>}
             <h1>Pilots</h1>
@@ -61,7 +61,7 @@ const AdminPilots = () => {
                 </thead>
                 <tbody>
                 {pilots && pilots.map(pilot => 
-                    <tr>
+                    <tr key={pilot._id}>
                         <td>{pilot._id}</td>
                         <td>{pilot.firstname} {pilot.lastname}</td>
                         <td>{pilot.age}</td>
@@ -93,7 +93,7 @@ const AdminPilots = () => {
             </table>
             </div>
             <button className='add-btn' onClick={() => setShowAddPilot(true)}>Add Pilot</button>
-        </section>
+        </main>
     )
 }
 

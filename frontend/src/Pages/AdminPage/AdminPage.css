@@ -1,22 +1,22 @@
-.admin-pilots{
+.admin-page{
     padding: 0 20px;
     padding-top: 70px;
     width: 100%;
     height: calc(100vh - 70px);
 }
 
-.admin-pilots > h1{
+.admin-page > h1{
     font-size: 30px;
 }
 
-.admin-pilots > input[type = 'search']{
+.admin-page > input[type = 'search']{
     width: 300px;
     height: 30px;
     margin-bottom: 30px;
     outline: none;
 }
 
-.admin-pilots .table-container{
+.admin-page .table-container{
     width: 100%;
     height: 65%;
     overflow-y: auto;
@@ -24,37 +24,37 @@
     border: 2px solid rgb(235, 235, 235);
 }
 
-.admin-pilots .table-container table{
+.admin-page .table-container table{
     width: 100%;
     border-collapse: collapse;
 }
 
-.admin-pilots .table-container table th{
+.admin-page .table-container table th{
     padding: 10px;
     background-color: #ff3131;
     color: white;
     border: 1px solid white;
 }
 
-.admin-pilots .table-container table td{
+.admin-page .table-container table td{
     padding: 8px;
     background-color: white;
     border-bottom: 1px solid rgb(236, 236, 236);
     text-align: center;
 }
 
-.admin-pilots td > button{
+.admin-page td > button{
     border: none;
     background-color: white;
     cursor: pointer;
 }
 
-.admin-pilots td > button img{
+.admin-page td > button img{
     width: 25px;
     height: 25px;
 }
 
-.admin-pilots .add-btn{
+.admin-page .add-btn{
     margin-top: 20px;
     background-color: #ff3131;
     position: absolute;
@@ -65,6 +65,6 @@
     cursor: pointer;
 }
 
-.admin-pilots .add-btn:hover{
+.admin-page .add-btn:hover{
     background-color: #ffbaba;
 }

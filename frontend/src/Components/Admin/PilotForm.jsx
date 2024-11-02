@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react"
-import './PilotForm.css'
+import './AdminForm.css'
 
 const PilotForm = ({handleSubmit, data, close, title}) => {
     const [pilotData, setPilotData] = useState({
@@ -29,7 +29,7 @@ const PilotForm = ({handleSubmit, data, close, title}) => {
     }
 
     return (
-        <div className='pilot-form'>
+        <div className='admin-form'>
             <div className='container'>
             <h2>{title}</h2>
             <form onSubmit={handleSubmit}>
@@ -41,7 +41,7 @@ const PilotForm = ({handleSubmit, data, close, title}) => {
             }
             <div style={{display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '20px'}}>
                     <div className='input-container'>
-                        <input
+                        <input  
                             className='input'
                             type="text"
                             name="firstname"
@@ -142,7 +142,6 @@ const PilotForm = ({handleSubmit, data, close, title}) => {
                 </div>
             </form>
             </div>
-
         </div>
     )
 

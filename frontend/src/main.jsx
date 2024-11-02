@@ -14,6 +14,7 @@ import { SearchContextProvider } from './Context/SearchContext';
 import UserLogin from './Pages/AuthPages/UserLogin';
 import AdminDashboard from './Pages/AdminPage/AdminDashboard';
 import AdminPilots from './Pages/AdminPage/AdminPilots';
+import AdminAirplanes from './Pages/AdminPage/AdminAirplanes';
 
 const router = createBrowserRouter(
   createRoutesFromElements(
@@ -26,6 +27,7 @@ const router = createBrowserRouter(
         <Route element={<AdminLayout />}>
           <Route path='dashboard' element={<AdminDashboard />}/>
           <Route path='pilots' element={<AdminPilots />} />
+          <Route path='airplanes' element={<AdminAirplanes />} />
         </Route>
       </Route>
       

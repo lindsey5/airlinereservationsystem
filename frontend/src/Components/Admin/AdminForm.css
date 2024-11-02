@@ -1,4 +1,4 @@
-.pilot-form{
+.admin-form{
     position: fixed;
     top: 0;
     bottom: 0;
@@ -11,37 +11,38 @@
     align-items: center;
 }
 
-.pilot-form .container{
+.admin-form .container{
     border-radius: 20px;
     padding: 50px;
     background-color: white;
 }
 
-.pilot-form .input-container{
+.admin-form .input-container{
     position: relative;
     margin-bottom: 30px;
 }
 
-.pilot-form .input-container .input{
+.admin-form .input-container .input{
     height: 35px;
     outline: none;
     border: 1px solid rgb(184, 184, 184);
     padding-left: 10px;
+    box-sizing: border-box;
 }
 
-.pilot-form .input-container .input:focus{
+.admin-form .input-container .input:focus{
     border: 1px solid #ff3131;
 }
 
-.pilot-form .input-container .input:focus::placeholder{
+.admin-form .input-container .input:focus::placeholder{
     opacity: 0;
 }
 
-.pilot-form .input-container .input:focus + span{
+.admin-form .input-container .input:focus + span{
     color: red;
 }
 
-.pilot-form .input-container span{
+.admin-form .input-container span{
     position: absolute;
     left: 5px;
     transform: translateY(-50%);
@@ -52,7 +53,7 @@
     font-size: 15px;
 }
 
-.pilot-form .input-container .input.onFocus + span{
+.admin-form .input-container .input.onFocus + span{
     display: block;
     animation: slide-span 0.4s ease-out forwards;
 }
@@ -66,31 +67,31 @@
     }
 }
 
-.pilot-form .buttons{
+.admin-form .buttons{
     width: 100%;
     display: flex;
     justify-content: space-between;
     margin-top: 50px;
 }
 
-.pilot-form .close-btn,
-.pilot-form .submit-btn{
+.admin-form .close-btn,
+.admin-form .submit-btn{
     width: 100px;
     height: 30px;
     cursor: pointer;
 }
 
-.pilot-form .close-btn{
+.admin-form .close-btn{
     margin-right: 20px;
     border: 1px solid grey;
 }
 
-.pilot-form .submit-btn{
+.admin-form .submit-btn{
     background-color: #ff3131;
     color: white;
     border: none;
 }
 
-.pilot-form .submit-btn:hover{
+.admin-form .submit-btn:hover{
     background-color: #ffbaba;
 }

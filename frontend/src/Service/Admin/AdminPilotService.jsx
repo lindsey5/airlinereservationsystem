@@ -68,12 +68,17 @@ export const updatePilot = async (e) => {
                 },
                 body: JSON.stringify(newData)
             })
-
+            const result = await response.json();
             if(response.ok){
                 window.location.reload();
             }
+
+            if(result.errors){
+                throw new Error(result.errors[0]);
+            }
+            
         }catch(err){
-            alert('Error adding pilot')
+            alert(err)
         }
    }
     

@@ -14,9 +14,12 @@ const calculateSeats = (classes) => {
 }
 //This function generateSeats with seathNumber based on total seats and columns of the airplane
 const createSeats = (totalSeats, columns) => {
+    const totalColumns = columns.split('x').map(column => parseInt(column, 10));
+    const sumOfColumns = totalColumns.reduce((accumulator, currentValue) => accumulator + currentValue, 0);
+
     const newSeats = [];
     let num = 1;
-    for(let i = 0; i < totalSeats / columns; i++){
+    for(let i = 0; i < totalSeats / sumOfColumns; i++){
         for(let j = 0; j < columns; j++){
             const letter = String.fromCharCode(65 + j);
                 newSeats.push({

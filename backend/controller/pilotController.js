@@ -43,7 +43,7 @@ export const update_pilot_data = async (req, res) => {
         const updatedPilot = await Pilot.findByIdAndUpdate(
             req.params.id,
             req.body,
-            { new: true }
+            { new: true, runValidators: true}
         );
 
         if(!updatedPilot){

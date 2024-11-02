@@ -11,12 +11,12 @@ const AirPlaneSchema = new Schema({
         required: true,
     },
     columns: {
-        type: Number,
+        type: String,
         required: true,
     },
     status: {
         type: String,
-        enum: ['Available', 'In flight', 'Unavailable'], 
+        enum: ['Available', 'In Flight', 'Unavailable'], 
         default: 'Available'
     }
 })
