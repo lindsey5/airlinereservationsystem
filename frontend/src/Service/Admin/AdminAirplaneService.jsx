@@ -45,7 +45,7 @@ export const deleteAirplane = async (id) => {
              alert('Error adding pilot')
          }
     }
- 
+
  }
 
 export const updateAirplane = async (e) => {

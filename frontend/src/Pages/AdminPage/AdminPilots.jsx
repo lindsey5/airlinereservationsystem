@@ -1,44 +1,39 @@
-import useFetch from '../../hooks/useFetch';
 import './AdminPage.css'
 import PilotForm from '../../Components/Admin/PilotForm';
 import { useEffect, useState } from 'react';
 import { addPilot, deletePilot, updatePilot } from '../../Service/Admin/AdminPilotService';
+import AdminPagination from '../../Components/Admin/AdminPagination';
+import useAdminPaginationReducer from '../../hooks/adminPaginationReduces';
 
 const AdminPilots = () => {
-    const { data } = useFetch('/api/pilot/pilots');
     const [showAddPilot, setShowAddPilot] = useState(false);
     const [pilotData, setPilotData] = useState(false);
     const [showEditPilot, setShowEditPilot] = useState(false);
     const [pilots, setPilots] = useState();
     const [searchTerm, setSearchTerm] = useState('');
+    const {state, dispatch} = useAdminPaginationReducer();
 
     useEffect(() => {
-        if(data){
-            setPilots(data);
+        const fetchPilots = async () => {
+            dispatch({type: 'SET_DISABLED_NEXT_BTN', payload: true})
+            dispatch({type: 'SET_DISABLED_PREV_BTN', payload: true})
+            try{
+                const response = await fetch(`/api/pilot/pilots?page=${state.currentPage}&&limit=50&&searchTerm=${searchTerm}`);
+                if(response.ok){
+                    const result = await response.json();
+                    result.currentPage === result.totalPages || result.totalPages === 0 ? dispatch({type: 'SET_DISABLED_NEXT_BTN', payload: true}) :  dispatch({type: 'SET_DISABLED_NEXT_BTN', payload: false});
+                    result.currentPage === 1 ? dispatch({type: 'SET_DISABLED_PREV_BTN', payload: true}) : dispatch({type: 'SET_DISABLED_PREV_BTN', payload: false});
+                    dispatch({type: 'SET_TOTAL_PAGES', payload: result.totalPages});
+                    setPilots(result.pilots)
+                }
+            }catch(err){
+
+            }
         }
-    }, [data])
 
+        fetchPilots();
 
-    const filterTable = (pilot) => {
-        const lowerCaseSearchTerm = searchTerm.toLowerCase(); 
-        const fullname = pilot.firstname.toLowerCase() + ' ' + pilot.lastname.toLowerCase();
-        return (
-            fullname.includes(lowerCaseSearchTerm) ||
-            pilot._id.toLowerCase().includes(lowerCaseSearchTerm) ||
-            pilot.age.toString().includes(lowerCaseSearchTerm) ||
-            new Date(pilot.dateOfBirth).toISOString().split('T')[0].includes(lowerCaseSearchTerm) ||
-            pilot.nationality.toLowerCase().includes(lowerCaseSearchTerm) ||
-            pilot.status.toLowerCase().includes(lowerCaseSearchTerm)
-        );
-    };
-
-    useEffect(() => {
-        if(data && searchTerm){
-            setPilots(data.filter(filterTable))
-        }else{
-            setPilots(data)
-        }
-    }, [searchTerm])
+    },[state.currentPage, searchTerm])
     
     return (
         <main className="admin-page">
@@ -46,6 +41,7 @@ const AdminPilots = () => {
             {showEditPilot && <PilotForm close={() => setShowEditPilot(false)} handleSubmit={updatePilot} data={pilotData} title={'Update Pilot'}/>}
             <h1>Pilots</h1>
             <input type="search" placeholder='Search' onChange={(e) => setSearchTerm(e.target.value)}/>
+            <AdminPagination state={state} dispatch={dispatch} />
             <div className='table-container'>
             <table>
                 <thead>

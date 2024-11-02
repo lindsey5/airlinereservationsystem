@@ -1,5 +1,7 @@
 import Pilot from "../model/pilot.js";
 import { errorHandler } from "../utils/errorHandler.js"
+import mongoose from "mongoose";
+const { ObjectId } = mongoose.Types;
 
 export const create_pilot = async(req, res) => {
     try{
@@ -15,10 +17,37 @@ export const create_pilot = async(req, res) => {
 
 
 export const get_pilots = async (req, res) => {
+    const page = parseInt(req.query.page) || 1; 
+    const limit = parseInt(req.query.limit) || 10; 
+    const skip = (page - 1) * limit;
+    const searchTerm = req.query.searchTerm;
+    console.log(searchTerm)
     try{
-        const pilots = await Pilot.find();
-        res.status(200).json(pilots);
+
+        const searchCriteria = searchTerm
+        ? {
+            $or: [
+                { _id: ObjectId.isValid(searchTerm) ? new ObjectId(searchTerm) : null },
+                { firstname: { $regex: new RegExp(searchTerm, 'i') } },
+                { lastname: { $regex: new RegExp(searchTerm, 'i') } },
+                { nationality: { $regex: new RegExp(searchTerm, 'i') } }
+            ]
+        }
+        : {};
+
+        const pilots = await Pilot.find(searchCriteria)
+        .skip(skip)
+        .limit(limit);
+
+        const totalPilots = await Pilot.countDocuments(searchCriteria);
+        const totalPages = Math.ceil(totalPilots / limit);
+        res.status(200).json({
+            currentPage: page,
+            totalPages: totalPages,
+            pilots: pilots,
+        });
     }catch(err){
+        console.log(err)
         const errors = errorHandler(err);
         res.status(400).json({errors});
     }

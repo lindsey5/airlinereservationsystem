@@ -1,5 +1,7 @@
 import Airplane from "../model/airplane.js";
 import { errorHandler } from "../utils/errorHandler.js";
+import mongoose from "mongoose";
+const { ObjectId } = mongoose.Types;
 
 const validateColumns = (columns) => {
     const regex = /^(\d+x)+\d+$/;
@@ -33,10 +35,35 @@ export const get_airplane = async (req, res) => {
 }
 
 export const get_airplanes = async (req, res) => {
+    const page = parseInt(req.query.page) || 1; 
+    const limit = parseInt(req.query.limit) || 10; 
+    const skip = (page - 1) * limit;
+    const searchTerm = req.query.searchTerm;
     try{
-        const airplanes = await Airplane.find();
-        res.status(200).json(airplanes);
+        const searchCriteria = searchTerm
+        ? {
+            $or: [
+                { _id: ObjectId.isValid(searchTerm) ? new ObjectId(searchTerm) : null },
+                { firstname: searchTerm },
+                { lastname: searchTerm },
+                { nationality: searchTerm }
+            ]
+        }
+        : {};
+
+        const airplanes = await Airplane.find(searchCriteria)
+        .skip(skip)
+        .limit(limit);
+
+        const totalAirplanes = await Airplane.countDocuments(searchCriteria);
+        const totalPages = Math.ceil(totalAirplanes / limit);
+        res.status(200).json({
+            currentPage: page,
+            totalPages: totalPages,
+            airplanes: airplanes,
+        });
     }catch(err){
+        console.log(err)
         const errors = errorHandler(err);
         res.status(400).json({errors});
     }
