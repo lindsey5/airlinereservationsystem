@@ -24,9 +24,14 @@ export const searchFlight = async(state) => {
             }
         );
         if(response.ok){
-            console.log(await response.json());
+            const results = await response.json();
+            results.forEach(result => {
+                result.forEach(data => {
+                    console.log(`Departure: ${data.departure.airport} ${data.departure.time}, Arrival: ${data.arrival.airport} ${data.arrival.time}`);
+                });
+                console.log('')
+            });   
         }
-
     }catch(err){
         console.error(err);
     }

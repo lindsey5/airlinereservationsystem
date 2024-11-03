@@ -14,7 +14,9 @@ export const one_way_search = async (data, flightClass) =>{
         if(flights.length < 1){
             throw new Error('No flights found');
         }
-        return flights;
+        const flightsArr = [];
+        flights.forEach(flight => flightsArr.push([flight]));
+        return flightsArr;
     }catch(err){
         throw new Error('No flights found');
     }
@@ -58,10 +60,10 @@ export const round_trip_search = async (data, flightClass) => {
     // Interleave outbound and return flights
     searchResults.outboundFlights.forEach((outboundFlight) => {
         searchResults.returnFlights.forEach((returnFlight) => {
-            interleavedResults.push({
-                outboundFlight: outboundFlight,
-                returnFlight: returnFlight
-            });
+            interleavedResults.push([
+                outboundFlight,
+                returnFlight
+            ]);
         });
     });
 
