@@ -36,6 +36,10 @@ const AdminAirports = () => {
     },[state.currentPage, searchTerm])
 
     useEffect(() => {
+        dispatch({type:'SET_CURRENT_PAGE', payload: 1})
+    }, [searchTerm])
+
+    useEffect(() => {
         document.title = "Airports | Admin";
     }, []);
 

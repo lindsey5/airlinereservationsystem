@@ -13,7 +13,6 @@ const FlightFirstForm = ({state, dispatch, next, close}) => {
     const validate = async (e) => {
         e.preventDefault();
         setError('');
-        let flag = true;
         if(state.departure.airport === state.arrival.airport){
             setError('*Departure and Arrival airport cannot be the same');
         }else if(new Date(state.arrival.time) < new Date(new Date(state.departure.time).getTime() + 24 * 60 * 60 * 1000)){

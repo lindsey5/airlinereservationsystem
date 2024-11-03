@@ -39,6 +39,10 @@ const AdminPilots = () => {
     useEffect(() => {
         document.title = "Pilots | Admin";
     }, []);
+
+    useEffect(() => {
+        dispatch({type:'SET_CURRENT_PAGE', payload: 1})
+    }, [searchTerm])
     
     return (
         <main className="admin-page">
