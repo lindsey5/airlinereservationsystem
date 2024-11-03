@@ -6,7 +6,7 @@ const router = express.Router();
 router.post('/', create_airport);
 router.get('/airports', get_airports);
 router.get('/airports/pagination', get_pagination_airports);
-router.delete('/', delete_airport);
+router.delete('/:id', delete_airport);
 router.put('/:id', update_airport_data);
 
 export default router;

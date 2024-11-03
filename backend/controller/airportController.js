@@ -60,13 +60,14 @@ export const get_airports = async (req, res) => {
 
 export const delete_airport = async (req, res) => {
     try{
-        const airport = await Airplane.findByIdAndDelete(req.params.id);
+        const airport = await Airport.findByIdAndDelete(req.params.id);
         if(!airport){
             throw new Error('Airplane not found')
         }
         res.status(200).json({message: 'Airport successfully deleted', airport});
 
     }catch(err){
+        console.log(err)
         const errors = errorHandler(err);
         res.status(400).json({errors});
     }
