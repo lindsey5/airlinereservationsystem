@@ -10,15 +10,43 @@ const FlightFirstForm = ({state, dispatch, next, close}) => {
     const [arrival, setArrival] = useState();
     const [error, setError] = useState('');
 
-    const validate = (e) => {
+    const validate = async (e) => {
         e.preventDefault();
         setError('')
         if(state.departure.airport === state.arrival.airport){
             setError('*Departure and Arrival airport cannot be the same')
-        }else if(new Date(state.departure.time) >= new Date(state.arrival.time)){
-            setError('*Departure time should not be greater than or equal to Arrival Time')
-        }else{
-            next();
+        }else if(new Date(state.arrival.time) < new Date(new Date(state.departure.time).getTime() + 24 * 60 * 60 * 1000)){
+            setError('*Arrival time must be at least one day after Departure time')
+        }else if(isPilotAvailable() && isAirplaneAvailable()){
+            
+        }
+    }
+
+    const isPilotAvailable = async () => {
+        try{
+            const response = await fetch(`/api/pilot/${state.pilot}/available?departureTime=${state.departure.time}&&departureAirport=${state.departure.airport}`)
+            const result = await response.json();
+            if(result.errors){
+                setError(result.errors[0])
+                return false;
+            }
+            return true
+        }catch(err){
+            return false
+        }
+    }
+
+    const isAirplaneAvailable = async () => {
+        try{
+            const response = await fetch(`/api/airplane/${state.airplane}/available?departureTime=${state.departure.time}&&departureAirport=${state.departure.airport}`)
+            const result = await response.json();
+            if(result.errors){
+                setError(result.errors[0])
+                return false;
+            }
+            return true
+        }catch(err){
+            return false
         }
     }
 
@@ -83,7 +111,7 @@ const FlightFirstForm = ({state, dispatch, next, close}) => {
                                 onChange={(date) => dispatch({type: 'SET_DEPARTURE_TIME', payload: date})}
                                 showTimeSelect
                                 dateFormat="Pp"
-                                minDate={new Date()} 
+                                minDate={new Date(new Date().getTime() + 24 * 60 * 60 * 1000)} 
                             />
                         </div>
                     </div>
@@ -96,7 +124,7 @@ const FlightFirstForm = ({state, dispatch, next, close}) => {
                             {airports && airports.airports.map(airport => 
                                 <option key={airport._id} value={airport.airport}>{airport.airport}</option>
                             )}
-                        </select>
+                            </select>
                         </div>
                         <div>
                             <p>Time</p>
@@ -105,31 +133,59 @@ const FlightFirstForm = ({state, dispatch, next, close}) => {
                                 onChange={(date) => dispatch({type: 'SET_ARRIVAL_TIME', payload: date})}
                                 showTimeSelect
                                 dateFormat="Pp"
-                                minDate={new Date()} 
+                                minDate={new Date(new Date().getTime() + 24 * 60 * 60 * 1000)} 
                             />
                         </div>
                     </div>
                 </div>
-                <div>
-                    <p>Airline</p>
-                    <select style={{width: '150px'}} onChange={(e) => dispatch({type: 'SET_AIRLINE', payload: e.target.value})}>
-                        <option value="PAL">PAL</option>
-                        <option value="Cebu Pacific">Cebu Pacific</option>
-                        <option value="Air Asia">Air Asia</option>
-                        <option value="Skyjet">Skyjet</option>
-                    </select>   
+                <div style={{display: 'flex', width: '400px', marginBottom: '20px', justifyContent: 'space-between'}}>
+                    <div>
+                        <p>Airline</p>
+                        <select style={{width: '150px'}} onChange={(e) => dispatch({type: 'SET_AIRLINE', payload: e.target.value})}>
+                            <option value="PAL">PAL</option>
+                            <option value="Cebu Pacific">Cebu Pacific</option>
+                            <option value="Air Asia">Air Asia</option>
+                            <option value="Skyjet">Skyjet</option>
+                        </select> 
+                    </div>
+                    <div>
+                        <p>Gate Number</p>
+                        <input 
+                            type="text" 
+                            placeholder='A1' 
+                            onChange={(e) => 
+                                dispatch({type: 'SET_GATE_NUMBER', payload: e.target.value})
+                            } 
+                            required
+                            style={{height: '25px', outline: 'none'}}
+                        />
+                    </div>
                 </div>
-                <div style={{margin: '30px 0'}}>
-                    <p>Gate Number</p>
-                    <input 
-                        type="text" 
-                        placeholder='A1' 
-                        onChange={(e) => 
-                            dispatch({type: 'SET_GATE_NUMBER', payload: e.target.value})
-                        } 
-                        required
-                        style={{width: '145px', height: '25px', outline: 'none'}}
-                    />
+                <div style={{display: 'flex', width: '400px', marginBottom: '20px', justifyContent: 'space-between'}}>
+                    <div>
+                        <p>Pilot ID</p>
+                        <input 
+                            type="text" 
+                            placeholder='123*******' 
+                            onChange={(e) => 
+                                dispatch({type: 'SET_PILOT', payload: e.target.value})
+                            } 
+                            required
+                            style={{height: '25px', outline: 'none'}}
+                        />
+                    </div>
+                    <div>
+                        <p>Airplane ID</p>
+                        <input 
+                            type="text" 
+                            placeholder='123*******' 
+                            onChange={(e) => 
+                                dispatch({type: 'SET_AIRPLANE', payload: e.target.value})
+                            } 
+                            required
+                            style={{height: '25px', outline: 'none'}}
+                        />
+                    </div>
                 </div>
                 <p style={{color: '#ff3131'}}>{error}</p>
                 <input type="submit" className="next-btn" value='Next'/>

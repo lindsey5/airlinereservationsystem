@@ -1,4 +1,5 @@
 import Airplane from "../model/airplane.js";
+import Flight from "../model/flight.js";
 import { errorHandler } from "../utils/errorHandler.js";
 import mongoose from "mongoose";
 const { ObjectId } = mongoose.Types;
@@ -102,6 +103,35 @@ export const update_airplane_data = async (req, res) => {
         }
 
         res.status(200).json({message: 'Airplane successfully updated', updatedValues: updatedAirplane})
+
+    }catch(err){
+        const errors = errorHandler(err);
+        res.status(400).json({errors});
+    }
+}
+
+export const isAirplaneAvailable = async (req, res) => {
+    const airplneId = req.params.id;
+    const departureTime = new Date(req.query.departureTime);
+    const departureAirport = req.query.departureAirport;
+    try{
+        if (!mongoose.Types.ObjectId.isValid(airplneId)) {
+            throw new Error('Airplane Id not found')
+        }
+        const airplane = await Airplane.findById(airplneId);
+        if(!airplane){
+            throw new Error('Airplane Id not found');
+        }
+
+        const flight = await Flight.findOne({ 'airplane.id': airplane._id }).sort({ 'arrival.time': -1 });
+        if (flight) {
+            if(!(departureTime > flight.arrival.time)){
+                throw new Error('Airplane is not available for that date')
+            }else if(!(departureAirport === flight.arrival.airport)){
+                throw new Error('Airplane is not available for that airport')
+            }
+        }
+        res.status(200).json({message: 'Airplane is available', airplane})
 
     }catch(err){
         const errors = errorHandler(err);

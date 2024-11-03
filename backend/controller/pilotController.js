@@ -87,29 +87,33 @@ export const update_pilot_data = async (req, res) => {
     }
 }
 
-export const get_available_pilots = async (req, res) => {
+export const isPilotAvailable = async (req, res) => {
+    const pilotId = req.params.id;
+    const departureTime = new Date(req.query.departureTime);
+    const departureAirport = req.query.departureAirport;
     try{
-        const departureTime = new Date(req.query.departureTime);
-        const departureAirport = req.query.departureAirport;
-        console.log(departureTime)
-        const pilots = await Pilot.find();
-        const filteredPilots = await Promise.all(pilots.map(async (pilot) => {
-            const flight = await Flight.findOne({ 'pilot.id': pilot._id }).sort({ 'arrival.time': -1 });
-        
-            if (flight) {
-                const isAvailable = departureTime > flight.arrival.time && departureAirport === flight.arrival.airport;
-                return isAvailable ? pilot : null;
-            }
-            return pilot;
-        }));
-        
-        const availablePilots = filteredPilots.filter(pilot => pilot !== null);
+        if (!mongoose.Types.ObjectId.isValid(pilotId)) {
+            throw new Error('Pilot Id not found')
+        }
+        const pilot = await Pilot.findById(pilotId);
+        if(!pilot){
+            throw new Error('Pilot Id not found');
+        }
 
-        res.status(200).json(availablePilots);        
+        let flag = true;
+        const flight = await Flight.findOne({ 'pilot.id': pilot._id }).sort({ 'arrival.time': -1 });
+        if (flight) {
+            const isAvailable = departureTime > flight.arrival.time && departureAirport === flight.arrival.airport;
+            flag = isAvailable ? true : false;
+        }
+
+        if(!flag){
+            throw new Error('Pilot is not available for that departure date')
+        }
+        res.status(200).json({message: 'Pilot is available', pilot})
 
     }catch(err){
         const errors = errorHandler(err);
-        res.status(200).json({errors});
+        res.status(400).json({errors});
     }
-
 }

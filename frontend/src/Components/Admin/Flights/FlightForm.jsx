@@ -1,5 +1,6 @@
 import { useReducer, useState } from "react"
 import FlightFirstForm from "./FlightFirstForm"
+import FlightSecondForm from "./FlightSecondForm";
 
 const flightState = {
     departure: {
@@ -7,17 +8,19 @@ const flightState = {
         airport_code: '',
         city: '',
         country: '',
-        time: new Date()
+        time: new Date(new Date().getTime() + 24 * 60 * 60 * 1000)
     },
     arrival: {
         airport: '',
         airport_code: '',
         city: '',
         country: '',
-        time: new Date()
+        time: new Date(new Date().getTime() + 24 * 60 * 60 * 1000)
     },
     airline: 'PAL',
-    gate_number: ''
+    gate_number: '',
+    pilot: { id: '' },
+    airplane: { id: '' },
 }
 
 const flightReducer = (state, action) => {
@@ -64,15 +67,27 @@ const flightReducer = (state, action) => {
              return { ...state, airline: action.payload }
         case 'SET_GATE_NUMBER':
             return { ...state, gate_number: action.payload }
+        case 'SET_PILOT':
+            return {...state, pilot: action.payload }
+        case 'SET_AIRPLANE':
+            return {...state, airplane: action.payload}
     }
 }
 
 const FlightForm = ({close}) => {
     const [state, dispatch] = useReducer(flightReducer, flightState);
     const [showFirstForm, setShowFirstForm] = useState(true);
+    const [showSecondForm, setShowSecondForm] = useState(false);
+
+    const goToSecondForm = () => {
+        setShowSecondForm(true);
+        setShowFirstForm(false);
+    }
+
     return (
         <div className="admin-form">
-            {showFirstForm && <FlightFirstForm state={state} dispatch={dispatch} next={() => setShowFirstForm(false)} close={close}/>}
+            {showFirstForm && <FlightFirstForm state={state} dispatch={dispatch} close={close}/>}
+            {showSecondForm && <FlightSecondForm state={state} dispatch={dispatch}/>}
         </div>
     )
 }
