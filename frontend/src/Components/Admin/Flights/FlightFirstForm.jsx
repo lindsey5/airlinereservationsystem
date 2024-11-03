@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react"
+import { useEffect, useRef, useState } from "react"
 import useFetch from "../../../hooks/useFetch"
 import '../Forms/AdminForm.css'
 import './FlightForm.css'
@@ -8,26 +8,36 @@ const FlightFirstForm = ({state, dispatch, next, close}) => {
     const { data: airports } = useFetch('/api/airport/airports')
     const [departure, setDeparture] = useState();
     const [arrival, setArrival] = useState();
-    const [error, setError] = useState('');
+    const [errors, setErrors] = useState([])
 
     const validate = async (e) => {
         e.preventDefault();
-        setError('')
+        setErrors([]);
+        let flag = true;
         if(state.departure.airport === state.arrival.airport){
-            setError('*Departure and Arrival airport cannot be the same')
-        }else if(new Date(state.arrival.time) < new Date(new Date(state.departure.time).getTime() + 24 * 60 * 60 * 1000)){
-            setError('*Arrival time must be at least one day after Departure time')
-        }else if(isPilotAvailable() && isAirplaneAvailable()){
-            
+            setErrors(prev => [...prev, '*Departure and Arrival airport cannot be the same']);
+            flag = false;
+        }
+        if(new Date(state.arrival.time) < new Date(new Date(state.departure.time).getTime() + 24 * 60 * 60 * 1000)){
+            setErrors(prev => [...prev, '*Arrival time must be at least one day after Departure time']);
+            flag = false;
+        }
+        
+        if(await isPilotAvailable() || await isAirplaneAvailable()){
+            flag = false;
         }
     }
+
+    useEffect(() => {
+        console.log(errors.current)
+    }, [errors.current])
 
     const isPilotAvailable = async () => {
         try{
             const response = await fetch(`/api/pilot/${state.pilot}/available?departureTime=${state.departure.time}&&departureAirport=${state.departure.airport}`)
             const result = await response.json();
             if(result.errors){
-                setError(result.errors[0])
+                setErrors(prev => [...prev, `*${result.errors[0]}`]);
                 return false;
             }
             return true
@@ -41,7 +51,7 @@ const FlightFirstForm = ({state, dispatch, next, close}) => {
             const response = await fetch(`/api/airplane/${state.airplane}/available?departureTime=${state.departure.time}&&departureAirport=${state.departure.airport}`)
             const result = await response.json();
             if(result.errors){
-                setError(result.errors[0])
+                setErrors(prev => [...prev, `*${result.errors[0]}`]);
                 return false;
             }
             return true
@@ -90,12 +100,12 @@ const FlightFirstForm = ({state, dispatch, next, close}) => {
     },[arrival])
 
     return(
-            <div className="container">
+            <div className="container first-form">
             <span className='close'onClick={close}>X</span>
             <form onSubmit={validate}>
                 <div style={{borderBottom: '1px solid rgb(225,225,225)', paddingBottom: '20px', marginBottom: '30px'}}>
                     <h3>Departure</h3>
-                    <div style={{display: 'flex', width: '400px', marginBottom: '50px', justifyContent: 'space-between'}}>
+                    <div className="inputs">
                         <div>
                             <p>Airport</p>
                             <select value={state.departure.airport} onChange={(e) => setDeparture(e.target.value)}>
@@ -117,7 +127,7 @@ const FlightFirstForm = ({state, dispatch, next, close}) => {
                     </div>
 
                     <h3>Arrival</h3>
-                    <div style={{display: 'flex', width: '400px', marginBottom: '20px', justifyContent: 'space-between'}}>
+                    <div className="inputs">
                         <div>
                             <p>Airport</p>
                             <select value={state.arrival.airport} onChange={(e) => setArrival(e.target.value)}>
@@ -138,10 +148,10 @@ const FlightFirstForm = ({state, dispatch, next, close}) => {
                         </div>
                     </div>
                 </div>
-                <div style={{display: 'flex', width: '400px', marginBottom: '20px', justifyContent: 'space-between'}}>
+                <div className="inputs">
                     <div>
                         <p>Airline</p>
-                        <select style={{width: '150px'}} onChange={(e) => dispatch({type: 'SET_AIRLINE', payload: e.target.value})}>
+                        <select onChange={(e) => dispatch({type: 'SET_AIRLINE', payload: e.target.value})}>
                             <option value="PAL">PAL</option>
                             <option value="Cebu Pacific">Cebu Pacific</option>
                             <option value="Air Asia">Air Asia</option>
@@ -161,7 +171,7 @@ const FlightFirstForm = ({state, dispatch, next, close}) => {
                         />
                     </div>
                 </div>
-                <div style={{display: 'flex', width: '400px', marginBottom: '20px', justifyContent: 'space-between'}}>
+                <div className="inputs">
                     <div>
                         <p>Pilot ID</p>
                         <input 
@@ -187,7 +197,7 @@ const FlightFirstForm = ({state, dispatch, next, close}) => {
                         />
                     </div>
                 </div>
-                <p style={{color: '#ff3131'}}>{error}</p>
+                {errors.length > 0 && errors.map(error => <p key={error} style={{color: '#ff3131'}}>{error}</p>)}
                 <input type="submit" className="next-btn" value='Next'/>
             </form>
             </div>

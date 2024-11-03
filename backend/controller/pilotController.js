@@ -87,6 +87,13 @@ export const update_pilot_data = async (req, res) => {
     }
 }
 
+const formatDate = (dateString) => {
+    const date = new Date(dateString);
+    const formattedDate = date.toISOString().split('T')[0];
+    const time = date.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
+    return `${formattedDate} (${time})`;
+}
+
 export const isPilotAvailable = async (req, res) => {
     const pilotId = req.params.id;
     const departureTime = new Date(req.query.departureTime);
@@ -100,15 +107,13 @@ export const isPilotAvailable = async (req, res) => {
             throw new Error('Pilot Id not found');
         }
 
-        let flag = true;
         const flight = await Flight.findOne({ 'pilot.id': pilot._id }).sort({ 'arrival.time': -1 });
         if (flight) {
-            const isAvailable = departureTime > flight.arrival.time && departureAirport === flight.arrival.airport;
-            flag = isAvailable ? true : false;
-        }
-
-        if(!flag){
-            throw new Error('Pilot is not available for that departure date')
+            if(departureTime < new Date(new Date(flight.arrival.time).getTime() + 24 * 60 * 60 * 1000)){
+                throw new Error(`Pilot is not available, departure time should be one day after ${formatDate(flight.arrival.time)}`)
+            }else if(!(departureAirport === flight.arrival.airport)){
+                throw new Error(`Pilot is not available, departure airport should be ${flight.arrival.airport}`)
+            }
         }
         res.status(200).json({message: 'Pilot is available', pilot})
 

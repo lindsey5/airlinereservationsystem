@@ -110,6 +110,13 @@ export const update_airplane_data = async (req, res) => {
     }
 }
 
+const formatDate = (dateString) => {
+    const date = new Date(dateString);
+    const formattedDate = date.toISOString().split('T')[0];
+    const time = date.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
+    return `${formattedDate} (${time})`;
+}
+
 export const isAirplaneAvailable = async (req, res) => {
     const airplneId = req.params.id;
     const departureTime = new Date(req.query.departureTime);
@@ -125,10 +132,10 @@ export const isAirplaneAvailable = async (req, res) => {
 
         const flight = await Flight.findOne({ 'airplane.id': airplane._id }).sort({ 'arrival.time': -1 });
         if (flight) {
-            if(!(departureTime > flight.arrival.time)){
-                throw new Error('Airplane is not available for that date')
+            if(departureTime < new Date(new Date(flight.arrival.time).getTime() + 24 * 60 * 60 * 1000)){
+                throw new Error(`Airplane is not available, departure time should be one day after ${formatDate(flight.arrival.time)}`)
             }else if(!(departureAirport === flight.arrival.airport)){
-                throw new Error('Airplane is not available for that airport')
+                throw new Error(`Airplane is not available, departure airport should be ${flight.arrival.airport}`)
             }
         }
         res.status(200).json({message: 'Airplane is available', airplane})
