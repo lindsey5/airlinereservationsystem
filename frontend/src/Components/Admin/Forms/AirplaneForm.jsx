@@ -133,6 +133,7 @@ const AirplaneForm = ({handleSubmit, data, close, title}) =>{
                                 .map(airport =>  <div onClick={() => setAirplaneData(prevData => ({...prevData, currentLocation: airport.airport}))}>{airport.airport}</div>)}
                             </div>
                         }
+                        <input type="hidden" name='currentLocation' value={airplaneData.currentLocation} />
                     </div>
                 </div>
             <div className="buttons">

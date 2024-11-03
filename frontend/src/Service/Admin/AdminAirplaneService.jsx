@@ -4,7 +4,8 @@ export const addAirplane = async (e) => {
     const newAirplane = {
         model: formData.get('model'),
         passengerSeatingCapacity: formData.get('seat-capacity'),
-        columns: formData.get('seats-column')
+        columns: formData.get('seats-column'),
+        currentLocation: formData.get('currentLocation'),
     }
     try{
         const response = await fetch('/api/airplane',{
@@ -21,6 +22,7 @@ export const addAirplane = async (e) => {
         }
 
         if(result.errors){
+            console.log(result)
             alert(result.errors[0])
         }
     }catch(err){
