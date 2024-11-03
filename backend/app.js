@@ -63,17 +63,27 @@ app.get('/api/countries', async (req, res) => {
 });
 
 app.get('/api/cities/:country', async (req, res) => {
-    try{
+    try {
         const country = req.params.country;
-        const airports = await Airport.find({country}).sort({ city: 1 })
-        const cities = airports.map(airport => airport.city)
+        
+        // Fetch airports for the specified country
+        const airports = await Airport.find({ country }).sort({ city: 1 });
+
+        // Create a Set to store unique city names
+        const uniqueCities = new Set(airports.map(airport => airport.city));
+
+        // Convert the Set back to an array
+        const cities = Array.from(uniqueCities);
+
+        // Respond with the array of unique cities
         res.status(200).json(cities);
-    }catch(err){
+    } catch (err) {
         const errors = errorHandler(err);
         console.log(errors);
         res.status(400).json(errors);
     }
 });
+
 
 const __dirname = path.resolve();
 

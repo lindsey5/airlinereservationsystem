@@ -36,6 +36,24 @@ const AdminSideBar = () => {
                     Pilots
                     </li>
                 </Link>
+                <Link>
+                    <li>
+                    <img src="/icons/user (1).png" alt="" />
+                    Admins
+                    </li>
+                </Link>
+                <Link>
+                    <li>
+                    <img src="/icons/air-host.png" alt="" />
+                    Stewards
+                    </li>
+                </Link>
+                <Link>
+                    <li>
+                    <img src="/icons/receptionist.png" alt="" />
+                    Reservation Agents
+                    </li>
+                </Link>
             </ul>
         </section>
     )
