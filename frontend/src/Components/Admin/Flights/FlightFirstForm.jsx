@@ -63,7 +63,7 @@ const FlightFirstForm = ({state, dispatch, next, close}) => {
 
     return(
             <div className="container">
-            <span className='close' onClick={close}>X</span>
+            <span className='close'onClick={close}>X</span>
             <form onSubmit={validate}>
                 <div style={{borderBottom: '1px solid rgb(225,225,225)', paddingBottom: '20px', marginBottom: '30px'}}>
                     <h3>Departure</h3>

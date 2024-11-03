@@ -12,7 +12,7 @@ export const create_airport = async (req, res) => {
     }
 }
 
-export const get_airports = async (req, res) => {
+export const get_pagination_airports = async (req, res) => {
     const page = parseInt(req.query.page) || 1; 
     const limit = parseInt(req.query.limit) || 10; 
     const skip = (page - 1) * limit;
@@ -42,11 +42,21 @@ export const get_airports = async (req, res) => {
             airports,
         });
     }catch(err){
-        console.log(err)
         const errors = errorHandler(err);
         res.status(400).json({errors});
     }
 }
+
+export const get_airports = async (req, res) => {
+    try{
+        const airports = await Airport.find().sort({airport: 1});
+        res.status(200).json({airports});
+    }catch(err){
+        const errors = errorHandler(err);
+        res.status(400).json({errors});
+    }
+}
+
 
 export const delete_airport = async (req, res) => {
     try{

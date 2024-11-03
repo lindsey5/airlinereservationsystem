@@ -18,7 +18,7 @@ const AdminAirports = () => {
             dispatch({type: 'SET_DISABLED_NEXT_BTN', payload: true})
             dispatch({type: 'SET_DISABLED_PREV_BTN', payload: true})
             try{
-                const response = await fetch(`/api/airport/airports?page=${state.currentPage}&&limit=50&&searchTerm=${searchTerm}`);
+                const response = await fetch(`/api/airport/airports/pagination?page=${state.currentPage}&&limit=50&&searchTerm=${searchTerm}`);
                 if(response.ok){
                     const result = await response.json();
                     result.currentPage === result.totalPages || result.totalPages === 0 ? dispatch({type: 'SET_DISABLED_NEXT_BTN', payload: true}) :  dispatch({type: 'SET_DISABLED_NEXT_BTN', payload: false});

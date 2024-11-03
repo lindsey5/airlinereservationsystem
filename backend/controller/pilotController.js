@@ -1,3 +1,4 @@
+import Flight from "../model/flight.js";
 import Pilot from "../model/pilot.js";
 import { errorHandler } from "../utils/errorHandler.js"
 import mongoose from "mongoose";
@@ -84,4 +85,31 @@ export const update_pilot_data = async (req, res) => {
         const errors = errorHandler(err);
         res.status(400).json({errors});
     }
+}
+
+export const get_available_pilots = async (req, res) => {
+    try{
+        const departureTime = new Date(req.query.departureTime);
+        const departureAirport = req.query.departureAirport;
+        console.log(departureTime)
+        const pilots = await Pilot.find();
+        const filteredPilots = await Promise.all(pilots.map(async (pilot) => {
+            const flight = await Flight.findOne({ 'pilot.id': pilot._id }).sort({ 'arrival.time': -1 });
+        
+            if (flight) {
+                const isAvailable = departureTime > flight.arrival.time && departureAirport === flight.arrival.airport;
+                return isAvailable ? pilot : null;
+            }
+            return pilot;
+        }));
+        
+        const availablePilots = filteredPilots.filter(pilot => pilot !== null);
+
+        res.status(200).json(availablePilots);        
+
+    }catch(err){
+        const errors = errorHandler(err);
+        res.status(200).json({errors});
+    }
+
 }
