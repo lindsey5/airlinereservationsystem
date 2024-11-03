@@ -1,18 +1,86 @@
 import Flight from "../model/flight.js";
 
-export const searchFlights = async (searchSegments, flightClass) => {
+export const one_way_search = async (data, flightClass) =>{
+    try{
+        const { departureCountry, departureCity, arrivalCity, arrivalCountry, departureTime } = data;
+        const flights = await Flight.find({
+            'departure.country': departureCountry,
+            'departure.city': departureCity,
+            'arrival.city': arrivalCity,
+            'arrival.country': arrivalCountry,
+            'classes.className': flightClass,
+            'departure.time': { $gte: departureTime }
+        });
+        if(flights.length < 1){
+            throw new Error('No flights found');
+        }
+        return flights;
+    }catch(err){
+        throw new Error('No flights found');
+    }
+}
+
+export const round_trip_search = async (data, flightClass) => {
+    const { departureCountry, departureCity, arrivalCity, arrivalCountry, departureTime } = data;
+    const searchResults = {
+        outboundFlights: [],
+        returnFlights: []
+    };
+
+    // Fetch outbound flight results
+    const outboundFlights = await Flight.find({
+        'departure.country': departureCountry,
+        'departure.city': departureCity,
+        'arrival.city': arrivalCity,
+        'arrival.country': arrivalCountry,
+        'classes.className': flightClass,
+        'departure.time': { $gte: departureTime }
+    });
+
+    // Store outbound flights
+    searchResults.outboundFlights = outboundFlights;
+
+    // Fetch return flight results
+    const returnFlights = await Flight.find({
+        'departure.country': arrivalCountry,
+        'departure.city': arrivalCity,
+        'arrival.city': departureCity,
+        'arrival.country': departureCountry,
+        'classes.className': flightClass
+    });
+
+    // Store return flights
+    searchResults.returnFlights = returnFlights;
+
+    // Array to store the interleaved results
+    const interleavedResults = [];
+
+    // Interleave outbound and return flights
+    searchResults.outboundFlights.forEach((outboundFlight) => {
+        searchResults.returnFlights.forEach((returnFlight) => {
+            interleavedResults.push({
+                outboundFlight: outboundFlight,
+                returnFlight: returnFlight
+            });
+        });
+    });
+
+    return interleavedResults;
+};
+
+export const multi_city_search = async (searchSegments, flightClass) => {
     const segmentResults = [];
 
     // Fetch flights for each search segment
     for (let segment of searchSegments) {
         const { departureCountry, departureCity, arrivalCity, arrivalCountry, departureTime } = segment;
+
         // Find flights for the current segment
-        
         const flights = await Flight.find({
-            'departure.country': { $regex: new RegExp(departureCountry, 'i') },
-            'departure.city': { $regex: new RegExp(departureCity, 'i') },
-            'arrival.city':{ $regex: new RegExp(arrivalCity, 'i') },
-            'arrival.country': { $regex: new RegExp(arrivalCountry, 'i') },
+            'departure.country': departureCountry,
+            'departure.city': departureCity,
+            'arrival.city': arrivalCity,
+            'arrival.country': arrivalCountry,
             'classes.className': flightClass,
             'departure.time': { $gte: departureTime }
         });

@@ -74,7 +74,7 @@ const setFlights = (state) => {
         ToCities: null,
         FromCity: state.flights[i]?.FromCity || null,
         ToCity: state.flights[i]?.ToCity || null,
-        DepartureTime: state.flights[i]?.DepartureTime || new Date()
+        DepartureTime: state.flights[i]?.DepartureTime || new Date(new Date().getTime() + 4 * 60 * 60 * 1000)
     }));
     return flights;
 };

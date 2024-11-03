@@ -20,8 +20,8 @@ const FlightFirstForm = ({state, dispatch, next, close}) => {
         setError('');
         if(state.departure.airport === state.arrival.airport){
             setError('*Departure and Arrival airport cannot be the same');
-        }else if(new Date(state.arrival.time) < new Date(new Date(state.departure.time).getTime() + 24 * 60 * 60 * 1000)){
-            setError('*Arrival time must be at least one day after Departure time');
+        }else if(new Date(state.arrival.time) < new Date(new Date(state.departure.time).getTime() + 4 * 60 * 60 * 1000)){
+            setError('*Arrival time must be at least 4 hours after Departure time');
         }else if(await Promise.all([
             await isPilotAvailable(),
             await isAirplaneAvailable()

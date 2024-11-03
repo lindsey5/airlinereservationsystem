@@ -59,9 +59,10 @@ const SearchForms = () =>{
                     flag = false;
                 }
             }
+            
             if(!flight.FromCountry 
                 || !flight.ToCountry || !flight.ToCity || !flight.FromCity 
-                ||  flight.DepartureTime < new Date()
+                ||  new Date(flight.DepartureTime) < new Date(new Date().getTime() + 4 * 60 * 60 * 1000)
             ){
                 flag = false;
             }
