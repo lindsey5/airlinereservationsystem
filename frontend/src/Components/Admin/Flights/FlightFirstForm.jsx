@@ -8,36 +8,28 @@ const FlightFirstForm = ({state, dispatch, next, close}) => {
     const { data: airports } = useFetch('/api/airport/airports')
     const [departure, setDeparture] = useState();
     const [arrival, setArrival] = useState();
-    const [errors, setErrors] = useState([])
+    const [error, setError] = useState([])
 
     const validate = async (e) => {
         e.preventDefault();
-        setErrors([]);
+        setError('');
         let flag = true;
         if(state.departure.airport === state.arrival.airport){
-            setErrors(prev => [...prev, '*Departure and Arrival airport cannot be the same']);
-            flag = false;
-        }
-        if(new Date(state.arrival.time) < new Date(new Date(state.departure.time).getTime() + 24 * 60 * 60 * 1000)){
-            setErrors(prev => [...prev, '*Arrival time must be at least one day after Departure time']);
-            flag = false;
-        }
-        
-        if(await isPilotAvailable() || await isAirplaneAvailable()){
-            flag = false;
+            setError('*Departure and Arrival airport cannot be the same');
+        }else if(new Date(state.arrival.time) < new Date(new Date(state.departure.time).getTime() + 24 * 60 * 60 * 1000)){
+            setError('*Arrival time must be at least one day after Departure time');
+        }else if(await isPilotAvailable() || await isAirplaneAvailable()){
+
         }
     }
 
-    useEffect(() => {
-        console.log(errors.current)
-    }, [errors.current])
 
     const isPilotAvailable = async () => {
         try{
             const response = await fetch(`/api/pilot/${state.pilot}/available?departureTime=${state.departure.time}&&departureAirport=${state.departure.airport}`)
             const result = await response.json();
             if(result.errors){
-                setErrors(prev => [...prev, `*${result.errors[0]}`]);
+                setError(`*${result.errors[0]}`);
                 return false;
             }
             return true
@@ -51,7 +43,7 @@ const FlightFirstForm = ({state, dispatch, next, close}) => {
             const response = await fetch(`/api/airplane/${state.airplane}/available?departureTime=${state.departure.time}&&departureAirport=${state.departure.airport}`)
             const result = await response.json();
             if(result.errors){
-                setErrors(prev => [...prev, `*${result.errors[0]}`]);
+                setError(`*${result.errors[0]}`);
                 return false;
             }
             return true
@@ -197,7 +189,7 @@ const FlightFirstForm = ({state, dispatch, next, close}) => {
                         />
                     </div>
                 </div>
-                {errors.length > 0 && errors.map(error => <p key={error} style={{color: '#ff3131'}}>{error}</p>)}
+                <p style={{color: '#ff3131'}}>{error}</p>
                 <input type="submit" className="next-btn" value='Next'/>
             </form>
             </div>
