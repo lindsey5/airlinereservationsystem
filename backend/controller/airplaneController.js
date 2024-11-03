@@ -117,30 +117,24 @@ const formatDate = (dateString) => {
     return `${formattedDate} (${time})`;
 }
 
-export const isAirplaneAvailable = async (req, res) => {
-    const airplneId = req.params.id;
+export const get_available_airplanes = async (req, res) => {
     const departureTime = new Date(req.query.departureTime);
     const departureAirport = req.query.departureAirport;
     try{
-        if (!mongoose.Types.ObjectId.isValid(airplneId)) {
-            throw new Error('Airplane Id not found')
-        }
-        const airplane = await Airplane.findById(airplneId);
-        if(!airplane){
-            throw new Error('Airplane Id not found');
-        }
-        console.log(airplane.currentLocation !== departureAirport);
-        const flight = await Flight.findOne({ 'airplane.id': airplane._id }).sort({ 'arrival.time': -1 });
-        if (flight) {
-            if(departureTime < new Date(new Date(flight.arrival.time).getTime() + 24 * 60 * 60 * 1000)){
-                throw new Error(`Provided airplane id is not available, departure time should be one day after ${formatDate(flight.arrival.time)}`)
-            }else if(!(departureAirport === flight.arrival.airport)){
-                throw new Error(`Provided airplane id is not available, departure airport should be ${flight.arrival.airport} ${flight.arrival.country}`)
+        const airplanes = await Airplane.find();
+    
+        const availableAirplanes = await Promise.all(airplanes.map(async (airplane) => {
+            const flight = await Flight.findOne({'airplane.id' : airplane._id});
+
+            if(flight){
+                const isAvailable = flight.arrival.airport === departureAirport && 
+                new Date(new Date(flight.arrival.time).getTime() + 24 * 60 * 60 * 1000) < departureTime;
+                return isAvailable ? airplane : null
             }
-        }else if(airplane.currentLocation !== departureAirport){
-            throw new Error(`Provided airplane id current location is ${airplane.currentLocation}`)
-        }
-        res.status(200).json({message: 'Airplane is available', airplane})
+            return airplane;
+        }))
+        const filteredPlanes = availableAirplanes.filter(airplane => airplane !== null)
+        res.status(200).json(filteredPlanes)
 
     }catch(err){
         const errors = errorHandler(err);

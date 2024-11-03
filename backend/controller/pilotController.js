@@ -87,37 +87,27 @@ export const update_pilot_data = async (req, res) => {
     }
 }
 
-const formatDate = (dateString) => {
-    const date = new Date(dateString);
-    const formattedDate = date.toISOString().split('T')[0];
-    const time = date.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
-    return `${formattedDate} (${time})`;
-}
-
-export const isPilotAvailable = async (req, res) => {
-    const pilotId = req.params.id;
+export const get_available_pilots = async (req, res) => {
     const departureTime = new Date(req.query.departureTime);
     const departureAirport = req.query.departureAirport;
     try{
-        if (!mongoose.Types.ObjectId.isValid(pilotId)) {
-            throw new Error('Pilot Id not found')
-        }
-        const pilot = await Pilot.findById(pilotId);
-        if(!pilot){
-            throw new Error('Pilot Id not found');
-        }
+        const pilots = await Pilot.find();
 
-        const flight = await Flight.findOne({ 'pilot.id': pilot._id }).sort({ 'arrival.time': -1 });
-        if (flight) {
-            if(departureTime < new Date(new Date(flight.arrival.time).getTime() + 24 * 60 * 60 * 1000)){
-                throw new Error(`Provided pilot id, departure time should be one day after ${formatDate(flight.arrival.time)}`)
-            }else if(!(departureAirport === flight.arrival.airport)){
-                throw new Error(`Provided pilot id, departure airport should be ${flight.arrival.airport} ${flight.arrival.country}`)
+        const availablePilots = await Promise.all(pilots.map(async (pilot) => {
+            const flight = await Flight.findOne({'pilot.id' : pilot._id});
+            if(flight){
+                const isAvailable = flight.arrival.airport === departureAirport && 
+                new Date(new Date(flight.arrival.time).getTime() + 24 * 60 * 60 * 1000) < departureTime;
+                return isAvailable ? pilot : null
             }
-        }
-        res.status(200).json({message: 'Pilot is available', pilot})
+            return pilot;
+        }));
+        const filteredPilots = availablePilots.filter(pilot => pilot !== null)
+        console.log(filteredPilots)
+        res.status(200).json(filteredPilots)
 
     }catch(err){
+        console.log(err);
         const errors = errorHandler(err);
         res.status(400).json({errors});
     }

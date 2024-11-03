@@ -4,7 +4,7 @@ import '../Forms/AdminForm.css'
 import './FlightForm.css'
 import DatePicker from "react-datepicker"
 
-const FlightFirstForm = ({state, dispatch, next, close}) => {
+const FlightFirstForm = ({state, dispatch, handleSubmit, close}) => {
     const { data: airports } = useFetch('/api/airport/airports')
     const [departure, setDeparture] = useState();
     const [arrival, setArrival] = useState();
@@ -14,49 +14,57 @@ const FlightFirstForm = ({state, dispatch, next, close}) => {
     const [departureCountry, setDepartureCountry] = useState('');
     const [arrivalCountry, setArrivalCountry] = useState('');
     const { data: countries} = useFetch('/api/countries');
+    const [availablePlanes, setAvailablePlanes] = useState([]);
+    const [availablePilots, setAvailablePilots] = useState([]);
 
     const validate = async (e) => {
         e.preventDefault();
         setError('');
-        if(state.departure.airport === state.arrival.airport){
+        if(!state.departure.airport){
+            setError('*Departure airport is empty');
+        }else if(!state.arrival.airport){
+            setError('*Arrival airport is empty');
+        }else if(state.departure.airport === state.arrival.airport){
             setError('*Departure and Arrival airport cannot be the same');
         }else if(new Date(state.arrival.time) < new Date(new Date(state.departure.time).getTime() + 4 * 60 * 60 * 1000)){
             setError('*Arrival time must be at least 4 hours after Departure time');
-        }else if(await Promise.all([
-            await isPilotAvailable(),
-            await isAirplaneAvailable()
-        ])){
-
         }
     }
 
-    const isPilotAvailable = async () => {
+    const fetchAvailablePlanes = async () => {
         try{
-            const response = await fetch(`/api/pilot/${state.pilot}/available?departureTime=${state.departure.time}&&departureAirport=${state.departure.airport}`)
-            const result = await response.json();
-            if(result.errors){
-                setError(`*${result.errors[0]}`);
-                return false;
+            const response = await fetch(`/api/airplane/airplanes/available?departureTime=${state.departure.time}&&departureAirport=${state.departure.airport}`)
+
+            if(response.ok){
+                setAvailablePlanes(await response.json())
+            }else{
+                setAvailablePlanes([]);
             }
-            return true
         }catch(err){
-            return false
+            
         }
     }
 
-    const isAirplaneAvailable = async () => {
+    const fetchAvailablePilots = async () => {
         try{
-            const response = await fetch(`/api/airplane/${state.airplane}/available?departureTime=${state.departure.time}&&departureAirport=${state.departure.airport}`)
-            const result = await response.json();
-            if(result.errors){
-                setError(`*${result.errors[0]}`);
-                return false;
+            const response = await fetch(`/api/pilot/pilots/available?departureTime=${state.departure.time}&&departureAirport=${state.departure.airport}`)
+
+            if(response.ok){
+                setAvailablePilots(await response.json())
+            }else{
+                setAvailablePilots([]);
             }
-            return true
         }catch(err){
-            return false
+            
         }
     }
+
+    useEffect(() =>{
+        if(state.departure.time && state.departure.airport){
+            fetchAvailablePlanes();
+            fetchAvailablePilots();
+        }
+    },[state.departure.time, state.departure.airport]);
 
     useEffect(() => {
         if(departure){
@@ -105,13 +113,13 @@ const FlightFirstForm = ({state, dispatch, next, close}) => {
                                 <span>{state.departure.airport ? state.departure.airport : 'Select'}</span>
                                 {countries && showDepartureCountries && 
                                     <div className="dropdown">
-                                    {countries.map(country => <div onClick={() => setDepartureCountry(country.country)}>{country.country}</div>)}
+                                    {countries.map(country => <div key={country.country} onClick={() => setDepartureCountry(country.country)}>{country.country}</div>)}
                                     </div>
                                 }
                                 {departureCountry && 
                                     <div className="dropdown">
                                         {airports.airports.filter(airport => airport.country === departureCountry)
-                                        .map(airport =>  <div onClick={() => setDeparture(airport.airport)}>{airport.airport}</div>)}
+                                        .map(airport =>  <div key={airport.airport} onClick={() => setDeparture(airport.airport)}>{airport.airport}</div>)}
                                     </div>
                                 }
                             </div>
@@ -144,13 +152,13 @@ const FlightFirstForm = ({state, dispatch, next, close}) => {
                                 <span>{state.arrival.airport ? state.arrival.airport : 'Select'}</span>
                                 {countries && showArrivalCountries && 
                                     <div className="dropdown">
-                                    {countries.map(country => <div onClick={() => setArrivalCountry(country.country)}>{country.country}</div>)}
+                                    {countries.map(country => <div key={country.country} onClick={() => setArrivalCountry(country.country)}>{country.country}</div>)}
                                     </div>
                                 }
                                 {arrivalCountry && 
                                     <div className="dropdown">
                                         {airports.airports.filter(airport => airport.country === arrivalCountry)
-                                        .map(airport =>  <div onClick={() => setArrival(airport.airport)}>{airport.airport}</div>)}
+                                        .map(airport =>  <div key={airport.airport} onClick={() => setArrival(airport.airport)}>{airport.airport}</div>)}
                                     </div>
                                 }
                             </div>
@@ -192,28 +200,25 @@ const FlightFirstForm = ({state, dispatch, next, close}) => {
                 </div>
                 <div className="inputs">
                     <div>
-                        <p>Pilot ID</p>
-                        <input 
-                            type="text" 
-                            placeholder='123*******' 
-                            onChange={(e) => 
+                        <p>Pilot</p>
+                        <select onChange={(e) => 
                                 dispatch({type: 'SET_PILOT', payload: e.target.value})
-                            } 
-                            required
-                            style={{height: '25px', outline: 'none'}}
-                        />
+                        }>
+                        {availablePilots.length > 0 && availablePilots.map(pilot => 
+                            <option key={pilot._id} value={pilot._id}>{pilot._id}</option>
+                        )}
+                        </select>
                     </div>
                     <div>
-                        <p>Airplane ID</p>
-                        <input 
-                            type="text" 
-                            placeholder='123*******' 
-                            onChange={(e) => 
+                        <p>Airplane</p>
+                        <select onChange={(e) => 
                                 dispatch({type: 'SET_AIRPLANE', payload: e.target.value})
-                            } 
-                            required
-                            style={{height: '25px', outline: 'none'}}
-                        />
+                        }>
+                        {availablePlanes.length > 0 && availablePlanes.map(plane => 
+                            <option key={plane._id} value={plane._id}>{plane._id}</option>
+                        )}
+
+                        </select>
                     </div>
                 </div>
                 <p style={{color: '#ff3131'}}>{error}</p>
