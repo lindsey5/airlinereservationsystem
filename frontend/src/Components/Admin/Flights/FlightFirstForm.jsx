@@ -60,6 +60,8 @@ const FlightFirstForm = ({state, dispatch, handleSubmit, close}) => {
     }
 
     useEffect(() =>{
+        dispatch({type: 'SET_AIRPLANE', payload: ''})
+        dispatch({type: 'SET_PILOT', payload: ''})
         if(state.departure.time && state.departure.airport){
             fetchAvailablePlanes();
             fetchAvailablePilots();

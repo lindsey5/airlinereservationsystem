@@ -130,6 +130,8 @@ export const get_available_airplanes = async (req, res) => {
                 const isAvailable = flight.arrival.airport === departureAirport && 
                 new Date(new Date(flight.arrival.time).getTime() + 24 * 60 * 60 * 1000) < departureTime;
                 return isAvailable ? airplane : null
+            }else if(airplane.currentLocation !== departureAirport){
+                return null
             }
             return airplane;
         }))
