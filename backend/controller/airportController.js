@@ -30,6 +30,7 @@ export const get_airports = async (req, res) => {
         : {};
 
         const airports = await Airport.find(searchCriteria)
+        .sort({airport: 1})
         .skip(skip)
         .limit(limit);
 

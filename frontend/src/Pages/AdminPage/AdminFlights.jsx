@@ -4,11 +4,13 @@ import AdminPagination from "../../Components/Admin/Pagination/AdminPagination";
 import './AdminPage.css'
 import {formatDate} from '../../utils/formatDate';
 import { dataStatus } from "../../utils/dataStatus";
+import FlightForm from "../../Components/Admin/Flights/FlightForm";
 
 const AdminFlights = () => {
     const [flights, setFlights] = useState();
     const [searchTerm, setSearchTerm] = useState('');
     const {state, dispatch} = useAdminPaginationReducer();
+    const [showMakeFlight, setShowMakeFlight] = useState(false);
 
     useEffect(() => {
         const fetchFlights = async () => {
@@ -38,6 +40,7 @@ const AdminFlights = () => {
 
     return (
         <main className="admin-page">
+            {showMakeFlight && <FlightForm close={() => setShowMakeFlight(false)}/>}
             <h1>Flights</h1>
             <input type="search" placeholder='Search' onChange={(e) => setSearchTerm(e.target.value)}/>
             <AdminPagination state={state} dispatch={dispatch} />
@@ -78,7 +81,7 @@ const AdminFlights = () => {
                 </tbody>
             </table>
             </div>
-            <button className='add-btn'>Make Flight</button>
+            <button className='add-btn' onClick={() => setShowMakeFlight(true)}>Make Flight</button>
         </main>
     )
 }

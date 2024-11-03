@@ -11,6 +11,7 @@ import cors from 'cors';
 import path from 'path';
 import { errorHandler } from './utils/errorHandler.js';
 import Flight from './model/flight.js';
+import Airport from './model/airport.js';
 
 dotenv.config();
 const PORT = process.env.PORT; 
@@ -39,12 +40,12 @@ app.use('/api/pilot', pilotRoutes);
 app.use('/api/airport', airportRoutes);
 app.use('/', userRoutes);
 
-app.get('/api/departure/countries', async (req, res) => {
+app.get('/api/countries', async (req, res) => {
     try{
-        const countries = await Flight.aggregate([
+        const countries = await Airport.aggregate([
             {
                 $group: {
-                    _id: "$departure.country",
+                    _id: "$country",
                 }
             },
             {
@@ -53,29 +54,7 @@ app.get('/api/departure/countries', async (req, res) => {
                     country: "$_id"   
                 }
             }
-        ])
-        res.status(200).json(countries);
-    }catch(err){
-        console.log(err);
-        res.status(400).json({error: err.message});
-    }
-});
-
-app.get('/api/arrival/countries', async (req, res) => {
-    try{
-        const countries = await Flight.aggregate([
-            {
-                $group: {
-                    _id: "$arrival.country",
-                }
-            },
-            {
-                $project: {
-                    _id: 0,           
-                    country: "$_id"   
-                }
-            }
-        ])
+        ]).sort({country: 1})
         res.status(200).json(countries);
     }catch(err){
         console.log(err);
@@ -86,12 +65,9 @@ app.get('/api/arrival/countries', async (req, res) => {
 app.get('/api/cities/:country', async (req, res) => {
     try{
         const country = req.params.country;
-        const response = await fetch(`https://countries.apirest.cl/v1/${country}`);
-        if(response.ok){
-            const result = await response.json();
-            const cities = result.states.map(state => state.name);
-            res.status(200).json(cities);
-        }
+        const airports = await Airport.find({country}).sort({ city: 1 })
+        const cities = airports.map(airport => airport.city)
+        res.status(200).json(cities);
     }catch(err){
         const errors = errorHandler(err);
         console.log(errors);

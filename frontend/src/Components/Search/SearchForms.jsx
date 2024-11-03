@@ -6,12 +6,10 @@ import "react-datepicker/dist/react-datepicker.css";
 import './SearchForm.css'
 
 const SearchForms = () =>{
-    const { data: departureCountries } = useFetch('/api/departure/countries');
-    const { data: arrivalCountries } = useFetch('/api/arrival/countries');
+    const { data: countries } = useFetch('/api/countries');
     const { state, dispatch, setCountryAsync} = useContext(SearchContext);
 
     const CountriesContainer = ({ index, route }) => {
-        const countries = route === 'from' ? departureCountries : arrivalCountries;
         return (
             <div className="countries-container">
                 {countries && countries?.map((country) => (
@@ -79,7 +77,6 @@ const SearchForms = () =>{
                     className="from-container"
                     onClick={() => {
                         if(!flight.showFromCities){
-
                             dispatch({ type: 'RESET_SHOW_COUNTRIES', index: i, route: 'from'})
                             dispatch({ type: 'TOGGLE_SHOW_COUNTRIES', index: i, route: 'from'})
                         }else if(flight.showFromCities){
@@ -121,7 +118,8 @@ const SearchForms = () =>{
                             selected={flight.DepartureTime}
                             onChange={(date) => dispatch({ type: 'SET_DEPARTURE_TIME', date, index: i})}
                             showTimeSelect
-                            dateFormat="Pp" // formats date and time
+                            dateFormat="Pp"
+                            minDate={new Date()} 
                         />
                     </div>
                 </div>

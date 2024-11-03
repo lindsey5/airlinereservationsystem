@@ -7,11 +7,12 @@ export const searchFlights = async (searchSegments, flightClass) => {
     for (let segment of searchSegments) {
         const { departureCountry, departureCity, arrivalCity, arrivalCountry, departureTime } = segment;
         // Find flights for the current segment
+        
         const flights = await Flight.find({
-            'departure.country': departureCountry,
-            'departure.city': departureCity,
-            'arrival.city': arrivalCity,
-            'arrival.country': arrivalCountry,
+            'departure.country': { $regex: new RegExp(departureCountry, 'i') },
+            'departure.city': { $regex: new RegExp(departureCity, 'i') },
+            'arrival.city':{ $regex: new RegExp(arrivalCity, 'i') },
+            'arrival.country': { $regex: new RegExp(arrivalCountry, 'i') },
             'classes.className': flightClass,
             'departure.time': { $gte: departureTime }
         });

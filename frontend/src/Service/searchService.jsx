@@ -1,12 +1,11 @@
 export const searchFlight = async(state) => {
     const searchData = state.flights.map(flight => {
-        console.log(departureTime)
         return{
             departureCountry: flight.FromCountry,
             departureCity: flight.FromCity,
             arrivalCountry: flight.ToCountry,
             arrivalCity: flight.ToCity,
-            departureTime
+            departureTime: flight.DepartureTime
         }
     });
 

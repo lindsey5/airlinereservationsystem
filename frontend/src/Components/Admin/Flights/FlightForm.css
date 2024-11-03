@@ -1,0 +1,35 @@
+.admin-form .container select {
+    height: 30px;
+    overflow-y: auto;
+    max-width: 180px;
+}
+
+.admin-form .react-datepicker__input-container input{
+    height: 25px;
+}
+
+.admin-form .container p{
+    font-size: 15px;
+    color: rgb(153, 153, 153);
+}
+
+.admin-form .next-btn{
+    background-color: #ff3131;
+    color: white;
+    padding: 7px 40px;
+    float: right;
+    border: none;
+    cursor: pointer;
+}
+
+.admin-form .next-btn:hover{
+    background-color: #ffb5b5;
+}
+
+.admin-form .close{
+    top: 30px;
+    right: 40px;
+    position: absolute;
+    font-size: 25px;
+    cursor: pointer;
+}

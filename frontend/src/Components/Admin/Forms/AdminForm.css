@@ -14,6 +14,7 @@
 .admin-form .container{
     border-radius: 20px;
     padding: 50px;
+    position: relative;
     background-color: white;
 }
 
