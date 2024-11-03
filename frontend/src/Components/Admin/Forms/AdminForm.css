@@ -97,3 +97,44 @@
 .admin-form .submit-btn:hover{
     background-color: #ffbaba;
 }
+
+.admin-form .current-location{
+    width: 200px;
+    max-width: 200px;
+    height: 30px;
+    border: 1px solid rgb(153, 153, 153);
+    position: relative;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    padding: 0 10px;
+}
+
+.admin-form .current-location span{
+    white-space: nowrap; 
+    overflow: hidden;
+}
+
+.admin-form .current-location .dropdown{
+    z-index: 2;
+}
+
+.admin-form .current-location .dropdown{
+    background-color: white;
+    top: 32px;
+    left: 0;
+    max-height: 150px;
+    position: absolute;
+    overflow-y: auto;
+    margin: 5px 0;
+    padding: 3px;
+    border: 1px solid rgb(141, 141, 141);
+}
+
+.admin-form .current-location .dropdown > div{
+    padding: 5px;
+}
+
+.admin-form .current-location .dropdown > div:hover{
+    background-color: rgb(240, 240, 240);
+}

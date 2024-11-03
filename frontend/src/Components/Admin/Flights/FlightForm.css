@@ -41,7 +41,7 @@
     background-color: white;
     top: 32px;
     left: 0;
-    max-height: 300px;
+    max-height: 200px;
     position: absolute;
     overflow-y: auto;
     margin: 5px 0;
@@ -54,7 +54,6 @@
     padding: 5px;
 }
 
-.admin-form .departure:hover,
 .admin-form .departure .dropdown > div:hover,
 .admin-form .arrival .dropdown > div:hover{
     background-color: rgb(240, 240, 240);

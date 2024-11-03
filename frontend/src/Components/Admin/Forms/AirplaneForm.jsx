@@ -1,5 +1,6 @@
 import { useState, useEffect} from 'react'
 import './AdminForm.css'
+import useFetch from '../../../hooks/useFetch'
 
 const AirplaneForm = ({handleSubmit, data, close, title}) =>{
     const [airplaneData, setAirplaneData] = useState({
@@ -8,6 +9,10 @@ const AirplaneForm = ({handleSubmit, data, close, title}) =>{
         columns: '',
         currentLocation: '',
     }) 
+    const [country, setCountry] = useState('');
+    const [showCountry, setShowCountry] = useState(false);
+    const { data: airports } = useFetch('/api/airport/airports')
+    const { data: countries} = useFetch('/api/countries');
 
     useEffect(() => {
         if(data){
@@ -86,21 +91,6 @@ const AirplaneForm = ({handleSubmit, data, close, title}) =>{
                 />
                 <span>Seats Column</span>
             </div>
-            <div className='input-container'>
-                <input
-                    className='input'
-                    type="text"
-                    name="currentLocation"
-                    value={airplaneData.currentLocation}
-                    onChange={(e) => setAirplaneData(prevData => ({...prevData, currentLocation: e.target.value})) }
-                    onFocus={handleFocus}
-                    onBlur={handleBlur}
-                    placeholder='Current Location / Airport'
-                    style={{width: '100%'}}
-                    required
-                />
-                <span>Current Location / Airport</span>
-            </div>
             {airplaneData?.id && 
                     <div className='input-container'>
                         <input
@@ -120,6 +110,31 @@ const AirplaneForm = ({handleSubmit, data, close, title}) =>{
                         <span>Status</span>
                     </div>
                 }
+                <div>
+                    <p>Current Location</p>
+                    <div className="current-location" 
+                        onClick={() => {
+                            if(!country){
+                                setShowCountry(!showCountry)
+                            }else{
+                                setCountry('')
+                            }
+                        }}
+                    >
+                        <span>{airplaneData.currentLocation ? airplaneData.currentLocation : 'Select'}</span>
+                        {countries && showCountry && 
+                            <div className="dropdown">
+                            {countries.map(country => <div onClick={() => setCountry(country.country)}>{country.country}</div>)}
+                            </div>
+                        }
+                        {country && 
+                            <div className="dropdown">
+                                {airports.airports.filter(airport => airport.country === country)
+                                .map(airport =>  <div onClick={() => setAirplaneData(prevData => ({...prevData, currentLocation: airport.airport}))}>{airport.airport}</div>)}
+                            </div>
+                        }
+                    </div>
+                </div>
             <div className="buttons">
                 <button type='button' className='close-btn' onClick={close}>Close</button>
                 <input type="submit" className="submit-btn" />
