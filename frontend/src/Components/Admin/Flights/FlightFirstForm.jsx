@@ -8,7 +8,12 @@ const FlightFirstForm = ({state, dispatch, next, close}) => {
     const { data: airports } = useFetch('/api/airport/airports')
     const [departure, setDeparture] = useState();
     const [arrival, setArrival] = useState();
-    const [error, setError] = useState([])
+    const [error, setError] = useState([]);
+    const [showDepartureCountries, setShowDepartureCountries] = useState(false);
+    const [showArrivalCountries, setShowArrivalCountries] = useState(false);
+    const [departureCountry, setDepartureCountry] = useState('');
+    const [arrivalCountry, setArrivalCountry] = useState('');
+    const { data: countries} = useFetch('/api/countries');
 
     const validate = async (e) => {
         e.preventDefault();
@@ -52,19 +57,6 @@ const FlightFirstForm = ({state, dispatch, next, close}) => {
     }
 
     useEffect(() => {
-        if(airports){
-            const payload = {
-                airport: airports.airports[0].airport,
-                airport_code: airports.airports[0].airport_code,
-                city: airports.airports[0].city,
-                country: airports.airports[0].country
-            }
-            dispatch({type: 'SET_DEPARTURE', payload })
-            dispatch({type: 'SET_ARRIVAL', payload })
-        }
-    },[airports])
-
-    useEffect(() => {
         if(departure){
             const departureAirport = airports.airports.find(airport => airport.airport === departure)
             const payload = {
@@ -95,15 +87,32 @@ const FlightFirstForm = ({state, dispatch, next, close}) => {
             <span className='close'onClick={close}>X</span>
             <form onSubmit={validate}>
                 <div style={{borderBottom: '1px solid rgb(225,225,225)', paddingBottom: '20px', marginBottom: '30px'}}>
-                    <h3>Departure</h3>
+                    <h3 style={{marginBottom: '10px'}}>Departure</h3>
                     <div className="inputs">
                         <div>
                             <p>Airport</p>
-                            <select value={state.departure.airport} onChange={(e) => setDeparture(e.target.value)}>
-                            {airports && airports.airports.map(airport => 
-                                <option key={airport._id} value={airport.airport}>{airport.airport}</option>
-                            )}
-                        </select>
+                            <div className="departure" 
+                                onClick={() => {
+                                    if(!departureCountry){
+                                        setShowDepartureCountries(!showDepartureCountries)
+                                    }else{
+                                        setDepartureCountry('');
+                                    }
+                                }}
+                            >
+                                <span>{state.departure.airport ? state.departure.airport : 'Select'}</span>
+                                {countries && showDepartureCountries && 
+                                    <div className="dropdown">
+                                    {countries.map(country => <div onClick={() => setDepartureCountry(country.country)}>{country.country}</div>)}
+                                    </div>
+                                }
+                                {departureCountry && 
+                                    <div className="dropdown">
+                                        {airports.airports.filter(airport => airport.country === departureCountry)
+                                        .map(airport =>  <div onClick={() => setDeparture(airport.airport)}>{airport.airport}</div>)}
+                                    </div>
+                                }
+                            </div>
                         </div>
                         <div>
                             <p>Time</p>
@@ -117,15 +126,32 @@ const FlightFirstForm = ({state, dispatch, next, close}) => {
                         </div>
                     </div>
 
-                    <h3>Arrival</h3>
+                    <h3 style={{marginBottom: '10px'}}>Arrival</h3>
                     <div className="inputs">
                         <div>
                             <p>Airport</p>
-                            <select value={state.arrival.airport} onChange={(e) => setArrival(e.target.value)}>
-                            {airports && airports.airports.map(airport => 
-                                <option key={airport._id} value={airport.airport}>{airport.airport}</option>
-                            )}
-                            </select>
+                            <div className="arrival" 
+                                onClick={() => {
+                                    if(!arrivalCountry){
+                                       setShowArrivalCountries(!showArrivalCountries)
+                                    }else{
+                                        setArrivalCountry('')
+                                    }
+                                }}
+                            >
+                                <span>{state.arrival.airport ? state.arrival.airport : 'Select'}</span>
+                                {countries && showArrivalCountries && 
+                                    <div className="dropdown">
+                                    {countries.map(country => <div onClick={() => setArrivalCountry(country.country)}>{country.country}</div>)}
+                                    </div>
+                                }
+                                {arrivalCountry && 
+                                    <div className="dropdown">
+                                        {airports.airports.filter(airport => airport.country === arrivalCountry)
+                                        .map(airport =>  <div onClick={() => setArrival(airport.airport)}>{airport.airport}</div>)}
+                                    </div>
+                                }
+                            </div>
                         </div>
                         <div>
                             <p>Time</p>

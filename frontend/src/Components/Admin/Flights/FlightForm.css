@@ -1,9 +1,3 @@
-.admin-form .container select {
-    height: 30px;
-    overflow-y: auto;
-    max-width: 180px;
-}
-
 .admin-form .react-datepicker__input-container input{
     height: 25px;
 }
@@ -13,6 +7,57 @@
     margin-bottom: 20px;
     grid-template-columns: 1fr 1fr;
     gap: 50px;
+}
+
+.admin-form .departure,
+.admin-form .arrival{
+    width: 200px;
+    max-width: 200px;
+    height: 30px;
+    border: 1px solid rgb(153, 153, 153);
+    position: relative;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    padding: 0 10px;
+}
+
+.admin-form .departure span,
+.admin-form .arrival span{
+    white-space: nowrap; 
+    overflow: hidden;
+}
+
+.admin-form .departure .dropdown{
+    z-index: 2;
+}
+
+.admin-form .arrival .dropdown{
+    z-index: 1;
+}
+
+.admin-form .departure .dropdown,
+.admin-form .arrival .dropdown{
+    background-color: white;
+    top: 32px;
+    left: 0;
+    max-height: 300px;
+    position: absolute;
+    overflow-y: auto;
+    margin: 5px 0;
+    padding: 3px;
+    border: 1px solid rgb(141, 141, 141);
+}
+
+.admin-form .departure .dropdown > div,
+.admin-form .arrival .dropdown > div{
+    padding: 5px;
+}
+
+.admin-form .departure:hover,
+.admin-form .departure .dropdown > div:hover,
+.admin-form .arrival .dropdown > div:hover{
+    background-color: rgb(240, 240, 240);
 }
 
 .admin-form .container p{
@@ -39,4 +84,12 @@
     position: absolute;
     font-size: 25px;
     cursor: pointer;
+}
+
+.admin-form .container select {
+    height: 30px;
+    overflow-y: auto;
+    max-width: 180px;
+    cursor: pointer;
+    outline: none;
 }
