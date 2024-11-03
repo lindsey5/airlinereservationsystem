@@ -66,8 +66,8 @@ export const create_flight = async (req, res) => {
         }
 
         await Promise.all([
-            pilot.updateOne({ status: 'In Flight' }),
-            airplane.updateOne({ status: 'In Flight' })
+            pilot.updateOne({ status: 'Assigned' }),
+            airplane.updateOne({ status: 'Assigned' })
         ]);
 
         if (calculateSeats(classes) !== airplane.passengerSeatingCapacity) {

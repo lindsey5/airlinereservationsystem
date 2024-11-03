@@ -20,7 +20,7 @@ const AirPlaneSchema = new Schema({
     },
     status: {
         type: String,
-        enum: ['Available', 'In Flight', 'Unavailable'], 
+        enum: ['Available', 'Assigned', 'In Flight', 'Unavailable'], 
         default: 'Available'
     }
 })
