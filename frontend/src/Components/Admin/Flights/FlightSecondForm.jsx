@@ -63,6 +63,7 @@ const FlightSecondForm = ({state, dispatch}) => {
                                     className='input'
                                     type="number" 
                                     placeholder="Seats"
+                                    min='1'
                                     onFocus={handleFocus}
                                     onBlur={handleBlur}
                                     value={getClassSeats(className.className)}
