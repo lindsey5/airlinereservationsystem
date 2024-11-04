@@ -1,7 +1,9 @@
 import { useEffect, useState } from "react";
-import { handleBlur, handleFocus } from "../../../utils/handleInput";
+import { handleBlur, handleFocus, handleNegative, handleNegativeAndDecimal } from "../../../utils/handleInput";
 
 const FlightSecondForm = ({state, dispatch}) => {
+    const [error, setError] = useState();
+
     const handleClasses = (className) => {
         const classIndex = state.classes.findIndex(item => item.className === className);
         if (classIndex !== -1) {
@@ -10,14 +12,39 @@ const FlightSecondForm = ({state, dispatch}) => {
             dispatch({type: 'SET_CLASSES', payload: [...state.classes, { className }]})
         }
     };
+
+    const getClassSeats = (className) => {
+        return state.classes.find(classType => classType.className === className).seats;
+    }
+
+    const createFlight = async (e) => {
+        e.preventDefault();
+        console.log(state)
+        try{
+            const response = await fetch('/api/flight',{
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify(state),
+            })
+            const result = await response.json();
+            if(response.ok){
+                window.location.reload()
+            }
     
-    useEffect(() => {
-        console.log(state.classes)
-    }, [state])
+            if(result.errors){
+                setError(result.errors[0]);
+            }
+    
+        }catch(err){
+            setError('Error adding pilot')
+        }
+    }
 
     return (
         <div className="container">
-            <form>
+            <form onSubmit={createFlight}>
                 <h2>Select Classes</h2>
                 <div style={{marginTop: '50px'}}>
                     <label htmlFor="ecomony">Economy</label>
@@ -38,8 +65,11 @@ const FlightSecondForm = ({state, dispatch}) => {
                                     placeholder="Seats"
                                     onFocus={handleFocus}
                                     onBlur={handleBlur}
+                                    value={getClassSeats(className.className)}
+                                    onKeyPress={handleNegativeAndDecimal}
                                     required
                                     onChange={(e) => dispatch({type: 'SET_CLASS_SEATS', payload: {seats: e.target.value, className: className.className}})}
+                                    
                                 />
                                 <span>Seats</span>
                             </div>
@@ -48,18 +78,24 @@ const FlightSecondForm = ({state, dispatch}) => {
                                     className='input'
                                     type="number" 
                                     placeholder="Price"
+                                    min='1'
                                     onFocus={handleFocus}
                                     onBlur={handleBlur}
                                     required
+                                    onKeyPress={handleNegative}
                                     onChange={(e) => dispatch({type: 'SET_CLASS_PRICE', payload: {price: e.target.value, className: className.className}})}
                                 />
                                 <span>Price</span>
                             </div>
                         </div>
                     </div>
-
                 )}
-                <input type="submit" className="next-btn" style={{marginTop: '40px'}} disabled={state.classes.length > 0 ? false : true}/>
+                <p style={{color: '#ff3131'}}>{error}</p>
+                <input type="submit" 
+                    className="next-btn" 
+                    style={{marginTop: '40px'}} 
+                    disabled={state.classes.length > 0 ? false : true}
+                />
             </form>        
 
         </div>

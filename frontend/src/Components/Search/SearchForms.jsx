@@ -125,7 +125,7 @@ const SearchForms = () =>{
                     </div>
                 </div>
                 <div>
-                {state.flightType === 'Multi City' && i > 0 && 
+                {state.flightType === 'Multi City' && i > 1 && 
                     <button className='remove-btn' onClick={() => dispatch({ type: 'REDUCE_COUNT'})}>
                     X
                     </button>}

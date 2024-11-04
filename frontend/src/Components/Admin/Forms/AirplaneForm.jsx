@@ -1,7 +1,7 @@
 import { useState, useEffect} from 'react'
 import './AdminForm.css'
 import useFetch from '../../../hooks/useFetch'
-import { handleBlur, handleFocus } from '../../../utils/handleInput'
+import { handleBlur, handleFocus, handleNegativeAndDecimal } from '../../../utils/handleInput'
 
 const AirplaneForm = ({handleSubmit, data, close, title}) =>{
     const [airplaneData, setAirplaneData] = useState({
@@ -60,6 +60,7 @@ const AirplaneForm = ({handleSubmit, data, close, title}) =>{
                     onBlur={handleBlur}
                     placeholder='Passenger Seat Capacity'
                     style={{width: '100%'}}
+                    onKeyPress={handleNegativeAndDecimal}
                     required
                 />
                 <span>Passenger Seat Capacity</span>

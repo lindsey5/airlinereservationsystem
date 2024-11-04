@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react"
 import './AdminForm.css'
-import { handleBlur, handleFocus } from '../../../utils/handleInput'
+import { handleBlur, handleFocus, handleNegativeAndDecimal } from '../../../utils/handleInput'
 
 const PilotForm = ({handleSubmit, data, close, title}) => {
     const [pilotData, setPilotData] = useState({
@@ -74,6 +74,7 @@ const PilotForm = ({handleSubmit, data, close, title}) => {
                             onFocus={handleFocus}
                             onBlur={handleBlur}
                             placeholder='Age'
+                            onKeyPress={handleNegativeAndDecimal}
                             required
                         />
                         <span>Age</span>

@@ -10,7 +10,9 @@ const calculateSeats = (classes) => {
     let totalSeats = 0;
 
     classes.forEach(classObj => {
-        totalSeats += classObj.seats;
+        if(classObj){
+            totalSeats += parseInt(classObj.seats);
+        }
     });
     
     return totalSeats
@@ -53,20 +55,19 @@ const createClasses = (classes, seats) => {
 
 export const create_flight = async (req, res) => {
     try{
-        const {airplane_id, classes, captain, co_pilot, ...data} = req.body;
+        const {airplane: {id : airplane_id}, classes, captain, co_pilot, ...data} = req.body;
         const [airplane, captainPilot, coPilot ] = await Promise.all([
             await Airplane.findById(airplane_id),
             await Pilot.findById(captain),
             await Pilot.findById(co_pilot)
         ]);
-
         // Manually specifying the order
         const order = ['Economy', 'Business', 'First'];
 
         const rearranged = order.map(name => {
             return classes.find(obj => obj.className === name);
         });
-
+        console.log(rearranged)
         if(!airplane){
             throw new Error('Airplane not found');
         }
@@ -86,7 +87,8 @@ export const create_flight = async (req, res) => {
         ]);
 
         if (calculateSeats(rearranged) !== airplane.passengerSeatingCapacity) {
-            throw new Error(`The total number of seats must match the seating capacity of the plane. Total plane seating capacity is ${airplane.passengerSeatingCapacity}`);
+            console.log(calculateSeats(rearranged))
+            throw new Error(`The total number of seats must equal the plane's seating capacity of ${airplane.passengerSeatingCapacity}.`);
         }
         const newSeats = createSeats(airplane.passengerSeatingCapacity, airplane.columns);
         

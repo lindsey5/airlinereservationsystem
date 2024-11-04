@@ -91,8 +91,8 @@ const flightReducer = (state, action) => {
                 )
             };
         case 'SET_CLASS_SEATS':
-            const seats = action.payload.seats;
             const classname = action.payload.className;
+            const seats = action.payload.seats;
             return {
                 ...state,
                 classes: state.classes.map(classItem => 
