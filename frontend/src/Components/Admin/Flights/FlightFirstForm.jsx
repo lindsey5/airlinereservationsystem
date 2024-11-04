@@ -219,6 +219,7 @@ const FlightFirstForm = ({state, dispatch, handleSubmit, close}) => {
                         <select onChange={(e) => 
                                 dispatch({type: 'SET_CAPTAIN', payload: e.target.value})
                         }>
+                        <option></option>
                         {availablePilots.length > 0 && availablePilots.map(pilot => 
                             <option key={pilot._id} value={pilot._id}>{pilot._id}</option>
                         )}
@@ -229,6 +230,7 @@ const FlightFirstForm = ({state, dispatch, handleSubmit, close}) => {
                         <select onChange={(e) => 
                                 dispatch({type: 'SET_CO_PILOT', payload: e.target.value})
                         }>
+                        <option></option>
                         {availablePilots.length > 0 && availablePilots.map(pilot => 
                             <option key={pilot._id} value={pilot._id}>{pilot._id}</option>
                         )}
@@ -241,6 +243,7 @@ const FlightFirstForm = ({state, dispatch, handleSubmit, close}) => {
                         <select onChange={(e) => 
                                 dispatch({type: 'SET_AIRPLANE', payload: e.target.value})
                         }>
+                            <option></option>
                         {availablePlanes.length > 0 && availablePlanes.map(plane => 
                             <option key={plane._id} value={plane._id}>{plane._id}</option>
                         )}

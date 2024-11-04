@@ -67,7 +67,7 @@ export const create_flight = async (req, res) => {
         const rearranged = order.map(name => {
             return classes.find(obj => obj.className === name);
         });
-        console.log(rearranged)
+
         if(!airplane){
             throw new Error('Airplane not found');
         }
@@ -87,7 +87,6 @@ export const create_flight = async (req, res) => {
         ]);
 
         if (calculateSeats(rearranged) !== airplane.passengerSeatingCapacity) {
-            console.log(calculateSeats(rearranged))
             throw new Error(`The total number of seats must equal the plane's seating capacity of ${airplane.passengerSeatingCapacity}.`);
         }
         const newSeats = createSeats(airplane.passengerSeatingCapacity, airplane.columns);
@@ -206,41 +205,3 @@ export const get_flights = async (req, res) => {
         res.status(400).json({errors});
     }
 }
-/*
- {
-  "airplane_id": "67259c7102b292fd17f149d3",
-  "pilot_id": "6724de2ac193dfcd73440606",
-  "airline": "Cebu Pacific",
-  "departure": {
-    "airport": "Davao International Airport",
-    "airport_code": "DVO",
-    "city": "Davao",
-    "country": "Philippines",
-    "time": "2024-10-26T12:00:00Z"  
-  },
-  "arrival": {
-    "airport": "Manila International Airport",
-    "airport_code": "MNL",
-    "city": "Manila",
-    "country": "Philippines",
-    "time": "2024-10-30T16:00:00Z"
-  },
-  "classes": [
-    {
-      "className": "First",
-      "seats": 25,
-      "price": 10000
-    },
-    {
-      "className": "Business",
-      "seats": 50,
-      "price": 5000
-    },
-     {
-      "className": "Economy",
-      "seats": 75,
-      "price": 3000
-    }
-  ]
-}
-*/

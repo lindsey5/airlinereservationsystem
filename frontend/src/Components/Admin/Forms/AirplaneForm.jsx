@@ -52,10 +52,7 @@ const AirplaneForm = ({handleSubmit, data, close, title}) =>{
                     type="number"
                     name="seat-capacity"
                     value={airplaneData.seatCapacity}
-                    onChange={(e) => {
-                        validateInput(e.target)
-                        setAirplaneData(prevData => ({...prevData, seatCapacity: e.target.value})) 
-                    }}
+                    onChange={(e) => setAirplaneData(prevData => ({...prevData, seatCapacity: e.target.value})) }
                     onFocus={handleFocus}
                     onBlur={handleBlur}
                     placeholder='Passenger Seat Capacity'
