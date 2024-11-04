@@ -1,6 +1,8 @@
 import { useReducer, useState } from "react"
 import FlightFirstForm from "./FlightFirstForm"
 import FlightSecondForm from "./FlightSecondForm";
+import '../Forms/AdminForm.css'
+import './FlightForm.css'
 
 const flightState = {
     departure: {
@@ -19,8 +21,10 @@ const flightState = {
     },
     airline: 'PAL',
     gate_number: '',
-    pilot: { id: '' },
+    captain: '',
+    co_pilot: '',
     airplane: { id: '' },
+    classes : []
 }
 
 const flightReducer = (state, action) => {
@@ -67,10 +71,38 @@ const flightReducer = (state, action) => {
              return { ...state, airline: action.payload }
         case 'SET_GATE_NUMBER':
             return { ...state, gate_number: action.payload }
-        case 'SET_PILOT':
-            return {...state, pilot: action.payload }
+        case 'SET_CAPTAIN':
+            return {...state, captain: action.payload }
+        case 'SET_CO_PILOT':
+            return {...state, co_pilot: action.payload }
         case 'SET_AIRPLANE':
-            return {...state, airplane: action.payload}
+            return {...state, airplane: {id: action.payload}}
+        case 'SET_CLASSES':
+            return {...state, classes: action.payload}
+        case 'SET_CLASS_PRICE':
+            const price = action.payload.price;
+            const className = action.payload.className;
+            return {
+                ...state,
+                classes: state.classes.map(classItem => 
+                    classItem.className === className 
+                        ? { ...classItem, price }
+                        : classItem
+                )
+            };
+        case 'SET_CLASS_SEATS':
+            const seats = action.payload.seats;
+            const classname = action.payload.className;
+            return {
+                ...state,
+                classes: state.classes.map(classItem => 
+                    classItem.className === classname 
+                        ? { ...classItem, seats }
+                        : classItem
+                )
+            };
+        default: 
+            return state
     }
 }
 

@@ -1,6 +1,7 @@
 import { useState, useEffect} from 'react'
 import './AdminForm.css'
 import useFetch from '../../../hooks/useFetch'
+import { handleBlur, handleFocus } from '../../../utils/handleInput'
 
 const AirplaneForm = ({handleSubmit, data, close, title}) =>{
     const [airplaneData, setAirplaneData] = useState({
@@ -19,22 +20,6 @@ const AirplaneForm = ({handleSubmit, data, close, title}) =>{
             setAirplaneData(data)
         }
     },[data])
-
-    useEffect(() => {
-        console.log(airplaneData)
-    },[airplaneData])
-
-    const handleFocus = (e) => {
-        if(!e.target.classList.contains('onFocus')){
-            e.target.classList.add('onFocus')
-        }
-    }
-
-    const handleBlur = (e) => {
-       if(!e.target.value){
-            e.target.classList.remove('onFocus');
-       }
-    }
 
     return(
         <div className='admin-form'>
@@ -67,7 +52,10 @@ const AirplaneForm = ({handleSubmit, data, close, title}) =>{
                     type="number"
                     name="seat-capacity"
                     value={airplaneData.seatCapacity}
-                    onChange={(e) => setAirplaneData(prevData => ({...prevData, seatCapacity: e.target.value})) }
+                    onChange={(e) => {
+                        validateInput(e.target)
+                        setAirplaneData(prevData => ({...prevData, seatCapacity: e.target.value})) 
+                    }}
                     onFocus={handleFocus}
                     onBlur={handleBlur}
                     placeholder='Passenger Seat Capacity'

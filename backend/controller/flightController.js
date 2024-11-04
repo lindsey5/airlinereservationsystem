@@ -53,32 +53,47 @@ const createClasses = (classes, seats) => {
 
 export const create_flight = async (req, res) => {
     try{
-        const {airplane_id, classes, pilot_id, ...data} = req.body;
-        const airplane = await Airplane.findById(airplane_id);
-        const pilot = await Pilot.findById(pilot_id);
+        const {airplane_id, classes, captain, co_pilot, ...data} = req.body;
+        const [airplane, captainPilot, coPilot ] = await Promise.all([
+            await Airplane.findById(airplane_id),
+            await Pilot.findById(captain),
+            await Pilot.findById(co_pilot)
+        ]);
+
+        // Manually specifying the order
+        const order = ['Economy', 'Business', 'First'];
+
+        const rearranged = order.map(name => {
+            return classes.find(obj => obj.className === name);
+        });
 
         if(!airplane){
             throw new Error('Airplane not found');
         }
 
-        if(!pilot){
-            throw new Error('Pilot not found')
+        if(!captainPilot){
+            throw new Error('Captain not found')
+        }
+
+        if(!coPilot){
+            throw new Error('Co-pilot not found');
         }
 
         await Promise.all([
-            pilot.updateOne({ status: 'Assigned' }),
+            captainPilot.updateOne({ status: 'Assigned' }),
+            coPilot.updateOne({ status: 'Assigned' }),
             airplane.updateOne({ status: 'Assigned' })
         ]);
 
-        if (calculateSeats(classes) !== airplane.passengerSeatingCapacity) {
+        if (calculateSeats(rearranged) !== airplane.passengerSeatingCapacity) {
             throw new Error(`The total number of seats must match the seating capacity of the plane. Total plane seating capacity is ${airplane.passengerSeatingCapacity}`);
         }
         const newSeats = createSeats(airplane.passengerSeatingCapacity, airplane.columns);
         
-        const newClasses = createClasses(classes, newSeats);
+        const newClasses = createClasses(rearranged, newSeats);
         const flightData = {
             ...data,
-            pilot: { id: pilot_id},
+            pilot: { captain, co_pilot },
             airplane: { id: airplane_id},
             classes: newClasses
         }
@@ -86,8 +101,8 @@ export const create_flight = async (req, res) => {
         const newFlight = new Flight(flightData);
         await newFlight.save();
         res.status(200).json(newFlight)
-
     }catch(err){
+        console.log(err)
         const errors = errorHandler(err)
         res.status(400).json({errors});
     }

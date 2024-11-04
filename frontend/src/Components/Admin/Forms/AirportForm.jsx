@@ -1,5 +1,6 @@
 import { useState, useEffect} from 'react'
 import './AdminForm.css'
+import { handleBlur, handleFocus } from '../../../utils/handleInput'
 
 const AirportForm = ({handleSubmit, data, close, title}) =>{
     const [airportData, setAirportData] = useState({
@@ -14,18 +15,6 @@ const AirportForm = ({handleSubmit, data, close, title}) =>{
             setAirportData(data);
         }
     },[data])
-
-    const handleFocus = (e) => {
-        if(!e.target.classList.contains('onFocus')){
-            e.target.classList.add('onFocus')
-        }
-    }
-
-    const handleBlur = (e) => {
-       if(!e.target.value){
-            e.target.classList.remove('onFocus');
-       }
-    }
 
     return(
         <div className='admin-form'>

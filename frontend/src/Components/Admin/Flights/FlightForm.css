@@ -65,15 +65,18 @@
 }
 
 .admin-form .next-btn{
-    background-color: #ff3131;
-    color: white;
     padding: 7px 40px;
     float: right;
-    border: none;
-    cursor: pointer;
 }
 
-.admin-form .next-btn:hover{
+.admin-form .next-btn:not(:disabled){
+    background-color: #ff3131;
+    color: white;
+    cursor: pointer;
+    border: none;
+}
+
+.admin-form .next-btn:not(:disabled):hover{
     background-color: #ffb5b5;
 }
 
@@ -93,3 +96,9 @@
     cursor: pointer;
     outline: none;
 }
+
+.admin-form .container input[type="checkbox"]{
+    margin-right: 30px;
+    cursor: pointer;
+}
+

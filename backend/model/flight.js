@@ -21,7 +21,14 @@ const FlightSchema = new Schema({
         time: {type: Date, required: true},
     },
     airplane: { id: { type: String, required: true } },
-    pilot: { id: { type: String, required: true } },
+    pilot: { 
+        captain: {
+            type:String, required: true
+        },
+        co_pilot: {
+            type: String, required: true,
+        }
+     },
     classes: { type: [ClassSchema], required: true,}
 }, { timestamps: true });
 

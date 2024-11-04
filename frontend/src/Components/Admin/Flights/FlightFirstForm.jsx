@@ -1,7 +1,5 @@
-import { useEffect, useRef, useState } from "react"
+import { useEffect, useState } from "react"
 import useFetch from "../../../hooks/useFetch"
-import '../Forms/AdminForm.css'
-import './FlightForm.css'
 import DatePicker from "react-datepicker"
 
 const FlightFirstForm = ({state, dispatch, handleSubmit, close}) => {
@@ -21,15 +19,29 @@ const FlightFirstForm = ({state, dispatch, handleSubmit, close}) => {
         e.preventDefault();
         setError('');
         if(!state.departure.airport){
-            setError('*Departure airport is empty');
+            setError('*Please select departure airport');
         }else if(!state.arrival.airport){
-            setError('*Arrival airport is empty');
+            setError('*Please select arrival airport');
         }else if(state.departure.airport === state.arrival.airport){
             setError('*Departure and Arrival airport cannot be the same');
         }else if(new Date(state.arrival.time) < new Date(new Date(state.departure.time).getTime() + 4 * 60 * 60 * 1000)){
             setError('*Arrival time must be at least 4 hours after Departure time');
+        }else if(!state.captain){
+            setError('*Please select captain');
+        }else if(!state.co_pilot){
+            setError('*Please select co-pilot')
+        }else if(state.captain === state.co_pilot){
+            setError('*The captain and co-pilot should not be the same')
+        }else if(!state.airplane.id){
+            setError('*Please select a airplane')
+        }else{
+            handleSubmit();
         }
     }
+
+    useEffect(() => {
+        console.log(state)
+    }, [state])
 
     const fetchAvailablePlanes = async () => {
         try{
@@ -61,7 +73,8 @@ const FlightFirstForm = ({state, dispatch, handleSubmit, close}) => {
 
     useEffect(() =>{
         dispatch({type: 'SET_AIRPLANE', payload: ''})
-        dispatch({type: 'SET_PILOT', payload: ''})
+        dispatch({type: 'SET_CAPTAIN', payload: ''})
+        dispatch({type: 'SET_CO_PILOT', payload: ''})
         if(state.departure.time && state.departure.airport){
             fetchAvailablePlanes();
             fetchAvailablePilots();
@@ -202,15 +215,27 @@ const FlightFirstForm = ({state, dispatch, handleSubmit, close}) => {
                 </div>
                 <div className="inputs">
                     <div>
-                        <p>Pilot</p>
+                        <p>Captain</p>
                         <select onChange={(e) => 
-                                dispatch({type: 'SET_PILOT', payload: e.target.value})
+                                dispatch({type: 'SET_CAPTAIN', payload: e.target.value})
                         }>
                         {availablePilots.length > 0 && availablePilots.map(pilot => 
                             <option key={pilot._id} value={pilot._id}>{pilot._id}</option>
                         )}
                         </select>
                     </div>
+                    <div>
+                        <p>Co-pilot</p>
+                        <select onChange={(e) => 
+                                dispatch({type: 'SET_CO_PILOT', payload: e.target.value})
+                        }>
+                        {availablePilots.length > 0 && availablePilots.map(pilot => 
+                            <option key={pilot._id} value={pilot._id}>{pilot._id}</option>
+                        )}
+                        </select>
+                    </div>
+                </div>
+                <div className="inputs">
                     <div>
                         <p>Airplane</p>
                         <select onChange={(e) => 
