@@ -68,6 +68,8 @@ export const create_flight = async (req, res) => {
             return classes.find(obj => obj.className === name);
         });
 
+        const filtered = rearranged.filter(item => item !== undefined);
+
         if(!airplane){
             throw new Error('Airplane not found');
         }
@@ -86,12 +88,12 @@ export const create_flight = async (req, res) => {
             airplane.updateOne({ status: 'Assigned' })
         ]);
 
-        if (calculateSeats(rearranged) !== airplane.passengerSeatingCapacity) {
+        if (calculateSeats(filtered) !== airplane.passengerSeatingCapacity) {
             throw new Error(`The total number of seats must equal the plane's seating capacity of ${airplane.passengerSeatingCapacity}.`);
         }
         const newSeats = createSeats(airplane.passengerSeatingCapacity, airplane.columns);
         
-        const newClasses = createClasses(rearranged, newSeats);
+        const newClasses = createClasses(filtered, newSeats);
         const flightData = {
             ...data,
             pilot: { captain, co_pilot },

@@ -109,28 +109,20 @@ export const update_airplane_data = async (req, res) => {
     }
 }
 
-const formatDate = (dateString) => {
-    const date = new Date(dateString);
-    const formattedDate = date.toISOString().split('T')[0];
-    const time = date.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
-    return `${formattedDate} (${time})`;
-}
-
 export const get_available_airplanes = async (req, res) => {
     const departureTime = new Date(req.query.departureTime);
     const departureAirport = req.query.departureAirport;
     try{
         const airplanes = await Airplane.find();
-    
         const availableAirplanes = await Promise.all(airplanes.map(async (airplane) => {
-            const flight = await Flight.findOne({'airplane.id' : airplane._id});
-
+            airplane
+            const flight = await Flight.findOne({'airplane.id' : airplane._id}).sort({'arrival.time' : -1});
             if(flight){
                 const isAvailable = flight.arrival.airport === departureAirport && 
-                new Date(new Date(flight.arrival.time).getTime() + 24 * 60 * 60 * 1000) < departureTime;
-                return isAvailable ? airplane : null
-            }else if(airplane.currentLocation !== departureAirport){
-                return null
+                new Date(new Date(flight.arrival.time).getTime() + 24 * 60 * 60 * 1000) < new Date(departureTime);
+                return isAvailable ? airplane : null;
+            }else if(departureAirport !== airplane.currentLocation){
+                return null;
             }
             return airplane;
         }))
