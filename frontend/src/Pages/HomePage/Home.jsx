@@ -1,9 +1,9 @@
 import PopularCity from './PopularCity';
-import './Home.css';
+import './Home.css'
 import SearchContainer from './SearchContainer';
 import { useNavigate } from 'react-router-dom';
 import { useRef, useEffect } from 'react';
-import '../../index.css'
+import './tailwind.css';
 
 const Home = () => {
     const navigate = useNavigate();
@@ -48,7 +48,7 @@ const Home = () => {
                 <SearchContainer />
             </section>
             <PopularCity elementsRef={elementsRef}/>
-            <div className="container mx-auto px-4 h-[600px] flex justify-center items-center opacity-0" ref={el => elementsRef.current[0] = el}>
+            <div className="mx-auto px-4 h-[600px] flex justify-center items-center opacity-0" ref={el => elementsRef.current[0] = el}>
                 <div>
                     <h2 className="text-3xl font-bold text-center my-8">Why book with TCU airlines?</h2>
                     <div className="flex justify-center space-x-10">
