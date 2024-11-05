@@ -10,12 +10,10 @@ import airportRoutes from './routes/airportRoutes.js';
 import cors from 'cors';
 import path from 'path';
 import { errorHandler } from './utils/errorHandler.js';
-import Flight from './model/flight.js';
 import Airport from './model/airport.js';
 
 dotenv.config();
 const PORT = process.env.PORT; 
-//Express app
 const app = express();
 
 // Connect to mongodb
