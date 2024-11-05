@@ -1,6 +1,5 @@
 import { StrictMode } from 'react'
 import { createRoot } from 'react-dom/client'
-import './index.css'
 import {
   createBrowserRouter,
   RouterProvider,
@@ -17,6 +16,7 @@ import AdminPilots from './Pages/AdminPage/AdminPilots';
 import AdminAirplanes from './Pages/AdminPage/AdminAirplanes';
 import AdminFlights from './Pages/AdminPage/AdminFlights';
 import AdminAirports from './Pages/AdminPage/AdminAirports';
+import './index.css'
 
 const router = createBrowserRouter(
   createRoutesFromElements(

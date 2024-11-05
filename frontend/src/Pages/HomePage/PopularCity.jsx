@@ -2,7 +2,7 @@ import { useEffect, useState } from "react"
 import useFetch from "../../hooks/useFetch"
 import './PopularCity.css'
 
-const AvailableFlightsSection = () => {
+const PopularCity = ({elementsRef}) => {
     const [flights, setFlights] = useState();
     const { data } = useFetch('/api/flight/popular');
 
@@ -31,17 +31,13 @@ const AvailableFlightsSection = () => {
         }
     }
 
-    useEffect(() => {
-
-    })
-
     return(
-        <section className='available-flights-parent'>
+        <section className='available-flights-parent'> 
                 <div className='top-div'>
                     <img src="/icons/tcu_airlines-logo (2).png" alt="" />
                     <h1>Popular Cities</h1>
                 </div>
-                <div className="available-flights-container">
+                <div className="available-flights-container opacity-0" ref={el => elementsRef.current[1] = el}>
                 {flights && flights.map(flight =>
                         <div key={flight._id}>
                             <img src={flight.image} />
@@ -56,4 +52,4 @@ const AvailableFlightsSection = () => {
     )
 }
 
-export default AvailableFlightsSection
+export default PopularCity

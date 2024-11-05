@@ -64,6 +64,21 @@
     margin-top: 70px;
 }
 
+.home-page .animate{
+    animation: container-animation 0.5s ease-in forwards; 
+}
+
+@keyframes container-animation{
+    from{
+        opacity: 0;
+        transform: translateX(-200px);
+    }
+    to{
+        opacity: 1;
+        transform: translateX(0);
+    }
+}
+
 @media  screen and (max-width: 500px) {
     .home-page header ul{
         display: none;
