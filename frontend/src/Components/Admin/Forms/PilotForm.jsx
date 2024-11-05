@@ -73,7 +73,7 @@ const PilotForm = ({handleSubmit, data, close, title}) => {
                             }}
                             onFocus={handleFocus}
                             onBlur={handleBlur}
-                            min='1'
+                            min="1"
                             placeholder='Age'
                             onKeyPress={handleNegativeAndDecimal}
                             required
