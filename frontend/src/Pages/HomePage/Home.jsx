@@ -4,6 +4,7 @@ import SearchContainer from './SearchContainer';
 import { useNavigate } from 'react-router-dom';
 import { useRef, useEffect } from 'react';
 import './tailwind.css';
+import Footer from './Footer';
 
 const Home = () => {
     const navigate = useNavigate();
@@ -76,6 +77,7 @@ const Home = () => {
                     </div>
                 </div>
             </div>
+            <Footer />
         </main>
     )
 }
