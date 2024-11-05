@@ -56,7 +56,7 @@ const Home = () => {
                         <img src="/icons/magnifier.png" alt="Search Icon" className="w-24 h-24 object-contain mx-auto mb-3" />
                         <h3 className="text-xl font-semibold mt-3">Most Extensive Search Results</h3>
                         <p className="text-gray-600 mt-1">
-                            Search and compare flights from Cebu Pacifi, AirAsia and other airlines with over 100,000+ routes in Asia Pacific.
+                            Search and compare flights from Cebu Pacific, AirAsia and other airlines with over 100,000+ routes in Asia Pacific.
                         </p>
                     </div>
                     <div className="text-center flex flex-col items-center">
