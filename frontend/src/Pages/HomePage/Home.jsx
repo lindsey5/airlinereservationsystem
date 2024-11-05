@@ -49,7 +49,7 @@ const Home = () => {
                 <SearchContainer />
             </section>
             <PopularCity elementsRef={elementsRef}/>
-            <div className="mx-auto px-4 h-screen flex justify-center items-center opacity-0" ref={el => elementsRef.current[0] = el}>
+            <div className="mx-auto px-4  py-[200px] flex justify-center items-center opacity-0" ref={el => elementsRef.current[0] = el}>
                 <div>
                     <h2 className="text-3xl font-bold text-center my-8">Why book with TCU airlines?</h2>
                     <div className="flex justify-center space-x-10">
@@ -74,6 +74,17 @@ const Home = () => {
                             Get help, fast! Our 24/7 customer service ensures you receive the help and support you need - whenever, wherever.
                         </p>
                     </div>
+                    </div>
+                </div>
+            </div>
+            <div className="bg-white-100 w-full h-2/4 flex items-center opacity-0" ref={el => elementsRef.current[2] = el}>
+                <div className="mx-auto px-4 w-full box-border mb-24">
+                    <div class="bg-white text-center flex justify-between">
+                        <div className='max-w-[50%]'>
+                        <h1 className="text-4xl text-[#ff3131] font-bold mb-3">Online Flight Booking Made Easy with TCU Airlines</h1>
+                        <p className="text-lg mt-16 mb-6">Looking for cheap flights and airfare deals? TCU Airlines, one of the leading flight booking platforms in Southeast Asia, has PAL, cebu pacific, Air Asia, and Skyjet flight routes to choose from and our inventories never ceased to stop growing. TCU Airlines offers flight tickets from domestic and international airlines including Philippine Airlines, Cebu Pacific, AirAsia, Jetstar, Scoot, Qatar Airways, Cathay Pacific, Singapore Airlines, and more.</p>
+                        </div>
+                        <img src="/icons/Airplain1.jpg" alt="" className="h-[380px] w-[45%]"/>
                     </div>
                 </div>
             </div>

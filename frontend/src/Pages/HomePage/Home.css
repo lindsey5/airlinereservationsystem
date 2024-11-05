@@ -84,20 +84,3 @@
         display: none;
     }
 }
-
-
-.px-4 {
-    padding-left: 1rem;
-    padding-right: 1rem;
-}
-
-.mx-auto {
-    margin-left: auto;
-    margin-right: auto;
-}
-
-@media (min-width: 768px) {
-    .container {
-        max-width: 768px;
-    }
-}
