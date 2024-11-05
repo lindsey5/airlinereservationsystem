@@ -42,7 +42,7 @@ const PopularCity = ({elementsRef}) => {
                         <div key={flight._id}>
                             <img src={flight.image} />
                             <div>
-                                <span>{flight._id}</span>
+                                <span>{flight._id}, {flight.country}</span>
                                 <button className="book-btn">Book Flight</button>
                             </div>
                         </div>

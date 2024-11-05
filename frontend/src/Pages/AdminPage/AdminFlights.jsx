@@ -11,6 +11,7 @@ const AdminFlights = () => {
     const [searchTerm, setSearchTerm] = useState('');
     const {state, dispatch} = useAdminPaginationReducer();
     const [showMakeFlight, setShowMakeFlight] = useState(false);
+    const [showSeats, setShowSeats] = useState(true);
 
     useEffect(() => {
         const fetchFlights = async () => {
@@ -78,6 +79,11 @@ const AdminFlights = () => {
                                 <td>{flight.arrival.airport} ({flight.arrival.airport_code})</td>
                                 <td>{arrivalTime}</td>
                                 {dataStatus(flight.status)}
+                                <td>
+                                    <button>
+                                    <img src="/icons/eye (1).png"/>
+                                    </button>
+                                </td>
                             </tr>
                         )
                     }

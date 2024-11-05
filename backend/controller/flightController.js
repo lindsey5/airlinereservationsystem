@@ -129,6 +129,7 @@ export const get_popular_destination = async (req, res) => {
             {$group: 
                 {
                 _id: "$arrival.city", 
+                country:{ $first: "$arrival.country" },
                 totalArrivals: { $sum: 1 }
                 }
             },
