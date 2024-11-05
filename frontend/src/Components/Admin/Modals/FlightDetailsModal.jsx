@@ -28,7 +28,7 @@ const FlightDetailsModal = ({flightData, close}) => {
     return (
         <div className="modal-container">
             <div className="modal">
-            {showSeats && flightData && <ViewSeatsModal flightData={flightData}/>}
+            {showSeats && flightData && <ViewSeatsModal flightData={flightData} close={() => setShowSeats(false)}/>}
                 <div style={{display: 'flex', alignItems: 'center'}}>
                     <img src={`/icons/${flightData.airline}.png`} alt="" />
                     <h3 style={{marginRight: '20px'}}>{flightData.airline}</h3>

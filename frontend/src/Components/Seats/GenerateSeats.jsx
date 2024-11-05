@@ -1,7 +1,7 @@
-import { useEffect, useRef, useState } from "react";
+import { useEffect, useState } from "react";
 import './Seats.css'
 
-const GenerateSeats = ({flightData}) =>{
+const GenerateSeats = ({flightData, close}) =>{
     const [flight, setFlight] = useState();
     const [sumOfColumns, setSumOfColumns] = useState();
     const [columns, setColumns] = useState();
@@ -31,8 +31,11 @@ const GenerateSeats = ({flightData}) =>{
 
     return (
         <div className="seats">
-            <p>I</p>
-            <hr />
+            <div className="legends">
+                <div><span id='available'></span>Available</div>
+                <div><span id='reserved'></span>Reserved</div>
+            </div>
+            <button className="close-btn" onClick={close}>Close</button>
             {flight && sumOfColumns && 
             <div className='seats-rows-container' style={{gridTemplateColumns: `repeat(${sumOfColumns}, 1fr)`}}>
                 {
@@ -45,13 +48,14 @@ const GenerateSeats = ({flightData}) =>{
                                 index = 0;
                             }
                             return <button 
+                                className={`seat ${seat.status === 'available' ? 'available' : 'reserved'}`}
                                 key={seat._id} 
                                 style={{
                                     marginLeft: position === 1 ? '30px' : '', 
                                     marginRight: position % columns[index] === 0 && index !== columns.length ? '30px' : ''
                                 }} 
                                 value={seat.seatNumber}>
-                                {seat.seatNumber}
+                                {seat.seatNumber} {classObj.className.charAt(0)}
                             </button>
                         })
                     )

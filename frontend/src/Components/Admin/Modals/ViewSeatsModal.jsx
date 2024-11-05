@@ -1,11 +1,11 @@
 import { useEffect } from "react"
 import GenerateSeats from "../../Seats/GenerateSeats"
 
-const ViewSeatsModal = ({flightData}) => {
+const ViewSeatsModal = ({flightData, close}) => {
     
     return (
         <div className="view-seats">
-            <GenerateSeats flightData={flightData}/>
+            <GenerateSeats flightData={flightData} close={close}/>
         </div>
     )
 }

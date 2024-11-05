@@ -62,7 +62,7 @@ export const create_flight = async (req, res) => {
             await Pilot.findById(co_pilot)
         ]);
         // Manually specifying the order
-        const order = ['Economy', 'Business', 'First'];
+        const order = ['First', 'Business', 'Economy'];
 
         const rearranged = order.map(name => {
             return classes.find(obj => obj.className === name);

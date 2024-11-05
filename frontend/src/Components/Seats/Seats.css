@@ -8,28 +8,62 @@
     border-top-right-radius: 40%;
     padding-top: 80%;
     position: relative;
+    align-items: center;
 }
 
 .seats-rows-container{
     display: grid;
-    gap: 5px;
+    gap: 10px;
 }
 
-.seats > p{
-    position: absolute;
-    top: -50px;
-    left: 50%;
-    transform: translateX(-50%);
-    font-size: 50px;
-
+.seats .seat {
+    border: none;
+    cursor: pointer;
 }
 
-hr{
-    width: 80%;
-    background-color: black;
-    height: 3px;
-    top: 20%;
+.seats .available{
+    background-color: rgb(0, 189, 25);
+    color: white;
+}
+
+.seats .seat:not(:disabled):hover{
+    background-color: rgb(150, 150, 150);
+}
+
+.seats .legends{
+    top: 15%;
     left: 50%;
     transform: translateX(-50%);
+    display: flex;
     position: absolute;
+    justify-content: center;
+}
+
+.seats .legends > div{
+    display: flex;
+    align-items: center;
+    font-weight: 600;
+}
+
+.seats .legends > div:first-child{
+    margin-right: 20px;
+}
+
+.seats .legends span{
+    width: 20px;
+    height: 20px;
+    margin-right: 10px;
+}
+
+.seats .legends #available{
+    background-color: rgb(0, 189, 25);
+}
+
+.seats .legends #reserved{
+    background-color: red;
+}
+
+.seats .close-btn{
+    background-color: #ff3131;
+    margin: 10px 0;
 }
