@@ -1,13 +1,13 @@
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import { handleBlur, handleFocus, handleNegative, handleNegativeAndDecimal } from "../../../utils/handleInput";
 
-const FlightSecondForm = ({state, dispatch}) => {
+const FlightSecondForm = ({state, dispatch, close}) => {
     const [error, setError] = useState();
 
     const handleClasses = (className) => {
-        const classIndex = state.classes.findIndex(item => item.className === className);
-        if (classIndex !== -1) {
-            dispatch({type: 'SET_CLASSES', payload: state.classes.filter((_, index) => index !== classIndex)})
+        const classname = state.classes.find(item => item.className === className);
+        if (classname) {
+            dispatch({type: 'SET_CLASSES', payload: state.classes.filter(class_name => class_name !== classname)})
         } else {
             dispatch({type: 'SET_CLASSES', payload: [...state.classes, { className }]})
         }
@@ -44,6 +44,7 @@ const FlightSecondForm = ({state, dispatch}) => {
 
     return (
         <div className="container">
+             <span className='close'onClick={close}>X</span>
             <form onSubmit={createFlight}>
                 <h2>Select Classes</h2>
                 <div style={{marginTop: '50px'}}>

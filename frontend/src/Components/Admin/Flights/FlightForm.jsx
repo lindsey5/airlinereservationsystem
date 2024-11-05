@@ -119,7 +119,7 @@ const FlightForm = ({close}) => {
     return (
         <div className="admin-form">
             {showFirstForm && <FlightFirstForm state={state} dispatch={dispatch} close={close} handleSubmit={goToSecondForm}/>}
-            {showSecondForm && <FlightSecondForm state={state} dispatch={dispatch}/>}
+            {showSecondForm && <FlightSecondForm state={state} dispatch={dispatch} close={close}/>}
         </div>
     )
 }
