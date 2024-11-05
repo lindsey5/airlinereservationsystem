@@ -5,6 +5,7 @@ import './AdminPage.css'
 import {formatDate} from '../../utils/formatDate';
 import { dataStatus } from "../../utils/dataStatus";
 import FlightForm from "../../Components/Admin/Flights/FlightForm";
+import FlightDetailsModal from "../../Components/Admin/Modals/FlightDetailsModal";
 
 const AdminFlights = () => {
     const [flights, setFlights] = useState();
@@ -12,6 +13,8 @@ const AdminFlights = () => {
     const {state, dispatch} = useAdminPaginationReducer();
     const [showMakeFlight, setShowMakeFlight] = useState(false);
     const [showSeats, setShowSeats] = useState(true);
+    const [flightData, setFlightData] = useState();
+    const [showFlightDetails, setShowFlightDetails] = useState(false);
 
     useEffect(() => {
         const fetchFlights = async () => {
@@ -46,6 +49,7 @@ const AdminFlights = () => {
     return (
         <main className="admin-page">
             {showMakeFlight && <FlightForm close={() => setShowMakeFlight(false)}/>}
+            {showFlightDetails && <FlightDetailsModal flightData={flightData} close={() => setShowFlightDetails(false)}/>}
             <h1>Flights</h1>
             <input type="search" placeholder='Search' onChange={(e) => setSearchTerm(e.target.value)}/>
             <AdminPagination state={state} dispatch={dispatch} />
@@ -80,7 +84,10 @@ const AdminFlights = () => {
                                 <td>{arrivalTime}</td>
                                 {dataStatus(flight.status)}
                                 <td>
-                                    <button>
+                                    <button onClick={() => {
+                                        setFlightData(flight)
+                                        setShowFlightDetails(true)
+                                    }}>
                                     <img src="/icons/eye (1).png"/>
                                     </button>
                                 </td>

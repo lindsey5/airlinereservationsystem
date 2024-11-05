@@ -47,7 +47,6 @@ export const get_airplanes = async (req, res) => {
                 { _id: ObjectId.isValid(searchTerm) ? new ObjectId(searchTerm) : null },
                 {model: { $regex: new RegExp(searchTerm, 'i') }},
                 {columns: { $regex: new RegExp(searchTerm, 'i') }},
-                {passengerSeatingCapacity: searchTerm},
                 {status: { $regex: new RegExp(searchTerm, 'i') }}
             ]
         }

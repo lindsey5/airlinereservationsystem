@@ -1,0 +1,35 @@
+.seats{
+    display: flex;
+    flex-direction: column;
+    padding: 20px;
+    box-sizing: border-box;
+    border: 1px solid grey;
+    border-top-left-radius: 40%;
+    border-top-right-radius: 40%;
+    padding-top: 80%;
+    position: relative;
+}
+
+.seats-rows-container{
+    display: grid;
+    gap: 5px;
+}
+
+.seats > p{
+    position: absolute;
+    top: -50px;
+    left: 50%;
+    transform: translateX(-50%);
+    font-size: 50px;
+
+}
+
+hr{
+    width: 80%;
+    background-color: black;
+    height: 3px;
+    top: 20%;
+    left: 50%;
+    transform: translateX(-50%);
+    position: absolute;
+}

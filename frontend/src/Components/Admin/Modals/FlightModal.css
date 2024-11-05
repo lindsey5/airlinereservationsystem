@@ -1,0 +1,78 @@
+.modal-container{
+    position: fixed;
+    top: 0;
+    right: 0;
+    left: 0;
+    bottom: 0;
+    background-color: rgb(0, 0, 0, 0.5);
+    z-index: 2;
+    overflow-y: auto;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.modal-container .modal{
+    background-color: white;
+    padding: 50px;
+    border-radius: 20px;
+    position: relative;
+}
+
+.modal-container .modal img{
+    width: 50px;
+    height: 50px;
+    margin-right: 20px;
+}
+
+.modal-container .modal .view-seats-btn{
+    cursor: pointer;
+}
+
+.modal-container .flight-details{
+    display: grid;
+    grid-template-columns: repeat(2, 270px);
+}
+
+.modal-container .flight-details > div{
+    border-bottom: 1px solid rgb(192, 192, 192);
+}
+
+.modal-container .flight-details > div:nth-child(odd) {
+    border-right: 1px solid rgb(192, 192, 192);
+}
+
+.modal-container .flight-details > div:nth-child(even) {
+    padding-left: 20px;
+}
+
+.modal-container .close-btn{
+    float: right;
+    margin-top: 30px;
+    padding: 5px 20px;
+    background-color: hsl(0, 100%, 60%);
+    border: none;
+    color: white;
+    cursor: pointer;
+}
+
+.modal-container .close-btn:hover{
+    background-color: #ffa3a3;
+}
+
+.modal-container .modal .view-seats{
+    position: absolute;
+    top: 20px;
+    left: 50%;
+    transform: translateX(-50%);
+    background-color: white;
+}
+
+.modal-container .modal .view-seats .plane-head{
+    border-top-left-radius: 50%;
+    border-top-right-radius: 50%;
+    background-color: white;
+    width: 100%;
+    border: 1px solid grey;
+    border-bottom: none;
+}

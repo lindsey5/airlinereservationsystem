@@ -16,6 +16,19 @@ export const create_pilot = async(req, res) => {
     }
 }
 
+export const get_pilot = async (req, res) => {
+    try{
+        const pilot = await Pilot.findById(req.params.id);
+        if(!pilot){
+            throw new Error('Pilot not found');
+        }
+        res.status(200).json(pilot);
+        
+    }catch(err){
+        const errors = errorHandler(err);
+        res.status(400).json({errors});
+    }
+}
 
 export const get_pilots = async (req, res) => {
     const page = parseInt(req.query.page) || 1; 
