@@ -15,14 +15,14 @@
     animation: slide-login-left-section 0.8s ease-in-out;
   }
 
-  @keyframes slide-login-left-section{
+@keyframes slide-login-left-section{
     from{
       width: 0;
     }
     to{
       width: 55%;
     }
-  }
+}
 
   .user-login-page .right-section{
     flex: 1;
@@ -45,10 +45,10 @@
     padding: 50px;
     box-sizing: border-box;
     opacity: 0;
-    animation: slide-login-container 0.8s ease-in-out 1s forwards;
+    animation: login-container-animation 0.8s ease-in-out 1s forwards;
   }
 
-  @keyframes slide-login-container{
+  @keyframes login-container-animation{
     from{
       opacity: 0;
     }

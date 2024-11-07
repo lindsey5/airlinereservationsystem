@@ -18,6 +18,7 @@ const FlightFirstForm = ({state, dispatch, handleSubmit, close}) => {
     const validate = async (e) => {
         e.preventDefault();
         setError('');
+        console.log(state)
         if(!state.departure.airport){
             setError('*Please select departure airport');
         }else if(!state.arrival.airport){
@@ -33,7 +34,7 @@ const FlightFirstForm = ({state, dispatch, handleSubmit, close}) => {
         }else if(state.captain === state.co_pilot){
             setError('*The captain and co-pilot should not be the same')
         }else if(!state.airplane.id){
-            setError('*Please select a airplane')
+            setError('*Please select an airplane')
         }else{
             handleSubmit();
         }

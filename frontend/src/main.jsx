@@ -17,13 +17,21 @@ import AdminAirplanes from './Pages/AdminPage/AdminAirplanes';
 import AdminFlights from './Pages/AdminPage/AdminFlights';
 import AdminAirports from './Pages/AdminPage/AdminAirports';
 import './index.css'
+import UserSignup from './Pages/AuthPages/UserSignup';
+import AddAdmin from './Pages/AdminPage/AddAdmin';
+import AdminLogIn from './Pages/AuthPages/AdminLogin';
 
 const router = createBrowserRouter(
   createRoutesFromElements(
     <>
       <Route path="/" element={<Home />} />
-      <Route path='/user/login' element={<UserLogin />} />
-
+      <Route path='/add-admin' element={<AddAdmin />} />
+      <Route path='/admin/login' element={<AdminLogIn />} />
+      <Route path='/user/'>
+        <Route path='login' element={<UserLogin />} />
+        <Route path='signup' element={<UserSignup />} />
+      </Route>
+      
 
       <Route path='/admin/'>
         <Route element={<AdminLayout />}>

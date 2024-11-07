@@ -8,7 +8,7 @@ export const errorHandler = (err) => {
     } else {
         if (err.message.includes('duplicate key')) {
             errors.push(`${JSON.stringify(err.errorResponse.keyValue)} already exists`);
-        } else {
+        }else {
             errors.push(err.message);
         }
     }

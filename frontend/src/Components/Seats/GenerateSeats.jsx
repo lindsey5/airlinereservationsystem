@@ -1,5 +1,6 @@
 import { useEffect, useState } from "react";
 import './Seats.css'
+import { formatPrice } from "../../utils/formatPrice";
 
 const GenerateSeats = ({flightData, close}) =>{
     const [flight, setFlight] = useState();
@@ -32,31 +33,44 @@ const GenerateSeats = ({flightData, close}) =>{
     return (
         <div className="seats">
             <div className="legends">
-                <div><span id='available'></span>Available</div>
-                <div><span id='reserved'></span>Reserved</div>
+                <div>
+                    <span id='first'></span>
+                    First  ({formatPrice(flightData.classes.find(classObj => classObj.className === 'First')?.price)})
+                </div>
+                <div>
+                    <span id='business'></span>
+                    Business ({formatPrice(flightData.classes.find(classObj => classObj.className === 'Business')?.price)})
+                </div>
+                <div>
+                    <span id='economy'></span>
+                    Economy ({formatPrice(flightData.classes.find(classObj => classObj.className === 'Economy')?.price)})
+                </div>
             </div>
             <button className="close-btn" onClick={close}>Close</button>
             {flight && sumOfColumns && 
-            <div className='seats-rows-container' style={{gridTemplateColumns: `repeat(${sumOfColumns}, 1fr)`}}>
+            <div className='seats-rows-container' style={{gridTemplateColumns: columns.length > 1 ? `repeat(${sumOfColumns+ columns.length -1}, 1fr)` : `repeat(${sumOfColumns}, 1fr)`}}>
                 {
                     flight.classes.map((classObj) => 
                         classObj.seats.map((seat) =>{
+                            
                             const position = seat.seatNumber.charAt(0).toUpperCase().charCodeAt(0) - 64;
-                            if(position % columns[index] === 0 && index !== columns.length){
+                            if(position % columns[index] === 0 && position !== sumOfColumns){
                                 index ++;
                             }else{
                                 index = 0;
                             }
-                            return <button 
-                                className={`seat ${seat.status === 'available' ? 'available' : 'reserved'}`}
-                                key={seat._id} 
-                                style={{
-                                    marginLeft: position === 1 ? '30px' : '', 
-                                    marginRight: position % columns[index] === 0 && index !== columns.length ? '30px' : ''
-                                }} 
-                                value={seat.seatNumber}>
-                                {seat.seatNumber} {classObj.className.charAt(0)}
-                            </button>
+                            return (
+                                <>
+                                <button 
+                                    className='seat'
+                                    key={seat._id} 
+                                    value={seat.seatNumber}
+                                >
+                                <img src={`/icons/${classObj.className}-seat.png`}/>
+                                </button>
+                                {position % columns[index] === 0 && position !== sumOfColumns && <div></div> }
+                                </>
+                            )
                         })
                     )
                 }

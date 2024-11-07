@@ -4,7 +4,6 @@ const Schema = mongoose.Schema;
 
 const FlightSchema = new Schema({
     airline: { type: String,required: true, },
-    flightNumber: { type: String, required: true, unique: true },
     status: { type: String, default: 'Scheduled'},
     gate_number: { type: String, required: true}, 
     departure: {
@@ -32,20 +31,6 @@ const FlightSchema = new Schema({
      },
     classes: { type: [ClassSchema], required: true,}
 }, { timestamps: true });
-
-FlightSchema.pre('save', async function(next) {
-    const flight = this;
-    if (flight.isNew) {
-      const Counter = mongoose.model('Counter', new Schema({ seq: { type: Number, default: 0 } }));
-      const counter = await Counter.findOneAndUpdate(
-        { _id: 'flightNumber' },
-        { $inc: { seq: 1 } },
-        { new: true, upsert: true }
-      );
-      flight.flightNumber = counter.seq;
-    }
-    next();
-  });
 
 const Flight = mongoose.model('Flight', FlightSchema);
 export default Flight;

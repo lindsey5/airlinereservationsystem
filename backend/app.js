@@ -11,6 +11,8 @@ import cors from 'cors';
 import path from 'path';
 import { errorHandler } from './utils/errorHandler.js';
 import Airport from './model/airport.js';
+import jwt from 'jsonwebtoken';
+import cookieParser from 'cookie-parser';
 
 dotenv.config();
 const PORT = process.env.PORT; 
@@ -31,12 +33,37 @@ app.use(morgan('dev'));
 app.use(express.static('public'));
 app.use(express.urlencoded({ extended: true}));
 app.use(express.json());
+app.use(cookieParser());
 
 app.use('/api/airplane', airplaneRoutes);
 app.use('/api/flight', flightRoutes);
 app.use('/api/pilot', pilotRoutes);
 app.use('/api/airport', airportRoutes);
-app.use('/', userRoutes);
+app.use('/api/user', userRoutes);  
+
+app.post('/api/verify-code', async (req, res) => {
+    try {
+        // Verify the JWT and decode its payload
+        const code = req.cookies.verificationCode;
+
+        if(!code){
+            throw new Error('The code has expired. Please request a new one')
+        }
+
+        const decoded = jwt.verify(code , process.env.JWT_SECRET);
+
+        const storedCode = decoded.code;   
+        if (storedCode == req.query.code) {
+            res.clearCookie('verificationCode');
+            return res.status(200).json({ message: 'Verification successful. Your email has been verified!' });
+        }
+        throw new Error('Invalid code. Please check and try again.');
+    } catch (err) {
+        const errors = errorHandler(err);
+        return res.status(400).json({ errors });
+    }
+});
+
 
 app.get('/api/countries', async (req, res) => {
     try{

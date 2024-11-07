@@ -7,7 +7,6 @@ const { ObjectId } = mongoose.Types;
 export const create_pilot = async(req, res) => {
     try{
         const newPilot = await Pilot.create(req.body);
-        newPilot.save();
         res.status(200).json(newPilot);
 
     }catch(err){
@@ -109,10 +108,11 @@ export const get_available_pilots = async (req, res) => {
         const availablePilots = await Promise.all(pilots.map(async (pilot) => {
             const flight = await Flight.findOne({
                 $or: [
-                    { 'pilot.captain': pilot._id },
-                    { 'pilot.co_pilot': pilot._id }
-                ]
-            }).sort({'arrival.time' : -1});;            
+                  { 'pilot.captain': pilot._id },
+                  { 'pilot.co_pilot': pilot._id }
+                ],
+                'pilot.status': { $ne: 'Unavailable' }
+              }).sort({ 'arrival.time': -1 });                 
             if(flight){
                 const isAvailable = flight.arrival.airport === departureAirport && 
                 new Date(new Date(flight.arrival.time).getTime() + 24 * 60 * 60 * 1000) < departureTime;

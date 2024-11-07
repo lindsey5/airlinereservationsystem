@@ -47,19 +47,17 @@ const SearchForms = () =>{
         dispatch({ type: 'SET_FLIGHTS'});
     }, [state.count]);
 
-
     useEffect(() => {
         let flag = true;
         state.flights.forEach((flight, i) => {
             
             if(i > 0){
-                const prevIndexDate = state.flights[i-1].DepartureTime;
-
-                if(i > 0 && flight.DepartureTime <= prevIndexDate){
+                const prevIndexDate = new Date(new Date(state.flights[i-1].DepartureTime).getTime() + 4 * 60 * 60 * 1000);
+                
+                if(flight.DepartureTime <= prevIndexDate){
                     flag = false;
                 }
             }
-            
             if(!flight.FromCountry 
                 || !flight.ToCountry || !flight.ToCity || !flight.FromCity 
                 ||  new Date(flight.DepartureTime) < new Date(new Date().getTime() + 4 * 60 * 60 * 1000)

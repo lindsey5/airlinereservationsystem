@@ -41,7 +41,7 @@ const Home = () => {
                 </div>
                 <ul>
                     <li onClick={() => navigate('/user/login')}>Login</li>
-                    <li>Signup</li>
+                    <li onClick={() => navigate('/user/signup')}>Signup</li>
                     <li>About</li>
                 </ul>
             </header>
@@ -82,7 +82,7 @@ const Home = () => {
                     <div class="bg-white text-center flex justify-between">
                         <div className='max-w-[50%]'>
                         <h1 className="text-4xl text-[#ff3131] font-bold mb-3">Online Flight Booking Made Easy with TCU Airlines</h1>
-                        <p className="text-lg mt-16 mb-6">Looking for cheap flights and airfare deals? TCU Airlines, one of the leading flight booking platforms in Southeast Asia, has PAL, cebu pacific, Air Asia, and Skyjet flight routes to choose from and our inventories never ceased to stop growing. TCU Airlines offers flight tickets from domestic and international airlines including Philippine Airlines, Cebu Pacific, AirAsia, Jetstar, Scoot, Qatar Airways, Cathay Pacific, Singapore Airlines, and more.</p>
+                        <p className="text-lg mt-16 mb-6">Looking for cheap flights and airfare deals? TCU Airlines, one of the leading flight booking platforms in Southeast Asia, has PAL, cebu pacific, Air Asia, and Skyjet flight routes to choose from and our inventories never ceased to stop growing. TCU Airlines offers flight tickets from domestic and international airlines</p>
                         </div>
                         <img src="/icons/Airplain1.jpg" alt="" className="h-[380px] w-[45%]"/>
                     </div>
