@@ -202,4 +202,8 @@ input[type="number"] {
     .user-signup .right-container{
         width: 100%;
     }
+
+    .user-signup .right-container .input-container{
+        width: 90%;
+    }
 }
