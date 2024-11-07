@@ -122,4 +122,8 @@
     .home-page header > button{
         display: block;
     }
+
+    .home-page header .dropdown.show{
+        display: flex;
+    }
 }

@@ -48,7 +48,7 @@ const Home = () => {
                 <button onClick={() => setShowDropdown(!showDropdown)}>
                 <img src="/icons/menu.png" alt="" />
                 </button>
-                <div className='dropdown' style={{display: showDropdown ? 'flex' : 'none'}}>
+                <div className={`dropdown ${showDropdown ? 'show' : ''}`}>
                     <li onClick={() => navigate('/user/login')}>Login</li>
                     <li onClick={() => navigate('/user/signup')}>Signup</li>
                     <li>About</li>
