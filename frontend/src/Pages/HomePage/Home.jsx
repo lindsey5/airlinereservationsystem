@@ -22,7 +22,7 @@ const Home = () => {
                 }
             });
           },
-          { threshold: 0.3 }
+          { threshold: 0.1 }
         );
     
         elementsRef.current.forEach((el) => {
@@ -58,7 +58,7 @@ const Home = () => {
                 <SearchContainer />
             </section>
             <PopularCity elementsRef={elementsRef}/>
-            <div className="mx-auto px-4  py-[200px] flex justify-center items-center opacity-0" ref={el => elementsRef.current[0] = el}>
+            <div className="mx-auto px-4  py-[200px] flex justify-center items-center opacity-0" ref={el => elementsRef.current[1] = el}>
                 <div>
                     <h2 className="text-3xl font-bold text-center my-8">Why book with TCU airlines?</h2>
                     <div className="flex justify-center flex-wrap">

@@ -37,7 +37,7 @@ const PopularCity = ({elementsRef}) => {
                     <img src="/icons/tcu_airlines-logo (2).png" alt="" />
                     <h1>Popular Cities</h1>
                 </div>
-                <div className="available-flights-container opacity-0" ref={el => elementsRef.current[1] = el}>
+                <div className="available-flights-container opacity-0" ref={el => elementsRef.current[0] = el}>
                 {flights && flights.map(flight =>
                         <div key={flight._id}>
                             <img src={flight.image} />
