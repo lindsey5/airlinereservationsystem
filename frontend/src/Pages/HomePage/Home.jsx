@@ -2,13 +2,14 @@ import PopularCity from './PopularCity';
 import './Home.css'
 import SearchContainer from './SearchContainer';
 import { useNavigate } from 'react-router-dom';
-import { useRef, useEffect } from 'react';
+import { useRef, useEffect, useState } from 'react';
 import './tailwind.css';
 import Footer from './Footer';
 
 const Home = () => {
     const navigate = useNavigate();
     const elementsRef = useRef([]);
+    const [showDropdown, setShowDropdown] = useState(false);
 
     useEffect(() => {
         const observer = new IntersectionObserver(
@@ -44,6 +45,14 @@ const Home = () => {
                     <li onClick={() => navigate('/user/signup')}>Signup</li>
                     <li>About</li>
                 </ul>
+                <button onClick={() => setShowDropdown(!showDropdown)}>
+                <img src="/icons/menu.png" alt="" />
+                </button>
+                <div className='dropdown' style={{display: showDropdown ? 'flex' : 'none'}}>
+                    <li onClick={() => navigate('/user/login')}>Login</li>
+                    <li onClick={() => navigate('/user/signup')}>Signup</li>
+                    <li>About</li>
+                </div>
             </header>
             <section className='home'>
                 <SearchContainer />
@@ -52,7 +61,7 @@ const Home = () => {
             <div className="mx-auto px-4  py-[200px] flex justify-center items-center opacity-0" ref={el => elementsRef.current[0] = el}>
                 <div>
                     <h2 className="text-3xl font-bold text-center my-8">Why book with TCU airlines?</h2>
-                    <div className="flex justify-center space-x-10">
+                    <div className="flex justify-center flex-wrap">
                     <div className="text-center flex flex-col items-center">
                         <img src="/icons/magnifier.png" alt="Search Icon" className="w-24 h-24 object-contain mx-auto mb-3" />
                         <h3 className="text-xl font-semibold mt-3">Most Extensive Search Results</h3>
@@ -79,16 +88,15 @@ const Home = () => {
             </div>
             <div className="bg-white-100 w-full h-2/4 flex items-center opacity-0" ref={el => elementsRef.current[2] = el}>
                 <div className="mx-auto px-4 w-full box-border mb-24">
-                    <div class="bg-white text-center flex justify-between">
+                    <div class="tcu-airlines-details bg-white text-center flex justify-between">
                         <div className='max-w-[50%]'>
                         <h1 className="text-4xl text-[#ff3131] font-bold mb-3">Online Flight Booking Made Easy with TCU Airlines</h1>
                         <p className="text-lg mt-16 mb-6">Looking for cheap flights and airfare deals? TCU Airlines, one of the leading flight booking platforms in Southeast Asia, has PAL, cebu pacific, Air Asia, and Skyjet flight routes to choose from and our inventories never ceased to stop growing. TCU Airlines offers flight tickets from domestic and international airlines</p>
                         </div>
-                        <img src="/icons/Airplain1.jpg" alt="" className="h-[380px] w-[45%]"/>
+                        <img src="/icons/Airplain1.jpg" alt="" className="image h-[380px] w-[45%]"/>
                     </div>
                 </div>
             </div>
-            <Footer />
         </main>
     )
 }

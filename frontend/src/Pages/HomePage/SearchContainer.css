@@ -33,8 +33,11 @@
 
 .search-container .buttons-container > button{
     padding: 10px;
-    cursor: pointer;
     margin-top: 30px;
+}
+
+.search-container .buttons-container > button:not(:disabled){
+    cursor: pointer;
 }
 
 .search-container .buttons-container .search-btn{

@@ -51,6 +51,41 @@
     text-decoration: underline;
 }
 
+.home-page header > button{
+    background-color: white;
+    border: none;
+    display: none;
+    cursor: pointer;
+}
+
+.home-page header > button img{
+    width: 30px;
+    height: 30px;
+}
+
+.home-page header .dropdown{
+    position: absolute;
+    flex-direction: column;
+    left: 0;
+    right: 0;
+    top: 100%;
+    background-color: white;
+    display: none;
+}
+
+.home-page header .dropdown > li{
+    padding: 20px 0;
+    width: 100%;
+    list-style: none;
+    text-decoration: none;
+    text-align: center;
+}
+
+.home-page header .dropdown > li:hover{
+    background-color: #ff3131;
+    color: white;
+}
+
 .home-page .home{
     background-image: url('/icons/bg.webp');
     background-position: center;
@@ -82,5 +117,9 @@
 @media  screen and (max-width: 500px) {
     .home-page header ul{
         display: none;
+    }
+
+    .home-page header > button{
+        display: block;
     }
 }
