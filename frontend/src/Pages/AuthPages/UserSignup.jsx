@@ -24,6 +24,10 @@ const UserSignup = () => {
     const [error, setError] = useState('');
     const [showOtherDetails, setShowOtherDetails] = useState(false);
 
+    useEffect(() => {
+        document.title = "User Signup";
+    },[]);
+
     const sendCodeToEmail = async (e) => {
         e.preventDefault();
         setLoading(true);

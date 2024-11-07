@@ -46,6 +46,7 @@
     box-sizing: border-box;
     opacity: 0;
     animation: login-container-animation 0.8s ease-in-out 1s forwards;
+    text-align: center;
   }
 
   @keyframes login-container-animation{
@@ -135,6 +136,10 @@
 
     .user-login-page .right-section{
         background-color: rgb(0, 0, 0, 0.10);
+    }
+
+    .user-login-page .login-container{
+      width: 100%;
     }
 
   }

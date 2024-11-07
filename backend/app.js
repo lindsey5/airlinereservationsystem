@@ -13,6 +13,7 @@ import { errorHandler } from './utils/errorHandler.js';
 import Airport from './model/airport.js';
 import jwt from 'jsonwebtoken';
 import cookieParser from 'cookie-parser';
+import User from './model/user.js';
 
 dotenv.config();
 const PORT = process.env.PORT; 
@@ -108,6 +109,34 @@ app.get('/api/cities/:country', async (req, res) => {
         res.status(400).json(errors);
     }
 });
+
+app.get('/api/user',async(req, res) => {
+    try{
+        const token = req.cookies.jwt;
+        if (token) {
+            try {
+                const decodedToken = jwt.verify(token, process.env.JWT_SECRET);
+                req.userId = decodedToken.id;
+                
+                const user = await User.findById(decodedToken.id);
+                if(user){
+                    return res.status(200).json({user: 'user'});
+                }
+
+                return res.status(401).json({ error: 'No token found' });
+           } catch (error) {
+                return res.status(401).json({ error: 'No token found' });
+           }
+        } else {
+            // No token found in cookies
+            return res.status(401).json({ error: 'No token found' });
+        }
+
+    }catch(err){
+        const errors = errorHandler(err);
+        res.status(400).json(errors);
+    }
+})
 
 
 const __dirname = path.resolve();

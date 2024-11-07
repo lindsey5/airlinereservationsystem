@@ -20,16 +20,30 @@ import './index.css'
 import UserSignup from './Pages/AuthPages/UserSignup';
 import AddAdmin from './Pages/AdminPage/AddAdmin';
 import AdminLogIn from './Pages/AuthPages/AdminLogin';
+import { PublicRoute } from './routes/PublicRoute';
+import { UserRoute } from './routes/UserRoute';
+import UserLayout from './Layouts/UserLayout';
+import UserHome from './Pages/UserPage/UserHome';
 
 const router = createBrowserRouter(
   createRoutesFromElements(
     <>
-      <Route path="/" element={<Home />} />
-      <Route path='/add-admin' element={<AddAdmin />} />
-      <Route path='/admin/login' element={<AdminLogIn />} />
-      <Route path='/user/'>
-        <Route path='login' element={<UserLogin />} />
-        <Route path='signup' element={<UserSignup />} />
+      <Route element={<PublicRoute />}>
+        <Route path="/" element={<Home />} />
+        <Route path='/add-admin' element={<AddAdmin />} />
+        <Route path='/admin/login' element={<AdminLogIn />} />
+        <Route path='/user/'>
+          <Route path='login' element={<UserLogin />} />
+          <Route path='signup' element={<UserSignup />} />
+        </Route>
+      </Route>
+
+      <Route path='/User/'>
+        <Route element={<UserRoute />}>
+          <Route element={<UserLayout />}>
+            <Route path='Home' element={<UserHome />}/>
+          </Route>
+        </Route>
       </Route>
       
 

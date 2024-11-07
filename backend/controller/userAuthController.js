@@ -5,27 +5,30 @@ import { sendVerificationCode } from "../service/emailService.js";
 import User from '../model/user.js';
 
 export const userLogin = async (req, res) => {
-    const { username, password } = req.body;
+    const { email, password } = req.body;
   
     try {
       // Find the user by username
-      const user = await User.findOne({ username });
-  
+      const user = await User.findOne({ email });
+    
       if (!user) {
-        return res.status(400).json({ message: 'Username not found' });
+        throw new Error('Email not found');
       }
-  
-      // Compare the entered password with the hashed password in the database
+
       const isMatch = await bcrypt.compare(password, user.password);
   
       if (!isMatch) {
-        return res.status(400).json({ message: 'Invalid username or password' });
+        throw new Error('Invalid email or password');
       }
-  
-      // If login is successful
-      res.json({ success: true, message: 'Login successful' });
+      
+      const token = jwt.sign({id: user._id}, process.env.JWT_SECRET,{
+        expiresIn: 24 * 60 * 60
+      })
+      res.cookie('jwt', token, { httpOnly: true, maxAge:  24 * 60 * 60 * 1000 });
+      res.status(200).json({ user: user._id})
     } catch (err) {
-      res.status(500).json({ success: false, message: 'Server error' });
+      const errors = errorHandler(err);
+      res.status(400).json({errors});
     }
   }
 
