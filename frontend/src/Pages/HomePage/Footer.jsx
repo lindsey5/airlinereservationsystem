@@ -52,8 +52,8 @@ const Footer = () => {
             </div>
             <div className="bg-white p-2 shadow-md flex justify-center rounded-md">
               <img
-                alt="Payment partner American Express"
-                src="https://cdn.media.amplience.net/i/cebupacificair/PayPal-logo?fmt=auto&maxW=1920&maxH=1920&h=80&qlt=100"
+                alt="Payment partner Maya"
+                src="/icons/paymaya.png"
                 className="w-12 h-auto inline-block"
               />
             </div>
