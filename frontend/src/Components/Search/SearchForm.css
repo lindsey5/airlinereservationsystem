@@ -51,11 +51,10 @@
     background-color: rgb(255, 138, 138);
 }
 
-.from-container > img, 
-.to-container > img{
+.search-form img{
     width: 25px;
     height: 25px;
-    margin-right: 20px;
+    margin-right: 10px;
 }
 
 .search-form span{

@@ -113,8 +113,9 @@ const SearchForms = () =>{
                     {flight.showToCities && <CitiesContainer cities={flight.ToCities} route={'to'} index={i} />}
                 </div>
                 <div className="depart-container">
+                    <img src="/icons/time.png" alt="" />
                     <div>
-                        <span>Departure Date:</span>
+                        <span style={{marginRight: '10px'}}>Departure Date:</span>
                         <DatePicker
                             selected={flight.DepartureTime}
                             onChange={(date) => dispatch({ type: 'SET_DEPARTURE_TIME', date, index: i})}

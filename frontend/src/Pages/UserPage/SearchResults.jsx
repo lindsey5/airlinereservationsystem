@@ -1,11 +1,13 @@
 const SearchResults = () => {
     
     retunr (
-        <main>
+        <div>
             
 
-        </main>
+        </div>
     )
 
 
 }
+
+export default SearchResults

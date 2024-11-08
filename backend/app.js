@@ -42,6 +42,11 @@ app.use('/api/pilot', pilotRoutes);
 app.use('/api/airport', airportRoutes);
 app.use('/api/user', userRoutes);  
 
+app.get('/logout', (req, res) => {
+    res.clearCookie('jwt', { httpOnly: true, secure: false });
+    res.redirect('/');
+});
+
 app.post('/api/verify-code', async (req, res) => {
     try {
         // Verify the JWT and decode its payload

@@ -3,15 +3,14 @@
 }
 
 .user-home .city-container{
-    width: 100%;
-    height: calc(100vh - 80px);
     position: relative;
+    z-index: 2;
 }
 
 .user-home .city-container h1{
     font-size: 60px;
     position: absolute;
-    top: 15%;
+    top: 90px;
     left: 50%;
     transform: translate(-50%, -50%);
     color: white;
@@ -20,7 +19,7 @@
 
 .user-home .city-container .city-buttons{
     position: absolute;
-    top: 30%;
+    top: 220px;
     left: 50%;
     transform: translateX(-50%);
 }
@@ -35,9 +34,11 @@
 }
 
 .user-home .city{
+    top: 0;
     width: 100%;
-    height: 50%;
+    height: 350px;
     opacity: 0;
+    position: absolute;
     animation: city-image-animation 0.8s ease-in-out forwards;
 }
 
@@ -54,15 +55,13 @@
 
 .user-home .search-form-container{
     padding: 30px;
-    position: absolute;
     width: 50%;
-    left: 50%;
-    top: 35%;
-    transform: translateX(-50%);
+    margin: auto;
+    margin-bottom: 200px;
+    transform: translateY(270px);
     background-color: rgb(240, 240, 240);
     border-radius: 20px;
     box-shadow: 0 0 15px 5px rgb(160, 160, 160);
-    margin-bottom: 100px;
 }
 
 .user-home .search-form-container .select-container{
@@ -105,6 +104,21 @@
     background-color: #ff9595;
 }
 
+.user-home .animate{
+    animation: container-animation 0.5s ease-in forwards; 
+}
+
+@keyframes container-animation{
+    from{
+        opacity: 0;
+        transform: translateX(-200px);
+    }
+    to{
+        opacity: 1;
+        transform: translateX(0);
+    }
+}
+
 @media screen and (max-width: 900px) {
     .user-home .search-form-container{
         width: 80%;
@@ -112,6 +126,10 @@
 }
 
 @media  screen and (max-width: 510px){
+    .user-home .city-container h1{
+        font-size: 40px;
+    }
+
     .user-home .buttons-container{
         display: grid;
         grid-template-columns: 1fr;
@@ -122,3 +140,4 @@
         margin: 0;
     }
 }
+
