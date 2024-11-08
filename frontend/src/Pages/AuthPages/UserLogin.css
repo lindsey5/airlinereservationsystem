@@ -49,6 +49,10 @@
     text-align: center;
   }
 
+  .user-login-page .login-container form h1{
+    margin-bottom: 5px;
+  }
+
   @keyframes login-container-animation{
     from{
       opacity: 0;

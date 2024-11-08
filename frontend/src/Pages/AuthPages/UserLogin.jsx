@@ -42,7 +42,6 @@ const UserLogin = () => {
                             <a href="/user/signup">Create an Account</a>
                         </div>
                     </form>
-                   
                 </div>
             </div>
         </main>
