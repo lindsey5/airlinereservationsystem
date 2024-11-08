@@ -108,3 +108,9 @@
     }
 
 }
+
+@media  screen and (max-width: 510px){
+    .search-form{
+        grid-template-columns: 1fr;
+    }
+}

@@ -1,0 +1,110 @@
+.user-home{
+    width: 100%;
+}
+
+.user-home .city-container{
+    width: 100%;
+    height: 350px;
+    position: relative;
+}
+
+.user-home .city-container h1{
+    font-size: 60px;
+    position: absolute;
+    top: 30%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    color: white;
+    text-align: center;
+}
+
+.user-home .city-container .city-buttons{
+    position: absolute;
+    top: 70%;
+    left: 50%;
+    transform: translateX(-50%);
+}
+
+.user-home .city-buttons button{
+    border-radius: 50%;
+    cursor: pointer;
+    width: 13px;
+    height: 13px;
+    border: none;
+    margin: 5px;
+}
+
+.user-home .city{
+    width: 100%;
+    height: 100%;
+}
+
+.user-home .search-form-container{
+    padding: 30px;
+    position: absolute;
+    width: 50%;
+    left: 50%;
+    top: 85%;
+    transform: translateX(-50%);
+    background-color: rgb(240, 240, 240);
+    border-radius: 20px;
+    box-shadow: 0 0 15px 5px rgb(160, 160, 160);
+}
+
+.user-home .search-form-container .select-container{
+    width: 100%;
+}
+
+.user-home .select-container select{
+    height: 25px;
+}
+
+.user-home .buttons-container{
+    margin-top: 20px;
+    display: flex;
+    justify-content: center;
+}
+
+.user-home .buttons-container button{
+    height: 35px;
+}
+
+.user-home .buttons-container button:not(:disabled):hover{
+    cursor: pointer;
+}
+
+.user-home .buttons-container .add-flight-btn{
+    margin-right: 20px;
+}
+
+.user-home .buttons-container .search-btn{
+    padding: 0 40px;
+}
+
+.user-home .buttons-container .search-btn.isValid{
+    background-color: #ff3131;
+    color: white;
+    border: none;
+}
+
+.user-home .buttons-container .search-btn.isValid:hover{
+    background-color: #ff9595;
+}
+
+@media screen and (max-width: 900px) {
+    .user-home .search-form-container{
+        width: 80%;
+    }
+}
+
+@media  screen and (max-width: 510px){
+    .user-home .buttons-container{
+        display: grid;
+        grid-template-columns: 1fr;
+        gap: 30px;
+    }
+
+    .user-home .buttons-container .add-flight-btn{
+        margin: 0;
+    }
+}

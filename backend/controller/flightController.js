@@ -127,6 +127,7 @@ export const get_flight = async (req, res) => {
 
 export const get_popular_destination = async (req, res) => {
     try{
+        const limit = parseInt(req.query.limit);
         const flights = await Flight.aggregate([
             {$group: 
                 {
@@ -136,7 +137,7 @@ export const get_popular_destination = async (req, res) => {
                 }
             },
             { $sort: { totalArrivals: -1 } },
-            { $limit: 12 }
+            { $limit: limit }
         ]);
         if(!flights){
             throw new Error('No popular destination found');

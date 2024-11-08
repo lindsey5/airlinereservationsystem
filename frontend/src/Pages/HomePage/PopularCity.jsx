@@ -4,7 +4,7 @@ import './PopularCity.css'
 
 const PopularCity = ({elementsRef}) => {
     const [flights, setFlights] = useState();
-    const { data } = useFetch('/api/flight/popular');
+    const { data } = useFetch('/api/flight/popular?limit=12');
 
     useEffect(() => {
         const setFetchedData = async () => {
