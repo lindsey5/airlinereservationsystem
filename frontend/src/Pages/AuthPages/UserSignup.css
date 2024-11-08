@@ -33,7 +33,7 @@
     justify-content: space-between;
     align-items: center;
     border-radius: 20px;
-    box-shadow: 0 0 20px 5px rgb(202, 202, 202);
+    box-shadow: 0 0 20px 2px rgb(202, 202, 202);
     background-color: white;
     opacity: 0;
     animation: signup-container-animation 0.8s ease-in-out 1s forwards;

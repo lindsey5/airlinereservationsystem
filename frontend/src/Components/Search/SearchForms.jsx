@@ -50,21 +50,23 @@ const SearchForms = () =>{
     useEffect(() => {
         let flag = true;
         state.flights.forEach((flight, i) => {
-            
             if(i > 0){
                 const prevIndexDate = new Date(new Date(state.flights[i-1].DepartureTime).getTime() + 4 * 60 * 60 * 1000);
-                
-                if(flight.DepartureTime <= prevIndexDate){
+                if(flight.FromCountry !== state.flights[i-1].ToCountry ||
+                    flight.FromCity !== state.flights[i-1].ToCity || flight.DepartureTime <= prevIndexDate
+                 ){
                     flag = false;
                 }
             }
+            const currentDate = new Date();
             if(!flight.FromCountry 
                 || !flight.ToCountry || !flight.ToCity || !flight.FromCity 
-                ||  new Date(flight.DepartureTime) < new Date(new Date().getTime() + 4 * 60 * 60 * 1000)
+                || new Date(flight.DepartureTime) < new Date(currentDate.setHours(currentDate.getHours() + 4))
             ){
                 flag = false;
             }
         });
+        
         dispatch({type: 'SET_VALIDATION', payload: flag})
     }, [state.flights]);
 
@@ -118,7 +120,7 @@ const SearchForms = () =>{
                             onChange={(date) => dispatch({ type: 'SET_DEPARTURE_TIME', date, index: i})}
                             showTimeSelect
                             dateFormat="Pp"
-                            minDate={new Date()} 
+                            minDate={i > 0 ?  new Date(state.flights[i-1].DepartureTime.getTime() + 1 * 24 * 60 * 60 * 1000) : new Date()} 
                         />
                     </div>
                 </div>

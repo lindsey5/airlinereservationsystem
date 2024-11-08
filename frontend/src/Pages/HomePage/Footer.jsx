@@ -78,7 +78,7 @@ const Footer = () => {
       <div className="flex flex-col md:flex-row md:space-x-8 mb-8 lg:mb-0">
         <div className="mb-6 md:mb-0">
           <h2 className="text-xl font-semibold text-white">About TCU Airlines</h2>
-          <ul className="mt-2 text-white list-none pl-0">
+          <ul className="mt-2 text-white list-none pl-0 leading-8">
               <a href="" className="text-white"><li>How to Book</li></a>
               <a href="" className="text-white"> <li>Contact Us</li></a>
               <a href="" className="text-white"><li>Help Center</li></a>
@@ -88,7 +88,7 @@ const Footer = () => {
         </div>
         <div className="mb-6 md:mb-0">
           <h2 className="text-xl font-semibold text-white">Products</h2>
-          <ul className="mt-2 text-white list-none pl-0">
+          <ul className="mt-2 text-white list-none pl-0 leading-8">
             <a href="" className="text-white"> <li>Flights</li></a>
             <a href="" className="text-white"><li>Airport Transfer</li></a>
             <a href="" className="text-white"><li>Things to Do</li></a>
@@ -96,7 +96,7 @@ const Footer = () => {
         </div>
         <div>
           <h2 className="text-xl font-semibold text-white">Other</h2>
-          <ul className="mt-2 text-white list-none pl-0">
+          <ul className="mt-2 text-white list-none pl-0 leading-8">
             <a href="" className="text-white"> <li>#ExplorePH</li> </a>
             <a href="" className="text-white"><li>Privacy Notice</li></a>
             <a href="" className="text-white"><li>Terms & Conditions</li></a>

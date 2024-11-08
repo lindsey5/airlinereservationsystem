@@ -1,4 +1,5 @@
 import { useEffect } from "react";
+import SearchForms from "../../Components/Search/SearchForms";
 
 const UserHome = () => {
 
@@ -8,7 +9,7 @@ const UserHome = () => {
 
     return (
         <div>
-
+            <SearchForms />
         </div>
     )
 

@@ -3,10 +3,12 @@ import './SearchContainer.css';
 import { searchFlight } from "../../Service/searchService";
 import { SearchContext } from "../../Context/SearchContext";
 import SearchForms from "../../Components/Search/SearchForms";
+import { useNavigate } from "react-router-dom";
 
 
 const SearchContainer = () => {
     const { state, dispatch} = useContext(SearchContext);
+    const navigate = useNavigate()
 
     const handleFlightType = (value) => {
         dispatch({type: 'SET_FLIGHT_TYPE', flightType: value})
@@ -46,7 +48,7 @@ const SearchContainer = () => {
                 )}
                 <button 
                     className='search-btn' 
-                    onClick={() => searchFlight(state)}
+                    onClick={() => navigate('/user/login')}
                     disabled={state.isValid ? false : true} 
                     style={{backgroundColor: state.isValid ? 'red' : ''}}>
                     Search
