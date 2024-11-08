@@ -37,14 +37,17 @@
 .user-home .city{
     width: 100%;
     height: 50%;
-    animation: city-image-animation 0.8s ease-out forwards;
+    opacity: 0;
+    animation: city-image-animation 0.8s ease-in-out forwards;
 }
 
 @keyframes city-image-animation{
     from{
-        transform: translateX(-150px);
+        opacity: 0;
+        transform: translateX(-400px);
     }
     to{
+        opacity: 1;
         transform: translateX(0);
     }
 }
