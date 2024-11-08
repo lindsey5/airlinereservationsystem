@@ -1,11 +1,18 @@
-import { Link } from 'react-router-dom'
+import { Link, useNavigate } from 'react-router-dom'
 import './UserSignup.css'
 import {  sendSignupVerificationCode, verifyCode } from '../../Service/Email/emailService'
-import {  useState } from 'react'
+import {  useState, useEffect } from 'react'
 import { handleNegativeAndDecimal } from '../../utils/handleInput'
 import { signupUser } from '../../Service/User/userService'
 
 const UserSignup = () => {
+    const [code, setCode] = useState(['', '', '', '', '', '']);
+    const [showEmail, setShowEmail] = useState(true);
+    const [showVerify, setShowVerify] = useState(false);
+    const [loading, setLoading] = useState(false);
+    const [error, setError] = useState('');
+    const [showOtherDetails, setShowOtherDetails] = useState(false);
+    const navigate = useNavigate();
     const [userData, setUserData] = useState({
         email: '',
         password: '',
@@ -17,12 +24,6 @@ const UserSignup = () => {
         password: false,
         confirmPass: false,
     })
-    const [code, setCode] = useState(['', '', '', '', '', '']);
-    const [showEmail, setShowEmail] = useState(true);
-    const [showVerify, setShowVerify] = useState(false);
-    const [loading, setLoading] = useState(false);
-    const [error, setError] = useState('');
-    const [showOtherDetails, setShowOtherDetails] = useState(false);
 
     useEffect(() => {
         document.title = "User Signup";
@@ -76,7 +77,8 @@ const UserSignup = () => {
             setError(`*Password should be 8 characters or above`)
         }else{
             const {confirmPass, ...data} = userData;
-            signupUser(data);
+            const response = await signupUser(data);
+            response ? navigate('/user/home') : setError('Signup failed')
         }
     }
 
