@@ -1,4 +1,4 @@
-import { useEffect, useState, useContext } from "react";
+import { useEffect, useState, useContext, useRef } from "react";
 import useFetch from "../../hooks/useFetch";
 import SearchForms from "../../Components/Search/SearchForms";
 import './UserHome.css'
@@ -9,7 +9,6 @@ const UserHome = () => {
     const [popularCity, setPopularCity] = useState();
     const [currentCity, setCurrentCity] = useState(0);
     const { state, dispatch} = useContext(SearchContext);
-
     useEffect(() => {
         document.title = "Home";
     },[]);
@@ -35,15 +34,14 @@ const UserHome = () => {
     }, [data])
 
     useEffect(() => {
-        const intervalId = setInterval(() => {
-          // Update currentCity based on the previous value
-          setCurrentCity(prev => 
-            prev === popularCity.length - 1 ? 0 : prev + 1
-          )
-        }, 5000);
-
-        return () => clearInterval(intervalId);
+          const intervalId = setInterval(() => {
+            setCurrentCity((prev) => (prev === popularCity.length - 1 ? 0 : prev + 1));
+    
+          }, 5000);
+    
+          return () => clearInterval(intervalId); 
       }, [popularCity?.length]);
+    
     
 
     const handleFlightType = (value) => {
@@ -55,7 +53,10 @@ const UserHome = () => {
         <div className="user-home">
             {popularCity && 
                 <div className="city-container">
-                    <img className='city' src={popularCity[currentCity].image} alt="" />
+                    {popularCity.map((city, i) => 
+                         <img className='city' src={popularCity[currentCity].image} alt="" style={{display: currentCity == i ? 'block' : 'none'}} />
+                    )}
+                   
                     <h1>{popularCity[currentCity].city}, {popularCity[currentCity].country}</h1>                
                     <div className="city-buttons">
                     {popularCity.map((city, i) => 
@@ -104,9 +105,7 @@ const UserHome = () => {
                         </button>
                     </div>
                     </div>
-
                 </div>
-            
             }
         </div>
     )
