@@ -1,4 +1,4 @@
-import { createContext, useContext, useReducer } from "react";
+import { act, createContext, useContext, useReducer } from "react";
 
 export const SearchContext = createContext();
 
@@ -66,15 +66,15 @@ const setFlights = (state) => {
     const flights = Array.from({ length: state.count }, (_, i) => ({
         showFromCountries: false,
         showToCountries: false,
-        FromCountry: state.flights[i]?.FromCountry || null,
+        FromCountry: state.flights[i]?.FromCountry ||  (i > 0 && state.flights[i-1]?.ToCountry || null),
         ToCountry: state.flights[i]?.ToCountry || null,
         showFromCities: false,
         FromCities: null,
         showToCities: false,
         ToCities: null,
-        FromCity: state.flights[i]?.FromCity || null,
+        FromCity: state.flights[i]?.FromCity || (i > 0 && state.flights[i-1]?.ToCity || null),
         ToCity: state.flights[i]?.ToCity || null,
-        DepartureTime: state.flights[i]?.DepartureTime || (i > 0  ?  new Date(state.flights[i-1].DepartureTime.getTime() + 1 * 24 * 60 * 60 * 1000) : new Date(new Date().getTime() + 4 * 60 * 60 * 1000))
+        DepartureTime: state.flights[i]?.DepartureTime || (i > 0  ?  new Date(state.flights[i-1].DepartureTime.getTime() + 1 * 24 * 60 * 60 * 1000) : new Date(new Date().getTime() + 5 * 60 * 60 * 1000))
     }));
     return flights;
 };
@@ -120,16 +120,29 @@ const toggleShowCities = (state, action) => {
 
 const setCountry = async (state, action) =>{
     const cities = await setCities(action.country);
-    return state.flights.map((flight, i) =>
+    const newFlights = state.flights.map((flight, i) =>
+        
         i === action.index
             ? {
                   ...flight,
+
                   ...(action.route === 'from'
                       ? { FromCountry: action.country, FromCities: cities, FromCity: null, showFromCountries: false, showFromCities: true}
                       : { ToCountry: action.country, ToCities: cities, ToCity: null, showToCountries: false, showToCities: true}),
               }
             : flight
     )
+    if(state.flightType === 'Multi City'){
+        if(action.route === 'from' && action.index > 0){
+            newFlights[action.index - 1].ToCity = null;
+            newFlights[action.index - 1].ToCountry = newFlights[action.index].FromCountry
+        }else if(action.route === 'to' && action.index !== newFlights.length -1){
+            newFlights[action.index + 1].FromCity = null
+            newFlights[action.index + 1].FromCountry = newFlights[action.index].ToCountry;
+        }
+    }
+    
+    return newFlights
 }
 
 const setCities = async (country) => {
@@ -147,7 +160,7 @@ const setCities = async (country) => {
 }
 
 const setCity = (state, action) => {
-    return state.flights.map((flight, i) =>
+    const newFlights =  state.flights.map((flight, i) =>
         i === action.index
             ? {
                   ...flight,
@@ -157,10 +170,21 @@ const setCity = (state, action) => {
               }
             : flight
     )
+
+    if(state.flightType === 'Multi City'){
+        if(action.route === 'from' && action.index > 0){
+            newFlights[action.index - 1].ToCity = newFlights[action.index].FromCity
+        }else if(action.index !== newFlights.length -1){
+            newFlights[action.index + 1].FromCity = newFlights[action.index].ToCity;
+        }
+    }
+    return newFlights
 }
 
 const setDepartureTime = (state, action) => {
-    return state.flights.map((flight, i) =>
+    const newFlights =  state.flights.map((flight, i) =>
             i === action.index ? { ...flight, DepartureTime: action.date } : flight
         )
+    if(action.index !== newFlights.length -1) newFlights[action.index + 1].DepartureTime = new Date(newFlights[action.index].DepartureTime.getTime() + 1 * 24 * 60 * 60 * 1000)
+    return newFlights
 };

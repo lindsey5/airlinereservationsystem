@@ -120,7 +120,7 @@ const SearchForms = () =>{
                             onChange={(date) => dispatch({ type: 'SET_DEPARTURE_TIME', date, index: i})}
                             showTimeSelect
                             dateFormat="Pp"
-                            minDate={i > 0 ?  new Date(state.flights[i-1].DepartureTime.getTime() + 1 * 24 * 60 * 60 * 1000) : new Date()} 
+                            minDate={i > 0 ?  new Date(state.flights[i-1].DepartureTime.getTime() + 1 * 24 * 60 * 60 * 1000) : new Date()}
                         />
                     </div>
                 </div>
