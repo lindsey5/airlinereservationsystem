@@ -84,6 +84,7 @@ const SearchResults = () => {
                         )}
                         </div>
                         <div>
+                        <h4 style={{marginBottom: '5px'}}>{selectedClass}</h4>
                         <h2>{formatPrice(flights.reduce((total, flight) => total + flight.classes.find(classObj => classObj.className === selectedClass).price, 0))}</h2>
                         <button className="select-btn">Select</button>
                         </div>
