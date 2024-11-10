@@ -55,11 +55,11 @@
 
 .user-home .search-form-container{
     padding: 30px;
-    width: 50%;
+    width: 70%;
     margin: auto;
     margin-bottom: 200px;
     transform: translateY(270px);
-    background-color: rgb(240, 240, 240);
+    background-color: white;
     border-radius: 20px;
     box-shadow: 0 0 15px 5px rgb(160, 160, 160);
 }
