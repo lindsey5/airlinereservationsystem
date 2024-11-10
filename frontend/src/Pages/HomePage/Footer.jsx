@@ -81,7 +81,7 @@ const Footer = () => {
           <ul className="mt-2 text-white list-none pl-0 leading-8">
               <li><a href="">How to Book</a></li>
               <li><a href="" >Contact Us</a></li>
-              <li><a href="" >Help Center</a></li>
+              <li><a href="" >FAQs</a></li>
               <li><a href="" >Careers</a></li>
               <li><a href="" >About Us</a></li>
           </ul>
