@@ -4,7 +4,6 @@ export const one_way_search = async (data, flightClass, price) =>{
 
     try{
         const { departureCountry, departureCity, arrivalCity, arrivalCountry, departureTime } = data;
-        console.log(new Date(departureTime))
         const query = {
             'departure.country': departureCountry,
             'departure.city': departureCity,
@@ -104,7 +103,7 @@ export const multi_city_search = async (searchSegments, flightClass) => {
             'arrival.city': arrivalCity,
             'arrival.country': arrivalCountry,
             'classes.className': flightClass,
-            'departure.time' : new Date(departureTime)
+            'departure.time' : {$gte: new Date(departureTime)}
         });
         segmentResults.push(flights);
     }

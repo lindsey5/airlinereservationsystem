@@ -6,6 +6,7 @@ import { formatDate, formatToLongDate, getTime } from "../../utils/dateUtils";
 import SearchForms from "../../Components/Search/SearchForms";
 import ButtonsContainer from "../../Components/Search/ButtonsContainer";
 import SelectContainer from "../../Components/Search/SelectContainer";
+import { formatPrice } from "../../utils/formatPrice";
 
 const SearchResults = () => {
     const {state} = useContext(SearchContext);
@@ -14,19 +15,13 @@ const SearchResults = () => {
 
     const fetchResults = async () => {
         if (state) {
-            setResults( await searchFlight(state));
+            setResults(await searchFlight(state));
         }
     }
-    
 
     useEffect(() => {
         fetchResults();
     }, []);
-
-    useEffect(() => {
-        console.log(results)
-    },[results])
-
 
     return (
         <div className="search-results">
@@ -50,7 +45,7 @@ const SearchResults = () => {
                     <div className="forms-container">
                         <SelectContainer />
                         <SearchForms />
-                        <ButtonsContainer/>
+                        <ButtonsContainer handleSearch={fetchResults}/>
                     </div>}
                 </div>
                 <div className="results-container">
@@ -77,6 +72,7 @@ const SearchResults = () => {
                         )}
                         </div>
                         <div>
+                        <h2>{formatPrice(flights.reduce((total, flight) => total + flight.classes.find(classObj => classObj.className === state.flightClass).price, 0))}</h2>
                         <button className="select-btn">Select</button>
                         </div>
                     </div>
