@@ -134,15 +134,16 @@ const SearchForms = () =>{
                         </LocalizationProvider>
                     </div>
                 </div>
-                <div>
                 {state.flightType === 'Multi City' && i > 1 && 
-                    <button className='remove-btn' onClick={() => dispatch({ type: 'REDUCE_COUNT'})}>
-                    X
-                    </button>}
+                    <div>
+                        <button className='remove-btn' onClick={() => dispatch({ type: 'REDUCE_COUNT'})}>
+                        X
+                        </button>
+                    </div>
+                }
                 </div>
-            </div>
-    ))}
-    </>
+                ))}
+            </>
     )
 }
 
