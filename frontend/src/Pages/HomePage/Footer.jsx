@@ -8,21 +8,21 @@ const Footer = () => {
           TCU Airlines <span className="text-white">✈</span>
         </h1>
         <div className="mt-4 flex flex-wrap shadow-md flex justify-center rounded-md">
-          <img
+        <a href="" ><img
               alt="IATA Accredited"
               src="https://ik.imagekit.io/tvlk/image/imageResource/2017/12/13/1513150321127-5096be77d2a19401b476853e54ba2cc6.svg?tr=h-35,q-75"
               className="inline-block mr-2 mb-2 w-16 h-auto"
-          />
-          <img
+          /></a>
+          <a href="" ><img
               alt="BSI Certified"
               src="https://ik.imagekit.io/tvlk/image/imageResource/2021/05/10/1620638808154-e6c02ed786235ab59252628a9aa9b715.png"
               className="inline-block mr-2 mb-2 w-16 h-auto object-contain"
-          />
-          <img
+          /></a>
+          <a href="" ><img
               alt="PCI DSS Compliant"
               src="https://ik.imagekit.io/tvlk/image/imageResource/2024/03/21/1711004601798-5a0a152c4bdede9bfe32439875879609.png"
               className="inline-block w-16 h-auto object-contain"
-          />
+          /></a>
         </div>
         <div className="mt-8">
           <h2 className="text-xl font-semibold mb-2 text-white">
@@ -30,46 +30,46 @@ const Footer = () => {
           </h2>
           <div className="grid grid-cols-3 gap-4">
             <div className="bg-white p-2 shadow-md flex justify-center rounded-md">
-              <img
+            <a href="" ><img
                 alt="Payment partner VISA"
                 src="https://ik.imagekit.io/tvlk/image/imageResource/2019/05/20/1558339277845-57216452ce8a7cda236fa5392b9dc8a1.png?tr=h-19,q-75,w-57"
                 className="w-12 h-auto inline-block"
-              />
+              /></a>
             </div>
             <div className="bg-white p-2 shadow-md flex justify-center rounded-md">
-              <img
+            <a href="" ><img
                 alt="Payment partner MasterCard"
                 src="https://ik.imagekit.io/tvlk/image/imageResource/2019/05/20/1558339280874-69888d44b71faf69435ee533506d91e2.png?tr=h-19,q-75,w-57"
                 className="w-12 h-auto inline-block"
-              />
+              /></a>
             </div>
             <div className="bg-white p-2 shadow-md flex justify-center rounded-md">
-              <img
-                alt="Payment partner Gcash"
+            <a href="" >
+              <img alt="Payment partner Gcash"
                 src="https://cdn.media.amplience.net/i/cebupacificair/GCash-276x96?fmt=auto&maxW=1920&maxH=1920&h=80&qlt=100"
-                className="w-12 h-auto inline-block"
-              />
+                className="w-12 h-auto inline-block" />
+              </a>
             </div>
             <div className="bg-white p-2 shadow-md flex justify-center rounded-md">
-              <img
+            <a href="" ><img
                 alt="Payment partner Maya"
                 src="/icons/paymaya.png"
                 className="w-12 h-auto inline-block"
-              />
+              /></a>
             </div>
             <div className="bg-white p-2 shadow-md flex justify-center rounded-md">
-              <img
+            <a href="" ><img
                 alt="Payment partner Discover"
                 src="https://ik.imagekit.io/tvlk/image/imageResource/2019/05/20/1558339316000-c0152d7d4fdce9b6421dd9559964ba55.png?tr=h-19,q-75,w-57"
                 className="w-12 h-auto inline-block"
-              />
+              /></a>
             </div>
             <div className="bg-white p-2 shadow-md flex justify-center rounded-md">
-              <img
+            <a href="" ><img
                 alt="Payment partner UnionPay"
                 src="https://ik.imagekit.io/tvlk/image/imageResource/2019/05/20/1558339313470-3bbccd76ffb68c94739fce5d40a2e8af.png?tr=h-19,q-75,w-57"
                 className="w-12 h-auto inline-block"
-              />
+              /></a>
             </div>
           </div>
         </div>
@@ -79,28 +79,28 @@ const Footer = () => {
         <div className="mb-6 md:mb-0">
           <h2 className="text-xl font-semibold text-white">About TCU Airlines</h2>
           <ul className="mt-2 text-white list-none pl-0 leading-8">
-              <a href="" className="text-white"><li>How to Book</li></a>
-              <a href="" className="text-white"> <li>Contact Us</li></a>
-              <a href="" className="text-white"><li>Help Center</li></a>
-              <a href="" className="text-white"><li>Careers</li></a>
-              <a href="" className="text-white"><li>About Us</li></a>
+              <li><a href="">How to Book</a></li>
+              <li><a href="" >Contact Us</a></li>
+              <li><a href="" >Help Center</a></li>
+              <li><a href="" >Careers</a></li>
+              <li><a href="" >About Us</a></li>
           </ul>
         </div>
         <div className="mb-6 md:mb-0">
           <h2 className="text-xl font-semibold text-white">Products</h2>
           <ul className="mt-2 text-white list-none pl-0 leading-8">
-            <a href="" className="text-white"> <li>Flights</li></a>
-            <a href="" className="text-white"><li>Airport Transfer</li></a>
-            <a href="" className="text-white"><li>Things to Do</li></a>
+            <li><a href="" >Flights</a></li>
+            <li><a href="" >Airport Transfer</a></li>
+            <li><a href="" >Things to Do</a></li>
           </ul>
         </div>
         <div>
           <h2 className="text-xl font-semibold text-white">Other</h2>
           <ul className="mt-2 text-white list-none pl-0 leading-8">
-            <a href="" className="text-white"> <li>#ExplorePH</li> </a>
-            <a href="" className="text-white"><li>Privacy Notice</li></a>
-            <a href="" className="text-white"><li>Terms & Conditions</li></a>
-            <a href="" className="text-white"><li>Vulnerability Disclosure Program</li></a>
+            <li><a href="" >#ExplorePH</a></li> 
+            <li><a href="" >Privacy Notice</a></li>
+            <li><a href="" >Terms & Conditions</a></li>
+            <li><a href="" >Vulnerability Disclosure Program</a></li>
           </ul>
         </div>
       </div>
