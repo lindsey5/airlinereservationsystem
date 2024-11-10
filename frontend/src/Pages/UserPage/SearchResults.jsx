@@ -12,9 +12,11 @@ const SearchResults = () => {
     const {state} = useContext(SearchContext);
     const [results, setResults] = useState();
     const [showEdit, setShowEdit] = useState(false);
+    const [selectedClass, setSelectedClass] = useState();
 
     const fetchResults = async () => {
         if (state) {
+            setSelectedClass(state.flightClass)
             setResults(await searchFlight(state));
         }
     }
@@ -31,7 +33,7 @@ const SearchResults = () => {
                         <div className="search-details">
                             {state.flightType}
                             <div className="line"></div>
-                            {state.flightClass}
+                            {selectedClass}
                             <div className="line"></div>
                             <h3>{state.flights[0].FromCity && state.flights[0].FromCity}</h3>
                             <img src="/icons/airplane.png" alt="" />
@@ -72,7 +74,7 @@ const SearchResults = () => {
                         )}
                         </div>
                         <div>
-                        <h2>{formatPrice(flights.reduce((total, flight) => total + flight.classes.find(classObj => classObj.className === state.flightClass).price, 0))}</h2>
+                        <h2>{formatPrice(flights.reduce((total, flight) => total + flight.classes.find(classObj => classObj.className === selectedClass).price, 0))}</h2>
                         <button className="select-btn">Select</button>
                         </div>
                     </div>

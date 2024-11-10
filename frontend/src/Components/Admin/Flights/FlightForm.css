@@ -1,12 +1,14 @@
-.admin-form .react-datepicker__input-container input{
-    height: 25px;
-}
 
 .admin-form .container.first-form .inputs{
     display: grid;
     margin-bottom: 20px;
     grid-template-columns: 1fr 1fr;
     gap: 50px;
+    align-items: center;
+}
+
+.admin-form .container.first-form .inputs > div p{
+    margin-top: 0;
 }
 
 .admin-form .departure,

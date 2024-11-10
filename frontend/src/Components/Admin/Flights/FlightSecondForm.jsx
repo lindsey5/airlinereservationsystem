@@ -46,6 +46,7 @@ const FlightSecondForm = ({state, dispatch, close}) => {
         <div className="container">
              <span className='close'onClick={close}>X</span>
             <form onSubmit={createFlight}>
+                <p>Plane ID: {state.airplane.id}</p>
                 <h2>Select Classes</h2>
                 <div style={{marginTop: '50px'}}>
                     <label htmlFor="ecomony">Economy</label>

@@ -89,7 +89,7 @@ export const create_flight = async (req, res) => {
         ]);
 
         if (calculateSeats(filtered) !== airplane.passengerSeatingCapacity) {
-            throw new Error(`The total number of seats must equal the plane's seating capacity of ${airplane.passengerSeatingCapacity}.`);
+            throw new Error(`The total number of seats must equal the plane's seating capacity of ${airplane.passengerSeatingCapacity} (${airplane.columns}).`);
         }
         const newSeats = createSeats(airplane.passengerSeatingCapacity, airplane.columns);
         

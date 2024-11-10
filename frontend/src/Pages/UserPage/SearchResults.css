@@ -102,7 +102,6 @@
 .search-results .flight{
     display: flex;
     width: 100%;
-    justify-content: center;
     align-items: center;
 }
 
@@ -114,14 +113,13 @@
 
 .search-results .flight div{
     text-align: center;
-    width: 200px;
     font-size: 14px;
 }
 
 .search-results .flight hr{
     background-color: rgb(196, 196, 196);
     height: 2px;
-    width: 150px;
+    width: 30%;
     margin: 0 20px;
     border: none;
 }

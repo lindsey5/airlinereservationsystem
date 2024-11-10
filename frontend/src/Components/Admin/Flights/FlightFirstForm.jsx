@@ -1,6 +1,9 @@
 import { useEffect, useState } from "react"
 import useFetch from "../../../hooks/useFetch"
-import DatePicker from "react-datepicker"
+import dayjs, { Dayjs } from 'dayjs';
+import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs';
+import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider';
+import { DateTimePicker } from '@mui/x-date-pickers/DateTimePicker';
 
 const FlightFirstForm = ({state, dispatch, handleSubmit, close}) => {
     const { data: airports } = useFetch('/api/airport/airports')
@@ -141,14 +144,19 @@ const FlightFirstForm = ({state, dispatch, handleSubmit, close}) => {
                             </div>
                         </div>
                         <div>
-                            <p>Time</p>
-                            <DatePicker 
-                                selected={state.departure.time}
-                                onChange={(date) => dispatch({type: 'SET_DEPARTURE_TIME', payload: date})}
-                                showTimeSelect
-                                dateFormat="Pp"
-                                minDate={new Date(new Date().getTime() + 24 * 60 * 60 * 1000)} 
-                            />
+                            <p>Departure Time</p>
+                            <LocalizationProvider dateAdapter={AdapterDayjs}>
+                                <DateTimePicker 
+                                sx={{
+                                    maxWidth: '200px', 
+                                    '& .MuiInputBase-root': {
+                                    fontSize: '12px',
+                                    }
+                                }}
+                                minDateTime={dayjs(new Date(new Date().getTime() + 24 * 60 * 60 * 1000))}
+                                value={dayjs(state.departure.time)}
+                                onChange={(newValue) => dispatch({type: 'SET_DEPARTURE_TIME', payload:newValue.$d})}/>
+                            </LocalizationProvider>    
                         </div>
                     </div>
 
@@ -180,14 +188,19 @@ const FlightFirstForm = ({state, dispatch, handleSubmit, close}) => {
                             </div>
                         </div>
                         <div>
-                            <p>Time</p>
-                            <DatePicker 
-                                selected={state.arrival.time}
-                                onChange={(date) => dispatch({type: 'SET_ARRIVAL_TIME', payload: date})}
-                                showTimeSelect
-                                dateFormat="Pp"
-                                minDate={new Date(new Date().getTime() + 24 * 60 * 60 * 1000)} 
-                            />
+                            <p>Arrival Time</p>
+                            <LocalizationProvider dateAdapter={AdapterDayjs}>
+                                <DateTimePicker 
+                                sx={{
+                                    maxWidth: '200px', 
+                                    '& .MuiInputBase-root': {
+                                    fontSize: '12px',
+                                    }
+                                }}
+                                minDateTime={dayjs(new Date(new Date().getTime() + 24 * 60 * 60 * 1000))}
+                                value={dayjs(state.arrival.time)}
+                                onChange={(newValue) => dispatch({type: 'SET_ARRIVAL_TIME', payload:newValue.$d})}/>
+                            </LocalizationProvider>  
                         </div>
                     </div>
                 </div>
