@@ -28,7 +28,6 @@ const SearchResults = () => {
     return (
         <div className="search-results">
             <div className="results-parent-container">
-                <div className="search-form-container">
                     <div className="search-details-container">
                         <div className="search-details">
                             {state.flightType}
@@ -49,9 +48,8 @@ const SearchResults = () => {
                         <SearchForms />
                         <ButtonsContainer handleSearch={fetchResults}/>
                     </div>}
-                </div>
                 <div className="results-container">
-                {results && results.map((flights, i) => 
+                {results ? results.map((flights, i) => 
                     <div key={i} className="flights-container">
                         <div>
                         {flights.map(flight => 
@@ -62,14 +60,20 @@ const SearchResults = () => {
                                     <h2>{getTime(flight.departure.time)}</h2>
                                     <p>{flight.departure.airport} ({flight.departure.airport_code})</p>
                                 </div>
+                                <div className="mid-div">
                                 <hr />
                                 <img className='plane-icon' src="/icons/airplane.png" alt="" />
                                 <hr />
+                                </div>
                                 <div>
                                     <p>{formatToLongDate(flight.arrival.time)} - Arrival</p>
                                     <h2>{getTime(flight.arrival.time)}</h2>
                                     <p>{flight.arrival.airport} ({flight.arrival.airport_code})</p>
                                 </div>
+                                <h3 className="hours-difference">{
+                                (new Date(flight.arrival.time) - new Date(flight.departure.time)) / (1000 * 60 * 60)
+                                } hours
+                                </h3>
                             </div>
                         )}
                         </div>
@@ -78,7 +82,14 @@ const SearchResults = () => {
                         <button className="select-btn">Select</button>
                         </div>
                     </div>
-                )}
+                ) : <div className="no-flights">
+                    <div>
+                    <img src="/icons/no-travelling.png" alt="" />
+                    <h1>No Flights Found</h1>
+                    <p>Try another departure city, arrival city or departure date</p>
+                    </div>
+                    
+                    </div>}
                 <div></div>
                 </div>
             </div>

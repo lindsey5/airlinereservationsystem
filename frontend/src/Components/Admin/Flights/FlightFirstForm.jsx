@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react"
 import useFetch from "../../../hooks/useFetch"
-import dayjs, { Dayjs } from 'dayjs';
+import dayjs from 'dayjs';
 import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs';
 import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider';
 import { DateTimePicker } from '@mui/x-date-pickers/DateTimePicker';

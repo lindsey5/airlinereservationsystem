@@ -10,12 +10,6 @@
     width: 80%;
 }
 
-.search-results .search-form-container{
-    width: 100%;
-    margin: 20px 0;
-    box-sizing: border-box;
-}
-
 .search-results .search-details-container button{
     background-color: white;
     color: #ff3131;
@@ -40,8 +34,8 @@
     flex-wrap: wrap;
     padding: 20px 10px;
     box-sizing: border-box;
-    margin-bottom: 15px;
     border-radius: 15px;
+    margin: 20px 0;
 }
 
 .search-results .search-details{
@@ -58,7 +52,7 @@
 }
 
 .search-results .search-details img{
-    height: 20px;
+    height: 30px;
     margin: 0 15px;
 }
 
@@ -76,7 +70,7 @@
 }
 
 .search-results .results-container{
-    
+    width: 100%;
 }
 
 .search-results .flights-container{
@@ -103,6 +97,19 @@
     display: flex;
     width: 100%;
     align-items: center;
+    position: relative;
+}
+
+.search-results .flight .mid-div{
+    display: flex;
+    width: 100%;
+    align-items: center;
+}
+
+.search-results .flight .hours-difference{
+    position: absolute;
+    top: 55%;
+    left: 51%;
 }
 
 .search-results .flight .airline{
@@ -119,7 +126,7 @@
 .search-results .flight hr{
     background-color: rgb(196, 196, 196);
     height: 2px;
-    width: 30%;
+    width: 100%;
     margin: 0 20px;
     border: none;
 }
@@ -145,4 +152,65 @@
 
 .search-results .flights-container > div:last-child > button:hover{
     background-color: #ff9393;
+}
+
+.search-results .no-flights{
+    width: 100%;
+    height: calc(100vh - 220px);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.search-results .no-flights img{
+    height: 200px;
+}
+
+.search-results .no-flights p{
+    color: #808080;
+}
+
+.search-results .no-flights > div{
+    text-align: center;
+}
+
+@media screen and (max-width: 800px) {
+    .search-results .results-parent-container{
+        width: 95%;
+    }
+    
+    .search-results .search-details-container{
+        justify-content: center;
+    }
+}
+
+@media screen and (max-width: 650px){
+
+    .search-results .flights-container{
+        flex-direction: column;
+        justify-content: center;
+    }
+
+    .search-results .flight{
+        flex-direction: column;
+    }
+
+    .search-results .flight .airline{
+        margin: 0;
+    }
+
+    
+    .search-results .flight .mid-div{
+        margin: 50px 0;
+    }
+
+    .search-results .flight .hours-difference{
+        left: 50%;
+        top: 60%;
+        transform: translateX(-50%);
+    }
+
+    .search-results .flights-container > div:first-child{
+        margin: 0;
+    }
 }
