@@ -62,7 +62,7 @@ const SearchForms = () =>{
             }
             const currentDate = new Date();
             if(!flight.FromCountry 
-                || !flight.ToCountry || !flight.ToCity || !flight.FromCity 
+                || !flight.ToCountry || !flight.ToCity || !flight.FromCity || flight.FromCity === flight.ToCity
                 || new Date(flight.DepartureTime) < new Date(currentDate.setHours(currentDate.getHours() + 4))
             ){
                 flag = false;
