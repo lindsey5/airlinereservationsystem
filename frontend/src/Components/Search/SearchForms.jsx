@@ -1,9 +1,11 @@
 import useFetch from "../../hooks/useFetch";
 import { SearchContext } from "../../Context/SearchContext";
 import { useContext, useEffect } from "react";
-import DatePicker from 'react-datepicker';
-import "react-datepicker/dist/react-datepicker.css";
 import './SearchForm.css'
+import dayjs, { Dayjs } from 'dayjs';
+import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs';
+import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider';
+import { DateTimePicker } from '@mui/x-date-pickers/DateTimePicker';
 
 const SearchForms = () =>{
     const { data: countries } = useFetch('/api/countries');
@@ -115,14 +117,21 @@ const SearchForms = () =>{
                 <div className="depart-container">
                     <img src="/icons/time.png" alt="" />
                     <div>
-                        <span style={{marginRight: '10px'}}>Departure Date:</span>
-                        <DatePicker
-                            selected={new Date(flight.DepartureTime)}
-                            onChange={(date) => dispatch({ type: 'SET_DEPARTURE_TIME', date, index: i})}
-                            dateFormat="Pp"
-                            showTimeSelect 
-                            minDate={i > 0 ?  new Date(state.flights[i-1].DepartureTime).getTime() + 1 * 24 * 60 * 60 * 1000 : new Date()}
-                        />
+                        <LocalizationProvider dateAdapter={AdapterDayjs}>
+                        <DateTimePicker 
+                        label={'Departure Date'} 
+                        PopperProps={{
+                            sx: {
+                              '& .MuiPaper-root': {
+                                backgroundColor: 'red',
+                                border: '1px solid black',
+                              }
+                            }
+                          }}
+                        minDateTime={i > 0 ?  dayjs(new Date(state.flights[i-1].DepartureTime).getTime() + 1 * 24 * 60 * 60 * 1000) : dayjs(new Date(new Date().setHours(new Date().getHours() + 4)))}
+                        value={dayjs(flight.DepartureTime)}
+                        onChange={(newValue) => dispatch({type: 'SET_DEPARTURE_TIME', date: newValue.$d, index: i})}/>
+                        </LocalizationProvider>
                     </div>
                 </div>
                 <div>

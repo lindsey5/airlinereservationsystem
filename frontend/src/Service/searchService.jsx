@@ -1,4 +1,3 @@
-import { formatDate } from "../utils/dateUtils";
 
 export const searchFlight = async(state) => {
     const searchData = state.flights.map(flight => {

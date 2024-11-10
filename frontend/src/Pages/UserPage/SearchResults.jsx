@@ -6,7 +6,6 @@ import { formatDate, formatToLongDate, getTime } from "../../utils/dateUtils";
 import SearchForms from "../../Components/Search/SearchForms";
 import ButtonsContainer from "../../Components/Search/ButtonsContainer";
 import SelectContainer from "../../Components/Search/SelectContainer";
-import { formatPrice } from "../../utils/formatPrice";
 
 const SearchResults = () => {
     const {state} = useContext(SearchContext);
@@ -14,10 +13,11 @@ const SearchResults = () => {
     const [showEdit, setShowEdit] = useState(false);
 
     const fetchResults = async () => {
-        if(state){
-            setResults(await searchFlight(state));
+        if (state) {
+            setResults( await searchFlight(state));
         }
     }
+    
 
     useEffect(() => {
         fetchResults();
@@ -77,12 +77,6 @@ const SearchResults = () => {
                         )}
                         </div>
                         <div>
-                        <h2>
-                        {formatPrice(results.map(flights => 
-                            flights.reduce((total, flight) => total + flight.classes.find(classObj => classObj.className === state.flightClass).price, 0)
-
-                        ))}
-                        </h2>
                         <button className="select-btn">Select</button>
                         </div>
                     </div>

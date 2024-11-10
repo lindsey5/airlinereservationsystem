@@ -4,6 +4,7 @@ export const one_way_search = async (data, flightClass, price) =>{
 
     try{
         const { departureCountry, departureCity, arrivalCity, arrivalCountry, departureTime } = data;
+        console.log(new Date(departureTime))
         const query = {
             'departure.country': departureCountry,
             'departure.city': departureCity,
