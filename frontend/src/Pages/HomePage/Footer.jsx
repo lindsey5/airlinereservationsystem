@@ -79,28 +79,28 @@ const Footer = () => {
         <div className="mb-6 md:mb-0">
           <h2 className="text-xl font-semibold text-white">About TCU Airlines</h2>
           <ul className="mt-2 text-white list-none pl-0 leading-8">
-              <li><a href="">How to Book</a></li>
-              <li><a href="" >Contact Us</a></li>
-              <li><a href="" >FAQs</a></li>
-              <li><a href="" >Careers</a></li>
-              <li><a href="" >About Us</a></li>
+              <li><a href="" class= "text-white">How to Book</a></li>
+              <li><a href="" class= "text-white">Contact Us</a></li>
+              <li><a href="" class= "text-white">FAQs</a></li>
+              <li><a href="" class= "text-white">Careers</a></li>
+              <li><a href="" class= "text-white">About Us</a></li>
           </ul>
         </div>
         <div className="mb-6 md:mb-0">
           <h2 className="text-xl font-semibold text-white">Products</h2>
           <ul className="mt-2 text-white list-none pl-0 leading-8">
-            <li><a href="" >Flights</a></li>
-            <li><a href="" >Airport Transfer</a></li>
-            <li><a href="" >Things to Do</a></li>
+            <li><a href="" class= "text-white">Flights</a></li>
+            <li><a href="" class= "text-white">Airport Transfer</a></li>
+            <li><a href="" class= "text-white">Things to Do</a></li>
           </ul>
         </div>
         <div>
           <h2 className="text-xl font-semibold text-white">Other</h2>
           <ul className="mt-2 text-white list-none pl-0 leading-8">
-            <li><a href="" >#ExplorePH</a></li> 
-            <li><a href="" >Privacy Notice</a></li>
-            <li><a href="" >Terms & Conditions</a></li>
-            <li><a href="" >Vulnerability Disclosure Program</a></li>
+            <li><a href="" class= "text-white">#ExplorePH</a></li> 
+            <li><a href="" class= "text-white">Privacy Notice</a></li>
+            <li><a href="" class= "text-white">Terms & Conditions</a></li>
+            <li><a href="" class= "text-white">Vulnerability Disclosure Program</a></li>
           </ul>
         </div>
       </div>
