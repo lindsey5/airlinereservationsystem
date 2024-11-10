@@ -69,13 +69,6 @@ const UserHome = () => {
           }, 5000);
           return () => clearInterval(intervalId); 
       }, [popularCity]);
-    
-    
-
-    const handleFlightType = (value) => {
-        dispatch({type: 'SET_FLIGHT_TYPE', flightType: value})
-        dispatch({type: 'SET_COUNT', count: value !== 'Multi City' ? 1 : 2})
-    };
 
     return (
         <div className="user-home">
@@ -84,7 +77,7 @@ const UserHome = () => {
                          <img key={i} className='city' src={popularCity[currentCity].image} alt="" style={{display: currentCity == i ? 'block' : 'none'}} />
                     )}
                    
-                    <h1>{popularCity && `${popularCity[currentCity].city} , ${popularCity[currentCity].country}`}</h1>                
+                    <h1>{popularCity && `${popularCity[currentCity].city}, ${popularCity[currentCity].country}`}</h1>                
                     <div className="city-buttons">
                     {popularCity && popularCity.map((city, i) => 
                         <button 

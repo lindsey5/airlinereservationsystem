@@ -41,6 +41,8 @@
 .search-results .search-details{
     display: flex;
     align-items: center;
+    justify-content: center;
+    flex-wrap: wrap;
     font-size: 14px;
 }
 
@@ -182,10 +184,13 @@
     .search-results .search-details-container{
         justify-content: center;
     }
+
+    .search-results .search-details-container button{
+        margin-top: 20px;
+    }
 }
 
 @media screen and (max-width: 650px){
-
     .search-results .flights-container{
         flex-direction: column;
         justify-content: center;
