@@ -81,7 +81,7 @@
     align-items: center;
     padding: 20px;
     box-sizing: border-box;
-    margin-bottom: 30px;
+    margin: 30px 0;
     border-radius: 20px;
 }
 
@@ -178,7 +178,7 @@
     .search-results .results-parent-container{
         width: 95%;
     }
-    
+
     .search-results .search-details-container{
         justify-content: center;
     }

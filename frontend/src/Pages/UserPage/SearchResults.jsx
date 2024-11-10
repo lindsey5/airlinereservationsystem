@@ -13,11 +13,14 @@ const SearchResults = () => {
     const [results, setResults] = useState();
     const [showEdit, setShowEdit] = useState(false);
     const [selectedClass, setSelectedClass] = useState();
+    const [loading, setLoading] = useState(true);
 
     const fetchResults = async () => {
         if (state) {
+            setLoading(true)
             setSelectedClass(state.flightClass)
             setResults(await searchFlight(state));
+            setLoading(false);
         }
     }
 
@@ -49,7 +52,7 @@ const SearchResults = () => {
                         <ButtonsContainer handleSearch={fetchResults}/>
                     </div>}
                 <div className="results-container">
-                {results ? results.map((flights, i) => 
+                {results && !loading  && results.map((flights, i) => 
                     <div key={i} className="flights-container">
                         <div>
                         {flights.map(flight => 
@@ -82,14 +85,16 @@ const SearchResults = () => {
                         <button className="select-btn">Select</button>
                         </div>
                     </div>
-                ) : <div className="no-flights">
-                    <div>
-                    <img src="/icons/no-travelling.png" alt="" />
-                    <h1>No Flights Found</h1>
-                    <p>Try another departure city, arrival city or departure date</p>
+                )}
+                {!loading && !results && 
+                    <div className="no-flights">
+                        <div>
+                            <img src="/icons/no-travelling.png" alt="" />
+                            <h1>No Flights Found</h1>
+                            <p>Try another departure city, arrival city or departure date</p>
+                        </div>
                     </div>
-                    
-                    </div>}
+                }
                 <div></div>
                 </div>
             </div>
