@@ -10,8 +10,6 @@ export const searchFlight = async(state) => {
         }
     });
 
-    console.log("Search Data: ", searchData)
-
     try{
         const response = await fetch('/api/flight/search',
             {

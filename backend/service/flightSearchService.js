@@ -21,11 +21,7 @@ export const one_way_search = async (data, flightClass, price) =>{
         const sortedFlights = flights.sort((current, next) => {
             return current.classes.find(classObj => classObj.className === flightClass).price - next.classes.find(classObj => classObj.className === flightClass).price;
         });
-        
-        if(sortedFlights.length < 1){
-            throw new Error('No flights found');
-        }
-
+    
         const flightsArr = [];
         sortedFlights.forEach(flight => flightsArr.push([flight]));
         return flightsArr;

@@ -10,7 +10,7 @@ import { formatPrice } from "../../utils/formatPrice";
 
 const SearchResults = () => {
     const {state} = useContext(SearchContext);
-    const [results, setResults] = useState();
+    const [results, setResults] = useState([]);
     const [showEdit, setShowEdit] = useState(false);
     const [selectedClass, setSelectedClass] = useState();
     const [loading, setLoading] = useState(true);
@@ -90,7 +90,7 @@ const SearchResults = () => {
                         </div>
                     </div>
                 )}
-                {!loading && !results && 
+                {!loading && results?.length < 1&& 
                     <div className="no-flights">
                         <div>
                             <img src="/icons/no-travelling.png" alt="" />
