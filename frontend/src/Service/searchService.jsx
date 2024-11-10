@@ -27,7 +27,7 @@ export const searchFlight = async(state) => {
         );
         if(response.ok){
             const results = await response.json();
-            return results  
+            return results
         }
     }catch(err){
         console.error(err);
