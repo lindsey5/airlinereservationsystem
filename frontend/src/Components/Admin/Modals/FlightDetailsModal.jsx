@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react"
 import './FlightModal.css';
-import { formatDate } from "../../../utils/formatDate";
+import { formatDate } from "../../../utils/dateUtils";
 import { get_pilot } from "../../../Service/PilotService";
 import ViewSeatsModal from "./ViewSeatsModal";
 

@@ -24,6 +24,7 @@ import { PublicRoute } from './routes/PublicRoute';
 import { UserRoute } from './routes/UserRoute';
 import UserLayout from './Layouts/UserLayout';
 import UserHome from './Pages/UserPage/UserHome';
+import SearchResults from './Pages/UserPage/SearchResults';
 
 const router = createBrowserRouter(
   createRoutesFromElements(
@@ -32,24 +33,24 @@ const router = createBrowserRouter(
         <Route path="/" element={<Home />} />
         <Route path='/add-admin' element={<AddAdmin />} />
         <Route path='/admin/login' element={<AdminLogIn />} />
-        <Route path='/user/'>
+        <Route path='/user/' >
           <Route path='login' element={<UserLogin />} />
           <Route path='signup' element={<UserSignup />} />
         </Route>
       </Route>
 
-      <Route path='/User/'>
+      <Route path='/user/'>
         <Route element={<UserRoute />}>
           <Route element={<UserLayout />}>
-            <Route path='Home' element={<UserHome />}/>
+            <Route path='home' element={<UserHome />} />
+            <Route path='search-results' element={<SearchResults />} />
           </Route>
         </Route>
       </Route>
-      
 
       <Route path='/admin/'>
         <Route element={<AdminLayout />}>
-          <Route path='dashboard' element={<AdminDashboard />}/>
+          <Route path='dashboard' element={<AdminDashboard />} />
           <Route path='pilots' element={<AdminPilots />} />
           <Route path='airplanes' element={<AdminAirplanes />} />
           <Route path='flights' element={<AdminFlights />} />
@@ -61,6 +62,7 @@ const router = createBrowserRouter(
     </>
   )
 );
+
 
 createRoot(document.getElementById('root')).render(
   <StrictMode>

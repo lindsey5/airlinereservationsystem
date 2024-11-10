@@ -5,6 +5,8 @@ import './UserHome.css'
 import { SearchContext } from "../../Context/SearchContext";
 import Footer from "../HomePage/Footer";
 import { useNavigate } from "react-router-dom";
+import ButtonsContainer from "../../Components/Search/ButtonsContainer";
+import SelectContainer from "../../Components/Search/SelectContainer";
 
 const UserHome = () => {
     const { data } = useFetch('/api/flight/popular?limit=5');
@@ -65,9 +67,8 @@ const UserHome = () => {
             setCurrentCity((prev) => (prev === popularCity.length - 1 ? 0 : prev + 1));
     
           }, 5000);
-    
           return () => clearInterval(intervalId); 
-      }, [popularCity?.length]);
+      }, [popularCity]);
     
     
 
@@ -78,63 +79,39 @@ const UserHome = () => {
 
     return (
         <div className="user-home">
-            {popularCity && 
                 <div className="city-container">
-                    {popularCity.map((city, i) => 
-                         <img className='city' src={popularCity[currentCity].image} alt="" style={{display: currentCity == i ? 'block' : 'none'}} />
+                    {popularCity && popularCity.map((city, i) => 
+                         <img key={i} className='city' src={popularCity[currentCity].image} alt="" style={{display: currentCity == i ? 'block' : 'none'}} />
                     )}
                    
-                    <h1>{popularCity[currentCity].city}, {popularCity[currentCity].country}</h1>                
+                    <h1>{popularCity && `${popularCity[currentCity].city} , ${popularCity[currentCity].country}`}</h1>                
                     <div className="city-buttons">
-                    {popularCity.map((city, i) => 
+                    {popularCity && popularCity.map((city, i) => 
                         <button 
+                            key={city.city}
                             onClick={() => setCurrentCity(i)}
                             style={{background: i === currentCity ? '#ff3131' : ''}}
                         ></button>
                     )}
                     </div>
                     <div className="search-form-container">
-                        <div className="select-container">
-                            <select
-                                name="flightType"
-                                style={{ marginRight: '20px' }}
-                                onChange={(e) => handleFlightType(e.target.value)}
-                            >
-                                <option value="One Way">One Way</option>
-                                <option value="Round Trip">Round Trip</option>
-                                <option value="Multi City">Multi City</option>
-                            </select>
-                            <select
-                                name="flightClass"
-                                onChange={(e) => dispatch({type: 'SET_FLIGHT_CLASS', flightClass: e.target.value})}
-                            >
-                                <option value="Economy">Economy</option>
-                                <option value="Business">Business</option>
-                                <option value="First">First</option>
-                            </select>
-                        </div>
+                        <SelectContainer />
                         <SearchForms />
-                        <div className="buttons-container">
-                            {state.flightType === 'Multi City' && (
-                                <button
-                                    className="add-flight-btn"
-                                    onClick={() => dispatch({ type: 'ADD_COUNT'})}
-                                >
-                                    + Add another flight
-                                </button>
-                            )}
-                            <button 
-                                className={`search-btn ${state.isValid ? 'isValid' : ''}`} 
-                                onClick={() => navigate('/user/search-results')}
-                                disabled={state.isValid ? false : true} 
-                            >
-                                Search
-                            </button>
-                        </div>
+                        <ButtonsContainer handleSearch={() => navigate('/user/search-results')}/>
                     </div>
                 </div>
-            }
-             <div className="px-4  py-[200px] flex justify-center items-center opacity-0" ref={el => elementsRef.current[0] = el}>
+            <div className="bg-white w-full flex items-center opacity-0 py-[200px]" ref={el => elementsRef.current[1] = el}>
+                <div className="mx-auto px-4 w-full box-border">
+                    <div class="tcu-airlines-details bg-white text-center flex justify-between">
+                        <div className='max-w-[50%]'>
+                        <h1 className="text-4xl text-[#ff3131] font-bold mb-3">Online Flight Booking Made Easy with TCU Airlines</h1>
+                        <p className="text-lg mt-16 mb-6">Looking for cheap flights and airfare deals? TCU Airlines, one of the leading flight booking platforms in Southeast Asia, has PAL, cebu pacific, Air Asia, and Skyjet flight routes to choose from and our inventories never ceased to stop growing. TCU Airlines offers flight tickets from domestic and international airlines</p>
+                        </div>
+                        <img src="/icons/background.jpg" alt="" className="image h-[380px] w-[45%]"/>
+                    </div>
+                </div>
+            </div>
+            <div className="px-4 mb-[100px] flex justify-center items-center opacity-0" ref={el => elementsRef.current[0] = el}>
                 <div>
                     <h2 className="text-3xl font-bold text-center my-8">Why book with TCU airlines?</h2>
                     <div className="flex justify-center flex-wrap">
@@ -159,17 +136,6 @@ const UserHome = () => {
                             Get help, fast! Our 24/7 customer service ensures you receive the help and support you need - whenever, wherever.
                         </p>
                     </div>
-                    </div>
-                </div>
-            </div>
-            <div className="bg-white w-full flex items-center opacity-0" ref={el => elementsRef.current[1] = el}>
-                <div className="mx-auto px-4 w-full box-border mb-24">
-                    <div class="tcu-airlines-details bg-white text-center flex justify-between">
-                        <div className='max-w-[50%]'>
-                        <h1 className="text-4xl text-[#ff3131] font-bold mb-3">Online Flight Booking Made Easy with TCU Airlines</h1>
-                        <p className="text-lg mt-16 mb-6">Looking for cheap flights and airfare deals? TCU Airlines, one of the leading flight booking platforms in Southeast Asia, has PAL, cebu pacific, Air Asia, and Skyjet flight routes to choose from and our inventories never ceased to stop growing. TCU Airlines offers flight tickets from domestic and international airlines</p>
-                        </div>
-                        <img src="/icons/background.jpg" alt="" className="image h-[380px] w-[45%]"/>
                     </div>
                 </div>
             </div>

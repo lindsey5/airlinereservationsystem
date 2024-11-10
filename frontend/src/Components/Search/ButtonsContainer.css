@@ -1,0 +1,31 @@
+.buttons-container{
+    margin-top: 20px;
+    display: flex;
+    justify-content: center;
+}
+
+.buttons-container button{
+    height: 35px;
+}
+
+.buttons-container button:not(:disabled):hover{
+    cursor: pointer;
+}
+
+.buttons-container .add-flight-btn{
+    margin-right: 20px;
+}
+
+.buttons-container .search-btn{
+    padding: 0 40px;
+}
+
+.buttons-container .search-btn.isValid{
+    background-color: #ff3131;
+    color: white;
+    border: none;
+}
+
+.buttons-container .search-btn.isValid:hover{
+    background-color: #ff9595;
+}

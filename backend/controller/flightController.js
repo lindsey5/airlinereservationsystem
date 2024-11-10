@@ -151,14 +151,15 @@ export const get_popular_destination = async (req, res) => {
 
 export const search_flight = async (req, res) => {
     try{
-        const { searchData, flightClass, flightType } = req.body;
+        const { searchData, flightClass, flightType, price } = req.body;
+        
         let searchResults;
         if(flightType === 'One Way'){
-            searchResults = await one_way_search(searchData[0], flightClass);
+            searchResults = await one_way_search(searchData[0], flightClass, price);
         }else if(flightType === 'Round Trip'){
-            searchResults = await round_trip_search(searchData[0], flightClass);
+            searchResults = await round_trip_search(searchData[0], flightClass, price);
         }else {
-            searchResults = await multi_city_search(searchData, flightClass);
+            searchResults = await multi_city_search(searchData, flightClass, price);
         }
 
         res.status(200).json(searchResults);
@@ -174,6 +175,7 @@ export const get_flights = async (req, res) => {
     const limit = parseInt(req.query.limit) || 10; 
     const skip = (page - 1) * limit;
     const searchTerm = req.query.searchTerm;
+    
     try{
         const searchCriteria = searchTerm
     ? {
@@ -187,6 +189,9 @@ export const get_flights = async (req, res) => {
             { 'arrival.aiport_code' : { $regex: new RegExp(searchTerm, 'i') } },
             { 'arrival.city' : { $regex: new RegExp(searchTerm, 'i') }},
             { 'arrival.country' : { $regex: new RegExp(searchTerm, 'i') } },
+            { 'airplane.id': { $regex: new RegExp(searchTerm, 'i') } },
+            { 'pilot.captain': { $regex: new RegExp(searchTerm, 'i') } },
+            { 'pilot.co_pilot': { $regex: new RegExp(searchTerm, 'i') } },
             { status: { $regex: new RegExp(searchTerm, 'i') }},
         ]
     }

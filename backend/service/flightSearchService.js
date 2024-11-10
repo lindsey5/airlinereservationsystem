@@ -1,19 +1,27 @@
 import Flight from "../model/flight.js";
 
-export const one_way_search = async (data, flightClass) =>{
+export const one_way_search = async (data, flightClass, price) =>{
+
     try{
         const { departureCountry, departureCity, arrivalCity, arrivalCountry, departureTime } = data;
-        const flights = await Flight.find({
+        const query = {
             'departure.country': departureCountry,
             'departure.city': departureCity,
             'arrival.city': arrivalCity,
             'arrival.country': arrivalCountry,
             'classes.className': flightClass,
-            'departure.time': { $gte: departureTime }
-        });
+            'departure.time' : {$gte: new Date(departureTime)}
+        }
+        if(price > 0) {
+            query['classes.price'] = {$lte: price}
+        }
+        
+        const flights = await Flight.find(query);
+
         if(flights.length < 1){
             throw new Error('No flights found');
         }
+
         const flightsArr = [];
         flights.forEach(flight => flightsArr.push([flight]));
         return flightsArr;
@@ -22,34 +30,43 @@ export const one_way_search = async (data, flightClass) =>{
     }
 }
 
-export const round_trip_search = async (data, flightClass) => {
+export const round_trip_search = async (data, flightClass,price) => {
     const { departureCountry, departureCity, arrivalCity, arrivalCountry, departureTime } = data;
     const searchResults = {
         outboundFlights: [],
         returnFlights: []
     };
 
-    // Fetch outbound flight results
-    const outboundFlights = await Flight.find({
+    const outBoundQuery = {
         'departure.country': departureCountry,
         'departure.city': departureCity,
         'arrival.city': arrivalCity,
         'arrival.country': arrivalCountry,
         'classes.className': flightClass,
-        'departure.time': { $gte: departureTime }
-    });
+        'departure.time' : {$gte: new Date(departureTime)}
+    }
 
-    // Store outbound flights
-    searchResults.outboundFlights = outboundFlights;
-
-    // Fetch return flight results
-    const returnFlights = await Flight.find({
+    const returnQuery = {
         'departure.country': arrivalCountry,
         'departure.city': arrivalCity,
         'arrival.city': departureCity,
         'arrival.country': departureCountry,
         'classes.className': flightClass
-    });
+    }
+
+    if(price > 0) {
+        outBoundQuery['classes.price'] = {$lte: price};
+        returnQuery['classes.price'] = {$lte: price}
+    }
+
+    // Fetch outbound flight results
+    const outboundFlights = await Flight.find(outBoundQuery);
+
+    // Store outbound flights
+    searchResults.outboundFlights = outboundFlights;
+
+    // Fetch return flight results
+    const returnFlights = await Flight.find(returnQuery);
 
     // Store return flights
     searchResults.returnFlights = returnFlights;
@@ -60,10 +77,12 @@ export const round_trip_search = async (data, flightClass) => {
     // Interleave outbound and return flights
     searchResults.outboundFlights.forEach((outboundFlight) => {
         searchResults.returnFlights.forEach((returnFlight) => {
-            interleavedResults.push([
-                outboundFlight,
-                returnFlight
-            ]);
+            if(outboundFlight && returnFlight && new Date(returnFlight.departure.time) > new Date(outboundFlight.arrival.time)){
+                interleavedResults.push([
+                    outboundFlight,
+                    returnFlight
+                ]);
+            }
         });
     });
 
@@ -84,7 +103,7 @@ export const multi_city_search = async (searchSegments, flightClass) => {
             'arrival.city': arrivalCity,
             'arrival.country': arrivalCountry,
             'classes.className': flightClass,
-            'departure.time': { $gte: departureTime }
+            'departure.time' : new Date(departureTime)
         });
         segmentResults.push(flights);
     }
@@ -110,6 +129,20 @@ export const multi_city_search = async (searchSegments, flightClass) => {
         return results;
     };
 
-    // Generate and return all flight combinations for the multi-city trip
-    return generateCombinations(segmentResults);
+    // Generate all possible flight combinations for the multi-city trip
+    const allCombinations = generateCombinations(segmentResults);
+
+    // Filter combinations based on arrival and departure times
+    const validCombinations = allCombinations.filter((combo) => {
+        for (let i = 0; i < combo.length - 1; i++) {
+            const currentFlight = combo[i];
+            const nextFlight = combo[i + 1];
+            if (new Date(currentFlight.arrival.time) > new Date(nextFlight.departure.time)) {
+                return false;
+            }
+        }
+        return true; // Valid combination
+    });
+
+    return validCombinations;
 };

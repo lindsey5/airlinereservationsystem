@@ -117,11 +117,11 @@ const SearchForms = () =>{
                     <div>
                         <span style={{marginRight: '10px'}}>Departure Date:</span>
                         <DatePicker
-                            selected={flight.DepartureTime}
+                            selected={new Date(flight.DepartureTime)}
                             onChange={(date) => dispatch({ type: 'SET_DEPARTURE_TIME', date, index: i})}
-                            showTimeSelect
                             dateFormat="Pp"
-                            minDate={i > 0 ?  new Date(state.flights[i-1].DepartureTime.getTime() + 1 * 24 * 60 * 60 * 1000) : new Date()}
+                            showTimeSelect 
+                            minDate={i > 0 ?  new Date(state.flights[i-1].DepartureTime).getTime() + 1 * 24 * 60 * 60 * 1000 : new Date()}
                         />
                     </div>
                 </div>

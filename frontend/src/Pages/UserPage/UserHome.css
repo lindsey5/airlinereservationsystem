@@ -68,40 +68,8 @@
     width: 100%;
 }
 
-.user-home .select-container select{
+.select-container select{
     height: 25px;
-}
-
-.user-home .buttons-container{
-    margin-top: 20px;
-    display: flex;
-    justify-content: center;
-}
-
-.user-home .buttons-container button{
-    height: 35px;
-}
-
-.user-home .buttons-container button:not(:disabled):hover{
-    cursor: pointer;
-}
-
-.user-home .buttons-container .add-flight-btn{
-    margin-right: 20px;
-}
-
-.user-home .buttons-container .search-btn{
-    padding: 0 40px;
-}
-
-.user-home .buttons-container .search-btn.isValid{
-    background-color: #ff3131;
-    color: white;
-    border: none;
-}
-
-.user-home .buttons-container .search-btn.isValid:hover{
-    background-color: #ff9595;
 }
 
 .user-home .animate{

@@ -1,3 +1,5 @@
+import { formatDate } from "../utils/dateUtils";
+
 export const searchFlight = async(state) => {
     const searchData = state.flights.map(flight => {
         return{
@@ -9,6 +11,8 @@ export const searchFlight = async(state) => {
         }
     });
 
+    console.log("Search Data: ", searchData)
+
     try{
         const response = await fetch('/api/flight/search',
             {
@@ -19,18 +23,14 @@ export const searchFlight = async(state) => {
                 body: JSON.stringify({
                     searchData,
                     flightClass: state.flightClass,
-                    flightType: state.flightType
+                    flightType: state.flightType,
+                    price: state.price,
                 }),
             }
         );
         if(response.ok){
             const results = await response.json();
-            results.forEach(result => {
-                result.forEach(data => {
-                    console.log(`Departure: ${data.departure.airport} ${data.departure.time}, Arrival: ${data.arrival.airport} ${data.arrival.time}`);
-                });
-                console.log('')
-            });   
+            return results  
         }
     }catch(err){
         console.error(err);

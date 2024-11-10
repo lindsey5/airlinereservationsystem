@@ -2,7 +2,7 @@ import useAdminPaginationReducer from "../../hooks/adminPaginationReduces";
 import { useState, useEffect } from "react";
 import AdminPagination from "../../Components/Admin/Pagination/AdminPagination";
 import './AdminPage.css'
-import {formatDate} from '../../utils/formatDate';
+import { formatDate } from "../../utils/dateUtils";
 import { dataStatus } from "../../utils/dataStatus";
 import FlightForm from "../../Components/Admin/Flights/FlightForm";
 import FlightDetailsModal from "../../Components/Admin/Modals/FlightDetailsModal";
@@ -12,7 +12,6 @@ const AdminFlights = () => {
     const [searchTerm, setSearchTerm] = useState('');
     const {state, dispatch} = useAdminPaginationReducer();
     const [showMakeFlight, setShowMakeFlight] = useState(false);
-    const [showSeats, setShowSeats] = useState(true);
     const [flightData, setFlightData] = useState();
     const [showFlightDetails, setShowFlightDetails] = useState(false);
 

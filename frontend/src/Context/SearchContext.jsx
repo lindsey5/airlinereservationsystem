@@ -1,4 +1,4 @@
-import { act, createContext, useContext, useReducer } from "react";
+import { act, createContext, useContext, useEffect, useReducer } from "react";
 
 export const SearchContext = createContext();
 
@@ -7,6 +7,7 @@ const SearchState = {
     count: 1, 
     flightType: 'One Way', 
     flightClass: 'Economy',
+    price: 0,
     isValid: false,
 };
 
@@ -48,12 +49,16 @@ const SearchReducer = (state, action) => {
 };
 
 export const SearchContextProvider = ({ children }) => {
-    const [state, dispatch] = useReducer(SearchReducer, SearchState);
+    const [state, dispatch] = useReducer(SearchReducer, JSON.parse(sessionStorage.getItem('state')) || SearchState);
 
      const setCountryAsync = async (action) => {
         const updatedFlights = await setCountry(state, action);
         dispatch({ type: 'SET_COUNTRY', flights: updatedFlights });
     };
+
+    useEffect(() => {
+        sessionStorage.setItem('state', JSON.stringify(state));
+    }, [state])
   
     return (
         <SearchContext.Provider value={{ state, dispatch, setCountryAsync }}>
@@ -63,21 +68,23 @@ export const SearchContextProvider = ({ children }) => {
 };
 
 const setFlights = (state) => {
+
     const flights = Array.from({ length: state.count }, (_, i) => ({
-        showFromCountries: false,
-        showToCountries: false,
-        FromCountry: state.flights[i]?.FromCountry ||  (i > 0 && state.flights[i-1]?.ToCountry || null),
-        ToCountry: state.flights[i]?.ToCountry || null,
-        showFromCities: false,
-        FromCities: null,
-        showToCities: false,
-        ToCities: null,
-        FromCity: state.flights[i]?.FromCity || (i > 0 && state.flights[i-1]?.ToCity || null),
-        ToCity: state.flights[i]?.ToCity || null,
-        DepartureTime: state.flights[i]?.DepartureTime || (i > 0  ?  new Date(state.flights[i-1].DepartureTime.getTime() + 1 * 24 * 60 * 60 * 1000) : new Date(new Date().getTime() + 5 * 60 * 60 * 1000))
-    }));
+          showFromCountries: false,
+          showToCountries: false,
+          FromCountry: state.flights[i]?.FromCountry || (i > 0 && state.flights[i - 1]?.ToCountry || null),
+          ToCountry: state.flights[i]?.ToCountry || null,
+          showFromCities: false,
+          FromCities: null,
+          showToCities: false,
+          ToCities: null,
+          FromCity: state.flights[i]?.FromCity || (i > 0 && state.flights[i - 1]?.ToCity || null),
+          ToCity: state.flights[i]?.ToCity || null,
+          DepartureTime: state.flights[i]?.DepartureTime || (i > 0 ? new Date(state.flights[i - 1].DepartureTime).getTime() + 1 * 24 * 60 * 60 * 1000 : new Date(new Date().getTime() + 5 * 60 * 60 * 1000)),
+        }));
     return flights;
-};
+  };
+  
 
 const toggleShowCountries = (state, action) => {
     return state.flights.map((search, i) =>
