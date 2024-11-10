@@ -74,7 +74,10 @@ const SearchResults = () => {
                                     <p>{flight.arrival.airport} ({flight.arrival.airport_code})</p>
                                 </div>
                                 <h3 className="hours-difference">{
-                                (new Date(flight.arrival.time) - new Date(flight.departure.time)) / (1000 * 60 * 60)
+                                (parseFloat(new Date(flight.arrival.time) - new Date(flight.departure.time)) / (1000 * 60 * 60)).toLocaleString('en-US', {
+                                    minimumFractionDigits: 1,
+                                    maximumFractionDigits: 1
+                                })
                                 } hours
                                 </h3>
                             </div>
