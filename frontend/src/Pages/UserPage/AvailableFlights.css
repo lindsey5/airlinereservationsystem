@@ -1,0 +1,39 @@
+.available-flights{
+    width: 100%;
+    min-height: calc(100vh - 80px);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    background-color: rgb(235, 235, 235);
+    padding: 50px;
+}
+
+.available-flights > div:first-child{
+    width: 80%;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+}
+
+.available-flights select{
+    width: 180px;
+    height: 30px;
+    outline: none;
+}
+
+.available-flights .container{
+    width: 80%;
+}
+
+.available-flights > button{
+    background-color: #ff3131;
+    color: white;
+    padding: 10px 100px;
+    border: none;
+    cursor: pointer;
+    font-size: 15px;
+}
+
+.available-flights > button:hover{
+    background-color: #ff9393;
+}

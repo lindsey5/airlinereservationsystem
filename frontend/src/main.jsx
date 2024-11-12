@@ -25,6 +25,8 @@ import { UserRoute } from './routes/UserRoute';
 import UserLayout from './Layouts/UserLayout';
 import UserHome from './Pages/UserPage/UserHome';
 import SearchResults from './Pages/UserPage/SearchResults';
+import AvailableFlights from './Pages/UserPage/AvailableFlights';
+import BookingPage from './Pages/UserPage/BookingPage';
 
 const router = createBrowserRouter(
   createRoutesFromElements(
@@ -44,6 +46,8 @@ const router = createBrowserRouter(
           <Route element={<UserLayout />}>
             <Route path='home' element={<UserHome />} />
             <Route path='search-results' element={<SearchResults />} />
+            <Route path='available-flights' element={<AvailableFlights />} />
+            <Route path='booking' element={<BookingPage />} />
           </Route>
         </Route>
       </Route>

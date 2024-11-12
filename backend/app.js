@@ -115,6 +115,66 @@ app.get('/api/cities/:country', async (req, res) => {
     }
 });
 
+const url = process.env.NODE_ENV === 'production' ? 'https://airlinereservationsystem.onrender.com' : 'http://localhost:5173';
+app.post('/api/payment-link',async (req, res) => {
+    try{
+        const line_items = [];
+        console.log(req.body.bookings)
+        req.body.bookings.flights.forEach(flight => {
+            flight.passengers.forEach(passenger=> {
+                const item = {
+                    currency: 'PHP',
+                    amount: passenger.price * 100, 
+                    name: `${flight.destination} (${passenger.type}) `, 
+                    quantity: 1
+                }
+                const isExist = line_items.find(line_item => line_item.name === item.name)
+
+                if(isExist){
+                    isExist.quantity += 1;
+                }else{
+                    line_items.push(item)
+                }
+            })
+        })
+
+        const options = {
+            method: 'POST',
+            headers: {
+              accept: 'application/json',
+              'Content-Type': 'application/json',
+              authorization: 'Basic c2tfdGVzdF9EYllaMVRHYTlFcGFBZzVwVmdHM1NDdTk6'
+            },
+            body: JSON.stringify({
+              data: {
+                attributes: {
+                  send_email_receipt: false,
+                  show_description: true,
+                  show_line_items: true,
+                  payment_method_types: ['gcash', 'card', 'paymaya'],
+                  line_items,
+                  success_url: `${url}/api/flight/book`,
+                  cancel_url: url,
+                  description: 'Tickets payment'
+                }
+              }
+            })
+        };
+        const response = await fetch('https://api.paymongo.com/v1/checkout_sessions', options)
+        if(response.ok){
+            const checkoutDataToken = jwt.sign({data: req.body.bookings.flights, class: req.body.bookings.class}, process.env.JWT_SECRET);
+            res.cookie('checkoutData', checkoutDataToken, { httpOnly: true, secure: process.env.NODE_ENV === 'production' });
+            res.status(200).json(await response.json());
+        }else{
+            throw new Error('Payment failed')
+        }
+    }catch(err){
+        const errors = errorHandler(err);
+        console.log(errors);
+        res.status(400).json(errors);
+    }
+})
+
 app.get('/api/user',async(req, res) => {
     try{
         const token = req.cookies.jwt;

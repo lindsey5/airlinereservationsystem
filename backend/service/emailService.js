@@ -1,5 +1,6 @@
 import nodemailer from 'nodemailer'
 import jwt from 'jsonwebtoken';
+const url = process.env.NODE_ENV === 'production' ? 'https://airlinereservationsystem.onrender.com' : 'http://localhost:5173';
 
 export const sendVerificationCode = async (email) => {
     const transporter = nodemailer.createTransport({
@@ -22,4 +23,25 @@ export const sendVerificationCode = async (email) => {
       });
 
       return verificationCode;
+}
+
+export const sendEmail = async (email, data) => {
+    const transporter = nodemailer.createTransport({
+      service: 'gmail',
+      auth: {
+        user: process.env.EMAIL_USER,
+        pass: process.env.EMAIL_PASS,
+      },
+    });
+    await transporter.sendMail({
+      from: "tcu.airlines@example.com", 
+      to: `${email}`, 
+      subject: "Flight ticket",
+      html: `
+          <p>Click the link below to view your flight ticket:</p>
+          <a href="${url}/ticket?id=${data.id}&&seat=${data.seatNumber}" style="text-decoration: underline;">
+              Click here
+          </a>
+      `
+  });
 }

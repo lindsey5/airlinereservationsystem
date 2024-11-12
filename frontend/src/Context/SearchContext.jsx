@@ -57,7 +57,6 @@ export const SearchContextProvider = ({ children }) => {
     };
 
     useEffect(() => {
-        console.log(state)
         sessionStorage.setItem('state', JSON.stringify(state));
     }, [state])
   
