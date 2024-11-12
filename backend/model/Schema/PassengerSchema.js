@@ -1,8 +1,6 @@
 import mongoose from "mongoose";
 const Schema = mongoose.Schema;
-import { v4 } from "uuid";
-
-const uuidv4 = v4;
+import { v4 as uuidv4 } from "uuid";
 
 const PassengerSchema = new Schema({
     name: {
@@ -30,7 +28,7 @@ const PassengerSchema = new Schema({
       type: String,
       unique: true,
       required: true,
-      default: uuidv4
+      default: uuidv4 
   },
 });
 

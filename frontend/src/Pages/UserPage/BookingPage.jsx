@@ -56,7 +56,7 @@ const BookingPage = () => {
                 email: formData.get('email'),
                 dateOfBirth: formData.get('dateOfBirth'),
                 type: formData.get('type'),
-                price: formData.get('type') === 'child' ? flight.price - (flight * 0.05) : flight.price,
+                price: formData.get('type') === 'child' ? flight.price - (flight.price * 0.05) : flight.price,
             }
 
             bookings.flights[i].passengers.push(passenger)

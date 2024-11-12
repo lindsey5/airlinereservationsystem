@@ -5,7 +5,7 @@ const Schema = mongoose.Schema;
 const SeatSchema = new Schema({
     seatNumber: {type: String, required: true},
     status: { type: String, enum: ['available', 'booked'], default: 'available' },
-    passenger: PassengerSchema,
+    passenger: { type: PassengerSchema},
 });
 
 export default SeatSchema

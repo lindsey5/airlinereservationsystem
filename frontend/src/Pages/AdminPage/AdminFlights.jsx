@@ -57,6 +57,7 @@ const AdminFlights = () => {
                 <thead>
                     <tr>
                         <th>Id</th>
+                        <th>Flight Number</th>
                         <th>Airline</th>
                         <th>Gate No</th>
                         <th>Departure</th>
@@ -75,6 +76,7 @@ const AdminFlights = () => {
                         return (
                             <tr key={flight._id}>
                                 <td>{flight._id}</td>
+                                <td>{flight.flightNumber}</td>
                                 <td>{flight.airline}</td>
                                 <td>{flight.gate_number}</td>
                                 <td>{flight.departure.airport} ({flight.departure.airport_code})</td>

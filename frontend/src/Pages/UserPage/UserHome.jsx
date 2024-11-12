@@ -44,7 +44,7 @@ const UserHome = () => {
        const getImages = async () => {
             setPopularCity(await Promise.all(data.map(async (item) => {
                 try{
-                    const response = await fetch(`https://pixabay.com/api/?key=46701607-d51d8d8ab7e9bf8a22e03cd3c&q=${item._id} city&image_type=photo`);
+                    const response = await fetch(`https://pixabay.com/api/?key=46701607-d51d8d8ab7e9bf8a22e03cd3c&q=${item._id} city ${item.country}&image_type=photo`);
                     if(response.ok){
                         const result = await response.json();
                         return {city: item._id, image: result.hits[1].largeImageURL, country: item.country}
@@ -97,7 +97,7 @@ const UserHome = () => {
                         <div className='max-w-[50%]'>
                         <h1 className="text-4xl text-[#ff3131] font-bold mb-3">Online Flight Booking Made Easy with TCU Airlines</h1>
                         <p className="text-lg mt-16 mb-6">Looking for cheap flights and airfare deals? TCU Airlines, one of the leading flight booking platforms in Southeast Asia, has PAL, cebu pacific, Air Asia, and Skyjet flight routes to choose from and our inventories never ceased to stop growing. TCU Airlines offers flight tickets from domestic and international airlines</p>
-                        <button onClick={()=> navigate('/user/available-flights')} className="px-[40px] py-[10px] rounded-xl border-none bg-[#ff3131] text-white text-[15px] hover:bg-[#ff8a8a] cursor-pointer">View Available Flights</button>
+                        <button onClick={()=> navigate('/user/available-flights')} className="mb-[30px] px-[40px] py-[10px] rounded-xl border-none bg-[#ff3131] text-white text-[15px] hover:bg-[#ff8a8a] cursor-pointer">View Available Flights</button>
                         </div>
                         <img src="/icons/background.jpg" alt="" className="image h-[380px] w-[45%]"/>
                     </div>
