@@ -7,6 +7,7 @@ import { errorHandler } from "../utils/errorHandler.js";
 import mongoose from "mongoose";
 import jwt from "jsonwebtoken";
 import { sendEmail } from "../service/emailService.js";
+import Booking from "../model/Booking.js";
 const { ObjectId } = mongoose.Types;
 
 const calculateSeats = (classes) => {
@@ -250,7 +251,7 @@ export const book_flight = async (req, res) => {
         const checkoutData = jwt.verify(req.cookies.checkoutData, process.env.JWT_SECRET);
         const user = await User.findById(id);
 
-        checkoutData.data.forEach(flight => {
+        checkoutData.data.forEach(async (flight) => {
             flight.passengers.forEach(async (passenger) => {
                 const available_flight = await Flight.findOne({
                     _id: flight.id, 
@@ -258,7 +259,6 @@ export const book_flight = async (req, res) => {
                 });
                 const classIndex =  available_flight.classes.findIndex(classObj => classObj.className === checkoutData.class);
                 const seatIndex = available_flight.classes[classIndex].seats.findIndex(seat => passenger.seatNumber?  passenger.seatNumber === seat.seatNumber :  seat.status === 'available');
-                console.log(seatIndex)
                 if(seatIndex > -1){
                     available_flight.classes[classIndex].seats[seatIndex].status = 'booked';
                     available_flight.classes[classIndex].seats[seatIndex].passenger = passenger;
@@ -268,10 +268,19 @@ export const book_flight = async (req, res) => {
                         seatNumber: available_flight.classes[classIndex].seats[seatIndex].seatNumber
                     }
                     sendEmail(user.email, data);
+
+                    const booking = await Booking.create({
+                        user_id: user._id,
+                        flight_id: flight.id,
+                        passengers: flight.passengers
+                    })
+
+                    await booking.save();
                 }
             })
+
         })
-        res.redirect(`/`);
+        res.redirect(`/user/booking/success`);
     }catch(err){
         const errors = errorHandler(err)
         res.status(400).json({errors});

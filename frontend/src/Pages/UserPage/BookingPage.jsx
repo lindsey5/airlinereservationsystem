@@ -102,7 +102,8 @@ const BookingPage = () => {
                 </div>
             )}
             </div>
-                <div className="container">
+            <div>
+            <div className="container">
                     <h2>Book Flight</h2>
                     <div className="select-container">
                         <div className="select-div">
@@ -137,6 +138,7 @@ const BookingPage = () => {
                         onClick={() => setShowForm(true)}
                     >Next</button>
                 </div>
+            </div>
                 { showForm && 
                     <div className="passenger-form-container">
                         <form onSubmit={handleBooking}>

@@ -24,6 +24,7 @@ export const sendVerificationCode = async (email) => {
 }
 
 export const sendEmail = async (email, data) => {
+    const base64Encoded = Buffer.from(JSON.stringify({id: data.id, seat: data.seatNumber})).toString('base64');
     const transporter = nodemailer.createTransport({
       service: 'gmail',
       auth: {
@@ -37,7 +38,7 @@ export const sendEmail = async (email, data) => {
       subject: "Flight ticket",
       html: `
           <p>Click the link below to view your flight ticket:</p>
-          <a href="https://airlinereservationsystem.onrender.com/tcu-airlines/ticket?id=${data.id}&&seat=${data.seatNumber}" style="text-decoration: underline;">
+          <a href="https://airlinereservationsystem.onrender.com/tcu-airlines/ticket?data=${base64Encoded}" style="text-decoration: underline;">
               https://airlinereservationsystem.onrender.com/tcu-airlines
           </a>
       `

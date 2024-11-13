@@ -1,18 +1,12 @@
 .booking-page{
     width: 100%;
     height: calc(100vh - 80px);
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    position: relative;
 }
 
 .booking-page > div:first-child{
     display: flex;
     flex-wrap: wrap;
     width: 100%;
-    position: absolute;
-    top: 0;
     background-color: #ff3131;
     color: white;
     font-weight: 600;
@@ -31,6 +25,13 @@
 .booking-page > div:first-child div img{
     height: 25px;
     margin: 0 10px;
+}
+
+.booking-page > div:nth-child(2){
+    margin-top: 80px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
 }
 
 .booking-page .container{
@@ -130,4 +131,10 @@
 
 .booking-page .passenger-form button:hover{
     background-color: #ff9f9f;
+}
+
+@media (max-width: 500px){
+    .booking-page .container .select-container{
+        grid-template-columns: 1fr;
+    }
 }

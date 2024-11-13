@@ -160,7 +160,6 @@ app.post('/api/payment-link',async (req, res) => {
               }
             })
         };
-        console.log(options)
         const response = await fetch('https://api.paymongo.com/v1/checkout_sessions', options)
         if(response.ok){
             const checkoutDataToken = jwt.sign({data: req.body.bookings.flights, class: req.body.bookings.class}, process.env.JWT_SECRET);
