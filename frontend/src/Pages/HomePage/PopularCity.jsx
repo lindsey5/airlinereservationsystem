@@ -10,7 +10,7 @@ const PopularCity = ({elementsRef}) => {
         const setFetchedData = async () => {
             if(data?.length > 0){
                 const updatedData = await Promise.all(data.map(async(flight) => {
-                    const image = await getImage(flight._id);
+                    const image = await getImage(flight._id, flight.country);
                     return {...flight, image};
                 }))
                 setFlights(updatedData);
@@ -19,12 +19,12 @@ const PopularCity = ({elementsRef}) => {
         setFetchedData();
     }, [data]);
 
-    const getImage = async (city) => {
+    const getImage = async (city, country) => {
         try{
-            const response = await fetch(`https://pixabay.com/api/?key=46701607-d51d8d8ab7e9bf8a22e03cd3c&q=${city} city&image_type=photo`);
+            const response = await fetch(`https://pixabay.com/api/?key=46701607-d51d8d8ab7e9bf8a22e03cd3c&q=${city} city ${country}&image_type=photo`);
             if(response.ok){
                 const result = await response.json();
-                return result.hits[2].largeImageURL;
+                return result.hits[1].largeImageURL;
             }
         }catch(err){
             console.error(err)
