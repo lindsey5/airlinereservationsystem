@@ -60,19 +60,19 @@ const SeatSelection = ({bookings, currentFlightIndex, currentPassenger, setCurre
 
     return (
         <div className="seat-selection-container">
-            <div className="seat-selection">
-            <div className="logo">
-            <img src="/icons/tcu_airlines-logo (2).png" alt="" />
-            <h3>TCU <span>AIRLINES</span></h3>
-            </div>
-            <h2>Passenger #{currentPassenger + 1}</h2>
-            <p>Name: {bookings.flights[currentFlightIndex].passengers[currentPassenger].name}</p>
-            <p>Date of Birth: {bookings.flights[currentFlightIndex].passengers[currentPassenger].dateOfBirth}</p>
-            <h3>{bookings.flights[currentFlightIndex].destination}</h3>
-            <p>{bookings.class}</p>
-            <div className="seats">
             {flight && sumOfColumns && 
-            <div className='seats-rows-container' style={{gridTemplateColumns: columns.length > 1 ? `repeat(${sumOfColumns+ columns.length -1}, 1fr)` : `repeat(${sumOfColumns}, 1fr)`}}>
+                <div className="seat-selection">
+                <div className="logo">
+                <img src="/icons/tcu_airlines-logo (2).png" alt="" />
+                <h3>TCU <span>AIRLINES</span></h3>
+                </div>
+                <h2>Passenger #{currentPassenger + 1}</h2>
+                <p>Name: {bookings.flights[currentFlightIndex].passengers[currentPassenger].name}</p>
+                <p>Date of Birth: {bookings.flights[currentFlightIndex].passengers[currentPassenger].dateOfBirth}</p>
+                <h3>{bookings.flights[currentFlightIndex].destination}</h3>
+                <p>{bookings.class}</p>
+                <div className="seats">
+                <div className='seats-rows-container' style={{gridTemplateColumns: columns.length > 1 ? `repeat(${sumOfColumns+ columns.length -1}, 1fr)` : `repeat(${sumOfColumns}, 1fr)`}}>
                 {
                     flight.classes.map((classObj) => 
                         classObj.seats.map((seat) =>{
@@ -103,9 +103,9 @@ const SeatSelection = ({bookings, currentFlightIndex, currentPassenger, setCurre
                         })
                     )
                 }
-            </div>}
+            </div>
         </div>
-        </div>
+        </div>}
         </div>
     )
 
