@@ -1,6 +1,7 @@
 import { useEffect, useState } from "react";
 import './BookingPage.css'
 import { createPaymentLink } from "../../Service/paymentService";
+import SeatSelection from "./SeatSelection";
 
 const BookingPage = () => {
     const queryParams = new URLSearchParams(window.location.search);
@@ -11,6 +12,8 @@ const BookingPage = () => {
     const [showForm, setShowForm] = useState(false);
     const [currentPassenger, setCurrentPassenger] = useState(0);
     const [passengersType, setPassengersType] = useState();
+    const [showSeats, setShowSeats] = useState(false);
+    const [selectSeat, setSelectSeat] = useState(false);
 
     const booking = (flights) =>  { 
         return {
@@ -51,28 +54,41 @@ const BookingPage = () => {
         e.preventDefault();
         const formData = new FormData(e.target);
         decodedData.flights.forEach((flight, i)=> {
+            const price = formData.get('type') === 'child' ? flight.price - (flight.price * 0.05) : flight.price;
             const passenger = {
                 name: formData.get('name'),
                 email: formData.get('email'),
                 dateOfBirth: formData.get('dateOfBirth'),
                 type: formData.get('type'),
-                price: formData.get('type') === 'child' ? flight.price - (flight.price * 0.05) : flight.price,
+                price: selectSeat ? price + 200 : price,
             }
 
             bookings.flights[i].passengers.push(passenger)
         })
+
         if(currentPassenger < passengersType.length  - 1){
             e.target.reset();
             setCurrentPassenger(prev => prev += 1)
         }else{
-            const response = await createPaymentLink(bookings);
-            if(response){
-                window.location.href = response.data.attributes.checkout_url;
+            if(!selectSeat){
+                const response = await createPaymentLink(bookings);
+                console.log(response)
+                if(response){
+                    window.location.href = response.data.attributes.checkout_url;
+                }else{
+                    alert('Payment failed')
+                }
             }else{
-                alert('Payment failed')
+                setCurrentPassenger(0);
+                setShowForm(false)
+                setShowSeats(true);
             }
         }
     }
+
+    useEffect(() => {
+        console.log(selectSeat)
+    }, [selectSeat])
 
     return (
         <div className="booking-page">
@@ -113,7 +129,7 @@ const BookingPage = () => {
                         </div>
                     </div>
                     <div>
-                    <input type="checkbox" /> Select Seats (₱ 200 per seat)
+                    <input type="checkbox" onChange={()=> setSelectSeat(!selectSeat)}/> Select Seats (₱ 200 per seat)
                     </div>
                     <button
                         className="next-btn"
@@ -138,6 +154,14 @@ const BookingPage = () => {
                         </form>
                     </div>
                 }
+                { showSeats && 
+                <SeatSelection 
+                    bookings={bookings}
+                    currentFlightIndex={currentFlightIndex}
+                    currentPassenger={currentPassenger}
+                    setCurrentFlightIndex={setCurrentFlightIndex}
+                    setCurrentPassenger={setCurrentPassenger}
+                />}
         </div>
     )
 }

@@ -7,11 +7,11 @@ export const createPaymentLink = async(bookings) =>{
             },
             body: JSON.stringify({bookings}),
         })
+        const result = await response.json();  
         if(response.ok){
-            const result = await response.json();  
             return result;
         }
-    
+        console.log(result)
         return null
     }catch(err){
         console.error(err);

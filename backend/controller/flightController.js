@@ -257,8 +257,8 @@ export const book_flight = async (req, res) => {
                     'classes.className': checkoutData.class, 
                 });
                 const classIndex =  available_flight.classes.findIndex(classObj => classObj.className === checkoutData.class);
-                const seatIndex = available_flight.classes[classIndex].seats.findIndex(seat => seat.status === 'available');
-                
+                const seatIndex = available_flight.classes[classIndex].seats.findIndex(seat => passenger.seatNumber?  passenger.seatNumber === seat.seatNumber :  seat.status === 'available');
+                console.log(seatIndex)
                 if(seatIndex > -1){
                     available_flight.classes[classIndex].seats[seatIndex].status = 'booked';
                     available_flight.classes[classIndex].seats[seatIndex].passenger = passenger;

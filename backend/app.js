@@ -148,7 +148,7 @@ app.post('/api/payment-link',async (req, res) => {
             body: JSON.stringify({
               data: {
                 attributes: {
-                  send_email_receipt: false,
+                  send_email_receipt: true,
                   show_description: true,
                   show_line_items: true,
                   payment_method_types: ['gcash', 'card', 'paymaya'],
@@ -160,6 +160,7 @@ app.post('/api/payment-link',async (req, res) => {
               }
             })
         };
+        console.log(options)
         const response = await fetch('https://api.paymongo.com/v1/checkout_sessions', options)
         if(response.ok){
             const checkoutDataToken = jwt.sign({data: req.body.bookings.flights, class: req.body.bookings.class}, process.env.JWT_SECRET);
