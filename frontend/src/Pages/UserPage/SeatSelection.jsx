@@ -1,6 +1,7 @@
 import { useEffect, useState } from "react";
 import useFetch from "../../hooks/useFetch"
 import { createPaymentLink } from "../../Service/paymentService";
+import './SeatSelection.css';
 
 const SeatSelection = ({bookings, currentFlightIndex, currentPassenger, setCurrentPassenger, setCurrentFlightIndex}) => {
     const [flight, setFlight] = useState();
@@ -37,20 +38,20 @@ const SeatSelection = ({bookings, currentFlightIndex, currentPassenger, setCurre
     const handleSelectedSeat = async (seatNumber) => {
         if(confirm('Click ok to continue')){
             bookings.flights[currentFlightIndex].passengers[currentPassenger].seatNumber = seatNumber;
-            if(currentFlightIndex === bookings.flights.length -1){
-                if(bookings.flights[currentFlightIndex].passengers.length - 1 === currentPassenger){
+            if(bookings.flights[currentFlightIndex].passengers.length - 1 === currentPassenger){
+                if(currentFlightIndex === bookings.flights.length -1){
                     const response = await createPaymentLink(bookings);
                     if(response){
                         window.location.href = response.data.attributes.checkout_url;
                     }else{
                         alert('Payment failed')
                     }
-                   console.log(bookings.flights)
                 }else{
-                    setCurrentPassenger(prev => prev + 1);
+                    setCurrentFlightIndex(prev => prev + 1);
+                    setCurrentPassenger(0);
                 }
             }else{
-                setCurrentFlightIndex(prev => prev + 1);
+                setCurrentPassenger(prev => prev + 1);
             }
         }
 
@@ -60,8 +61,14 @@ const SeatSelection = ({bookings, currentFlightIndex, currentPassenger, setCurre
     return (
         <div className="seat-selection-container">
             <div className="seat-selection">
-            <p>Flight #{currentFlightIndex + 1}</p>
-            <h2>Select seat for passenger #{currentPassenger + 1}</h2>
+            <div className="logo">
+            <img src="/icons/tcu_airlines-logo (2).png" alt="" />
+            <h3>TCU <span>AIRLINES</span></h3>
+            </div>
+            <h2>Passenger #{currentPassenger + 1}</h2>
+            <p>Name: {bookings.flights[currentFlightIndex].passengers[currentPassenger].name}</p>
+            <p>Date of Birth: {bookings.flights[currentFlightIndex].passengers[currentPassenger].dateOfBirth}</p>
+            <h3>{bookings.flights[currentFlightIndex].destination}</h3>
             <p>{bookings.class}</p>
             <div className="seats">
             {flight && sumOfColumns && 

@@ -6,26 +6,6 @@
     align-items: center;
 }
 
-.seat-selection-container{
-    position: fixed;
-    background-color: rgb(0, 0, 0, 0.5);
-    top: 0;
-    bottom: 0;
-    left: 0;
-    right: 0;
-    z-index: 3;
-    overflow-y: auto;
-    display: flex;
-    justify-content: center;
-}
-
-.seat-selection{
-    position: absolute;
-    background-color: white;
-    top: 20px;
-    text-align: center;
-}
-
 .seats-rows-container{
     display: grid;
     gap: 10px;
