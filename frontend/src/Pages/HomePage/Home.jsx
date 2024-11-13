@@ -22,7 +22,7 @@ const Home = () => {
                 }
             });
           },
-          { threshold: 0.1 }
+          { threshold: 0 }
         );
     
         elementsRef.current.forEach((el) => {

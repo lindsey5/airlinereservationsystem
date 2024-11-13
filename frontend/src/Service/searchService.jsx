@@ -10,8 +10,6 @@ export const searchFlight = async(state) => {
         }
     });
 
-    console.log("Search Data: ", searchData)
-
     try{
         const response = await fetch('/api/flight/search',
             {
@@ -29,7 +27,8 @@ export const searchFlight = async(state) => {
         );
         if(response.ok){
             const results = await response.json();
-            return results  
+            const filteredFlights = results.filter(flightArray => new Date(flightArray[0].departure.time) > new Date());
+            return filteredFlights
         }
     }catch(err){
         console.error(err);

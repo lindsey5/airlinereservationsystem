@@ -25,6 +25,10 @@ import { UserRoute } from './routes/UserRoute';
 import UserLayout from './Layouts/UserLayout';
 import UserHome from './Pages/UserPage/UserHome';
 import SearchResults from './Pages/UserPage/SearchResults';
+import AvailableFlights from './Pages/UserPage/AvailableFlights';
+import BookingPage from './Pages/UserPage/BookingPage';
+import TicketPage from './Pages/UserPage/TicketPage';
+import Success from './Pages/UserPage/Success';
 
 const router = createBrowserRouter(
   createRoutesFromElements(
@@ -39,11 +43,16 @@ const router = createBrowserRouter(
         </Route>
       </Route>
 
+      <Route path="/tcu-airlines/ticket" element={<TicketPage />}/>
+
       <Route path='/user/'>
         <Route element={<UserRoute />}>
           <Route element={<UserLayout />}>
             <Route path='home' element={<UserHome />} />
             <Route path='search-results' element={<SearchResults />} />
+            <Route path='available-flights' element={<AvailableFlights />} />
+            <Route path='booking' element={<BookingPage />} />
+            <Route path='booking/success' element={<Success />} />
           </Route>
         </Route>
       </Route>

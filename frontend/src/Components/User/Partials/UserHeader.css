@@ -32,3 +32,17 @@
 .user-page header > div > h3 span{
     color: #ffbd59;
 }
+
+.user-page header button{
+    background-color: #ff3131;
+    color: white;
+    border: none;
+    padding: 10px 40px;
+    font-size: 13px;
+    cursor: pointer;
+    border-radius: 20px;
+}
+
+.user-page header button:hover{
+    background-color: #ff9898;
+}

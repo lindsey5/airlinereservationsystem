@@ -1,8 +1,7 @@
-import { useEffect, useState, useContext, useRef } from "react";
+import { useEffect, useState, useRef } from "react";
 import useFetch from "../../hooks/useFetch";
 import SearchForms from "../../Components/Search/SearchForms";
 import './UserHome.css'
-import { SearchContext } from "../../Context/SearchContext";
 import Footer from "../HomePage/Footer";
 import { useNavigate } from "react-router-dom";
 import ButtonsContainer from "../../Components/Search/ButtonsContainer";
@@ -12,7 +11,6 @@ const UserHome = () => {
     const { data } = useFetch('/api/flight/popular?limit=5');
     const [popularCity, setPopularCity] = useState();
     const [currentCity, setCurrentCity] = useState(0);
-    const { state, dispatch} = useContext(SearchContext);
     const navigate = useNavigate();
     const elementsRef = useRef([]);
 
@@ -46,7 +44,7 @@ const UserHome = () => {
        const getImages = async () => {
             setPopularCity(await Promise.all(data.map(async (item) => {
                 try{
-                    const response = await fetch(`https://pixabay.com/api/?key=46701607-d51d8d8ab7e9bf8a22e03cd3c&q=${item._id} city&image_type=photo`);
+                    const response = await fetch(`https://pixabay.com/api/?key=46701607-d51d8d8ab7e9bf8a22e03cd3c&q=${item._id} city ${item.country}&image_type=photo`);
                     if(response.ok){
                         const result = await response.json();
                         return {city: item._id, image: result.hits[1].largeImageURL, country: item.country}
@@ -69,13 +67,6 @@ const UserHome = () => {
           }, 5000);
           return () => clearInterval(intervalId); 
       }, [popularCity]);
-    
-    
-
-    const handleFlightType = (value) => {
-        dispatch({type: 'SET_FLIGHT_TYPE', flightType: value})
-        dispatch({type: 'SET_COUNT', count: value !== 'Multi City' ? 1 : 2})
-    };
 
     return (
         <div className="user-home">
@@ -84,7 +75,7 @@ const UserHome = () => {
                          <img key={i} className='city' src={popularCity[currentCity].image} alt="" style={{display: currentCity == i ? 'block' : 'none'}} />
                     )}
                    
-                    <h1>{popularCity && `${popularCity[currentCity].city} , ${popularCity[currentCity].country}`}</h1>                
+                    <h1>{popularCity && `${popularCity[currentCity].city}, ${popularCity[currentCity].country}`}</h1>                
                     <div className="city-buttons">
                     {popularCity && popularCity.map((city, i) => 
                         <button 
@@ -102,10 +93,11 @@ const UserHome = () => {
                 </div>
             <div className="bg-white w-full flex items-center opacity-0 py-[200px]" ref={el => elementsRef.current[1] = el}>
                 <div className="mx-auto px-4 w-full box-border">
-                    <div class="tcu-airlines-details bg-white text-center flex justify-between">
+                    <div className="tcu-airlines-details bg-white text-center flex justify-between">
                         <div className='max-w-[50%]'>
                         <h1 className="text-4xl text-[#ff3131] font-bold mb-3">Online Flight Booking Made Easy with TCU Airlines</h1>
                         <p className="text-lg mt-16 mb-6">Looking for cheap flights and airfare deals? TCU Airlines, one of the leading flight booking platforms in Southeast Asia, has PAL, cebu pacific, Air Asia, and Skyjet flight routes to choose from and our inventories never ceased to stop growing. TCU Airlines offers flight tickets from domestic and international airlines</p>
+                        <button onClick={()=> navigate('/user/available-flights')} className="mb-[30px] px-[40px] py-[10px] rounded-xl border-none bg-[#ff3131] text-white text-[15px] hover:bg-[#ff8a8a] cursor-pointer">View Available Flights</button>
                         </div>
                         <img src="/icons/background.jpg" alt="" className="image h-[380px] w-[45%]"/>
                     </div>

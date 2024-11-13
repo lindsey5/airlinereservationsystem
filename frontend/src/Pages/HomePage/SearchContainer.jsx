@@ -1,7 +1,5 @@
 import { useContext } from "react";
 import './SearchContainer.css';
-import { searchFlight } from "../../Service/searchService";
-import { SearchContext } from "../../Context/SearchContext";
 import SearchForms from "../../Components/Search/SearchForms";
 import { useNavigate } from "react-router-dom";
 import ButtonsContainer from "../../Components/Search/ButtonsContainer";

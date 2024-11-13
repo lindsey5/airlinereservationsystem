@@ -1,3 +1,4 @@
+import { useLogout } from '../../../hooks/useLogout'
 import './UserHeader.css'
 
 const UserHeader = () => {
@@ -6,8 +7,8 @@ const UserHeader = () => {
             <div>
                 <img src="/icons/tcu_airlines-logo (2).png" alt="" />
                 <h3>TCU <span>AIRLINES</span></h3>
-                
             </div>
+            <button onClick={useLogout}>Logout</button>
         </header>
     )
 }

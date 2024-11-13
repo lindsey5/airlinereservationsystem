@@ -1,0 +1,141 @@
+.booking-page{
+    width: 100%;
+    height: calc(100vh - 80px);
+}
+
+.booking-page > div:first-child{
+    display: flex;
+    flex-wrap: wrap;
+    width: 100%;
+    background-color: #ff3131;
+    color: white;
+    font-weight: 600;
+}
+
+.booking-page > div:first-child p:first-child{
+    margin-left: 20px;
+}
+
+.booking-page > div:first-child div{
+    display: flex;
+    align-items: center;
+    margin: 0 30px;
+}
+
+.booking-page > div:first-child div img{
+    height: 25px;
+    margin: 0 10px;
+}
+
+.booking-page > div:nth-child(2){
+    margin-top: 100px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding: 20px;
+}
+
+.booking-page .container{
+    padding: 40px;
+    border-radius: 20px;
+    box-shadow: 0 0 10px 3px rgb(192, 192, 192);
+}
+
+.booking-page .container span{
+    color: rgb(165, 165, 165);
+}
+
+.booking-page .container .select-container{
+    margin: 30px 0;
+    display: grid;
+    gap: 20px;
+    grid-template-columns: repeat(2, 170px);
+}
+
+.booking-page .container .select-div{
+    display: flex;
+    flex-direction: column;
+}
+
+.booking-page .container .select-div select{
+    margin: 5px 0;
+    height: 30px;
+    outline: none;
+}
+
+.booking-page .container .select-div p{
+    margin: 10px 0;
+    color: rgb(165, 165, 165);
+}
+
+.booking-page .next-btn{
+    display: block;
+    float: right;
+    padding: 7px 50px;
+    margin-top: 20px;
+    font-size: 15px;
+}
+
+.booking-page .next-btn:not(:disabled){
+    background-color: #ff3131;
+    color: white;
+    cursor: pointer;
+    border-radius: 10px;
+    border: none;
+}
+
+.booking-page .next-btn:not(:disabled):hover{
+    background-color: #ff9f9f;
+}
+
+.booking-page .passenger-form-container{
+    position: fixed;
+    top: 0;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    background-color: rgb(0, 0, 0, 0.5);
+    z-index: 3;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.booking-page .passenger-form{
+    padding: 30px;
+    background-color: white;
+    border-radius: 20px;
+    display: flex;
+    color: rgb(165, 165, 165);
+    flex-direction: column;
+}
+
+.booking-page .passenger-form p{
+    margin: 20px 0;
+    font-size: 20px;
+}
+
+.booking-page .passenger-form input{
+    margin-bottom: 30px;
+    width: 300px;
+    height: 25px;
+    outline: none;
+}
+
+.booking-page .passenger-form  button{
+    background-color: #ff3131;
+    color: white;
+    cursor: pointer;
+    padding: 10px 0;
+    border: none;
+}
+
+.booking-page .passenger-form button:hover{
+    background-color: #ff9f9f;
+}
+
+@media (max-width: 500px){
+    .booking-page .container .select-container{
+        grid-template-columns: 1fr;
+    }
+}

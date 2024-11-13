@@ -189,7 +189,6 @@ const setCity = (state, action) => {
 }
 
 const setDepartureTime = (state, action) => {
-    console.log(action.date)
     const newFlights =  state.flights.map((flight, i) =>
             i === action.index ? { ...flight, DepartureTime: action.date } : flight
         )

@@ -48,7 +48,7 @@
 }
 
 .search-form .remove-btn:hover{
-    background-color: rgb(255, 138, 138);
+    background-color: #ff8a8a;
 }
 
 .search-form img{
@@ -76,7 +76,7 @@
     background-color: white;
     top: calc(100% + 2px);
     cursor: auto;
-    z-index: 1;
+    z-index: 2;
     left: 0;
     border: 1px solid grey;
 }
@@ -100,16 +100,17 @@
     .search-form > div{
         border: none;
     }
+
+    .search-form{
+        grid-template-columns: 1fr;
+    }
     
     .search-form > .from-container,
     .search-form > .to-container{
         border-bottom: 1px solid rgb(180, 180, 180);
     }
 
-}
-
-@media  screen and (max-width: 510px){
-    .search-form{
-        grid-template-columns: 1fr;
+    .search-form > div:nth-child(3){
+        margin-top: 20px;
     }
 }

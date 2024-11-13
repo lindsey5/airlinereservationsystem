@@ -10,6 +10,7 @@ const ButtonsContainer = ({handleSearch}) => {
             {state.flightType === 'Multi City' && (
                 <button
                     className="add-flight-btn"
+                    disabled={state.count === 5 ? true : false}
                     onClick={() => dispatch({ type: 'ADD_COUNT'})}
                 >
                     + Add another flight

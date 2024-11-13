@@ -1,9 +1,13 @@
 import Airplane from "../model/airplane.js";
 import Flight from "../model/flight.js"
 import Pilot from "../model/pilot.js";
+import User from "../model/user.js";
 import { multi_city_search, one_way_search, round_trip_search } from "../service/flightSearchService.js";
 import { errorHandler } from "../utils/errorHandler.js";
 import mongoose from "mongoose";
+import jwt from "jsonwebtoken";
+import { sendEmail } from "../service/emailService.js";
+import Booking from "../model/Booking.js";
 const { ObjectId } = mongoose.Types;
 
 const calculateSeats = (classes) => {
@@ -170,6 +174,29 @@ export const search_flight = async (req, res) => {
     }
 }
 
+export const get_available_flights = async (req, res) => {
+    const limit = parseInt(req.query.limit) || 10;
+    const flightClass = req.query.flightClass || 'Economy';
+    try{
+        const flights = await Flight.find({ 
+            status: { $nin: ['Completed', 'Cancelled'] }, 
+            'classes.className' : flightClass,  
+            'classes.seats.status' : 'available',
+            'departure.time': {$gte: new Date()}
+        })
+        const sortedFlights = flights.sort((current, next) => 
+            current.classes.find(classObj => classObj.className === flightClass).price - 
+            next.classes.find(classObj => classObj.className === flightClass).price
+        )
+
+        res.status(200).json(sortedFlights.slice(0, limit));
+
+    }catch(err){
+        const errors = errorHandler(err)
+        res.status(400).json({errors});
+    }
+}
+
 export const get_flights = async (req, res) => {
     const page = parseInt(req.query.page) || 1; 
     const limit = parseInt(req.query.limit) || 10; 
@@ -192,6 +219,7 @@ export const get_flights = async (req, res) => {
             { 'airplane.id': { $regex: new RegExp(searchTerm, 'i') } },
             { 'pilot.captain': { $regex: new RegExp(searchTerm, 'i') } },
             { 'pilot.co_pilot': { $regex: new RegExp(searchTerm, 'i') } },
+            { flightNumber: { $regex: new RegExp(searchTerm, 'i') } },
             { status: { $regex: new RegExp(searchTerm, 'i') }},
         ]
     }
@@ -201,7 +229,7 @@ export const get_flights = async (req, res) => {
         .skip(skip)
         .limit(limit);
 
-        const totalFlights = await Pilot.countDocuments(searchCriteria);
+        const totalFlights = await Flight.countDocuments(searchCriteria);
         const totalPages = Math.ceil(totalFlights / limit);
         res.status(200).json({
             currentPage: page,
@@ -210,6 +238,50 @@ export const get_flights = async (req, res) => {
         });
     }catch(err){
         console.log(err)
+        const errors = errorHandler(err)
+        res.status(400).json({errors});
+    }
+}
+
+export const book_flight = async (req, res) => {
+    try{
+        const token = req.cookies.jwt;
+        const decodedToken = jwt.verify(token, process.env.JWT_SECRET);
+        const id = decodedToken.id;
+        const checkoutData = jwt.verify(req.cookies.checkoutData, process.env.JWT_SECRET);
+        const user = await User.findById(id);
+
+        checkoutData.data.forEach(async (flight) => {
+            flight.passengers.forEach(async (passenger) => {
+                const available_flight = await Flight.findOne({
+                    _id: flight.id, 
+                    'classes.className': checkoutData.class, 
+                });
+                const classIndex =  available_flight.classes.findIndex(classObj => classObj.className === checkoutData.class);
+                const seatIndex = available_flight.classes[classIndex].seats.findIndex(seat => passenger.seatNumber?  passenger.seatNumber === seat.seatNumber :  seat.status === 'available');
+                if(seatIndex > -1){
+                    available_flight.classes[classIndex].seats[seatIndex].status = 'booked';
+                    available_flight.classes[classIndex].seats[seatIndex].passenger = passenger;
+                    const updatedFlight = await available_flight.save();
+                    const data =  {
+                        id: updatedFlight._id, 
+                        seatNumber: available_flight.classes[classIndex].seats[seatIndex].seatNumber
+                    }
+                    sendEmail(user.email, data);
+
+                    const booking = await Booking.create({
+                        user_id: user._id,
+                        flight_id: flight.id,
+                        passengers: flight.passengers
+                    })
+
+                    await booking.save();
+                }
+            })
+
+        })
+        res.redirect(`/user/booking/success`);
+    }catch(err){
         const errors = errorHandler(err)
         res.status(400).json({errors});
     }

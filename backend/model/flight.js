@@ -1,8 +1,10 @@
 import mongoose from "mongoose";
 import ClassSchema from "./Schema/ClassSchema.js";
+import crypto from 'crypto';
 const Schema = mongoose.Schema;
 
 const FlightSchema = new Schema({
+    flightNumber: { type: String, unique: true },
     airline: { type: String,required: true, },
     status: { type: String, default: 'Scheduled'},
     gate_number: { type: String, required: true}, 
@@ -31,6 +33,14 @@ const FlightSchema = new Schema({
      },
     classes: { type: [ClassSchema], required: true,}
 }, { timestamps: true });
+
+FlightSchema.pre('save', function (next) {
+    if (this.isNew) {
+      const randomFlightNumber = `${crypto.randomBytes(3).toString('hex').toUpperCase()}`;
+      this.flightNumber = randomFlightNumber;
+    }
+    next();
+  });
 
 const Flight = mongoose.model('Flight', FlightSchema);
 export default Flight;

@@ -3,8 +3,6 @@
     flex-direction: column;
     padding: 20px;
     box-sizing: border-box;
-    border: 1px solid grey;
-    position: relative;
     align-items: center;
 }
 
@@ -15,9 +13,12 @@
 
 .seats .seat {
     border: none;
-    cursor: pointer;
     display: flex;
     justify-content: center;
+}
+
+.seats .seat:not(:disabled){
+    cursor: pointer;
 }
 
 .seats .seat img{

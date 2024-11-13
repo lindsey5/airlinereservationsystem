@@ -39,27 +39,25 @@
     height: 350px;
     opacity: 0;
     position: absolute;
-    animation: city-image-animation 0.8s ease-in-out forwards;
+    animation: city-image-animation 1s ease-in-out forwards;
 }
 
 @keyframes city-image-animation{
     from{
         opacity: 0;
-        transform: translateX(-400px);
     }
     to{
         opacity: 1;
-        transform: translateX(0);
     }
 }
 
 .user-home .search-form-container{
     padding: 30px;
-    width: 50%;
+    width: 70%;
     margin: auto;
     margin-bottom: 200px;
     transform: translateY(270px);
-    background-color: rgb(240, 240, 240);
+    background-color: white;
     border-radius: 20px;
     box-shadow: 0 0 15px 5px rgb(160, 160, 160);
 }

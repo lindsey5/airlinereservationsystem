@@ -1,0 +1,34 @@
+.success{
+    width: 100%;
+    display: flex;
+    justify-content: center;
+}
+
+.success .container{
+    width: 300px;
+    text-align: center;
+    margin-top: 50px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding: 30px;
+    border-radius: 20px;
+    box-shadow: 0 0 15px 3px rgb(187, 187, 187);
+}
+
+.success .container p{
+    color: rgb(128, 128, 128);
+}
+
+.success .container button{
+    margin-top: 100px;
+    background-color: #ff3131;
+    color: white;
+    border: none;
+    padding: 12px 100px;
+    cursor: pointer;
+}
+
+.success .container button:hover{
+    background-color: #ffaaaa;
+}

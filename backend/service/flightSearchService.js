@@ -5,25 +5,28 @@ export const one_way_search = async (data, flightClass, price) =>{
     try{
         const { departureCountry, departureCity, arrivalCity, arrivalCountry, departureTime } = data;
         const query = {
+            status: { $nin: ['Completed', 'Cancelled'] }, 
             'departure.country': departureCountry,
             'departure.city': departureCity,
             'arrival.city': arrivalCity,
             'arrival.country': arrivalCountry,
-            'classes.className': flightClass,
-            'departure.time' : {$gte: new Date(departureTime)}
-        }
+            'classes': {
+                $elemMatch: { className: flightClass }
+            },
+            'departure.time': { $gte: new Date(departureTime) }
+        };
+        
         if(price > 0) {
             query['classes.price'] = {$lte: price}
         }
         
         const flights = await Flight.find(query);
 
-        if(flights.length < 1){
-            throw new Error('No flights found');
-        }
-
+        const sortedFlights = flights.sort((current, next) => {
+            return current.classes.find(classObj => classObj.className === flightClass).price - next.classes.find(classObj => classObj.className === flightClass).price;
+        })
         const flightsArr = [];
-        flights.forEach(flight => flightsArr.push([flight]));
+        sortedFlights.forEach(flight => flightsArr.push([flight]));
         return flightsArr;
     }catch(err){
         throw new Error('No flights found');
@@ -38,20 +41,25 @@ export const round_trip_search = async (data, flightClass,price) => {
     };
 
     const outBoundQuery = {
+        status: { $nin: ['Completed', 'Cancelled'] }, 
         'departure.country': departureCountry,
         'departure.city': departureCity,
         'arrival.city': arrivalCity,
         'arrival.country': arrivalCountry,
-        'classes.className': flightClass,
-        'departure.time' : {$gte: new Date(departureTime)}
-    }
+        'classes': {
+            $elemMatch: { className: flightClass }
+        },
+        'departure.time': { $gte: new Date(departureTime) }
+    };
 
     const returnQuery = {
         'departure.country': arrivalCountry,
         'departure.city': arrivalCity,
         'arrival.city': departureCity,
         'arrival.country': departureCountry,
-        'classes.className': flightClass
+        'classes': {
+            $elemMatch: { className: flightClass }
+        }
     }
 
     if(price > 0) {
@@ -86,6 +94,28 @@ export const round_trip_search = async (data, flightClass,price) => {
         });
     });
 
+    interleavedResults.sort((current, next) => {
+        const currentPrice = current.reduce((total, flight) => {
+            return total + flight.classes.reduce((classTotal, classObj) => {
+                if (classObj.className === flightClass) {
+                    return classTotal + classObj.price;
+                }
+                return classTotal;
+            }, 0);
+        }, 0);
+    
+        const nextPrice = next.reduce((total, flight) => {
+            return total + flight.classes.reduce((classTotal, classObj) => {
+                if (classObj.className === flightClass) {
+                    return classTotal + classObj.price;
+                }
+                return classTotal;
+            }, 0);
+        }, 0);
+    
+        return currentPrice - nextPrice; 
+    });
+
     return interleavedResults;
 };
 
@@ -98,12 +128,15 @@ export const multi_city_search = async (searchSegments, flightClass) => {
 
         // Find flights for the current segment
         const flights = await Flight.find({
+            status: { $nin: ['Completed', 'Cancelled'] }, 
             'departure.country': departureCountry,
             'departure.city': departureCity,
             'arrival.city': arrivalCity,
             'arrival.country': arrivalCountry,
-            'classes.className': flightClass,
-            'departure.time' : {$gte: new Date(departureTime)}
+            'classes': {
+                $elemMatch: { className: flightClass }
+            },
+            'departure.time': { $gte: new Date(departureTime) }
         });
         segmentResults.push(flights);
     }
@@ -142,6 +175,28 @@ export const multi_city_search = async (searchSegments, flightClass) => {
             }
         }
         return true; // Valid combination
+    });
+
+    validCombinations.sort((current, next) => {
+        const currentPrice = current.reduce((total, flight) => {
+            return total + flight.classes.reduce((classTotal, classObj) => {
+                if (classObj.className === flightClass) {
+                    return classTotal + classObj.price;
+                }
+                return classTotal;
+            }, 0);
+        }, 0);
+    
+        const nextPrice = next.reduce((total, flight) => {
+            return total + flight.classes.reduce((classTotal, classObj) => {
+                if (classObj.className === flightClass) {
+                    return classTotal + classObj.price;
+                }
+                return classTotal;
+            }, 0);
+        }, 0);
+    
+        return currentPrice - nextPrice; 
     });
 
     return validCombinations;
