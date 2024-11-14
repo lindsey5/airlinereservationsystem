@@ -1,9 +1,16 @@
 import express from 'express';
-import { create_flight, get_popular_destination, get_flight, search_s, get_available_flights, book_flight } from '../controller/flightController.js';
+import { 
+    create_flight, 
+    get_popular_destination,
+     get_flight, 
+     search_flight, 
+     get_available_flights, 
+     book_flight,
+    get_flights } from '../controller/flightController.js';
 import { userRequireAuth } from '../middleware/userRequireAuth.js';
 
 const router = express.Router();
-flight, get_flight
+
 router.post('/', create_flight);
 router.get('/book', userRequireAuth, book_flight);
 router.get('/flights', get_flights);
