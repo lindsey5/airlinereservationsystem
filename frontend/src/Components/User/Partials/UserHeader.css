@@ -41,8 +41,20 @@
     font-size: 13px;
     cursor: pointer;
     border-radius: 20px;
+    margin-left: 20px;
 }
 
 .user-page header button:hover{
     background-color: #ff9898;
+}
+
+.user-page header a{
+    color: #ff3131;
+    font-size: 18px;
+    text-decoration: none;
+}
+
+.user-page header a:hover{
+    text-decoration: underline;
+    text-underline-offset: 3px;
 }

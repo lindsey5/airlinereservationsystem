@@ -34,6 +34,7 @@ const FlightDetailsModal = ({flightData, close}) => {
                     <h3 style={{marginRight: '20px'}}>{flightData.airline}</h3>
                     <button className="view-seats-btn" onClick={() => setShowSeats(true)}>View Seats</button>
                 </div>
+                <p>Flight No: {flightData.flightNumber}</p>
                 <p>Plane ID: {flightData.airplane.id}</p>
                 <div className="flight-details">
                     <div>

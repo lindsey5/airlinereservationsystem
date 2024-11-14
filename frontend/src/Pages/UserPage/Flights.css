@@ -39,6 +39,7 @@
 }
 
 .flight .airline{
+    width: 40px;
     height: 40px;
     margin-right: 30px;
     padding: 10px;

@@ -86,10 +86,6 @@ const BookingPage = () => {
         }
     }
 
-    useEffect(() => {
-        console.log(selectSeat)
-    }, [selectSeat])
-
     return (
         <div className="booking-page">
             <div>

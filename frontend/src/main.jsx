@@ -29,6 +29,7 @@ import AvailableFlights from './Pages/UserPage/AvailableFlights';
 import BookingPage from './Pages/UserPage/BookingPage';
 import TicketPage from './Pages/UserPage/TicketPage';
 import Success from './Pages/UserPage/Success';
+import About from './Pages/HomePage/About';
 
 const router = createBrowserRouter(
   createRoutesFromElements(
@@ -44,7 +45,8 @@ const router = createBrowserRouter(
       </Route>
 
       <Route path="/tcu-airlines/ticket" element={<TicketPage />}/>
-
+      <Route path='about' element={<About />}/>
+      
       <Route path='/user/'>
         <Route element={<UserRoute />}>
           <Route element={<UserLayout />}>

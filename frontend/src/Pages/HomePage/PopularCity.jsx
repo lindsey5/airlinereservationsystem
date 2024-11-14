@@ -1,10 +1,12 @@
 import { useEffect, useState } from "react"
 import useFetch from "../../hooks/useFetch"
 import './PopularCity.css'
+import { useNavigate } from "react-router-dom";
 
 const PopularCity = ({elementsRef}) => {
     const [flights, setFlights] = useState();
     const { data } = useFetch('/api/flight/popular?limit=12');
+    const navigate = useNavigate();
 
     useEffect(() => {
         const setFetchedData = async () => {
@@ -43,7 +45,7 @@ const PopularCity = ({elementsRef}) => {
                             <img src={flight.image} />
                             <div>
                                 <span>{flight._id}, {flight.country}</span>
-                                <button className="book-btn">Book Flight</button>
+                                <button className="book-btn" onClick={() => navigate('/user/login')}>Book Flight</button>
                             </div>
                         </div>
                     )}
