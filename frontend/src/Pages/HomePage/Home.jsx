@@ -7,9 +7,7 @@ import './tailwind.css';
 import Footer from './Footer';
 
 const Home = () => {
-    const navigate = useNavigate();
     const elementsRef = useRef([]);
-    const [showDropdown, setShowDropdown] = useState(false);
 
     useEffect(() => {
         const observer = new IntersectionObserver(
@@ -35,25 +33,7 @@ const Home = () => {
 
     return (
         <main className='home-page'>
-            <header>
-                <div>
-                    <img src="/icons/tcu_airlines-logo (2).png" alt="" />
-                    <h3>TCU <span>AIRLINES</span></h3>
-                </div>
-                <ul>
-                    <li onClick={() => navigate('/user/login')}>Login</li>
-                    <li onClick={() => navigate('/user/signup')}>Signup</li>
-                    <li>About</li>
-                </ul>
-                <button onClick={() => setShowDropdown(!showDropdown)}>
-                <img src="/icons/menu.png" alt="" />
-                </button>
-                <div className={`dropdown ${showDropdown ? 'show' : ''}`}>
-                    <li onClick={() => navigate('/user/login')}>Login</li>
-                    <li onClick={() => navigate('/user/signup')}>Signup</li>
-                    <li>About</li>
-                </div>
-            </header>
+
             <section className='home'>
                 <SearchContainer />
             </section>

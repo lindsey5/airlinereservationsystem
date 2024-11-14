@@ -30,12 +30,16 @@ import BookingPage from './Pages/UserPage/BookingPage';
 import TicketPage from './Pages/UserPage/TicketPage';
 import Success from './Pages/UserPage/Success';
 import About from './Pages/HomePage/About';
+import HomeLayout from './Layouts/HomeLayout';
 
 const router = createBrowserRouter(
   createRoutesFromElements(
     <>
       <Route element={<PublicRoute />}>
-        <Route path="/" element={<Home />} />
+        <Route element={<HomeLayout />}>
+          <Route path="/" element={<Home />} />
+          <Route path='/about' element={<About />}/>
+        </Route>
         <Route path='/add-admin' element={<AddAdmin />} />
         <Route path='/admin/login' element={<AdminLogIn />} />
         <Route path='/user/' >
@@ -45,17 +49,17 @@ const router = createBrowserRouter(
       </Route>
 
       <Route path="/tcu-airlines/ticket" element={<TicketPage />}/>
-      <Route path='about' element={<About />}/>
-      
-      <Route path='/user/'>
-        <Route element={<UserRoute />}>
-          <Route element={<UserLayout />}>
+
+      <Route element={<UserRoute />}>
+        <Route element={<UserLayout />}>
+          <Route path='/user/'>
             <Route path='home' element={<UserHome />} />
             <Route path='search-results' element={<SearchResults />} />
             <Route path='available-flights' element={<AvailableFlights />} />
             <Route path='booking' element={<BookingPage />} />
             <Route path='booking/success' element={<Success />} />
           </Route>
+          <Route path='/about' element={<About />}/>
         </Route>
       </Route>
 

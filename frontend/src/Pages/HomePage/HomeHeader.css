@@ -1,0 +1,84 @@
+.home-layout{
+    padding-top: 50px;
+}   
+
+.home-header{
+    display: flex;
+    justify-content: space-between;
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    background-color: white;
+    align-items: center;
+    padding: 10px;
+    z-index: 1;
+}
+
+.home-header img{
+    width: 60px;
+    height: 60px;
+}
+
+.home-header > div{
+    display: flex;
+    align-items: center;
+}
+
+.home-header > div > h3{
+    color: red;
+}
+
+.home-header> div > h3 span{
+    color: #ffbd59;
+}
+
+.home-header ul{
+    list-style-type: none;
+    display: flex;
+}
+
+.home-header li{
+    color:  red;
+    margin: 0 20px;
+    font-size: 18px;
+    cursor: pointer;
+}
+
+.home-header li:hover{
+    text-decoration: underline;
+}
+
+.home-header > button{
+    background-color: white;
+    border: none;
+    display: none;
+    cursor: pointer;
+}
+
+.home-header > button img{
+    width: 25px;
+    height: 25px;
+}
+
+.home-header .dropdown{
+    position: absolute;
+    flex-direction: column;
+    left: 0;
+    right: 0;
+    top: 100%;
+    background-color: white;
+    display: none;
+}
+
+.home-header .dropdown > li{
+    padding: 20px 0;
+    width: 100%;
+    list-style: none;
+    text-decoration: none;
+    text-align: center;
+}
+
+.home-header .dropdown > li:hover{
+    background-color: #ffeed5;
+}
