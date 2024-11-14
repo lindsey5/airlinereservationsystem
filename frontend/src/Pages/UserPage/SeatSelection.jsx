@@ -10,6 +10,7 @@ const SeatSelection = ({bookings, currentFlightIndex, currentPassenger, setCurre
     const [columns, setColumns] = useState();
     const [letters, setLetters] = useState([]);
     let index = 0;
+    let num = 1;
 
     useEffect(() => {
 
@@ -115,7 +116,7 @@ const SeatSelection = ({bookings, currentFlightIndex, currentPassenger, setCurre
                                 >
                                 <img src={`/icons/${bookings.class !== classObj.className || seat?.passenger || isExist ? 'close' : classObj.className + '-seat'}.png`}/>
                                 </button>
-                                {position % columns[index] === 0 && position !== sumOfColumns && <div></div> }
+                                {position % columns[index] === 0 && position !== sumOfColumns && <div style={{textAlign: 'center'}}>{num++}</div> }
                                 </>
                             )
                         })

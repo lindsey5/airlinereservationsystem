@@ -33,6 +33,7 @@ const GenerateSeats = ({flightData, close}) =>{
     const [letters, setLetters] = useState([]);
     let index = 0;
     const passengerRef = useRef();
+    let num = 1;
 
 
     useEffect(() => {
@@ -135,13 +136,13 @@ const GenerateSeats = ({flightData, close}) =>{
                 {
                     flight.classes.map((classObj) => 
                         classObj.seats.map((seat) =>{
-                            
                             const position = seat.seatNumber.charAt(0).toUpperCase().charCodeAt(0) - 64;
                             if(position % columns[index] === 0 && position !== sumOfColumns){
                                 index ++;
                             }else{
                                 index = 0;
                             }
+
                             return (
                                 <>
                                 <button 
@@ -159,7 +160,7 @@ const GenerateSeats = ({flightData, close}) =>{
                                 {seat.status === 'booked' && <img className='check' src="/icons/check (3).png" alt="" />}
                                 <img src={`/icons/${classObj.className}-seat.png`}/>
                                 </button>
-                                {position % columns[index] === 0 && position !== sumOfColumns && <div></div> }
+                                {position % columns[index] === 0 && position !== sumOfColumns && <div style={{textAlign: 'center'}}>{num++}</div> }
                                 </>
                             )
                         })

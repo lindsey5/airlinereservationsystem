@@ -23,6 +23,7 @@
 .home-header > div{
     display: flex;
     align-items: center;
+    cursor: pointer;
 }
 
 .home-header > div > h3{

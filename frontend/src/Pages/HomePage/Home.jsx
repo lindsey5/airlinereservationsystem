@@ -5,6 +5,7 @@ import { useNavigate } from 'react-router-dom';
 import { useRef, useEffect, useState } from 'react';
 import './tailwind.css';
 import Footer from './Footer';
+import HomeHeader from './HomeHeader';
 
 const Home = () => {
     const elementsRef = useRef([]);
@@ -33,7 +34,7 @@ const Home = () => {
 
     return (
         <main className='home-page'>
-
+            <HomeHeader />
             <section className='home'>
                 <SearchContainer />
             </section>
