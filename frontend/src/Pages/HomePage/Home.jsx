@@ -1,7 +1,6 @@
 import PopularCity from './PopularCity';
 import './Home.css'
 import SearchContainer from './SearchContainer';
-import { useNavigate } from 'react-router-dom';
 import { useRef, useEffect, useState } from 'react';
 import './tailwind.css';
 import Footer from './Footer';

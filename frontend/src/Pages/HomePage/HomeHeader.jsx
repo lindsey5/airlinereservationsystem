@@ -13,17 +13,17 @@ const HomeHeader = () => {
                 <h3>TCU <span>AIRLINES</span></h3>
             </div>
             <ul>
-                <li onClick={() => navigate('/user/login')}>Login</li>
-                <li onClick={() => navigate('/user/signup')}>Signup</li>
-                <li>About</li>
+                <li onClick={() => navigate('/user/login')}>Log in</li>
+                <li onClick={() => navigate('/user/signup')}>Sign up</li>
+                <li onClick={() => navigate('/about')}>About us</li>
             </ul>
             <button onClick={() => setShowDropdown(!showDropdown)}>
             <img src="/icons/menu.png" alt="" />
             </button>
             <div className={`dropdown ${showDropdown ? 'show' : ''}`}>
-                <li onClick={() => navigate('/user/login')}>Login</li>
-                <li onClick={() => navigate('/user/signup')}>Signup</li>
-                <li>About</li>
+                <li onClick={() => navigate('/user/login')}>Log in</li>
+                <li onClick={() => navigate('/user/signup')}>Sign up</li>
+                <li onClick={() => navigate('/about')}>About us</li>
             </div>
         </header>
     )
