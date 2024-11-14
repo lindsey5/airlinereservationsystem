@@ -27,14 +27,15 @@
 
 .flight .mid-div{
     display: flex;
-    width: 100%;
     align-items: center;
 }
 
-.flight .hours-difference{
-    position: absolute;
-    top: 50%;
-    left: 50%;
+.flight .mid-div{
+    width: 100%;
+}
+
+.flight .mid-div div{
+    margin-top: 60px;
 }
 
 .flight .airline{
@@ -57,7 +58,7 @@
 }
 
 .flight .plane-icon{
-    height: 30px;
+    height: 25px;
 }
 
 .flights-container > div:last-child{
@@ -116,12 +117,6 @@
     
     .flight .mid-div{
         margin: 50px 0;
-    }
-
-    .flight .hours-difference{
-        left: 50%;
-        top: 60%;
-        transform: translateX(-50%);
     }
 
     .flights-container > div:first-child{

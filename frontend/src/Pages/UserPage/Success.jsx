@@ -1,8 +1,15 @@
 import { useNavigate } from 'react-router-dom';
 import './Success.css'
+import { useContext, useEffect } from 'react';
+import { SearchContext } from '../../Context/SearchContext';
 
 const Success = () => {
     const navigate = useNavigate();
+    const { dispatch } = useContext(SearchContext);
+    useEffect(() => {
+        sessionStorage.removeItem('state')
+        dispatch({type: 'RESET'})
+    },[])
 
     return (
         <div className="success">

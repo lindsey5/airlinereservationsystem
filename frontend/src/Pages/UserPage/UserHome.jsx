@@ -91,15 +91,15 @@ const UserHome = () => {
                         <ButtonsContainer handleSearch={() => navigate('/user/search-results')}/>
                     </div>
                 </div>
-            <div className="bg-white w-full flex items-center opacity-0 py-[200px]" ref={el => elementsRef.current[1] = el}>
-                <div className="mx-auto px-4 w-full box-border">
-                    <div className="tcu-airlines-details bg-white text-center flex justify-between">
-                        <div className='max-w-[50%]'>
+            <div className="bg-white w-full flex flex-col items-center justify-center opacity-0 py-[200px]" ref={el => elementsRef.current[1] = el}>
+                <div className="mx-auto px-4 w-full box-border h-full">
+                    <div className="tcu-airlines-details bg-white text-center flex justify-center flex-col items-center h-full">
+                    <img src="/icons/background.jpg" alt="" className="image w-[650px] h-[330px] mb-[50px]"/>
+                        <div className='max-w-[70%]'>
                         <h1 className="text-4xl text-[#ff3131] font-bold mb-3">Online Flight Booking Made Easy with TCU Airlines</h1>
-                        <p className="text-lg mt-16 mb-6">Looking for cheap flights and airfare deals? TCU Airlines, one of the leading flight booking platforms in Southeast Asia, has PAL, cebu pacific, Air Asia, and Skyjet flight routes to choose from and our inventories never ceased to stop growing. TCU Airlines offers flight tickets from domestic and international airlines</p>
-                        <button onClick={()=> navigate('/user/available-flights')} className="mb-[30px] px-[40px] py-[10px] rounded-xl border-none bg-[#ff3131] text-white text-[15px] hover:bg-[#ff8a8a] cursor-pointer">View Available Flights</button>
+                        <p className="text-lg mt-16 mb-10">Looking for cheap flights and airfare deals? TCU Airlines, one of the leading flight booking platforms in Southeast Asia, has PAL, cebu pacific, Air Asia, and Skyjet flight routes to choose from and our inventories never ceased to stop growing. TCU Airlines offers flight tickets from domestic and international airlines</p>
+                        <button onClick={()=> navigate('/user/available-flights')} className="mb-[30px] px-[40px] py-[15px] rounded-xl border-none bg-[#ff3131] text-white text-[17px] hover:bg-[#ff8a8a] cursor-pointer">View Available Flights</button>
                         </div>
-                        <img src="/icons/background.jpg" alt="" className="image h-[380px] w-[45%]"/>
                     </div>
                 </div>
             </div>

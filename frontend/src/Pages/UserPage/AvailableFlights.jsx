@@ -71,7 +71,16 @@ const AvailableFlights = () => {
                             </div>
                             <div className="mid-div">
                             <hr />
-                            <img className='plane-icon' src="/icons/airplane.png" alt="" />
+                            <div>
+                                <img className='plane-icon' src="/icons/airplane.png" alt="" />
+                                <h4 className="hours-difference">{
+                                (parseFloat(new Date(flight.arrival.time) - new Date(flight.departure.time)) / (1000 * 60 * 60)).toLocaleString('en-US', {
+                                    minimumFractionDigits: 1,
+                                    maximumFractionDigits: 1
+                                })
+                                } hours
+                                </h4>
+                            </div>
                             <hr />
                             </div>
                             <div>
@@ -79,13 +88,6 @@ const AvailableFlights = () => {
                                 <h2>{getTime(flight.arrival.time)}</h2>
                                 <p>{flight.arrival.airport} ({flight.arrival.airport_code})</p>
                             </div>
-                            <h3 className="hours-difference">{
-                            (parseFloat(new Date(flight.arrival.time) - new Date(flight.departure.time)) / (1000 * 60 * 60)).toLocaleString('en-US', {
-                                minimumFractionDigits: 1,
-                                maximumFractionDigits: 1
-                            })
-                            } hours
-                            </h3>
                         </div>
                     </div>
                     <div>

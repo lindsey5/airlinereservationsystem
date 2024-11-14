@@ -148,6 +148,7 @@ export const get_popular_destination = async (req, res) => {
         }
         res.status(200).json(flights);
     }catch(err){
+        console.log(err)
         const errors = errorHandler(err)
         res.status(400).json({errors});
     }
@@ -168,7 +169,6 @@ export const search_flight = async (req, res) => {
 
         res.status(200).json(searchResults);
     }catch(err){
-        console.log(err);
         const errors = errorHandler(err)
         res.status(400).json({errors});
     }

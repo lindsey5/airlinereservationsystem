@@ -1,4 +1,4 @@
-import { act, createContext, useContext, useEffect, useReducer } from "react";
+import { createContext, useEffect, useReducer } from "react";
 
 export const SearchContext = createContext();
 
@@ -43,6 +43,8 @@ const SearchReducer = (state, action) => {
             return {...state, flightClass: action.flightClass}
         case 'SET_VALIDATION':
             return {...state, isValid: action.payload}
+        case 'RESET': 
+            return SearchState
         default:
             return state;
     }

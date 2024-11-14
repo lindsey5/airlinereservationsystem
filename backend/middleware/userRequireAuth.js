@@ -1,4 +1,5 @@
-import User from "../model/user";
+import User from "../model/user.js";
+import jwt from 'jsonwebtoken'
 
 export const userRequireAuth = async (req, res, next) => {
     const token = req.cookies.jwt;
@@ -6,8 +7,8 @@ export const userRequireAuth = async (req, res, next) => {
         try {
             const decodedToken = jwt.verify(token, process.env.JWT_SECRET);
             req.userId = decodedToken.id;
-            const provider = await User.findById(decodedToken.id);
-            if (provider) {
+            const user = await User.findById(decodedToken.id);
+            if (user) {
                return next();
             }
             return res.status(401).json({ error: 'No token found' });

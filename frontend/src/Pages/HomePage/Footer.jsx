@@ -5,7 +5,7 @@ const Footer = () => {
     <div className="flex flex-col lg:flex-row justify-between">
       <div className="mb-8 lg:mb-0">
         <h1 className="text-4xl font-semibold text-white">
-          TCU Airlines <span className="text-white">✈</span>
+          TCU Airlines
         </h1>
         <div className="mt-4 flex flex-wrap shadow-md flex justify-center rounded-md">
         <a href="" ><img
@@ -16,7 +16,7 @@ const Footer = () => {
           <a href="" ><img
               alt="BSI Certified"
               src="https://ik.imagekit.io/tvlk/image/imageResource/2021/05/10/1620638808154-e6c02ed786235ab59252628a9aa9b715.png"
-              className="inline-block mr-2 mb-2 w-16 h-auto object-contain"
+              className="inline-block mr-2 mb-2 w-16 h-auto obect-contain"
           /></a>
           <a href="" ><img
               alt="PCI DSS Compliant"
@@ -57,20 +57,6 @@ const Footer = () => {
                 className="w-12 h-auto inline-block"
               /></a>
             </div>
-            <div className="bg-white p-2 shadow-md flex justify-center rounded-md">
-            <a href="" ><img
-                alt="Payment partner Discover"
-                src="https://ik.imagekit.io/tvlk/image/imageResource/2019/05/20/1558339316000-c0152d7d4fdce9b6421dd9559964ba55.png?tr=h-19,q-75,w-57"
-                className="w-12 h-auto inline-block"
-              /></a>
-            </div>
-            <div className="bg-white p-2 shadow-md flex justify-center rounded-md">
-            <a href="" ><img
-                alt="Payment partner UnionPay"
-                src="https://ik.imagekit.io/tvlk/image/imageResource/2019/05/20/1558339313470-3bbccd76ffb68c94739fce5d40a2e8af.png?tr=h-19,q-75,w-57"
-                className="w-12 h-auto inline-block"
-              /></a>
-            </div>
           </div>
         </div>
       </div>
@@ -79,28 +65,28 @@ const Footer = () => {
         <div className="mb-6 md:mb-0">
           <h2 className="text-xl font-semibold text-white">About TCU Airlines</h2>
           <ul className="mt-2 text-white list-none pl-0 leading-8">
-              <li><a href="">How to Book</a></li>
-              <li><a href="" >Contact Us</a></li>
-              <li><a href="" >Help Center</a></li>
-              <li><a href="" >Careers</a></li>
-              <li><a href="" >About Us</a></li>
+              <li><a href="" className="text-white font-medium hover:underline-offset-4" >How to Book</a></li>
+              <li><a href="" className="text-white font-medium hover:underline-offset-4">Contact Us</a></li>
+              <li><a href="" className="text-white font-medium hover:underline-offset-4">Help Center</a></li>
+              <li><a href="" className="text-white font-medium hover:underline-offset-4">Careers</a></li>
+              <li><a href="" className="text-white font-medium hover:underline-offset-4">About Us</a></li>
           </ul>
         </div>
         <div className="mb-6 md:mb-0">
           <h2 className="text-xl font-semibold text-white">Products</h2>
           <ul className="mt-2 text-white list-none pl-0 leading-8">
-            <li><a href="" >Flights</a></li>
-            <li><a href="" >Airport Transfer</a></li>
-            <li><a href="" >Things to Do</a></li>
+            <li><a href="" className="text-white font-medium hover:underline-offset-4">Flights</a></li>
+            <li><a href="" className="text-white font-medium hover:underline-offset-4">Airport Transfer</a></li>
+            <li><a href="" className="text-white font-medium hover:underline-offset-4">Things to Do</a></li>
           </ul>
         </div>
         <div>
           <h2 className="text-xl font-semibold text-white">Other</h2>
           <ul className="mt-2 text-white list-none pl-0 leading-8">
-            <li><a href="" >#ExplorePH</a></li> 
-            <li><a href="" >Privacy Notice</a></li>
-            <li><a href="" >Terms & Conditions</a></li>
-            <li><a href="" >Vulnerability Disclosure Program</a></li>
+            <li><a href="" className="text-white font-medium hover:underline-offset-4">#ExplorePH</a></li> 
+            <li><a href="" className="text-white font-medium hover:underline-offset-4">Privacy Notice</a></li>
+            <li><a href="" className="text-white font-medium hover:underline-offset-4">Terms & Conditions</a></li>
+            <li><a href="" className="text-white font-medium hover:underline-offset-4">Vulnerability Disclosure Program</a></li>
           </ul>
         </div>
       </div>
