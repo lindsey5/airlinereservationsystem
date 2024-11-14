@@ -8,6 +8,7 @@ const SeatSelection = ({bookings, currentFlightIndex, currentPassenger, setCurre
     const { data } = useFetch(`/api/flight/${bookings.flights[currentFlightIndex].id}`);
     const [sumOfColumns, setSumOfColumns] = useState();
     const [columns, setColumns] = useState();
+    const [letters, setLetters] = useState([]);
     let index = 0;
 
     useEffect(() => {
@@ -26,6 +27,22 @@ const SeatSelection = ({bookings, currentFlightIndex, currentPassenger, setCurre
         }
         setData();
     },[data])
+
+    useEffect(() => {
+        if(columns){
+            let currentPosition = 65;
+            const letters = [];
+            columns.forEach((column, i) => {
+                for(let i = 0; i < column; i++){
+                    letters.push(String.fromCharCode(currentPosition))
+                    currentPosition += 1;
+                }
+                if(i < columns.length -1) letters.push('');
+            })
+
+            setLetters(letters)
+        }
+    }, [columns])
 
     useEffect(() => {
         if(flight){
@@ -73,6 +90,7 @@ const SeatSelection = ({bookings, currentFlightIndex, currentPassenger, setCurre
                 <p>{bookings.class}</p>
                 <div className="seats">
                 <div className='seats-rows-container' style={{gridTemplateColumns: columns.length > 1 ? `repeat(${sumOfColumns+ columns.length -1}, 1fr)` : `repeat(${sumOfColumns}, 1fr)`}}>
+                {letters.length > 0 && letters.map(letter => <div className="letter">{letter}</div>)}
                 {
                     flight.classes.map((classObj) => 
                         classObj.seats.map((seat) =>{
