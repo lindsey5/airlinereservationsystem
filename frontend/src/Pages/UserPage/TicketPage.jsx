@@ -45,6 +45,13 @@ const TicketPage = () => {
         }
      }, [data])
 
+     const dateMinusOneHour = (departure_time) => {
+        const date = new Date(departure_time)
+        date.setHours(date.getHours() - 1);
+        const formattedDate = date.toLocaleString();
+        return formatDate(formattedDate);
+     }
+
     return (
         <div className="ticket-page">
             <div className="ticket-container">
@@ -53,7 +60,7 @@ const TicketPage = () => {
                         <img src="/icons/tcu_airlines-logo (2).png" alt="" />
                         <h3>TCU AIRLINES TICKET</h3>
                     </div>
-                    <div className="passenger-container">
+                    <div className="passenger-ticket-container">
                         <div>
                             <p>Flight:</p>
                             <h4>{data?.flight && data.flight.flightNumber}</h4>
@@ -67,27 +74,12 @@ const TicketPage = () => {
                             <h4>{passenger && passenger[0]?.seatNumber}</h4>
                         </div>
                         <div>
-                            <p>Gate:</p>
-                            <h4>{data?.flight && data.flight.gate_number}</h4>
-                        </div>
-                        <div>
                             <p>From:</p>
                             <h4>{data?.flight && data.flight.departure.airport}</h4>
                         </div>
                         <div>
                             <p>To:</p>
                             <h4>{data?.flight && data.flight.arrival.airport}</h4>
-                        </div>
-                        <div>
-                            <p>Class</p>
-                            <h4>{flightClass}</h4>
-                        </div>
-                        <div>
-                            {passenger && <QRCode
-                                style={{ height: "auto", maxWidth: "100px", width: "100px" }}
-                                value={passenger[0].passenger.ticketNumber}
-                                viewBox={`0 0 256 256`}
-                                />}
                         </div>
                     </div>
                         
@@ -99,9 +91,37 @@ const TicketPage = () => {
                         <h4 style={{marginLeft: '20px'}}>{data?.flight && formatDate(data.flight.departure.time)}</h4>
                     </div>
                 </div>
-                <button onClick={handleDownload}>Download Ticket</button>
+                <div className="boarding-pass">
+                    <div className="ticket-header"></div>
+                    <h3>{flightClass} Class</h3>
+                    <div className="flight-info">
+                        <div>
+                            <p>Flight:</p>
+                            <h4>{data?.flight && data.flight.flightNumber}</h4>
+                        </div>
+                        <div>
+                            <p>Seat:</p>
+                            <h4>{passenger && passenger[0]?.seatNumber}</h4>
+                        </div>
+                        <div>
+                            <p>Gate:</p>
+                            <h4>{data?.flight && data.flight.gate_number}</h4>
+                        </div>
+                    </div>
+                    <div className="qr-container">
+                    {passenger && 
+                        <QRCode
+                            style={{ height: "auto", maxWidth: "100px", width: "100px" }}
+                            value={passenger[0].passenger.ticketNumber}
+                            viewBox={`0 0 256 256`}
+                        />}
+                    </div>
+                    <div>
+                    
+                    </div>
+                </div>
             </div>
-            
+            <button onClick={handleDownload}>Download Ticket</button>
         </div>
     )
 
