@@ -27,8 +27,7 @@ export const searchFlight = async(state) => {
         );
         if(response.ok){
             const results = await response.json();
-            const filteredFlights = results.filter(flightArray => new Date(flightArray[0].departure.time) > new Date());
-            return filteredFlights
+            return results
         }
     }catch(err){
         console.error(err);

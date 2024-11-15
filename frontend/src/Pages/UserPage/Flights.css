@@ -112,9 +112,14 @@
         justify-content: center;
     }
 
+    .flights-container .flight:nth-child(n+2){
+        border-top: 1px solid rgb(190, 190, 190);
+    }
+
     .flight{
         flex-direction: column;
         font-size: 13px;
+        padding: 30px 0;
     }
 
     .flight .airline{

@@ -20,7 +20,7 @@
     height: 60px;
 }
 
-.user-page header > div{
+.user-page header > div:first-child{
     display: flex;
     align-items: center;
     cursor: pointer;
@@ -34,28 +34,56 @@
     color: #ffbd59;
 }
 
-.user-page header button{
-    background-color: #ff3131;
-    color: white;
+
+.user-page header > button{
+    border-radius: 50%;
+    background-color: white;
     border: none;
-    padding: 10px 40px;
-    font-size: 13px;
+    height: 40px;
     cursor: pointer;
-    border-radius: 20px;
-    margin-left: 20px;
+    
 }
 
-.user-page header button:hover{
-    background-color: #ff9898;
+.user-page header button img{
+    width: 100%;
+    height: 100%;
 }
 
-.user-page header a{
+.user-page header .dropdown{
+    background-color: white;
+    padding: 0 10px;
+    position: absolute;
+    right: 30px;
+    top: calc(83%);
+    border-radius: 10px;
+    box-shadow: 0 0 5px 2px rgb(201, 201, 201);
+}
+
+.user-page header .dropdown button{
+    width: 170px;
+    height: 40px;
+    display: flex;
+    align-items: center;
+    border: none;
+    background-color: white;
     color: #ff3131;
-    font-size: 18px;
+    font-size: 16px;
+    margin: 10px 0;
+    cursor: pointer;
+    padding: 5px;
+}
+
+.user-page header .dropdown button:hover{
+    background-color: #e2e2e2;
+}
+
+.user-page header .dropdown a{
     text-decoration: none;
 }
 
-.user-page header a:hover{
-    text-decoration: underline;
-    text-underline-offset: 3px;
+
+.user-page header .dropdown button img{
+    width: 30px;
+    height: 95%;
+    margin-right: 15px;
 }

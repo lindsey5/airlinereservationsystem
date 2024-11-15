@@ -53,9 +53,11 @@ const SearchForms = () =>{
         let flag = true;
         state.flights.forEach((flight, i) => {
             if(i > 0){
-                const prevIndexDate = new Date(new Date(state.flights[i-1].DepartureTime).getTime() + 4 * 60 * 60 * 1000);
+                const prevIndexDate =  new Date(state.flights[i - 1].DepartureTime);
+                const completedPrevIndexDate = new Date(prevIndexDate.setHours(prevIndexDate.getHours() + 5));
+
                 if(flight.FromCountry !== state.flights[i-1].ToCountry ||
-                    flight.FromCity !== state.flights[i-1].ToCity || flight.DepartureTime <= prevIndexDate
+                    flight.FromCity !== state.flights[i-1].ToCity || flight.DepartureTime <= completedPrevIndexDate
                  ){
                     flag = false;
                 }
@@ -63,12 +65,12 @@ const SearchForms = () =>{
             const currentDate = new Date();
             if(!flight.FromCountry 
                 || !flight.ToCountry || !flight.ToCity || !flight.FromCity || flight.FromCity === flight.ToCity
-                || new Date(flight.DepartureTime) < new Date(currentDate.setHours(currentDate.getHours() + 2))
+                || flight.DepartureTime < new Date(currentDate.setHours(currentDate.getHours() + 2))
             ){
                 flag = false;
             }
         });
-        
+        console.log(flag)
         dispatch({type: 'SET_VALIDATION', payload: flag})
     }, [state.flights]);
 
@@ -128,7 +130,14 @@ const SearchForms = () =>{
                               }
                             }
                           }}
-                        minDateTime={i > 0 ?  dayjs(new Date(state.flights[i - 1].DepartureTime).setHours(new Date(state.flights[i - 1].DepartureTime).getHours() + 5)) : dayjs(new Date(new Date().setHours(new Date().getHours() + 1)))}
+                        minDateTime={
+                            i > 0 ? dayjs(new Date(state.flights[i - 1].DepartureTime)
+                            .setHours(new Date(state.flights[i - 1].DepartureTime)
+                            .getHours() + 2)) 
+                            : 
+                            dayjs(new Date(new Date()
+                            .setHours(new Date()
+                            .getHours() + 5)))}
                         value={dayjs(flight.DepartureTime)}
                         onChange={(newValue) => dispatch({type: 'SET_DEPARTURE_TIME', date: newValue.$d, index: i})}/>
                         </LocalizationProvider>

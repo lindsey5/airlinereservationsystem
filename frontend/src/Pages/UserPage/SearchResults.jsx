@@ -3,7 +3,7 @@ import { SearchContext } from "../../Context/SearchContext"
 import { searchFlight } from "../../Service/searchService";
 import './SearchResults.css'
 import './Flights.css'
-import { formatDate, formatToLongDate, getTime } from "../../utils/dateUtils";
+import { formatDate, formatDateOnly, getTime } from "../../utils/dateUtils";
 import SearchForms from "../../Components/Search/SearchForms";
 import ButtonsContainer from "../../Components/Search/ButtonsContainer";
 import SelectContainer from "../../Components/Search/SelectContainer";
@@ -91,11 +91,12 @@ const SearchResults = () => {
                     <div key={i} className="flights-container">
                         <div>
                         {flights.map(flight => 
-                            <div className='flight' key={flight._id}>
-                                <img className='airline' src={`/icons/${flight.airline}.png`} alt="" />
+                        <div className='flight'>
+                            <img className='airline' src={`/icons/${flight.airline}.png`} alt="" />
+                            <div className="flight-container">
                                 <div>
-                                    <p>{formatDate(flight.departure.time)}</p>
-                                    <h3>{getTime(flight.departure.time)}</h3>
+                                    <p>{formatDateOnly(flight.departure.time)} - Departure</p>
+                                    <h2>{getTime(flight.departure.time)}</h2>
                                     <p>{flight.departure.airport} ({flight.departure.airport_code})</p>
                                 </div>
                                 <div className="mid-div">
@@ -113,12 +114,12 @@ const SearchResults = () => {
                                 <hr />
                                 </div>
                                 <div>
-                                    <p>{formatDate(flight.arrival.time)}</p>
-                                    <h3>{getTime(flight.arrival.time)}</h3>
+                                    <p>{formatDateOnly(flight.arrival.time)} - Arrival</p>
+                                    <h2>{getTime(flight.arrival.time)}</h2>
                                     <p>{flight.arrival.airport} ({flight.arrival.airport_code})</p>
                                 </div>
-                                
                             </div>
+                        </div>
                         )}
                         </div>
                         <div>

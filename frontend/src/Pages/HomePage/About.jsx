@@ -82,6 +82,12 @@ const About = () => {
                             <h3>Henry Saligan</h3>
                         </div>
                     </div>
+                    <div class="gallery">
+                        <img src="/members/Design Team/SALUDE, ABBA.jpg" alt="Profile" />
+                        <div>
+                            <h3>Abba Faith Salude</h3>
+                        </div>
+                    </div>
                 </div>
             </div>
             <div class="container" ref={el => elementsRef.current[2] = el}>

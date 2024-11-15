@@ -29,7 +29,7 @@ const FlightFirstForm = ({state, dispatch, handleSubmit, close}) => {
             setError('*Please select arrival airport');
         }else if(state.departure.airport === state.arrival.airport){
             setError('*Departure and Arrival airport cannot be the same');
-        }else if(new Date(state.arrival.time) < flightDepartureTime.setHours(flightDepartureTime.getHours() + 5)){
+        }else if(new Date(state.arrival.time) < flightDepartureTime.setHours(flightDepartureTime.getHours() + 4)){
             setError('*Arrival time must be at least 4 hours after Departure time');
         }else if(!state.captain){
             setError('*Please select captain');
@@ -156,7 +156,7 @@ const FlightFirstForm = ({state, dispatch, handleSubmit, close}) => {
                                 }}
                                 minDateTime={dayjs(new Date(new Date().getTime() + 24 * 60 * 60 * 1000))}
                                 value={dayjs(state.departure.time)}
-                                onChange={(newValue) => dispatch({type: 'SET_DEPARTURE_TIME', payload:newValue.$d})}/>
+                                onChange={(newValue) => dispatch({type: 'SET_DEPARTURE_TIME', payload: new Date(newValue.$d)})}/>
                             </LocalizationProvider>    
                         </div>
                     </div>
@@ -200,7 +200,7 @@ const FlightFirstForm = ({state, dispatch, handleSubmit, close}) => {
                                 }}
                                 minDateTime={dayjs(new Date(new Date().getTime() + 24 * 60 * 60 * 1000))}
                                 value={dayjs(state.arrival.time)}
-                                onChange={(newValue) => dispatch({type: 'SET_ARRIVAL_TIME', payload:newValue.$d})}/>
+                                onChange={(newValue) => dispatch({type: 'SET_ARRIVAL_TIME', payload: new Date(newValue.$d)})}/>
                             </LocalizationProvider>  
                         </div>
                     </div>

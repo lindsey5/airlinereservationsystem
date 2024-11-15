@@ -19,7 +19,6 @@ const FlightSecondForm = ({state, dispatch, close}) => {
 
     const createFlight = async (e) => {
         e.preventDefault();
-        console.log(state)
         try{
             const response = await fetch('/api/flight',{
                 method: 'POST',

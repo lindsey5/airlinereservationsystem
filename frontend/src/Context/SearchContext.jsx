@@ -195,6 +195,6 @@ const setDepartureTime = (state, action) => {
             i === action.index ? { ...flight, DepartureTime: action.date } : flight
         )
 
-    if(action.index !== newFlights.length -1) newFlights[action.index + 1].DepartureTime = new Date(newFlights[action.index].DepartureTime).setHours(new Date(newFlights[action.index].DepartureTime).getHours() + 7)
+    if(action.index !== newFlights.length -1) newFlights[action.index + 1].DepartureTime = new Date(newFlights[action.index].DepartureTime).setHours(new Date(newFlights[action.index].DepartureTime).getHours() + 5)
     return newFlights
 };
