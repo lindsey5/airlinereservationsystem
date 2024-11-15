@@ -3,11 +3,7 @@ import Flight from "../model/flight.js";
 import { errorHandler } from "../utils/errorHandler.js";
 import mongoose from "mongoose";
 const { ObjectId } = mongoose.Types;
-
-const validateColumns = (columns) => {
-    const regex = /^(\d+x)+\d+$/;
-    return regex.test(columns);
-};
+import { validateColumns } from "../utils/flightUtils.js";
 
 export const create_airplane = async (req,res) => {
     try{
@@ -118,8 +114,9 @@ export const get_available_airplanes = async (req, res) => {
         const availableAirplanes = await Promise.all(airplanes.map(async (airplane) => {
             airplane
             const flight = await Flight.findOne({'airplane.id' : airplane._id}).sort({'arrival.time' : -1});
-            const flightArrivalTime = new Date(flight.arrival.time);
+
             if(flight){
+                const flightArrivalTime = new Date(flight.arrival.time);
                 const isAvailable = flight.arrival.airport === departureAirport && 
                 flightArrivalTime.setHours(flightArrivalTime.getHours() + 2) < new Date(departureTime);
                 return isAvailable ? airplane : null;

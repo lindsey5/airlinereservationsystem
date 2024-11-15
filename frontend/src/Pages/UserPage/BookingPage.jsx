@@ -72,12 +72,7 @@ const BookingPage = () => {
         }else{
             if(!selectSeat){
                 const response = await createPaymentLink(bookings);
-                console.log(response)
-                if(response){
-                    window.location.href = response.data.attributes.checkout_url;
-                }else{
-                    alert('Payment failed')
-                }
+                response ? window.location.href = response.data.attributes.checkout_url : alert('Payment failed')
             }else{
                 setCurrentPassenger(0);
                 setShowForm(false)
