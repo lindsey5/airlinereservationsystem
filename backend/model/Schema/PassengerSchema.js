@@ -28,6 +28,11 @@ const PassengerSchema = new Schema({
       type: String,
       required: true
     },
+    ticketStatus: {
+      type: String,
+      enum: ['Booked', 'Ticketed', 'Cancelled'],
+      default: 'Booked'
+    },
     ticketNumber: {
       type: String,
       unique: true,

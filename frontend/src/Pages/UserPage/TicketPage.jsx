@@ -74,14 +74,18 @@ const TicketPage = () => {
                             <p>To:</p>
                             <h4>{data?.flight && data.flight.arrival.airport} ({data?.flight && data.flight.arrival.country})</h4>
                         </div>
+                        <div>
+                            <p>Departure:</p>
+                            <h4>{data?.flight && formatDate(data.flight.departure.time)}</h4>
+                            <p>Arrival:</p>
+                            <h4>{data?.flight && formatDate(data.flight.arrival.time)}</h4>
+                        </div>
                     </div>
                         
                     <div className="ticket-footer">
                         <h4>{data?.flight && data?.flight.departure.airport_code}</h4>
                         <img src="/icons/plane (1).png" alt="" />
                         <h4>{data?.flight && data?.flight.arrival.airport_code}</h4>
-                        <h4 style={{marginLeft: '40px'}}>Departure:</h4>
-                        <h4 style={{marginLeft: '20px'}}>{data?.flight && formatDate(data.flight.departure.time)}</h4>
                     </div>
                 </div>
                 <div className="boarding-pass">

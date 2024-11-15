@@ -7,7 +7,7 @@ const BookingSchema = new Schema({
     booked_by: { type: String},
     flight_id: { type: String, required: true },
     passengers: { type: [PassengerSchema], required: true},
-    status: {type: String, enum: ['Scheduled', 'Completed', 'Cancelled'], default: 'Scheduled'}
+    status: {type: String, enum: ['Booked', 'Completed', 'Cancelled'], default: 'Booked'}
 }, { timestamps: true });
 
 const Booking = mongoose.model('Booking', BookingSchema);

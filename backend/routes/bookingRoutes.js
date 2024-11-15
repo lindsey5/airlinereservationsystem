@@ -5,6 +5,6 @@ import { userRequireAuth } from '../middleware/userRequireAuth.js';
 
 const router = express.Router();
 
-router.get('/bookings', userRequireAuth, getScheduledBookings);
+router.get('/bookings', getScheduledBookings);
 
 export default router;

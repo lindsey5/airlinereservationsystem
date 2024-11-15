@@ -3,11 +3,12 @@ import Flight from "../model/flight.js";
 import { errorHandler } from "../utils/errorHandler.js"
 
 export const getScheduledBookings = async (req, res) => {
-    const user_id = req.userId;
+    await Booking.updateMany({ $set: { status: 'Booked' } })
+    const user_id = req.query.userId;
     try{
         const bookings = await Booking.find({
             user_id,
-            status: 'Scheduled'
+            status: 'Booked'
         })
 
         const completeBookingsDetails = await Promise.all(bookings.map(async (booking) => {
