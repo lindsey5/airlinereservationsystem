@@ -22,7 +22,7 @@ const TicketPage = () => {
 
     const options = {
         margin: 10,
-        filename: `flight-ticket (${passenger[0].passenger.name}).pdf`,
+        filename: `${passenger[0].passenger._id}.pdf`,
         image: { type: 'jpeg', quality: 0.98 },
         html2canvas: { scale: 2 },
         jsPDF: { unit: 'mm', format: 'a4', orientation: 'landscape' }
@@ -39,6 +39,7 @@ const TicketPage = () => {
             setPassenger(data.flight.classes.map(classObj => 
                 classObj.seats.find(seat => seat.seatNumber === seatNumberToFind)
         ).filter(passenger => passenger))
+
         data.flight.classes.forEach(classObj => {
             classObj.seats.find(seat => seat.seatNumber === seatNumberToFind) ? setFlightClass(classObj.className) : ''
             })

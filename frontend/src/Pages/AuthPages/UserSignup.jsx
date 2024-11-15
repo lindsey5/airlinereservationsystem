@@ -102,7 +102,7 @@ const UserSignup = () => {
                     <form onSubmit={verifyEmail}>
                         <p>A Verification code has been sent to </p>
                         <p style={{fontWeight: '600'}}>{userData.email}</p>
-                        <p>Code expires in 30 seconds</p>
+                        <p>Code expires in 60 seconds</p>
                         <p style={{color: 'red'}}>{error}</p>
                         <div className='email-code'>
                         <input

@@ -62,7 +62,7 @@ export const signupVerificationCode = async (req, res) => {
         }
         const verificationCode = await sendVerificationCode(req.query.email)
         res.cookie('verificationCode', verificationCode, {
-          maxAge: 30000,
+          maxAge: 60000,
           secure: process.env.NODE_ENV === 'production' });
         res.status(200).json({message: 'Verification code successfully sent'})
     }catch(err){
