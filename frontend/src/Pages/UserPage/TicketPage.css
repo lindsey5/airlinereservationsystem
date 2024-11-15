@@ -85,14 +85,14 @@
 }
 
 .boarding-pass .flight-info{
-    display: flex;
+    display: grid;
     width: 100%;
-    justify-content: space-around;
-    flex-wrap: wrap;
+    grid-template-columns: repeat(3, 1fr);
     border-left: 2px dashed #000000;
 }
 
 .boarding-pass .qr-container{
+    width: 250px;
     display: flex;
     align-items: center;
     justify-content: center;
