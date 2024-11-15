@@ -59,19 +59,13 @@ const About = () => {
                             <h3>John Paul Rabaño</h3>
                         </div>
                     </div>
-                    <div class="gallery">
-                        <img src="/members/Design Team/UPO, KEITH.jpeg" alt="Profile" />
-                        <div>
-                            <h3>Keith Upo</h3>
-                        </div>
-                    </div>
                 </div>
             </div>
             <div class="container" ref={el => elementsRef.current[1] = el}>
                 <h1>Design Team</h1>
                 <div class="gallery-container">
                     <div class="gallery">
-                        <img src="/members/Design Team/UPO, KEITH.jpeg" alt="Profile" />
+                        <img src="/members/Design Team/UPO, KEITH.jpg" alt="Profile" />
                         <div>
                             <h3>Keith Upo</h3>
                         </div>
