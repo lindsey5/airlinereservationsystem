@@ -17,10 +17,10 @@ const UserHeader = () => {
             {showDropdown && 
             <div className='dropdown'>
                 <a href="">
-                    <button><img src="/icons/settings (1).png" alt="" />Settings</button>
+                    <button><img src="/icons/plane.png" alt="" />Your Flights</button>
                 </a>
                 <a href="">
-                    <button><img src="/icons/plane.png" alt="" />Your Flights</button>
+                    <button><img src="/icons/settings (1).png" alt="" />Settings</button>
                 </a>
                 <button onClick={useLogout}><img src="/icons/logout.png" alt="" />Log out</button>
             </div>}
