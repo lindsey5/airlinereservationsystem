@@ -68,11 +68,11 @@ const TicketPage = () => {
                         </div>
                         <div>
                             <p>From:</p>
-                            <h4>{data?.flight && data.flight.departure.airport}</h4>
+                            <h4>{data?.flight && data.flight.departure.airport} ({data?.flight && data.flight.departure.country})</h4>
                         </div>
                         <div>
                             <p>To:</p>
-                            <h4>{data?.flight && data.flight.arrival.airport}</h4>
+                            <h4>{data?.flight && data.flight.arrival.airport} ({data?.flight && data.flight.arrival.country})</h4>
                         </div>
                     </div>
                         
