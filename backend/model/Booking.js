@@ -3,7 +3,8 @@ import PassengerSchema from "./Schema/PassengerSchema.js";
 const Schema = mongoose.Schema;
 
 const BookingSchema = new Schema({
-    user_id: { type: String, required: true },
+    user_id: { type: String },
+    booked_by: { type: String},
     flight_id: { type: String, required: true },
     passengers: { type: [PassengerSchema], required: true},
     status: {type: String, enum: ['Scheduled', 'Completed', 'Cancelled'], default: 'Scheduled'}

@@ -2,7 +2,7 @@ import useFetch from "../../hooks/useFetch";
 import { SearchContext } from "../../Context/SearchContext";
 import { useContext, useEffect } from "react";
 import './SearchForm.css'
-import dayjs, { Dayjs } from 'dayjs';
+import dayjs from 'dayjs';
 import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs';
 import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider';
 import { DateTimePicker } from '@mui/x-date-pickers/DateTimePicker';
@@ -63,7 +63,7 @@ const SearchForms = () =>{
             const currentDate = new Date();
             if(!flight.FromCountry 
                 || !flight.ToCountry || !flight.ToCity || !flight.FromCity || flight.FromCity === flight.ToCity
-                || new Date(flight.DepartureTime) < new Date(currentDate.setHours(currentDate.getHours() + 4))
+                || new Date(flight.DepartureTime) < new Date(currentDate.setHours(currentDate.getHours() + 2))
             ){
                 flag = false;
             }
@@ -128,7 +128,7 @@ const SearchForms = () =>{
                               }
                             }
                           }}
-                        minDateTime={i > 0 ?  dayjs(new Date(state.flights[i-1].DepartureTime).getTime() + 1 * 24 * 60 * 60 * 1000) : dayjs(new Date(new Date().setHours(new Date().getHours() + 4)))}
+                        minDateTime={i > 0 ?  dayjs(new Date(state.flights[i - 1].DepartureTime).setHours(new Date(state.flights[i - 1].DepartureTime).getHours() + 5)) : dayjs(new Date(new Date().setHours(new Date().getHours() + 1)))}
                         value={dayjs(flight.DepartureTime)}
                         onChange={(newValue) => dispatch({type: 'SET_DEPARTURE_TIME', date: newValue.$d, index: i})}/>
                         </LocalizationProvider>

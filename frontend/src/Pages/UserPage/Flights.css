@@ -25,6 +25,11 @@
     position: relative;
 }
 
+.flight > div{
+    width: 100%;
+    display: flex;
+}
+
 .flight .mid-div{
     display: flex;
     align-items: center;
@@ -101,7 +106,7 @@
     text-align: center;
 }
 
-@media screen and (max-width: 650px){
+@media screen and (max-width: 700px){
     .flights-container{
         flex-direction: column;
         justify-content: center;
@@ -109,15 +114,30 @@
 
     .flight{
         flex-direction: column;
+        font-size: 13px;
     }
 
     .flight .airline{
         margin: 0;
     }
 
-    
+    .flight > div{
+        display: grid;
+        grid-template-columns: 1fr 1fr 1fr;
+        gap: 20px;
+    }
+
+    .flight > div div{
+        font-size: 13px;
+    }
+
     .flight .mid-div{
-        margin: 50px 0;
+        margin: 0;
+        justify-content: center;
+    }
+
+    .flight .mid-div hr{
+        display: none;
     }
 
     .flights-container > div:first-child{

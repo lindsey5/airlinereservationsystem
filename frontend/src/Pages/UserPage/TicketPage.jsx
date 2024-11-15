@@ -3,7 +3,7 @@ import useFetch from "../../hooks/useFetch";
 import QRCode from "react-qr-code";
 import html2pdf from 'html2pdf.js';
 import './TicketPage.css'
-import { formatDate } from "../../utils/dateUtils";
+import { formatDate, getTime } from "../../utils/dateUtils";
 
 const TicketPage = () => {
     const queryParams = new URLSearchParams(window.location.search);
@@ -113,7 +113,8 @@ const TicketPage = () => {
                             viewBox={`0 0 256 256`}
                         />}
                     </div>
-                    <div>
+                    <div style={{padding: '5px', fontWeight: '600', fontSize: '13px'}}>
+                        <p>Boarding Time: {getTime(new Date(data?.flight.departure.time).setMinutes(new Date(data?.flight.departure.time).getMinutes() - 30))} </p>
                     </div>
                 </div>
             </div>

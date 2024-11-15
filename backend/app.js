@@ -7,6 +7,7 @@ import flightRoutes from './routes/flightRoutes.js';
 import userRoutes from './routes/userRoutes.js';
 import pilotRoutes from './routes/pilotRoutes.js';
 import airportRoutes from './routes/airportRoutes.js';
+import bookingRoutes from './routes/bookingRoutes.js';
 import cors from 'cors';
 import path from 'path';
 import cookieParser from 'cookie-parser';
@@ -39,6 +40,7 @@ app.use('/api/flight', flightRoutes);
 app.use('/api/pilot', pilotRoutes);
 app.use('/api/airport', airportRoutes);
 app.use('/api/user', userRoutes);  
+app.use('/api/booking', bookingRoutes)
 
 app.get('/logout', (req, res) => {
     res.clearCookie('jwt', { httpOnly: true, secure: false });

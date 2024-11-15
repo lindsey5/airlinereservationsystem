@@ -46,6 +46,7 @@ export const get_airplanes = async (req, res) => {
             $or: [
                 { _id: ObjectId.isValid(searchTerm) ? new ObjectId(searchTerm) : null },
                 {model: { $regex: new RegExp(searchTerm, 'i') }},
+                {currentLocation: { $regex: new RegExp(searchTerm, 'i') }},
                 {columns: { $regex: new RegExp(searchTerm, 'i') }},
                 {status: { $regex: new RegExp(searchTerm, 'i') }}
             ]
@@ -117,9 +118,10 @@ export const get_available_airplanes = async (req, res) => {
         const availableAirplanes = await Promise.all(airplanes.map(async (airplane) => {
             airplane
             const flight = await Flight.findOne({'airplane.id' : airplane._id}).sort({'arrival.time' : -1});
+            const flightArrivalTime = new Date(flight.arrival.time);
             if(flight){
                 const isAvailable = flight.arrival.airport === departureAirport && 
-                new Date(new Date(flight.arrival.time).getTime() + 24 * 60 * 60 * 1000) < new Date(departureTime);
+                flightArrivalTime.setHours(flightArrivalTime.getHours() + 2) < new Date(departureTime);
                 return isAvailable ? airplane : null;
             }else if(departureAirport !== airplane.currentLocation){
                 return null;

@@ -1,4 +1,3 @@
-import { useEffect } from "react"
 import GenerateSeats from "../../Seats/GenerateSeats"
 
 const ViewSeatsModal = ({flightData, close}) => {

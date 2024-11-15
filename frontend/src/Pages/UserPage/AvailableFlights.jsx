@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react"
 import useFetch from "../../hooks/useFetch";
-import { formatDate, formatToLongDate, getTime } from "../../utils/dateUtils";
+import { formatDate, formatDateOnly, getTime } from "../../utils/dateUtils";
 import { formatPrice } from "../../utils/formatPrice";
 import './Flights.css'
 import './AvailableFlights.css'
@@ -65,28 +65,30 @@ const AvailableFlights = () => {
                         <div className='flight'>
                             <img className='airline' src={`/icons/${flight.airline}.png`} alt="" />
                             <div>
-                                <p>{formatToLongDate(flight.departure.time)} - Departure</p>
-                                <h2>{getTime(flight.departure.time)}</h2>
-                                <p>{flight.departure.airport} ({flight.departure.airport_code})</p>
-                            </div>
-                            <div className="mid-div">
-                            <hr />
-                            <div>
-                                <img className='plane-icon' src="/icons/airplane.png" alt="" />
-                                <h4 className="hours-difference">{
-                                (parseFloat(new Date(flight.arrival.time) - new Date(flight.departure.time)) / (1000 * 60 * 60)).toLocaleString('en-US', {
-                                    minimumFractionDigits: 1,
-                                    maximumFractionDigits: 1
-                                })
-                                } hours
-                                </h4>
-                            </div>
-                            <hr />
-                            </div>
-                            <div>
-                                <p>{formatToLongDate(flight.arrival.time)} - Arrival</p>
-                                <h2>{getTime(flight.arrival.time)}</h2>
-                                <p>{flight.arrival.airport} ({flight.arrival.airport_code})</p>
+                                <div>
+                                    <p>{formatDateOnly(flight.departure.time)} - Departure</p>
+                                    <h2>{getTime(flight.departure.time)}</h2>
+                                    <p>{flight.departure.airport} ({flight.departure.airport_code})</p>
+                                </div>
+                                <div className="mid-div">
+                                <hr />
+                                <div>
+                                    <img className='plane-icon' src="/icons/airplane.png" alt="" />
+                                    <h4 className="hours-difference">{
+                                    (parseFloat(new Date(flight.arrival.time) - new Date(flight.departure.time)) / (1000 * 60 * 60)).toLocaleString('en-US', {
+                                        minimumFractionDigits: 1,
+                                        maximumFractionDigits: 1
+                                    })
+                                    } hours
+                                    </h4>
+                                </div>
+                                <hr />
+                                </div>
+                                <div>
+                                    <p>{formatDateOnly(flight.arrival.time)} - Arrival</p>
+                                    <h2>{getTime(flight.arrival.time)}</h2>
+                                    <p>{flight.arrival.airport} ({flight.arrival.airport_code})</p>
+                                </div>
                             </div>
                         </div>
                     </div>

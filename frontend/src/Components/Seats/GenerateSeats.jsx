@@ -31,6 +31,8 @@ const GenerateSeats = ({flightData, close}) =>{
     const [showPassenger, setShowPassenger] = useState(false);
     const [state, dispatch] = useReducer(passengerReducer, passengerState)
     const [letters, setLetters] = useState([]);
+    const [selectSeats, setSelectSeats] = useState(false);
+    const passengers = [];
     let index = 0;
     const passengerRef = useRef();
     let num = 1;
@@ -155,12 +157,13 @@ const GenerateSeats = ({flightData, close}) =>{
                                         }) : ''}
                                     className='seat'
                                     key={seat._id} 
+                                    disabled={selectSeats || seat.status === 'booked' ? false : true}
                                     value={seat.seatNumber}
                                 >
                                 {seat.status === 'booked' && <img className='check' src="/icons/check (3).png" alt="" />}
                                 <img src={`/icons/${classObj.className}-seat.png`}/>
                                 </button>
-                                {position % columns[index] === 0 && position !== sumOfColumns && <div style={{textAlign: 'center'}}>{num++}</div> }
+                                {position % columns[index] === 0 && position !== sumOfColumns && <div style={{textAlign: 'center', padding: '10px'}}>{num++}</div> }
                                 </>
                             )
                         })

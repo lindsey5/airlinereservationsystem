@@ -24,6 +24,10 @@ const PassengerSchema = new Schema({
       type: Number,
       required: true
     },
+    seatNumber: {
+      type: String,
+      required: true
+    },
     ticketNumber: {
       type: String,
       unique: true,

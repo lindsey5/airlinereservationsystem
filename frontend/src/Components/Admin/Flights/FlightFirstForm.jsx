@@ -21,14 +21,15 @@ const FlightFirstForm = ({state, dispatch, handleSubmit, close}) => {
     const validate = async (e) => {
         e.preventDefault();
         setError('');
-        console.log(state)
+        const flightDepartureTime = new Date(state.departure.time)
+
         if(!state.departure.airport){
             setError('*Please select departure airport');
         }else if(!state.arrival.airport){
             setError('*Please select arrival airport');
         }else if(state.departure.airport === state.arrival.airport){
             setError('*Departure and Arrival airport cannot be the same');
-        }else if(new Date(state.arrival.time) < new Date(new Date(state.departure.time).getTime() + 4 * 60 * 60 * 1000)){
+        }else if(new Date(state.arrival.time) < flightDepartureTime.setHours(flightDepartureTime.getHours() + 5)){
             setError('*Arrival time must be at least 4 hours after Departure time');
         }else if(!state.captain){
             setError('*Please select captain');

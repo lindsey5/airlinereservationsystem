@@ -5,6 +5,12 @@ export const formatDate = (dateString) => {
     return `${formattedDate} (${time})`;
 }
 
+export const formatDateOnly = (dateString) => {
+    const date = new Date(dateString);
+    const formattedDate = date.toISOString().split('T')[0];
+    return formattedDate
+}
+
 export const formatToLongDate = (dateString) => {
     const date = new Date(dateString);
     return date.toLocaleDateString('en-US', {

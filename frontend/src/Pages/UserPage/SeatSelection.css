@@ -14,7 +14,7 @@
 .seat-selection{
     position: absolute;
     background-color: white;
-    top: 20px;
+    top: 0;
     text-align: center;
     border-radius: 10px;
 }

@@ -113,9 +113,11 @@ export const get_available_pilots = async (req, res) => {
                 ],
                 'pilot.status': { $ne: 'Unavailable' }
               }).sort({ 'arrival.time': -1 });                 
+
+            const flightArrivalTime = new Date(flight.arrival.time)
             if(flight){
                 const isAvailable = flight.arrival.airport === departureAirport && 
-                new Date(new Date(flight.arrival.time).getTime() + 24 * 60 * 60 * 1000) < departureTime;
+                flightArrivalTime.setHours(flightArrivalTime.getHours() + 2) < departureTime;
                 return isAvailable ? pilot : null
             }
             return pilot;

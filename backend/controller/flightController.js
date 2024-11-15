@@ -268,17 +268,16 @@ export const book_flight = async (req, res) => {
                         seatNumber: available_flight.classes[classIndex].seats[seatIndex].seatNumber
                     }
                     sendEmail(user.email, data);
-
-                    const booking = await Booking.create({
-                        user_id: user._id,
-                        flight_id: flight.id,
-                        passengers: flight.passengers
-                    })
-
-                    await booking.save();
+                    
                 }
             })
+            const booking = await Booking.create({
+                user_id: user._id,
+                flight_id: flight.id,
+                passengers: flight.passengers,
+            })
 
+            await booking.save();
         })
         res.redirect(`/user/booking/success`);
     }catch(err){

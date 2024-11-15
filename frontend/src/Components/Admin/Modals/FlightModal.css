@@ -62,7 +62,7 @@
 .modal-container .view-seats{
     position: absolute;
     padding: 10px;
-    top: 20px;
+    top: 0;
     left: 50%;
     transform: translateX(-50%);
     background-color: white;
