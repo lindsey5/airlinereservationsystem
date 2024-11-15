@@ -24,8 +24,8 @@ const TicketPage = () => {
         margin: 10,
         filename: `flight-ticket (${passenger[0].passenger.name}).pdf`,
         image: { type: 'jpeg', quality: 0.98 },
-        html2canvas: { scale: 2, useCORS: true },
-        jsPDF: { unit: 'mm', format: 'a4', orientation: 'portrait' }
+        html2canvas: { scale: 2 },
+        jsPDF: { unit: 'mm', format: 'a4', orientation: 'landscape' }
       };
   
       html2pdf()
@@ -45,17 +45,10 @@ const TicketPage = () => {
         }
      }, [data])
 
-     const dateMinusOneHour = (departure_time) => {
-        const date = new Date(departure_time)
-        date.setHours(date.getHours() - 1);
-        const formattedDate = date.toLocaleString();
-        return formatDate(formattedDate);
-     }
-
     return (
         <div className="ticket-page">
-            <div className="ticket-container">
-                <div className='ticket' ref={printRef}>
+            <div className="ticket-container" ref={printRef}>
+                <div className='ticket'>
                     <div className="ticket-header">
                         <img src="/icons/tcu_airlines-logo (2).png" alt="" />
                         <h3>TCU AIRLINES TICKET</h3>
@@ -92,7 +85,11 @@ const TicketPage = () => {
                     </div>
                 </div>
                 <div className="boarding-pass">
-                    <div className="ticket-header"></div>
+                    <div className="ticket-header">
+                    <h4>{data?.flight && data?.flight.departure.airport_code}</h4>
+                        <img src="/icons/plane (1).png" alt="" />
+                        <h4>{data?.flight && data?.flight.arrival.airport_code}</h4>
+                    </div>
                     <h3>{flightClass} Class</h3>
                     <div className="flight-info">
                         <div>
@@ -117,7 +114,6 @@ const TicketPage = () => {
                         />}
                     </div>
                     <div>
-                    
                     </div>
                 </div>
             </div>

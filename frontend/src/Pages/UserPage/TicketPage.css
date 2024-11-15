@@ -104,11 +104,27 @@
     justify-content: center;
 }
 
+.boarding-pass .ticket-header img{
+    border-radius: 0;
+    background-color: #ff3131;
+    margin-right: 0;
+    margin: 0 15px;
+}
+
 .boarding-pass > div:last-child{
     height: 30px;
     background-color: #ff3131;
     border-bottom-left-radius: 30px;
     border-bottom-right-radius: 30px;
+    display: flex;
+    color: white;
+    justify-content: center;
+    align-items: center;
+}
+
+.boarding-pass > div:last-child img{
+    width: 25px;
+    margin: 0 15px;
 }
 
 .ticket-page button{
