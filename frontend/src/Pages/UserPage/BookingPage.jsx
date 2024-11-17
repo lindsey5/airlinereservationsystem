@@ -114,7 +114,10 @@ const BookingPage = () => {
                 </div>
             )}
             </div>
-            <div>
+            <form onSubmit={(e) => {
+                e.preventDefault();
+                setShowForm(true)
+            }}>
             <div className="container">
                     <h2>Book Flight</h2>
                     <div className="select-container">
@@ -146,11 +149,11 @@ const BookingPage = () => {
                     </div>
                     <button
                         className="next-btn"
+                        type="submit"
                         disabled={bookings && bookings.adult == 0 ? true : false}
-                        onClick={() => setShowForm(true)}
                     >Next</button>
                 </div>
-            </div>
+                </form>
                 { showForm && 
                     <div className="passenger-form-container">
                         <form onSubmit={handleBooking}>

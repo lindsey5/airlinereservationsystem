@@ -54,12 +54,6 @@ const AdminSideBar = () => {
                     Stewards
                     </li>
                 </Link>
-                <Link>
-                    <li>
-                    <img src="/icons/receptionist.png" alt="" />
-                    Reservation Agents
-                    </li>
-                </Link>
             </ul>
         </section>
     )
