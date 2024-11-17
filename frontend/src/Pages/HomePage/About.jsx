@@ -1,8 +1,10 @@
+import { useNavigate } from 'react-router-dom';
 import './About.css';
 import { useRef, useEffect } from 'react';
 
 const About = () => {
     const elementsRef = useRef([]);
+    const navigate = useNavigate();
 
     useEffect(() => {
         const observer = new IntersectionObserver(
@@ -28,6 +30,10 @@ const About = () => {
 
     return(
         <div className="about">
+            <header onClick={() => navigate('/')}>
+                <img src="/icons/tcu_airlines-logo (2).png" alt="" />
+                <h2>TCU <span>Airlines</span></h2>
+            </header>
             <div class="container" ref={el => elementsRef.current[0] = el}>
                 <h1>Programming Team</h1>
                 <div class="gallery-container">

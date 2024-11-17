@@ -1,4 +1,4 @@
-import { useContext, useEffect, useState } from "react"
+import { useContext, useEffect, useRef, useState } from "react"
 import { SearchContext } from "../../Context/SearchContext"
 import { searchFlight } from "../../Service/searchService";
 import './SearchResults.css'
@@ -9,6 +9,7 @@ import ButtonsContainer from "../../Components/Search/ButtonsContainer";
 import SelectContainer from "../../Components/Search/SelectContainer";
 import { formatPrice } from "../../utils/formatPrice";
 import { useNavigate } from "react-router-dom";
+import SearchFilter from "../../Components/Search/SearchFilter";
 
 const SearchResults = () => {
     const {state} = useContext(SearchContext);
@@ -16,6 +17,7 @@ const SearchResults = () => {
     const [showEdit, setShowEdit] = useState(false);
     const [selectedClass, setSelectedClass] = useState();
     const [loading, setLoading] = useState(true);
+    const [showFilter, setShowFilter] = useState(true);
     const navigate = useNavigate();
 
     const fetchResults = async () => {
@@ -30,6 +32,10 @@ const SearchResults = () => {
     useEffect(() => {
         fetchResults();
     }, []);
+
+    useEffect(() => {
+        fetchResults()
+    }, [state.price, state.flightClass])
 
     const utf8ToBase64 = (str) => {
         // Create a UTF-8 encoded byte array from the string
@@ -87,6 +93,7 @@ const SearchResults = () => {
                         <ButtonsContainer handleSearch={fetchResults}/>
                     </div>}
                 <div className="results-container">
+                {showFilter && <SearchFilter />}
                 {results && !loading  && results.map((flights, i) => 
                     <div key={i} className="flights-container">
                         <div>
@@ -134,7 +141,6 @@ const SearchResults = () => {
                         <div>
                             <img src="/icons/no-travelling.png" alt="" />
                             <h1>No Flights Found</h1>
-                            <p>Try another departure city, arrival city or departure date</p>
                         </div>
                     </div>
                 }

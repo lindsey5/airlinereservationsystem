@@ -43,6 +43,9 @@ const SearchReducer = (state, action) => {
             return {...state, flightClass: action.flightClass}
         case 'SET_VALIDATION':
             return {...state, isValid: action.payload}
+        case 'SET_PRICE':
+            console.log(action.price)
+            return {...state, price: action.price}
         case 'RESET': 
             return SearchState
         default:
@@ -159,6 +162,7 @@ const setCities = async (country) => {
         const response = await fetch(`/api/cities/${country}`);
         if (response.ok) {
             const result = await response.json();
+            console.log(result)
             return result;
         }
 

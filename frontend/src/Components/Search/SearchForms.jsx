@@ -137,7 +137,7 @@ const SearchForms = () =>{
                             : 
                             dayjs(new Date(new Date()
                             .setHours(new Date()
-                            .getHours() + 5)))}
+                            .getHours() + 2)))}
                         value={dayjs(flight.DepartureTime)}
                         onChange={(newValue) => dispatch({type: 'SET_DEPARTURE_TIME', date: newValue.$d, index: i})}/>
                         </LocalizationProvider>

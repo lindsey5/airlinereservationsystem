@@ -7,7 +7,7 @@
 }
 
 .search-results .results-parent-container{
-    width: 80%;
+    width: 90%;
 }
 
 .search-results .search-details-container button{
@@ -74,8 +74,17 @@
 
 .search-results .results-container{
     width: 100%;
+    display: grid;
+    grid-template-columns: 300px 1fr;
+    align-items: start;
+    gap: 30px;
 }
 
+@media screen and (max-width: 1000px) {
+    .search-results .results-container{
+        grid-template-columns: 1fr;
+    }
+}
 
 @media screen and (max-width: 800px) {
     .search-results .results-parent-container{

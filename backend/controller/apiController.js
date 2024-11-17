@@ -55,10 +55,9 @@ export const getCountries = async (req, res) => {
 export const getCities = async (req, res) => {
     try {
         const country = req.params.country;
-        
         // Fetch airports for the specified country
         const airports = await Airport.find({ country }).sort({ city: 1 });
-
+        
         // Create a Set to store unique city names
         const uniqueCities = new Set(airports.map(airport => airport.city));
 

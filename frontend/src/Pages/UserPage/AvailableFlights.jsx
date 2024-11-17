@@ -8,7 +8,7 @@ import { useNavigate } from "react-router-dom";
 
 const AvailableFlights = () => {
     const [limit, setLimit] = useState(5);
-    const [flights, setFlights] = useState();
+    const [flights, setFlights] = useState([]);
     const [selectedClass, setSelectedClass] = useState('Economy');
     const {data} = useFetch(`/api/flight/flights/available?limit=${limit}&&selectedClass=${selectedClass}`)
     const navigate = useNavigate();
@@ -59,7 +59,7 @@ const AvailableFlights = () => {
             </select>
             </div>
             <div className="container">
-                {flights && flights.map(flight => 
+                {flights.length > 0 ? flights.map(flight => 
                 <div key={flight._id} className="flights-container">
                     <div>
                         <div className='flight'>
@@ -98,9 +98,16 @@ const AvailableFlights = () => {
                         <button className="select-btn" onClick={() => handleSelect(flight)}>Select</button>
                     </div>
                 </div>
-                )}
+                ) : 
+                <div className="no-flights">
+                    <div>
+                        <img src="/icons/no-travelling.png" alt="" />
+                        <h1>No Available Flights</h1>
+                    </div>
+                </div>
+                }
             </div>
-            {flights && <button onClick={() => setLimit(prev => prev += 5)} >See more</button>}
+            {flights.length > 0 && <button onClick={() => setLimit(prev => prev += 5)} >See more</button>}
         </div>
     )
 }

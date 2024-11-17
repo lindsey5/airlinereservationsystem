@@ -23,6 +23,7 @@ const SelectContainer = () => {
             </select>
             <select
                 name="flightClass"
+                value={state.flightClass}
                 onChange={(e) => dispatch({type: 'SET_FLIGHT_CLASS', flightClass: e.target.value})}
             >
                 <option value="Economy">Economy</option>
