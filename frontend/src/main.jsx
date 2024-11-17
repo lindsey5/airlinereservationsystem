@@ -87,6 +87,8 @@ const router = createBrowserRouter(
 
 createRoot(document.getElementById('root')).render(
   <StrictMode>
+    <SearchContextProvider>
       <RouterProvider router={router} />
+    </SearchContextProvider>
   </StrictMode>,
 )

@@ -6,10 +6,8 @@ import { SearchContextProvider } from "../Context/SearchContext"
 export default function UserLayout() {
     return(
         <main className="user-page">
-            <SearchContextProvider>
                 <UserHeader />
                 <Outlet />
-            </SearchContextProvider>
         </main>
     )
 }

@@ -7,11 +7,9 @@ import { SearchContextProvider } from "../Context/SearchContext"
 export default function AdminLayout() {
     return(
         <main>
-            <SearchContextProvider>
                 <AdminHeader />
                 <AdminSideBar />
                 <Outlet />
-            </SearchContextProvider>
         </main>
     )
 
