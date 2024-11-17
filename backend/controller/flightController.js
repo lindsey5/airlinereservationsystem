@@ -249,7 +249,7 @@ export const admin_book_flight = async (req, res) => {
             flights: req.body.bookings.flights, 
             class: req.body.bookings.class
         }
-        const name = req.body.name;
+        const {name, email} = req.body.bookedBy;
         data.flights.forEach(async (flight) => {
             flight.passengers.forEach(async (passenger) => {
                 const available_flight = await Flight.findOne({
@@ -266,7 +266,7 @@ export const admin_book_flight = async (req, res) => {
                         id: updatedFlight._id, 
                         seatNumber: available_flight.classes[classIndex].seats[seatIndex].seatNumber
                     }
-                    sendEmail(passenger.email, data);
+                    sendEmail(email, data);
                 }
             })
 

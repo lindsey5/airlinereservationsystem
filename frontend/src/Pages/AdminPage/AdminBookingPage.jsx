@@ -13,7 +13,7 @@ const AdminBookingPage = () => {
     const [passengersType, setPassengersType] = useState();
     const [showSeats, setShowSeats] = useState(false);
     const [selectSeat, setSelectSeat] = useState(false);
-    const [name, setName] = useState();
+    const [bookedBy, setBookedBy] = useState({name: '', email: ''})
 
     const booking = (flights) =>  { 
         return {
@@ -48,7 +48,7 @@ const AdminBookingPage = () => {
             setPassengersType(passengersType);
         }
 
-    }, [bookings, name])
+    }, [bookings])
 
     const bookFlight = async() => {
         try{
@@ -59,7 +59,7 @@ const AdminBookingPage = () => {
                 },
                 body: JSON.stringify({
                     bookings,
-                    name,
+                    bookedBy,
                 })
             })
             if(response.ok){
@@ -130,7 +130,10 @@ const AdminBookingPage = () => {
                 </div>
             )}
             </div>
-            <div>
+            <form onSubmit={(e) => {
+                e.preventDefault();
+                setShowForm(true);
+            }}>
             <div className="container">
                     <h2>Book Flight</h2>
                     <div className="select-container">
@@ -160,17 +163,23 @@ const AdminBookingPage = () => {
                     <div>
                         <input type="checkbox" onChange={()=> setSelectSeat(!selectSeat)}/> Select Seats (₱ 200 per seat)
                     </div>
-                    <div className="booked-by-container">
+                    <div className="input-container">
+                        <div>
                         Booked By:
-                        <input type="text" value={name} onChange={(e) => setName(e.target.value)}/>
+                        <input type="text" required value={bookedBy.name} onChange={(e) => setBookedBy(prev => ({...prev, name: e.target.value}))}/>
+                        </div>
+                        <div>
+                        Email:
+                        <input type="email" required value={bookedBy.email} onChange={(e) => setBookedBy(prev => ({...prev, email: e.target.value}))}/>
+                        </div>
                     </div>
                     <button
                         className="next-btn"
-                        disabled={(bookings && bookings.adult == 0) || !name ? true : false}
-                        onClick={() => setShowForm(true)}
+                        type="submit"
+                        disabled={(bookings && bookings.adult == 0) ? true : false}
                     >Next</button>
                 </div>
-            </div>
+            </form>
                 { showForm && 
                     <div className="passenger-form-container">
                         <form onSubmit={handleBooking}>

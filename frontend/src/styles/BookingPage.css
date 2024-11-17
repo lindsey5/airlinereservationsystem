@@ -31,7 +31,7 @@
     margin: 0 10px;
 }
 
-.booking-page > div:nth-child(2){
+.booking-page > form{
     margin-top: 100px;
     display: flex;
     justify-content: center;
@@ -72,15 +72,18 @@
     color: rgb(165, 165, 165);
 }
 
-.booking-page .container .booked-by-container{
+.booking-page .container .input-container{
     color: rgb(165, 165, 165);
-    margin: 30px 0;
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    margin-top: 20px;
+    gap: 10px;
+    width: 100%;
 }
 
-.booking-page .container .booked-by-container input{
+.booking-page .container .input-container input{
     outline: none;
     height: 20px;
-    width: 160px;
     display: block;
     margin-top: 5px;
 }
