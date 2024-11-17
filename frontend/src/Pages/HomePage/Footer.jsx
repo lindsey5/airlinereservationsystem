@@ -4,25 +4,8 @@ const Footer = () => {
   <div className="container mx-auto p-6">
     <div className="flex flex-col lg:flex-row justify-between">
       <div className="mb-8 lg:mb-0">
-        <h1 className="text-4xl font-semibold text-white">
-          TCU Airlines
-        </h1>
-        <div className="mt-4 flex flex-wrap shadow-md flex justify-center rounded-md">
-        <a href="" ><img
-              alt="IATA Accredited"
-              src="https://ik.imagekit.io/tvlk/image/imageResource/2017/12/13/1513150321127-5096be77d2a19401b476853e54ba2cc6.svg?tr=h-35,q-75"
-              className="inline-block mr-2 mb-2 w-16 h-auto"
-          /></a>
-          <a href="" ><img
-              alt="BSI Certified"
-              src="https://ik.imagekit.io/tvlk/image/imageResource/2021/05/10/1620638808154-e6c02ed786235ab59252628a9aa9b715.png"
-              className="inline-block mr-2 mb-2 w-16 h-auto obect-contain"
-          /></a>
-          <a href="" ><img
-              alt="PCI DSS Compliant"
-              src="https://ik.imagekit.io/tvlk/image/imageResource/2024/03/21/1711004601798-5a0a152c4bdede9bfe32439875879609.png"
-              className="inline-block w-16 h-auto object-contain"
-          /></a>
+        <div className="flex justify-center">
+          <img className='rounded-[50%] h-[120px]' src="/icons/tcu_airlines.jpg" alt="logo" />
         </div>
         <div className="mt-8">
           <h2 className="text-xl font-semibold mb-2 text-white">
@@ -61,32 +44,20 @@ const Footer = () => {
         </div>
       </div>
       
-      <div className="flex flex-col md:flex-row md:space-x-8 mb-8 lg:mb-0">
+      <div className="flex flex-col md:flex-row md:space-x-8 mb-8 lg:mb-0 flex-1 justify-evenly">
         <div className="mb-6 md:mb-0">
           <h2 className="text-xl font-semibold text-white">About TCU Airlines</h2>
           <ul className="mt-2 text-white list-none pl-0 leading-8">
-              <li><a href="" className="text-white font-medium hover:underline-offset-4" >How to Book</a></li>
               <li><a href="" className="text-white font-medium hover:underline-offset-4">Contact Us</a></li>
               <li><a href="" className="text-white font-medium hover:underline-offset-4">Help Center</a></li>
-              <li><a href="" className="text-white font-medium hover:underline-offset-4">Careers</a></li>
               <li><a href="/about" className="text-white font-medium hover:underline-offset-4">About Us</a></li>
           </ul>
         </div>
         <div className="mb-6 md:mb-0">
-          <h2 className="text-xl font-semibold text-white">Products</h2>
-          <ul className="mt-2 text-white list-none pl-0 leading-8">
-            <li><a href="" className="text-white font-medium hover:underline-offset-4">Flights</a></li>
-            <li><a href="" className="text-white font-medium hover:underline-offset-4">Airport Transfer</a></li>
-            <li><a href="" className="text-white font-medium hover:underline-offset-4">Things to Do</a></li>
-          </ul>
-        </div>
-        <div>
           <h2 className="text-xl font-semibold text-white">Other</h2>
           <ul className="mt-2 text-white list-none pl-0 leading-8">
-            <li><a href="" className="text-white font-medium hover:underline-offset-4">#ExplorePH</a></li> 
-            <li><a href="" className="text-white font-medium hover:underline-offset-4">Privacy Notice</a></li>
-            <li><a href="" className="text-white font-medium hover:underline-offset-4">Terms & Conditions</a></li>
-            <li><a href="" className="text-white font-medium hover:underline-offset-4">Vulnerability Disclosure Program</a></li>
+              <li><a href="" className="text-white font-medium hover:underline-offset-4">Terms & Conditions</a></li>
+              <li><a href="" className="text-white font-medium hover:underline-offset-4">FAQ</a></li>
           </ul>
         </div>
       </div>
@@ -99,9 +70,6 @@ const Footer = () => {
           </a>
           <a href="#" className="text-white">
             <i className="fab fa-instagram fa-2x"></i>
-          </a>
-          <a href="#" className="text-white">
-            <i className="fab fa-twitter-square fa-2x"></i>
           </a>
           <a href="#" className="text-white">
             <i className="fab fa-youtube-square fa-2x"></i>
