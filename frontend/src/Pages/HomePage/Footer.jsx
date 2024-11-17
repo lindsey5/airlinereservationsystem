@@ -13,32 +13,30 @@ const Footer = () => {
           </h2>
           <div className="grid grid-cols-3 gap-4">
             <div className="bg-white p-2 shadow-md flex justify-center rounded-md">
-            <a href="" ><img
-                alt="Payment partner VISA"
-                src="https://ik.imagekit.io/tvlk/image/imageResource/2019/05/20/1558339277845-57216452ce8a7cda236fa5392b9dc8a1.png?tr=h-19,q-75,w-57"
-                className="w-12 h-auto inline-block"
-              /></a>
+              <img
+                  alt="Payment partner VISA"
+                  src="https://ik.imagekit.io/tvlk/image/imageResource/2019/05/20/1558339277845-57216452ce8a7cda236fa5392b9dc8a1.png?tr=h-19,q-75,w-57"
+                  className="w-12 h-auto inline-block"
+                />
             </div>
             <div className="bg-white p-2 shadow-md flex justify-center rounded-md">
-            <a href="" ><img
-                alt="Payment partner MasterCard"
-                src="https://ik.imagekit.io/tvlk/image/imageResource/2019/05/20/1558339280874-69888d44b71faf69435ee533506d91e2.png?tr=h-19,q-75,w-57"
-                className="w-12 h-auto inline-block"
-              /></a>
+              <img
+                  alt="Payment partner MasterCard"
+                  src="https://ik.imagekit.io/tvlk/image/imageResource/2019/05/20/1558339280874-69888d44b71faf69435ee533506d91e2.png?tr=h-19,q-75,w-57"
+                  className="w-12 h-auto inline-block"
+                />
             </div>
             <div className="bg-white p-2 shadow-md flex justify-center rounded-md">
-            <a href="" >
               <img alt="Payment partner Gcash"
                 src="https://cdn.media.amplience.net/i/cebupacificair/GCash-276x96?fmt=auto&maxW=1920&maxH=1920&h=80&qlt=100"
                 className="w-12 h-auto inline-block" />
-              </a>
             </div>
             <div className="bg-white p-2 shadow-md flex justify-center rounded-md">
-            <a href="" ><img
-                alt="Payment partner Maya"
-                src="/icons/paymaya.png"
-                className="w-12 h-auto inline-block"
-              /></a>
+              <img
+                  alt="Payment partner Maya"
+                  src="/icons/paymaya.png"
+                  className="w-12 h-auto inline-block"
+                />
             </div>
           </div>
         </div>
@@ -58,6 +56,7 @@ const Footer = () => {
           <ul className="mt-2 text-white list-none pl-0 leading-8">
               <li><a href="" className="text-white font-medium hover:underline-offset-4">Terms & Conditions</a></li>
               <li><a href="" className="text-white font-medium hover:underline-offset-4">FAQ</a></li>
+              <li><a href="" className="text-white font-medium hover:underline-offset-4">Privacy Policy</a></li>
           </ul>
         </div>
       </div>
@@ -75,7 +74,7 @@ const Footer = () => {
             <i className="fab fa-youtube-square fa-2x"></i>
           </a>
           <a href="#" className="text-white">
-            <i className="fab fa-tiktok fa-2x"></i>
+            <i className="fab fa-tiktok fa-2x" text-white></i>
           </a>
         </div>
       </div>
