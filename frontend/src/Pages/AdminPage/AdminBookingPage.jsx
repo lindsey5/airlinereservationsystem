@@ -1,9 +1,8 @@
 import { useEffect, useState } from "react";
 import '../../styles/BookingPage.css';
-import { createPaymentLink } from "../../Service/paymentService";
 import SeatSelection from "../../Components/Seats/SeatSelection";
 
-const BookingPage = () => {
+const AdminBookingPage = () => {
     const queryParams = new URLSearchParams(window.location.search);
     const encodedData = queryParams.get('data');
     const decodedData = JSON.parse(window.atob(decodeURIComponent(encodedData)));
@@ -14,6 +13,7 @@ const BookingPage = () => {
     const [passengersType, setPassengersType] = useState();
     const [showSeats, setShowSeats] = useState(false);
     const [selectSeat, setSelectSeat] = useState(false);
+    const [name, setName] = useState();
 
     const booking = (flights) =>  { 
         return {
@@ -26,8 +26,8 @@ const BookingPage = () => {
 
     useEffect(() => {
         setBookings(booking(decodedData.flights.map(flight => ({
-            id: flight.id, 
-            price: flight.price, 
+            id: flight.id, price: 
+            flight.price, 
             destination: `${flight.departure_code} to ${flight.arrival_code}`,
             passengers: []
         }
@@ -48,7 +48,29 @@ const BookingPage = () => {
             setPassengersType(passengersType);
         }
 
-    }, [bookings])
+    }, [bookings, name])
+
+    const bookFlight = async() => {
+        try{
+            const response = await fetch('/api/flight/book/admin', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify({
+                    bookings,
+                    name,
+                })
+            })
+            if(response.ok){
+                window.location.href = '/admin/flight/book'
+            }else{
+                alert('Book failed');
+            }
+        }catch(err){
+            return null
+        }
+    }
 
     const handleBooking = async (e) => {
         e.preventDefault();
@@ -71,8 +93,7 @@ const BookingPage = () => {
             setCurrentPassenger(prev => prev += 1)
         }else{
             if(!selectSeat){
-                const response = await createPaymentLink(bookings);
-                response ? window.location.href = response.data.attributes.checkout_url : alert('Payment failed')
+                bookFlight();
             }else{
                 setCurrentPassenger(0);
                 setShowForm(false)
@@ -86,12 +107,7 @@ const BookingPage = () => {
             bookings.flights[currentFlightIndex].passengers[currentPassenger].seatNumber = seatNumber;
             if(bookings.flights[currentFlightIndex].passengers.length - 1 === currentPassenger){
                 if(currentFlightIndex === bookings.flights.length -1){
-                    const response = await createPaymentLink(bookings);
-                    if(response){
-                        window.location.href = response.data.attributes.checkout_url;
-                    }else{
-                        alert('Payment failed')
-                    }
+                    bookFlight();
                 }else{
                     setCurrentFlightIndex(prev => prev + 1);
                     setCurrentPassenger(0);
@@ -103,7 +119,7 @@ const BookingPage = () => {
     }
 
     return (
-        <div className="booking-page">
+        <div className="booking-page admin">
             <div>
             <p>{decodedData.class}: </p>
             {decodedData && decodedData.flights.map((flight, i) => 
@@ -142,11 +158,15 @@ const BookingPage = () => {
                         </div>
                     </div>
                     <div>
-                    <input type="checkbox" onChange={()=> setSelectSeat(!selectSeat)}/> Select Seats (₱ 200 per seat)
+                        <input type="checkbox" onChange={()=> setSelectSeat(!selectSeat)}/> Select Seats (₱ 200 per seat)
+                    </div>
+                    <div className="booked-by-container">
+                        Booked By:
+                        <input type="text" value={name} onChange={(e) => setName(e.target.value)}/>
                     </div>
                     <button
                         className="next-btn"
-                        disabled={bookings && bookings.adult == 0 ? true : false}
+                        disabled={(bookings && bookings.adult == 0) || !name ? true : false}
                         onClick={() => setShowForm(true)}
                     >Next</button>
                 </div>
@@ -179,4 +199,4 @@ const BookingPage = () => {
     )
 }
 
-export default BookingPage
+export default AdminBookingPage

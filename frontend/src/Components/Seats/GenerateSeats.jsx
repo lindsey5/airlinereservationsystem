@@ -163,7 +163,8 @@ const GenerateSeats = ({flightData, close}) =>{
                                 {seat.status === 'booked' && <img className='check' src="/icons/check (3).png" alt="" />}
                                 <img src={`/icons/${classObj.className}-seat.png`}/>
                                 </button>
-                                {position % columns[index] === 0 && position !== sumOfColumns && <div style={{textAlign: 'center', padding: '10px'}}>{num++}</div> }
+                                {position % columns[index] === 0 && position !== sumOfColumns && 
+                                <div></div>}
                                 </>
                             )
                         })

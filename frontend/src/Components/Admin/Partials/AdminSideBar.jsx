@@ -30,6 +30,12 @@ const AdminSideBar = () => {
                     Flights
                     </li>
                 </Link>
+                <Link to={'flight/book'}>
+                    <li>
+                    <img src="/icons/appointment.png" alt="" />
+                    Book Flight
+                    </li>
+                </Link>
                 <Link to={'pilots'}>
                     <li>
                     <img src="/icons/hat.png" alt="" />

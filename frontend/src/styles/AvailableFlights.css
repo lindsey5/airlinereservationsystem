@@ -8,6 +8,10 @@
     padding-bottom: 30px;
 }
 
+.available-flights.admin{
+    padding-top: 80px;
+}
+
 .available-flights > div:first-child{
     width: 80%;
     display: flex;

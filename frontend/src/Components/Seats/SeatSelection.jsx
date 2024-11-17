@@ -1,9 +1,8 @@
 import { useEffect, useState } from "react";
 import useFetch from "../../hooks/useFetch"
-import { createPaymentLink } from "../../Service/paymentService";
 import './SeatSelection.css';
 
-const SeatSelection = ({bookings, currentFlightIndex, currentPassenger, setCurrentPassenger, setCurrentFlightIndex}) => {
+const SeatSelection = ({bookings, currentFlightIndex, currentPassenger, handleSelectedSeat}) => {
     const [flight, setFlight] = useState();
     const { data } = useFetch(`/api/flight/${bookings.flights[currentFlightIndex].id}`);
     const [sumOfColumns, setSumOfColumns] = useState();
@@ -52,29 +51,6 @@ const SeatSelection = ({bookings, currentFlightIndex, currentPassenger, setCurre
             setColumns(planeColumns);
         }   
     }, [flight])
-
-    const handleSelectedSeat = async (seatNumber) => {
-        if(confirm('Click ok to continue')){
-            bookings.flights[currentFlightIndex].passengers[currentPassenger].seatNumber = seatNumber;
-            if(bookings.flights[currentFlightIndex].passengers.length - 1 === currentPassenger){
-                if(currentFlightIndex === bookings.flights.length -1){
-                    const response = await createPaymentLink(bookings);
-                    if(response){
-                        window.location.href = response.data.attributes.checkout_url;
-                    }else{
-                        alert('Payment failed')
-                    }
-                }else{
-                    setCurrentFlightIndex(prev => prev + 1);
-                    setCurrentPassenger(0);
-                }
-            }else{
-                setCurrentPassenger(prev => prev + 1);
-            }
-        }
-
-
-    }
 
     return (
         <div className="seat-selection-container">

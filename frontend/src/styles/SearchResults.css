@@ -6,6 +6,10 @@
     justify-content: center;
 }
 
+.search-results.admin{
+    padding-top: 80px;
+}
+
 .search-results .results-parent-container{
     width: 90%;
 }

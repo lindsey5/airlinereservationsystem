@@ -16,15 +16,11 @@ export const one_way_search = async (data, flightClass, price) =>{
             'departure.time': { $gte: new Date(departureTime) }
         };
         
-        if(price > 0) {
-            query['classes.price'] = {$lte: price}
-        }
-        
         const flights = await Flight.find(query);
 
         const sortedFlights = flights.sort((current, next) => {
             return current.classes.find(classObj => classObj.className === flightClass).price - next.classes.find(classObj => classObj.className === flightClass).price;
-        })
+        }).filter((flight) => price > 0 ? flight.classes.find(classObj => classObj.className === flightClass).price <= price : true);
         const flightsArr = [];
         sortedFlights.forEach(flight => flightsArr.push([flight]));
         return flightsArr;
@@ -62,11 +58,6 @@ export const round_trip_search = async (data, flightClass,price) => {
         }
     }
 
-    if(price > 0) {
-        outBoundQuery['classes.price'] = {$lte: price};
-        returnQuery['classes.price'] = {$lte: price}
-    }
-
     // Fetch outbound flight results
     const outboundFlights = await Flight.find(outBoundQuery);
 
@@ -85,7 +76,7 @@ export const round_trip_search = async (data, flightClass,price) => {
     // Interleave outbound and return flights
     searchResults.outboundFlights.forEach((outboundFlight) => {
         searchResults.returnFlights.forEach((returnFlight) => {
-            if(outboundFlight && returnFlight && new Date(returnFlight.departure.time) > new Date(outboundFlight.arrival.time).setHours(new Date(outboundFlight.arrival.time).getHours() + 5)){
+            if(outboundFlight && returnFlight && new Date(returnFlight.departure.time) > new Date(outboundFlight.arrival.time).setHours(new Date(outboundFlight.arrival.time).getHours() + 2)){
                 interleavedResults.push([
                     outboundFlight,
                     returnFlight
@@ -93,33 +84,26 @@ export const round_trip_search = async (data, flightClass,price) => {
             }
         });
     });
-
-    interleavedResults.sort((current, next) => {
+    const sortedFlights = interleavedResults.sort((current, next) => {
         const currentPrice = current.reduce((total, flight) => {
-            return total + flight.classes.reduce((classTotal, classObj) => {
-                if (classObj.className === flightClass) {
-                    return classTotal + classObj.price;
-                }
-                return classTotal;
-            }, 0);
+            return total + flight.classes.find(classObj => classObj.className === flightClass).price || 0;
         }, 0);
-    
         const nextPrice = next.reduce((total, flight) => {
-            return total + flight.classes.reduce((classTotal, classObj) => {
-                if (classObj.className === flightClass) {
-                    return classTotal + classObj.price;
-                }
-                return classTotal;
-            }, 0);
+            return total + flight.classes.find(classObj => classObj.className === flightClass).price || 0;
         }, 0);
     
         return currentPrice - nextPrice; 
+    }).filter(result => {
+        const totalPrice = result.reduce((total, flight) => {
+            return total + flight.classes.find(classObj => classObj.className === flightClass).price || 0;
+        }, 0);
+        return price > 0 ? totalPrice <= price : true
     });
 
-    return interleavedResults;
+    return sortedFlights;
 };
 
-export const multi_city_search = async (searchSegments, flightClass) => {
+export const multi_city_search = async (searchSegments, flightClass, price) => {
     const segmentResults = [];
 
     // Fetch flights for each search segment
@@ -170,34 +154,29 @@ export const multi_city_search = async (searchSegments, flightClass) => {
         for (let i = 0; i < combo.length - 1; i++) {
             const currentFlight = combo[i];
             const nextFlight = combo[i + 1];
-            if (new Date(nextFlight.departure.time) >new Date(currentFlight.arrival.time).setHours(new Date(currentFlight.arrival.time).getHours() + 5)) {
-                return false;
+            if (new Date(nextFlight.departure.time) > new Date(currentFlight.arrival.time).setHours(new Date(currentFlight.arrival.time).getHours() + 2)) {
+                return true;
             }
         }
-        return true; // Valid combination
+        return false
     });
 
-    validCombinations.sort((current, next) => {
+    const sortedFlights = validCombinations.sort((current, next) => {
         const currentPrice = current.reduce((total, flight) => {
-            return total + flight.classes.reduce((classTotal, classObj) => {
-                if (classObj.className === flightClass) {
-                    return classTotal + classObj.price;
-                }
-                return classTotal;
-            }, 0);
+            return total + flight.classes.find(classObj => classObj.className === flightClass).price || 0;
         }, 0);
     
         const nextPrice = next.reduce((total, flight) => {
-            return total + flight.classes.reduce((classTotal, classObj) => {
-                if (classObj.className === flightClass) {
-                    return classTotal + classObj.price;
-                }
-                return classTotal;
-            }, 0);
+            return total + flight.classes.find(classObj => classObj.className === flightClass).price || 0;
         }, 0);
     
         return currentPrice - nextPrice; 
-    });
+    }).filter(result => {
+        const totalPrice = result.reduce((total, flight) => {
+            return total + flight.classes.find(classObj => classObj.className === flightClass).price || 0;
+        }, 0);
+        return price > 0 ? totalPrice <= price : true
+    })
 
-    return validCombinations;
+    return sortedFlights;
 };

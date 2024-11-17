@@ -6,7 +6,7 @@ import '../../styles/AvailableFlights.css';
 import '../../styles/Flights.css';
 import { useNavigate } from "react-router-dom";
 
-const AvailableFlights = () => {
+const AdminAvailableFlights = () => {
     const [limit, setLimit] = useState(5);
     const [flights, setFlights] = useState([]);
     const [selectedClass, setSelectedClass] = useState('Economy');
@@ -44,11 +44,11 @@ const AvailableFlights = () => {
             price: flight.classes.find(classObj => classObj.className === selectedClass).price,
         })
         const encoded = encodeURIComponent(utf8ToBase64(JSON.stringify(params)));
-        navigate(`/user/booking?data=${encoded}`);
+        navigate(`/admin/booking?data=${encoded}`);
     }
 
     return (
-        <div className="available-flights">
+        <div className="available-flights admin">
             <div>
             <h1>Available Flights</h1>
             <select onChange={(e) => setSelectedClass(e.target.value)}>
@@ -114,4 +114,4 @@ const AvailableFlights = () => {
     )
 }
 
-export default AvailableFlights
+export default AdminAvailableFlights

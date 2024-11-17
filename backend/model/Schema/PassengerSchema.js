@@ -37,7 +37,7 @@ const PassengerSchema = new Schema({
       type: String,
       unique: true,
       required: true,
-      default: uuidv4 
+      default: uuidv4()
   },
 });
 

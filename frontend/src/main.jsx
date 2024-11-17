@@ -30,6 +30,10 @@ import BookingPage from './Pages/UserPage/BookingPage';
 import TicketPage from './Pages/UserPage/TicketPage';
 import Success from './Pages/UserPage/Success';
 import About from './Pages/HomePage/About';
+import AdminSearchPage from './Pages/AdminPage/AdminSearchPage';
+import AdminAvailableFlight from './Pages/AdminPage/AdminAvailableFlight';
+import AdminSearchResults from './Pages/AdminPage/AdminSearchResults';
+import AdminBookingPage from './Pages/AdminPage/AdminBookingPage';
 
 const router = createBrowserRouter(
   createRoutesFromElements(
@@ -66,6 +70,12 @@ const router = createBrowserRouter(
           <Route path='airplanes' element={<AdminAirplanes />} />
           <Route path='flights' element={<AdminFlights />} />
           <Route path='airports' element={<AdminAirports />} />
+          <Route path='search-results' element={<AdminSearchResults />} />
+          <Route path='booking' element={<AdminBookingPage />} />
+          <Route path='flight/'>
+            <Route path='book' element={<AdminSearchPage />}/>
+            <Route path='available' element={<AdminAvailableFlight />} />
+          </Route>
         </Route>
       </Route>
       
@@ -77,8 +87,6 @@ const router = createBrowserRouter(
 
 createRoot(document.getElementById('root')).render(
   <StrictMode>
-    <SearchContextProvider>
       <RouterProvider router={router} />
-    </SearchContextProvider>
   </StrictMode>,
 )
