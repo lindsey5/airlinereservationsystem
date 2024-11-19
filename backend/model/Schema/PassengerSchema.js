@@ -3,11 +3,11 @@ const Schema = mongoose.Schema;
 import { v4 as uuidv4 } from "uuid";
 
 const PassengerSchema = new Schema({
-    name: {
+    firstname: {
       type: String,
       required: true,
     },
-    email: {
+    lastname: {
       type: String,
       required: true,
     },
@@ -15,10 +15,18 @@ const PassengerSchema = new Schema({
       type: Date,
       required: true
     },
+    nationality:{
+      type: String,
+      required: true,
+    },
+    countryOfIssue: {
+      type: String,
+      required: true
+    },
     type: {
       type: String,
-      enum: ['adult', 'child'],
-      default: 'adult'
+      enum: ['Adult', 'Child'],
+      default: 'Adult'
     },
     price: {
       type: Number,
@@ -35,7 +43,6 @@ const PassengerSchema = new Schema({
     },
     ticketNumber: {
       type: String,
-      unique: true,
       required: true,
       default: uuidv4()
   },

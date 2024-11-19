@@ -1,0 +1,63 @@
+.passengers-modal-container{
+    position: fixed;
+    top: 0;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    background-color: rgba(119, 119, 119, 0.8);
+    z-index: 5;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.passengers-modal-container .modal{
+    padding: 20px;
+    background-color: white;
+    border-radius: 20px;
+    width: 500px;
+}
+
+.passengers-modal-container .modal > p{
+    font-size: 16px;
+}
+
+.passengers-modal-container .table-container{
+    width: 100%;
+    margin-bottom: 50px;
+}
+
+.passengers-modal-container table{
+    width: 100%;
+    border-collapse: collapse;
+}
+
+.passengers-modal-container table th{
+    text-align: center;
+    padding: 10px;
+}
+
+.passengers-modal-container table td{
+    padding: 10px;
+    text-align: center;
+}
+
+.passengers-modal-container .passengers-destination{
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 30px;
+}
+
+.passengers-modal-container .modal > button{
+    background-color: #ff3131;
+    color: white;
+    border: none;
+    float: right;
+    margin-top: 30px;
+    padding: 7px 40px;
+    cursor: pointer;
+}
+
+.passengers-modal-container .modal > button:hover{
+    background-color: #ffadad;
+}

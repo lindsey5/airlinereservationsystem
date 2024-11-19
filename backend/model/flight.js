@@ -3,7 +3,7 @@ import ClassSchema from "./Schema/ClassSchema.js";
 import crypto from 'crypto';
 const Schema = mongoose.Schema;
 
-const FlightSchema = new Schema({
+export const FlightSchema = new Schema({
     flightNumber: { type: String, unique: true },
     airline: { type: String,required: true, },
     status: { type: String, default: 'Scheduled'},

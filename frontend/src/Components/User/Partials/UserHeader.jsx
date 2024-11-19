@@ -11,12 +11,12 @@ const UserHeader = () => {
         <header>
             <div onClick={() => navigate('/user/home')}>
                 <img src="/icons/tcu_airlines-logo (2).png" alt="" />
-                <h3>TCU <span>AIRLINES</span></h3>
+                <h3>CloudPeak <span>AIRLINES</span></h3>
             </div>
             <button onClick={() => setShowDropdown(!showDropdown)}><img src="/icons/profile.png" alt="" /></button>
             {showDropdown && 
             <div className='dropdown'>
-                <a href="">
+                <a href="/user/flights">
                     <button><img src="/icons/plane.png" alt="" />Your Flights</button>
                 </a>
                 <a href="">

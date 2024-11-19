@@ -10,7 +10,7 @@ const HomeHeader = () => {
         <header className='home-header'>
             <div onClick={() => navigate('/')}>
                 <img src="/icons/tcu_airlines-logo (2).png" alt="" />
-                <h3>TCU <span>AIRLINES</span></h3>
+                <h3>CLOUDPEAK <span>AIRLINES</span></h3>
             </div>
             <ul>
                 <li onClick={() => navigate('/user/login')}>Log in</li>

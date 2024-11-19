@@ -2,6 +2,8 @@ import { useEffect, useState } from "react";
 import '../../styles/BookingPage.css';
 import { createPaymentLink } from "../../Service/paymentService";
 import SeatSelection from "../../Components/Seats/SeatSelection";
+import FareTypes from "../../Components/Booking/FareTypes";
+import PassengerForms from "../../Components/Booking/PassengerForms";
 
 const BookingPage = () => {
     const queryParams = new URLSearchParams(window.location.search);
@@ -13,7 +15,7 @@ const BookingPage = () => {
     const [currentPassenger, setCurrentPassenger] = useState(0);
     const [passengersType, setPassengersType] = useState();
     const [showSeats, setShowSeats] = useState(false);
-    const [selectSeat, setSelectSeat] = useState(false);
+    const [fareType, setFareType] = useState();
 
     const booking = (flights) =>  { 
         return {
@@ -21,6 +23,7 @@ const BookingPage = () => {
             class: decodedData.class,
             child: 0, 
             adult: 0, 
+            fareType: fareType
         }
     }
 
@@ -29,55 +32,34 @@ const BookingPage = () => {
             id: flight.id, 
             price: flight.price, 
             destination: `${flight.departure_code} to ${flight.arrival_code}`,
-            passengers: []
+            passengers: [],
         }
         ))))
-    }, [])
+    }, [fareType])
 
     useEffect(() => {
         if(bookings){
             const passengersType = []
 
             for(let i = 0; i < bookings.adult; i++){
-                passengersType.push('adult')
+                passengersType.push('Adult')
             }
 
             for(let i = 0; i < bookings.child; i++){
-                passengersType.push('child')
+                passengersType.push('Child')
             }
             setPassengersType(passengersType);
         }
 
     }, [bookings])
 
-    const handleBooking = async (e) => {
-        e.preventDefault();
-        const formData = new FormData(e.target);
-        decodedData.flights.forEach((flight, i)=> {
-            const price = formData.get('type') === 'child' ? flight.price - (flight.price * 0.05) : flight.price;
-            const passenger = {
-                name: formData.get('name'),
-                email: formData.get('email'),
-                dateOfBirth: formData.get('dateOfBirth'),
-                type: formData.get('type'),
-                price: selectSeat ? price + 200 : price,
-            }
-
-            bookings.flights[i].passengers.push(passenger)
-        })
-
-        if(currentPassenger < passengersType.length  - 1){
-            e.target.reset();
-            setCurrentPassenger(prev => prev += 1)
+    const handleBooking = async () => {
+        if(fareType === 'Bronze'){
+            const response = await createPaymentLink(bookings);
+            response ? window.location.href = response.data.attributes.checkout_url : alert('Payment failed')
         }else{
-            if(!selectSeat){
-                const response = await createPaymentLink(bookings);
-                response ? window.location.href = response.data.attributes.checkout_url : alert('Payment failed')
-            }else{
-                setCurrentPassenger(0);
-                setShowForm(false)
-                setShowSeats(true);
-            }
+            setCurrentPassenger(0);
+            setShowSeats(true);
         }
     }
 
@@ -99,7 +81,36 @@ const BookingPage = () => {
             }else{
                 setCurrentPassenger(prev => prev + 1);
             }
+
+            window.scrollTo({ top: 0, behavior: 'smooth' })
         }
+    }
+
+    const handlePassengers = (e) => {
+        e.preventDefault();
+        passengersType.forEach(passengerType => {
+            decodedData.flights.forEach((flight, i)=> {
+                let price = flight.price;
+                switch(fareType){
+                    case 'Silver': 
+                        price += 1800;
+                        break;
+                    case 'Gold':
+                        price += 3000;
+                }
+                const passenger = {
+                    firstname: '',
+                    lastname: '',
+                    dateOfBirth: '',
+                    type: passengerType,
+                    price: price,
+                    nationality: '',
+                    countryOfIssue: '',
+                }
+                bookings.flights[i].passengers.push(passenger)
+            })
+        })
+        setShowForm(true);
     }
 
     return (
@@ -114,10 +125,9 @@ const BookingPage = () => {
                 </div>
             )}
             </div>
-            <form onSubmit={(e) => {
-                e.preventDefault();
-                setShowForm(true)
-            }}>
+            {!fareType && <FareTypes setFareType={setFareType}/>}
+            {fareType && !showForm &&
+            <form onSubmit={handlePassengers}>
             <div className="container">
                     <h2>Book Flight</h2>
                     <div className="select-container">
@@ -144,33 +154,21 @@ const BookingPage = () => {
                             <p>(2-11 years)</p>
                         </div>
                     </div>
-                    <div>
-                    <input type="checkbox" onChange={()=> setSelectSeat(!selectSeat)}/> Select Seats (₱ 200 per seat)
-                    </div>
                     <button
                         className="next-btn"
                         type="submit"
                         disabled={bookings && bookings.adult == 0 ? true : false}
                     >Next</button>
                 </div>
-                </form>
-                { showForm && 
-                    <div className="passenger-form-container">
-                        <form onSubmit={handleBooking}>
-                            <div className="passenger-form">
-                                <input type="hidden" name="type" value={passengersType[currentPassenger]} />
-                                <p>Passenger #{currentPassenger + 1} Information ({passengersType[currentPassenger]})</p>
-                                <label>Name</label>
-                                <input type="text" name="name" required/>
-                                <label>Email</label>
-                                <input type="email" name="email" required/>
-                                <label>Date of Birth</label>
-                                <input type="date" name="dateOfBirth" required/>
-                                <button type="submit">Submit</button>
-                            </div>
-                        </form>
-                    </div>
-                }
+                </form>}
+                {showForm && 
+                <PassengerForms 
+                    setCurrentPassenger={setCurrentPassenger}
+                    currentPassenger={currentPassenger}
+                    bookings={bookings}
+                    setBookings={setBookings}
+                    handleBooking={handleBooking}
+                />}
                 { showSeats && 
                 <SeatSelection 
                     bookings={bookings}

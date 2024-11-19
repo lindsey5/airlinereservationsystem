@@ -9,7 +9,7 @@ const Footer = () => {
         </div>
         <div className="mt-8">
           <h2 className="text-xl font-semibold mb-2 text-white">
-            Partner with TCU Airlines
+            Partner with CloudPeak Airlines
           </h2>
           <div className="grid grid-cols-3 gap-4">
             <div className="bg-white p-2 shadow-md flex justify-center rounded-md">
@@ -44,7 +44,7 @@ const Footer = () => {
       
       <div className="flex flex-col md:flex-row md:space-x-8 mb-8 lg:mb-0 flex-1 justify-evenly">
         <div className="mb-6 md:mb-0">
-          <h2 className="text-xl font-semibold text-white">About TCU Airlines</h2>
+          <h2 className="text-xl font-semibold text-white">About CloudPeak Airlines</h2>
           <ul className="mt-2 text-white list-none pl-0 leading-8">
               <li><a href="" className="text-white font-medium hover:underline-offset-4">Contact Us</a></li>
               <li><a href="" className="text-white font-medium hover:underline-offset-4">Help Center</a></li>

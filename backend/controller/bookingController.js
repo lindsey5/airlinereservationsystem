@@ -1,28 +1,27 @@
 import Booking from "../model/Booking.js";
-import Flight from "../model/flight.js";
 import { errorHandler } from "../utils/errorHandler.js"
 
-export const getScheduledBookings = async (req, res) => {
-    await Booking.updateMany({ $set: { status: 'Booked' } })
-    const user_id = req.query.userId;
+export const getBookings = async (req, res) => {
+    const user_id = req.userId;
     try{
         const bookings = await Booking.find({
             user_id,
-            status: 'Booked'
         })
+        res.status(200).json(bookings);
 
-        const completeBookingsDetails = await Promise.all(bookings.map(async (booking) => {
-            const flight = await Flight.findById(booking.flight_id);
-            const { departure, arrival, status } = flight;  
-            const { _id, user_id, flight_id, passengers, status: book_status } = booking;  
-            const flightDetails = { departure, arrival, status };
-            const flightBooking = { _id, user_id, flight_id, passengers, status: book_status }; 
+    }catch(err){
+        const errors = errorHandler(err);
+        res.status(400).json(errors);
+    }
+}
 
-            return { ...flightDetails, ...flightBooking }; 
-        }));
-        
-        res.status(200).json(completeBookingsDetails);
-
+export const getBooking = async(req, res) => {
+    try{
+        const booking = await Booking.findById(req.params.id);
+        if(!booking){
+            throw new Error('Booking not found')
+        }
+        res.status(200).json(booking);
     }catch(err){
         const errors = errorHandler(err);
         res.status(400).json(errors);

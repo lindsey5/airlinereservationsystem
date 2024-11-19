@@ -56,15 +56,16 @@ const SeatSelection = ({bookings, currentFlightIndex, currentPassenger, handleSe
         <div className="seat-selection-container">
             {flight && sumOfColumns && 
                 <div className="seat-selection">
-                <div className="logo">
-                <img src="/icons/tcu_airlines-logo (2).png" alt="" />
-                <h3>TCU <span>AIRLINES</span></h3>
-                </div>
-                <h2>Passenger #{currentPassenger + 1}</h2>
-                <p>Name: {bookings.flights[currentFlightIndex].passengers[currentPassenger].name}</p>
-                <p>Date of Birth: {bookings.flights[currentFlightIndex].passengers[currentPassenger].dateOfBirth}</p>
-                <h3>{bookings.flights[currentFlightIndex].destination}</h3>
-                <p>{bookings.class}</p>
+                    <div className="logo">
+                        <img src="/icons/tcu_airlines-logo (2).png" alt="" />
+                        <h3>TCU <span>AIRLINES</span></h3>
+                    </div>
+                    <h2>Passenger #{currentPassenger + 1}</h2>
+                    <p>Flight #{currentFlightIndex + 1}</p>
+                    <p>Passenger: {bookings.flights[currentFlightIndex].passengers[currentPassenger].firstname} {bookings.flights[currentFlightIndex].passengers[currentPassenger].lastname}</p>
+                    <h3>{bookings.flights[currentFlightIndex].destination}</h3>
+                    <p>{bookings.fareType} Tier</p>
+                    <p>{bookings.class}</p>
                 <div className="seats">
                 <div className='seats-rows-container' style={{gridTemplateColumns: columns.length > 1 ? `repeat(${sumOfColumns+ columns.length -1}, 1fr)` : `repeat(${sumOfColumns}, 1fr)`}}>
                 {letters.length > 0 && letters.map(letter => <div className="letter">{letter}</div>)}

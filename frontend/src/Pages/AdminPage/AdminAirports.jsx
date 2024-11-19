@@ -1,4 +1,4 @@
-import useAdminPaginationReducer from "../../hooks/adminPaginationReduces";
+import useAdminPaginationReducer from "../../hooks/adminPaginationReducer";
 import { useState, useEffect } from "react";
 import AdminPagination from "../../Components/Admin/Pagination/AdminPagination";
 import './AdminPage.css'

@@ -205,37 +205,47 @@ export const user_book_flight = async (req, res) => {
         const id = decodedToken.id;
         const checkoutData = jwt.verify(req.cookies.checkoutData, process.env.JWT_SECRET);
         const user = await User.findById(id);
-
         checkoutData.data.forEach(async (flight) => {
-            flight.passengers.forEach(async (passenger) => {
+            flight.passengers.forEach(async (passenger, i) => {
                 const available_flight = await Flight.findOne({
                     _id: flight.id, 
                     'classes.className': checkoutData.class, 
                 });
                 const classIndex =  available_flight.classes.findIndex(classObj => classObj.className === checkoutData.class);
                 const seatIndex = available_flight.classes[classIndex].seats.findIndex(seat => passenger.seatNumber?  passenger.seatNumber === seat.seatNumber :  seat.status === 'available');
+
                 if(seatIndex > -1){
                     available_flight.classes[classIndex].seats[seatIndex].status = 'booked';
+                    passenger.seatNumber = available_flight.classes[classIndex].seats[seatIndex].seatNumber
                     available_flight.classes[classIndex].seats[seatIndex].passenger = passenger;
-                    const updatedFlight = await available_flight.save();
-                    const data =  {
-                        id: updatedFlight._id, 
-                        seatNumber: available_flight.classes[classIndex].seats[seatIndex].seatNumber
-                    }
-                    sendEmail(user.email, data);
-                    
+                    await available_flight.save();
                 }
             })
-
-            const booking = await Booking.create({
-                user_id: user._id,
-                flight_id: flight.id,
-                passengers: flight.passengers,
-
-            })
-
-            await booking.save();
+        })     
+        const flights = [];
+        for (const flight of checkoutData.data) {
+            const flightDetails = await Flight.findById(flight.id);
+            
+            const data = {
+                id: flight.id,
+                airline: flightDetails.airline,
+                departure: flightDetails.departure,
+                arrival: flightDetails.arrival,
+                flightNumber: flightDetails.flightNumber,
+                gate_number: flightDetails.gate_number
+            };
+            
+            flights.push(data);
+        }
+        const booking = await Booking.create({
+            user_id: user._id,
+            flights,
+            passengers: checkoutData.data[0].passengers,
+            class: checkoutData.class,
+            fareType: checkoutData.fareType
         })
+        await booking.save();
+        sendEmail(user.email, booking._id);
         res.redirect(`/user/booking/success`);
     }catch(err){
         const errors = errorHandler(err)
@@ -244,41 +254,74 @@ export const user_book_flight = async (req, res) => {
 }
 
 export const admin_book_flight = async (req, res) => {
-    try{
-        const data = {
-            flights: req.body.bookings.flights, 
-            class: req.body.bookings.class
-        }
-        const {name, email} = req.body.bookedBy;
-        data.flights.forEach(async (flight) => {
-            flight.passengers.forEach(async (passenger) => {
-                const available_flight = await Flight.findOne({
-                    _id: flight.id, 
-                    'classes.className': data.class, 
-                });
-                const classIndex =  available_flight.classes.findIndex(classObj => classObj.className === data.class);
-                const seatIndex = available_flight.classes[classIndex].seats.findIndex(seat => passenger.seatNumber?  passenger.seatNumber === seat.seatNumber :  seat.status === 'available');
-                if(seatIndex > -1){
-                    available_flight.classes[classIndex].seats[seatIndex].status = 'booked';
-                    available_flight.classes[classIndex].seats[seatIndex].passenger = passenger;
-                    const updatedFlight = await available_flight.save();
-                    const data =  {
-                        id: updatedFlight._id, 
-                        seatNumber: available_flight.classes[classIndex].seats[seatIndex].seatNumber
+        try{
+            const data = {
+                flights: req.body.bookings.flights, 
+                class: req.body.bookings.class,
+                fareType: req.body.bookings.fareType
+            }
+            const {name, email} = req.body.bookedBy;
+            data.flights.forEach(async (flight) => {
+                flight.passengers.forEach(async (passenger, i) => {
+                    const available_flight = await Flight.findOne({
+                        _id: flight.id, 
+                        'classes.className': data.class, 
+                    });
+                    const classIndex =  available_flight.classes.findIndex(classObj => classObj.className === data.class);
+                    const seatIndex = available_flight.classes[classIndex].seats.findIndex(seat => passenger.seatNumber?  passenger.seatNumber === seat.seatNumber :  seat.status === 'available');
+    
+                    if(seatIndex > -1){
+                        available_flight.classes[classIndex].seats[seatIndex].status = 'booked';
+                        passenger.seatNumber = available_flight.classes[classIndex].seats[seatIndex].seatNumber
+                        available_flight.classes[classIndex].seats[seatIndex].passenger = passenger;
+                        await available_flight.save();
                     }
-                    sendEmail(email, data);
-                }
-            })
-
+                })
+            })     
+            const flights = [];
+            for (const flight of data.flights) {
+                const flightDetails = await Flight.findById(flight.id);
+                
+                const data = {
+                    id: flight.id,
+                    airline: flightDetails.airline,
+                    departure: flightDetails.departure,
+                    arrival: flightDetails.arrival,
+                    flightNumber: flightDetails.flightNumber,
+                    gate_number: flightDetails.gate_number
+                };
+                
+                flights.push(data);
+            }
             const booking = await Booking.create({
                 booked_by: name,
-                flight_id: flight.id,
-                passengers: flight.passengers,
+                flights,
+                passengers: data.flights[0].passengers,
+                class: data.class,
+                fareType: data.fareType
             })
-
             await booking.save();
-        })
-        res.status(200).json('Booked successfully')
+            sendEmail(email, booking._id);
+            res.redirect(`/user/booking/success`);
+        }catch(err){
+            const errors = errorHandler(err)
+            res.status(400).json({errors});
+        }
+}
+
+export const completeFlight = async (req, res) => {
+    try{
+        const updatedFlight = await Flight.findById(req.params.id);
+        updatedFlight.status = 'Completed'
+
+        await Booking.updateMany(
+            { 'flights.id': req.params.id },
+            { $set: { status: 'Completed' } }
+        );
+
+        await updatedFlight.save();
+        res.status(200).json({message: 'Flight successfully marked as completed'})
+
     }catch(err){
         const errors = errorHandler(err)
         res.status(400).json({errors});

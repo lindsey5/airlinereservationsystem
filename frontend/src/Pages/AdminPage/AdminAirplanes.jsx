@@ -2,7 +2,7 @@ import { useEffect, useState } from 'react';
 import './AdminPage.css'
 import AirplaneForm from '../../Components/Admin/Forms/AirplaneForm';
 import { addAirplane, deleteAirplane, updateAirplane } from '../../Service/Admin/AdminAirplaneService';
-import useAdminPaginationReducer from '../../hooks/adminPaginationReduces';
+import useAdminPaginationReducer from '../../hooks/adminPaginationReducer';
 import AdminPagination from '../../Components/Admin/Pagination/AdminPagination';
 import { dataStatus } from '../../utils/dataStatus';
 

@@ -17,44 +17,44 @@
     width: 100%;
 }
 
-.flight{
+.flights-container .flight{
     display: flex;
     width: 100%;
     align-items: center;
     position: relative;
 }
 
-.flight > div{
+.flights-container .flight > div{
     width: 100%;
     display: flex;
 }
 
-.flight .mid-div{
+.flights-container .flight .mid-div{
     display: flex;
     align-items: center;
 }
 
-.flight .mid-div{
+.flights-container .flight .mid-div{
     width: 100%;
 }
 
-.flight .mid-div div{
+.flights-container .flight .mid-div div{
     margin-top: 60px;
 }
 
-.flight .airline{
+.flights-container .flight .airline{
     width: 40px;
     height: 40px;
     margin-right: 30px;
     padding: 10px;
 }
 
-.flight div{
+.flights-container .flight div{
     text-align: center;
     font-size: 14px;
 }
 
-.flight hr{
+.flights-container .flight hr{
     background-color: rgb(196, 196, 196);
     height: 2px;
     width: 100%;
@@ -62,7 +62,7 @@
     border: none;
 }
 
-.flight .plane-icon{
+.flights-container .flight .plane-icon{
     height: 25px;
 }
 
@@ -85,7 +85,7 @@
     background-color: #ff9393;
 }
 
-.no-flights{
+.flights-container .no-flights{
     width: 100%;
     height: calc(100vh - 220px);
     display: flex;
@@ -93,15 +93,15 @@
     align-items: center;
 }
 
-.no-flights img{
+.flights-container .no-flights img{
     height: 200px;
 }
 
-.no-flights p{
+.flights-container .no-flights p{
     color: #808080;
 }
 
-.no-flights > div{
+.flights-container .no-flights > div{
     text-align: center;
 }
 
@@ -115,32 +115,32 @@
         border-top: 1px solid rgb(190, 190, 190);
     }
 
-    .flight{
+    .flights-container .flight{
         flex-direction: column;
         font-size: 13px;
         padding: 30px 0;
     }
 
-    .flight .airline{
+    .flights-container .flight .airline{
         margin: 0;
     }
 
-    .flight > div{
+    .flights-container .flight > div{
         display: grid;
         grid-template-columns: 1fr 1fr 1fr;
         gap: 20px;
     }
 
-    .flight > div div{
+    .flights-container .flight > div div{
         font-size: 13px;
     }
 
-    .flight .mid-div{
+    .flights-container .flight .mid-div{
         margin: 0;
         justify-content: center;
     }
 
-    .flight .mid-div hr{
+    .flights-container .flight .mid-div hr{
         display: none;
     }
 

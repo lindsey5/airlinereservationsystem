@@ -32,11 +32,8 @@ const GenerateSeats = ({flightData, close}) =>{
     const [state, dispatch] = useReducer(passengerReducer, passengerState)
     const [letters, setLetters] = useState([]);
     const [selectSeats, setSelectSeats] = useState(false);
-    const passengers = [];
     let index = 0;
     const passengerRef = useRef();
-    let num = 1;
-
 
     useEffect(() => {
         if (passengerRef.current) {
@@ -86,13 +83,23 @@ const GenerateSeats = ({flightData, close}) =>{
     }, [columns])
 
     const handleShowPassenger = (passenger) => {
+        const classPrice = flight.classes.find(classObj => classObj.className === passenger.flightClass).price
+        let fareType = ''
+        if(passenger.price === classPrice){
+                fareType = 'Bronze';
+        }else if(passenger.price === classPrice + 1800){
+            fareType = 'Silver';
+        }else if(passenger.price === classPrice + 3000){
+            fareType = 'Gold';
+        }
+        
         const passengerObj = {
-            name: passenger.name,
-            email: passenger.email,
+            name: passenger.firstname + ' ' + passenger.lastname,
             flightPrice: passenger.price,
             type: passenger.type,
             flightClass: passenger.flightClass,
-            seatNumber: passenger.seatNumber
+            seatNumber: passenger.seatNumber,
+            fareType
         }
         dispatch({type: 'SET_PASSENGER', payload: passengerObj})
         setShowPassenger(true);
@@ -110,9 +117,9 @@ const GenerateSeats = ({flightData, close}) =>{
                 <h2>Passenger Information</h2>
                 <div>
                 <p>Name: {state.name}</p>
-                <p>Email: {state.email}</p>
                 <p>Flight Price: {formatPrice(state.flightPrice)} ({state.type})</p>
                 <p>Class: {state.flightClass}</p>
+                <p>Tier: {state.fareType}</p>
                 <p>Seat: {state.seatNumber}</p>
                 </div>
                 <button onClick={hidePassenger}>Close</button>

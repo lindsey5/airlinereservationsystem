@@ -1,0 +1,107 @@
+.passenger-forms{
+    width: 100%;
+    display: flex;
+    justify-content: center;
+    padding: 30px 0;
+}
+
+.passenger-forms .passenger-details-container{
+    display: flex;
+    position: relative;
+    box-shadow: 0 0 10px 5px rgb(209, 209, 209);
+}
+
+.passenger-forms .container{
+    
+}
+
+
+.passenger-forms .side-bar button{
+    width: 200px;
+    height: 50px;
+    border: none;
+    font-size: 15px;
+    background-color: white;
+    display: block;
+    position: relative;
+    cursor: pointer;
+    text-align: start;
+    padding-left: 20px;
+}
+
+.passenger-forms .side-bar .selected{
+    color: #ff3131;
+    font-weight: 600;
+}
+
+.passenger-forms .side-bar .selected::after{
+    content: "";
+    position: absolute;
+    width: 5px;
+    top: 0;
+    bottom: 0;
+    right: 0;
+    border-top-right-radius: 20px;
+    border-bottom-right-radius: 20px;
+    background-color: #ff3131;
+}
+
+.passenger-forms .passenger-details{
+    padding: 10px 30px;
+    background-color: white;
+    color: rgb(143, 143, 143);
+}
+
+.passenger-forms .passenger-details > div:first-child{
+    margin: 0;
+    color: black;
+}
+
+.passenger-forms .passenger-details > div:first-child div{
+    display: flex;
+    flex-wrap: wrap;
+}
+
+.passenger-forms .passenger-details > div:first-child p{
+    margin-right: 20px;
+    color: black;
+}
+
+.passenger-forms .passenger-details > div{
+    margin: 35px 0;
+}
+
+.passenger-forms .passenger-details p{
+    font-size: 15px;
+    color: rgb(180, 180, 180);
+}
+
+.passenger-forms .passenger-details .name-container{
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 30px;
+}
+
+.passenger-forms .passenger-details input{
+    display: block;
+    width: 230px;
+    height: 25px;
+    outline: none;
+}
+
+.passenger-forms .book-btn{
+    padding: 10px 50px;
+    float: right;
+    margin-top: 50px;
+}
+
+.passenger-forms .book-btn:not(:disabled){
+    background-color: #ff3131;
+    color: white;
+    cursor: pointer;
+    border: none;
+}
+
+.passenger-forms .book-btn:not(:disabled):hover{
+    background-color: #ff9c9c;
+}

@@ -57,7 +57,7 @@ export const getCities = async (req, res) => {
         const country = req.params.country;
         // Fetch airports for the specified country
         const airports = await Airport.find({ country }).sort({ city: 1 });
-        
+
         // Create a Set to store unique city names
         const uniqueCities = new Set(airports.map(airport => airport.city));
 
@@ -74,7 +74,14 @@ export const getCities = async (req, res) => {
 };
 export const createPaymentLink = async (req, res) => {
     try{
-        const line_items = [];
+        const line_items = [
+            {currency: 'PHP', amount: 2052 * 100, name: 'Fuel Surcharge', quantity: 1},
+            {currency: 'PHP', amount: 687.50 * 100, name: 'PH Passenger Service Charge', quantity: 1},
+            {currency: 'PHP', amount: 1296 * 100, name: 'PH-VAT', quantity: 1},
+            {currency: 'PHP', amount: 82.50 * 100, name: 'PH PSC Value Added Tax', quantity: 1},
+            {currency: 'PHP', amount: 30 * 100, name: 'Aviation Security Fee', quantity: 1},
+            {currency: 'PHP', amount: 1344 * 100, name: 'Administration Fee', quantity: 1}
+        ];
         req.body.bookings.flights.forEach(flight => {
             flight.passengers.forEach(passenger=> {
                 const item = {
@@ -110,20 +117,21 @@ export const createPaymentLink = async (req, res) => {
                   line_items,
                   success_url: `${url}/api/flight/book`,
                   cancel_url: url,
-                  description: 'Tickets payment'
+                  description: 'Flight/s'
                 }
               }
             })
         };
         const response = await fetch('https://api.paymongo.com/v1/checkout_sessions', options)
         if(response.ok){
-            const checkoutDataToken = jwt.sign({data: req.body.bookings.flights, class: req.body.bookings.class}, process.env.JWT_SECRET);
+            const checkoutDataToken = jwt.sign({data: req.body.bookings.flights, class: req.body.bookings.class, fareType: req.body.bookings.fareType}, process.env.JWT_SECRET);
             res.cookie('checkoutData', checkoutDataToken, { httpOnly: true, secure: process.env.NODE_ENV === 'production' });
             res.status(200).json(await response.json());
         }else{
             throw new Error('Payment failed')
         }
     }catch(err){
+        console.log(err)
         const errors = errorHandler(err);
         res.status(400).json(errors);
     }

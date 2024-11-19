@@ -34,6 +34,7 @@ import AdminSearchPage from './Pages/AdminPage/AdminSearchPage';
 import AdminAvailableFlight from './Pages/AdminPage/AdminAvailableFlight';
 import AdminSearchResults from './Pages/AdminPage/AdminSearchResults';
 import AdminBookingPage from './Pages/AdminPage/AdminBookingPage';
+import UserFlights from './Pages/UserPage/UserFlights';
 
 const router = createBrowserRouter(
   createRoutesFromElements(
@@ -59,6 +60,7 @@ const router = createBrowserRouter(
             <Route path='available-flights' element={<AvailableFlights />} />
             <Route path='booking' element={<BookingPage />} />
             <Route path='booking/success' element={<Success />} />
+            <Route path='flights' element={<UserFlights />} />
           </Route>
         </Route>
       </Route>

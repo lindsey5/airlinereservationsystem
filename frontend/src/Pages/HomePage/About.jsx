@@ -32,7 +32,7 @@ const About = () => {
         <div className="about">
             <header onClick={() => navigate('/')}>
                 <img src="/icons/tcu_airlines-logo (2).png" alt="" />
-                <h2>TCU <span>Airlines</span></h2>
+                <h2>CloudPeak <span>Airlines</span></h2>
             </header>
             <div class="container" ref={el => elementsRef.current[0] = el}>
                 <h1>Programming Team</h1>
