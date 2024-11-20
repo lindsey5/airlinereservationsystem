@@ -1,8 +1,9 @@
 import React, { useState } from 'react';
 import './AdminLoginStyle.css';
 import axios from 'axios';
+import { handleBlur, handleFocus } from '../../utils/handleInput';
 
-function AdminLogIn() {
+function AdminLogin() {
     const [employeeId, setEmpId] = useState('');
     const [password, setPassword] = useState('');
 
@@ -17,48 +18,50 @@ function AdminLogIn() {
             // Check if the login was successful
             if (response.data.success) {
                 console.log('Login successful');
-                // You can redirect the user or perform another action here
             } else {
                 console.error('Login failed:');
-                // Optionally show a message to the user
             }
         } catch (error) {
             console.error('Error logging in:', error);
-            // Handle error, possibly show an error message to the user
         }
     }
 
-    const handleForgetPass = () => {
-        
-    }
 
     return(
         <div className='admin-login-page'>
-            <div className='cover-color'>
                 <div className='login-container'>
-                    <h1>ADMIN LOG IN</h1>
-                    <input 
-                        placeholder='EMPLOYEE ID'
-                        type='text' 
-                        value={employeeId} 
-                        onChange={(e) => setEmpId(e.target.value)} 
-                        required 
-                    />
-
-                    <input 
-                        type='password' 
-                        placeholder='UNIQUE PIN' 
-                        value={password} 
-                        onChange={(e) => setPassword(e.target.value)} 
-                        required 
-                    />
-
-                    <button onClick={handleLogin}>LOG IN</button>
-                    <button onClick={handleForgetPass}>Forgot Password</button>
+                    <img src="/icons/user (2).png" alt="" />
+                    <h1>Admin Login</h1>
+                    <div>
+                        <div className='input-container'>
+                            <input 
+                                placeholder='Employee ID'
+                                type='text' 
+                                value={employeeId} 
+                                onFocus={handleFocus}
+                                onBlur={handleBlur}
+                                onChange={(e) => setEmpId(e.target.value)} 
+                                required 
+                            />
+                            <span>Employee ID</span>
+                        </div>
+                        <div className='input-container'>
+                            <input 
+                                type='password'
+                                placeholder='Password' 
+                                value={password} 
+                                onFocus={handleFocus}
+                                onBlur={handleBlur}
+                                onChange={(e) => setPassword(e.target.value)} 
+                                required 
+                        />
+                        <span>Password</span>
+                    </div>
                 </div>
+                <button onClick={handleLogin}>LOG IN</button>
             </div>
         </div>
     );
 }
 
-export default AdminLogIn;
+export default AdminLogin;

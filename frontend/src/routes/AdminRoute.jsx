@@ -2,7 +2,7 @@ import { fetchUserType } from "../hooks/fetchUserType";
 import { useState, useEffect} from "react";
 import { Outlet, Navigate } from "react-router-dom";
 
-const UserRoute = () => {
+const AdminRoute = () => {
     const [user, setUser] = useState(null);
     const [loading, setLoading] = useState(true);
 
@@ -18,7 +18,7 @@ const UserRoute = () => {
       return null;
     }
 
-    return user === 'user' ? <Outlet /> : <Navigate to="/" />;
+    return user === 'admin' ? <Outlet /> : <Navigate to="/" />;
 };
 
-export default UserRoute
+export default AdminRoute

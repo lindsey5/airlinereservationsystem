@@ -4,7 +4,8 @@
 }
 
 .user-signup .left-img{
-    width: 50%;
+    width: 55%;
+    clip-path: polygon(0 0, 100% 0, 70% 100%, 0% 100%);
     animation: slide-left-image 0.8s ease-in-out;
 }
 
@@ -19,7 +20,7 @@
 
 
 .user-signup .right-container{
-    width: 50%;
+    flex: 1;
     display: flex;
     align-items: center;
     justify-content: center;

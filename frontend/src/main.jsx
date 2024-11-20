@@ -18,8 +18,8 @@ import AdminFlights from './Pages/AdminPage/AdminFlights';
 import AdminAirports from './Pages/AdminPage/AdminAirports';
 import './index.css'
 import UserSignup from './Pages/AuthPages/UserSignup';
-import { PublicRoute } from './routes/PublicRoute';
-import { UserRoute } from './routes/UserRoute';
+import PublicRoute from './routes/PublicRoute';
+import UserRoute from './routes/UserRoute';
 import UserLayout from './Layouts/UserLayout';
 import UserHome from './Pages/UserPage/UserHome';
 import SearchResults from './Pages/UserPage/SearchResults';
@@ -34,12 +34,14 @@ import AdminSearchResults from './Pages/AdminPage/AdminSearchResults';
 import AdminBookingPage from './Pages/AdminPage/AdminBookingPage';
 import UserFlights from './Pages/UserPage/UserFlights';
 import Admins from './Pages/AdminPage/Admins';
+import AdminLogin from './Pages/AuthPages/AdminLogin';
 
 const router = createBrowserRouter(
   createRoutesFromElements(
     <>
       <Route element={<PublicRoute />}>
         <Route path="/" element={<Home />} />
+        <Route path='/admin/login' element={<AdminLogin />} />
         <Route path='/user/' >
           <Route path='login' element={<UserLogin />} />
           <Route path='signup' element={<UserSignup />} />

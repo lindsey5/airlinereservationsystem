@@ -2,7 +2,7 @@ import { fetchUserType } from "../hooks/fetchUserType";
 import { useState, useEffect} from "react";
 import { Outlet, Navigate } from "react-router-dom";
 
-export const PublicRoute = () => {
+const PublicRoute = () => {
     const [user, setUser] = useState(null);
     const [loading, setLoading] = useState(true);
 
@@ -25,3 +25,5 @@ export const PublicRoute = () => {
 
     return <Outlet />;
 };
+
+export default PublicRoute
