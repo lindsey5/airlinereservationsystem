@@ -27,6 +27,8 @@
 
 .available-flights .container{
     width: 80%;
+    display: flex;
+    justify-content: center;
 }
 
 .available-flights > button{

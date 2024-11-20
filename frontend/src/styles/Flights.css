@@ -85,7 +85,7 @@
     background-color: #ff9393;
 }
 
-.flights-container .no-flights{
+.no-flights{
     width: 100%;
     height: calc(100vh - 220px);
     display: flex;
@@ -93,15 +93,15 @@
     align-items: center;
 }
 
-.flights-container .no-flights img{
+.no-flights img{
     height: 200px;
 }
 
-.flights-container .no-flights p{
+.no-flights p{
     color: #808080;
 }
 
-.flights-container .no-flights > div{
+.no-flights > div{
     text-align: center;
 }
 
