@@ -12,7 +12,6 @@ export const calculateSeats = (classes) => {
             totalSeats += parseInt(classObj.seats);
         }
     });
-    
     return totalSeats
 }
 //This function generateSeats with seathNumber based on total seats and columns of the airplane

@@ -18,7 +18,7 @@ const FareTypes = ({setFareType}) => {
                 <div>
                     <h2>Silver Tier</h2>
                     <hr />
-                    <h3>+ {formatPrice(1800)} / passenger</h3>
+                    <h3>+ PHP 1120.00 / passenger</h3>
                     <p>Not refundable</p>
                     <p>Limited Lounge Access</p>
                     <p>1 piece of hand-carry baggage (max 7kg)</p>
@@ -31,7 +31,7 @@ const FareTypes = ({setFareType}) => {
                 <div>
                     <h2>Gold Tier</h2>
                     <hr />
-                    <h3>+ {formatPrice(3000)} / passenger</h3>
+                    <h3>+ PHP 3000.00 / passenger</h3>
                     <p>Fully refundable with no fees</p>
                     <p>Priority Check-in (skip the lines and check in faster with priority access)</p>
                     <p>Priority Baggage Handling (Get your checked baggage faster with priority baggage handling)</p>

@@ -4,13 +4,11 @@ import Pilot from "../model/pilot.js";
 import User from "../model/user.js";
 import { multi_city_search, one_way_search, round_trip_search } from "../service/flightSearchService.js";
 import { errorHandler } from "../utils/errorHandler.js";
-import mongoose from "mongoose";
 import jwt from "jsonwebtoken";
 import { sendEmail } from "../service/emailService.js";
 import Booking from "../model/Booking.js";
 import { calculateSeats, createSeats, createClasses } from "../utils/flightUtils.js";
 import { getPaymentId, refundPayment } from "../service/paymentService.js";
-const { ObjectId } = mongoose.Types;
 
 export const create_flight = async (req, res) => {
     try{
@@ -157,12 +155,10 @@ export const get_flights = async (req, res) => {
     const limit = parseInt(req.query.limit) || 10; 
     const skip = (page - 1) * limit;
     const searchTerm = req.query.searchTerm;
-    
     try{
         const searchCriteria = searchTerm
     ? {
         $or: [
-            { _id: ObjectId.isValid(searchTerm) ? new ObjectId(searchTerm) : null },
             { 'departure.airport': { $regex: new RegExp(searchTerm, 'i') } },
             { 'departure.airport_code': { $regex: new RegExp(searchTerm, 'i') } },
             { 'departure.city': { $regex: new RegExp(searchTerm, 'i') } },
@@ -205,23 +201,30 @@ export const user_book_flight = async (req, res) => {
         const id = decodedToken.id;
         const checkoutData = jwt.verify(req.cookies.checkoutData, process.env.JWT_SECRET);
         const user = await User.findById(id);
-        await checkoutData.data.forEach(async (flight) => {
-            flight.passengers.forEach(async (passenger) => {
-                const available_flight = await Flight.findOne({
-                    _id: flight.id, 
-                    'classes.className': checkoutData.class, 
-                });
-                const classIndex =  available_flight.classes.findIndex(classObj => classObj.className === checkoutData.class);
-                const seatIndex = available_flight.classes[classIndex].seats.findIndex(seat => passenger.seatNumber?  passenger.seatNumber === seat.seatNumber :  seat.status === 'available');
 
-                if(seatIndex > -1){
-                    available_flight.classes[classIndex].seats[seatIndex].status = 'booked';
-                    passenger.seatNumber = available_flight.classes[classIndex].seats[seatIndex].seatNumber
-                    available_flight.classes[classIndex].seats[seatIndex].passenger = passenger;
-                    await available_flight.save();
+        for (const flight of checkoutData.data) {
+            for (const passenger of flight.passengers) {
+                const available_flight = await Flight.findOne({
+                    _id: flight.id,
+                    'classes.className': checkoutData.class,
+                });
+
+                // Find the index of the class matching the given class name
+                const classIndex = available_flight.classes.findIndex(classObj => classObj.className === checkoutData.class);
+
+                // Find the seat index that matches the passenger's seatNumber or available status
+                const seatIndex = available_flight.classes[classIndex].seats.findIndex(seat => passenger.seatNumber 
+                    ? passenger.seatNumber === seat.seatNumber
+                    : seat.status === 'available');
+
+                available_flight.classes[classIndex].seats[seatIndex].status = 'booked';
+                passenger.seatNumber = available_flight.classes[classIndex].seats[seatIndex].seatNumber;
+                available_flight.classes[classIndex].seats[seatIndex].passenger = passenger;
+
+                await available_flight.save();
                 }
-            })
-        })     
+        }
+    
         const flights = [];
         for (const flight of checkoutData.data) {
             const flightDetails = await Flight.findById(flight.id);
@@ -314,11 +317,15 @@ export const completeFlight = async (req, res) => {
         const updatedFlight = await Flight.findById(req.params.id);
         updatedFlight.status = 'Completed'
 
+        const plane = await Airplane.findById(updatedFlight.airplane.id);
+        plane.currentLocation = updatedFlight.arrival.airport;
+
         await Booking.updateMany(
             { 'flights.id': req.params.id, 'flights.status': 'Booked' },
             { $set: { 'flights.$.status': 'Completed' } }
         );
         await updatedFlight.save();
+        await plane.save();
         res.status(200).json({message: 'Flight successfully marked as completed'})
 
     }catch(err){
@@ -338,7 +345,6 @@ export const cancelFlight = async (req, res) => {
         const flight = await Flight.findById(flightId);
         const now = new Date();
 
-        // Set current time to midnight for comparison (ignoring time of the day)
         now.setHours(0, 0, 0, 0);
         
         const departureTime = new Date(flight.departure.time);
@@ -349,6 +355,10 @@ export const cancelFlight = async (req, res) => {
         
         if (now <= departureTime && now >= oneDayBeforeDeparture) {
             throw new Error("The current date is 1 day before or equal to the departure date");
+        }
+
+        if(booking.createdAt === new Date()){
+            throw new Error('You cannot cancel a flight on the day it was booked')
         }
 
         booking.flights[flightIndex].passengers.forEach(passengerObj => {

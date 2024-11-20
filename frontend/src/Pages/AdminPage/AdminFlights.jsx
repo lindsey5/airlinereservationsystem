@@ -74,7 +74,6 @@ const AdminFlights = () => {
             <table>
                 <thead>
                     <tr>
-                        <th>Id</th>
                         <th>Flight Number</th>
                         <th>Airline</th>
                         <th>Gate No</th>
@@ -93,7 +92,6 @@ const AdminFlights = () => {
 
                         return (
                             <tr key={flight._id}>
-                                <td>{flight._id}</td>
                                 <td>{flight.flightNumber}</td>
                                 <td>{flight.airline}</td>
                                 <td>{flight.gate_number}</td>
@@ -103,16 +101,17 @@ const AdminFlights = () => {
                                 <td>{arrivalTime}</td>
                                 {dataStatus(flight.status)}
                                 <td>
+                                    {flight.status === 'Scheduled' &&
+                                    <button onClick={() => completeFlight(flight._id)}>
+                                        <img src="/icons/check.png" alt="" />
+                                    </button>
+                                    }
                                     <button onClick={() => {
                                         setFlightData(flight)
                                         setShowFlightDetails(true)
                                     }}>
                                     <img src="/icons/eye (1).png"/>
                                     </button>
-                                    {flight.status === 'Scheduled' &&
-                                    <button onClick={() => completeFlight(flight._id)}>
-                                    <img src="/icons/check (3).png" alt="" />
-                                </button>}
                                 </td>
                             </tr>
                         )

@@ -40,7 +40,7 @@ FlightSchema.pre('save', function (next) {
       this.flightNumber = randomFlightNumber;
     }
     next();
-  });
+});
 
 const Flight = mongoose.model('Flight', FlightSchema);
 export default Flight;

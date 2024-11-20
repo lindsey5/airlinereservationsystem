@@ -12,6 +12,7 @@ import cors from 'cors';
 import path from 'path';
 import cookieParser from 'cookie-parser';
 import apiRoutes from './routes/apiRoutes.js';
+import adminRoutes from './routes/adminRoutes.js';
 
 dotenv.config();
 const PORT = process.env.PORT; 
@@ -35,6 +36,7 @@ app.use(express.json());
 app.use(cookieParser());
 
 app.use('/api', apiRoutes);
+app.use('/api/admin', adminRoutes);
 app.use('/api/airplane', airplaneRoutes);
 app.use('/api/flight', flightRoutes);
 app.use('/api/pilot', pilotRoutes);

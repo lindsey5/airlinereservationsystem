@@ -1,30 +1,37 @@
-const Admin = new mongoose.Schema({
+import mongoose, { Schema } from "mongoose";
+import bcrypt from 'bcrypt'
+
+const AdminSchema = new Schema({
     employeeId: {
         type: String,
-        required: true,
-        unique: true
-    },
-    uniquePin: {
-        type: String,
+        unique: true,
         required: true
+    },
+    firstname: {
+        type: String,
+        required: true,
+    },
+    lastname: {
+        type: String,
+        required: true,
     },
     email: {
         type: String,
-        required: true,
-        unique: true
-    },
-    phoneNumber: {
-        type: String,
         required: true
     },
-    choosenQuestion: {
+    password: {
         type: String,
         required: true
-    },
-    answerToQuestion: {
-        type: String,
-        required: true
-    },
-}, { timestamps: true });
+    }
 
+}, { timestamps: true })
+
+AdminSchema.pre('save', async function (next) {
+    const salt = await bcrypt.genSalt();
+    this.password = await bcrypt.hash(this.password, salt);
+    next();
+});
+
+
+const Admin = mongoose.model('Admin', AdminSchema);
 export default Admin

@@ -93,7 +93,7 @@ const BookingPage = () => {
                 let price = flight.price;
                 switch(fareType){
                     case 'Silver': 
-                        price += 1800;
+                        price += 1120;
                         break;
                     case 'Gold':
                         price += 3000;

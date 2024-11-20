@@ -84,7 +84,7 @@ const UserSignup = () => {
 
     return (
         <div className="user-signup">
-            <img className='left-img' src="/icons/background.jpg" alt="" />
+            <img className='left-img' src="/icons/airplane-bg.png" alt="" />
             <div className='right-container'>
                 <div className='container'>
                 <h1>User Signup</h1>

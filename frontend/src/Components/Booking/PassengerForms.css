@@ -84,6 +84,18 @@
     outline: none;
 }
 
+.passenger-forms .checkbox{
+    display: flex;
+    align-items: center;
+    width: 400px;
+
+}
+
+.passenger-forms .checkbox input{
+    margin: 0;
+}
+
+
 .passenger-forms .book-btn{
     padding: 10px 50px;
     float: right;

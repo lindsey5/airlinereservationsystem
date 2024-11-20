@@ -109,7 +109,7 @@ const AvailableFlights = () => {
                 </div>
                 }
             </div>
-            {flights.length > 0 &&  <button onClick={() => setLimit(prev => prev += 5)} >See more</button>}
+            {flights.length > 0 &&  <button className='see-more' onClick={() => setLimit(prev => prev += 5)} >See more</button>}
         </div>
     )
 }

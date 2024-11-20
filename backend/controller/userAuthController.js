@@ -7,7 +7,6 @@ import User from '../model/user.js';
 export const userLogin = async (req, res) => {
     const { email, password } = req.body;
     try {
-      // Find the user by username
       const user = await User.findOne({ email });
     
       if (!user) {
@@ -24,7 +23,7 @@ export const userLogin = async (req, res) => {
         expiresIn: 24 * 60 * 60
       })
       res.cookie('jwt', token, { httpOnly: true, maxAge:  24 * 60 * 60 * 1000 });
-      res.status(200).json({ user: user._id})
+      res.status(201).json({ user: user._id})
     } catch (err) {
       const errors = errorHandler(err);
       res.status(400).json({errors});
@@ -44,7 +43,7 @@ export const userLogin = async (req, res) => {
       })
       res.cookie('jwt', token, { httpOnly: true, maxAge:  24 * 60 * 60 * 1000 });
 
-      res.status(200).json({ user: newUser._id})
+      res.status(201).json({ user: newUser._id})
 
     }catch(err){
       console.log(err);

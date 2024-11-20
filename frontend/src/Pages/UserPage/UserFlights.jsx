@@ -7,22 +7,26 @@ import { useEffect } from "react"
 import ErrorCancelModal from "../../Components/User/Modals/ErrorCancelModal"
 
 const UserFlights = () => {
-    const {data} = useFetch('/api/booking/bookings');
     const [flights, setFlights] = useState([]);
     const [showPassengers, setShowPassengers] = useState(false);
     const [selectedFlight, setSelectedFlight] = useState();
     const [title, setTitle] = useState('All');
     const [showCancelError, setShowCancelError] = useState(false);
+    const [limit, setLimit] = useState(5);
+    const {data} = useFetch(`/api/booking/bookings?filter=${title}`);
 
     useEffect(() => {
         if(data){
             const flightsArr = [];
-            data.forEach(item => {
-                item.flights.forEach(flight => {
-                        const passengers = flight.passengers.map(passenger => {
-                            passenger.fareType = item.fareType;
-                            return passenger
-                        })
+            let total = 0;
+
+            for(const item of data){
+                for(const flight of item.flights){
+                    const passengers = flight.passengers.map(passenger => {
+                        passenger.fareType = item.fareType;
+                        return passenger
+                    })
+                    if(total !== limit){
                         flightsArr.push({...flight, 
                             passengers, 
                             bookingRef: item._id,
@@ -30,11 +34,19 @@ const UserFlights = () => {
                             bookId: item._id,
                             booked_on: item.createdAt
                         })
-                    })
-            })
+                        total ++;
+                    }else{
+                        break;
+                    }
+                }
+            }
             setFlights(flightsArr)
         }
-    },[data])
+    },[data, limit])
+
+    useEffect(() => {
+        setLimit(5)
+    }, [title])
 
     const handlePassengers = (flight) => {
         setShowPassengers(true);
@@ -44,7 +56,7 @@ const UserFlights = () => {
     const cancelFlight = async ({bookId, flightId}) => {
         try{
            if(confirm('Are you sure do you wan\'t to cancel this flight?')){
-                const response = await fetch('/api/flight/cancel',{
+                const response = await fetch(`/api/flight/cancel`,{
                 method: 'PUT',
                 headers: {
                     'Content-Type': 'application/json',
@@ -81,17 +93,6 @@ const UserFlights = () => {
                     })
             })
             setTitle(e.target.value)
-        switch(e.target.value){
-            case 'All':
-                setFlights(flightsArr)
-                break;
-            case 'Upcoming':
-                setFlights(flightsArr.filter(flight => flight.status !== 'Cancelled'));
-                break;
-            case 'Cancelled':
-                setFlights(flightsArr.filter(flight => flight.status === 'Cancelled'));
-                break;
-        }
     }
 
     return(
@@ -105,10 +106,10 @@ const UserFlights = () => {
                     <option value="All">All</option>
                     <option value="Upcoming">Upcoming</option>
                     <option value="Cancelled">Cancelled</option>
+                    <option value="Completed">Completed</option>
                 </select>
             </div>
-            {flights && flights.map(flight => 
-
+            {flights.length > 0 && flights.map(flight => 
                 <div className="flight" key={flight._id}>
                     <img src={`/icons/${flight.airline}.png`} alt="" />
                         <div className="destination">
@@ -150,6 +151,7 @@ const UserFlights = () => {
                         <p className="book-date">Book Date: {formatDate(flight.booked_on)}</p>
                 </div>
             )}
+            {flights.length > 0 &&  <button className='see-more' onClick={() => setLimit(prev => prev += 5)} >See more</button>}
             {flights.length < 1 && <div className="no-flights">
                         <div>
                             <img src="/icons/no-travelling.png" alt="" />

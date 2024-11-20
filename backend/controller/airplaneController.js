@@ -114,7 +114,6 @@ export const get_available_airplanes = async (req, res) => {
         const availableAirplanes = await Promise.all(airplanes.map(async (airplane) => {
             airplane
             const flight = await Flight.findOne({'airplane.id' : airplane._id}).sort({'arrival.time' : -1});
-
             if(flight){
                 const flightArrivalTime = new Date(flight.arrival.time);
                 const isAvailable = flight.arrival.airport === departureAirport && 

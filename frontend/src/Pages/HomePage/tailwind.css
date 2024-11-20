@@ -1,15 +1,15 @@
 @tailwind utilities;
 
 @media  screen and  (max-width: 900px ){
-    .tcu-airlines-details{
+    .airline-details{
         flex-direction: column;
     }
 
-    .tcu-airlines-details > div{
+    .airline-details > div{
         max-width: 100%;
     }
 
-    .tcu-airlines-details > .image{
+    .airline-details > .image{
         width: 100%;
     }
 }

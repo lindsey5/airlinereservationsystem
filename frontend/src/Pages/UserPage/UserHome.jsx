@@ -93,8 +93,8 @@ const UserHome = () => {
                 </div>
             <div className="bg-white w-full flex flex-col items-center justify-center opacity-0 py-[200px]" ref={el => elementsRef.current[1] = el}>
                 <div className="mx-auto px-4 w-full box-border h-full">
-                    <div className="tcu-airlines-details bg-white text-center flex justify-center flex-col items-center h-full">
-                    <img src="/icons/background.jpg" alt="" className="image w-[650px] h-[330px] mb-[50px]"/>
+                    <div className="airline-details bg-white text-center flex justify-center flex-col items-center h-full">
+                    <img src="/icons/airplane-bg.png" alt="" className="image w-[650px] h-[330px] mb-[50px]"/>
                         <div className='max-w-[70%]'>
                         <h1 className="text-4xl text-[#ff3131] font-bold mb-3">Online Flight Booking Made Easy with CloudPeak Airlines</h1>
                         <p className="text-lg mt-16 mb-10">Looking for cheap flights and airfare deals? CloudPeak Airlines, one of the leading flight booking platforms in Southeast Asia, has PAL, cebu pacific, Air Asia, and Skyjet flight routes to choose from and our inventories never ceased to stop growing. CloudPeak Airlines offers flight tickets from domestic and international airlines</p>

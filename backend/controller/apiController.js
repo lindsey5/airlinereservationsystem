@@ -3,6 +3,10 @@ import Airport from '../model/airport.js';
 import jwt from 'jsonwebtoken';
 import User from '../model/user.js';
 import dotenv from 'dotenv';
+import Flight from '../model/flight.js';
+import Airplane from '../model/airplane.js';
+import Pilot from '../model/pilot.js';
+import Booking from '../model/Booking.js';
 dotenv.config();
 
 const url = process.env.NODE_ENV === 'production' ? 'https://airlinereservationsystem.onrender.com' : 'http://localhost:5173';
@@ -159,6 +163,51 @@ export const getUser = async(req, res) => {
             // No token found in cookies
             return res.status(401).json({ error: 'No token found' });
         }
+
+    }catch(err){
+        const errors = errorHandler(err);
+        res.status(400).json(errors);
+    }
+}
+
+export const getDashboardDetails = async (req, res) => {
+    try{
+        const flights = await Flight.countDocuments({status: 'Scheduled'});
+        const airplanes = await Airplane.countDocuments({status: 'Assigned'});
+        const pilots = await Pilot.countDocuments({status: 'Assigned'});
+        const bookings = await Booking.countDocuments({ status: { $ne: 'Cancelled' } });
+        const bookingsPerMonth = await Booking.aggregate([
+            {
+              $project: {
+                year: { $year: "$createdAt" },
+                month: { $month: "$createdAt" },
+                content: 1,
+              }
+            },
+            {
+              $group: {
+                _id: { year: "$year", month: "$month" }, 
+                count: { $sum: 1 },
+              }
+            },
+            {
+              $sort: { "_id.year": 1, "_id.month": 1 }
+            }
+          ])
+        let bookings_array = new Array(12);
+
+        bookingsPerMonth.forEach(booking => {
+            bookings_array[booking._id.month-1] = booking.count
+        });
+
+        const data = {
+            scheduledFlights: flights,
+            assignedPlanes: airplanes,
+            assignedPilot: pilots,
+            totalBookings: bookings,
+            bookingsPerMonth: bookings_array
+        }
+        res.status(200).json(data);
 
     }catch(err){
         const errors = errorHandler(err);

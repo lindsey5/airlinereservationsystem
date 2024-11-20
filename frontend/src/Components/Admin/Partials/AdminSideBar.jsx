@@ -42,7 +42,7 @@ const AdminSideBar = () => {
                     Pilots
                     </li>
                 </Link>
-                <Link>
+                <Link  to={'admins'}>
                     <li>
                     <img src="/icons/user (1).png" alt="" />
                     Admins

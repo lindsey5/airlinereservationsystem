@@ -29,17 +29,5 @@
     width: 80%;
     display: flex;
     justify-content: center;
-}
-
-.available-flights > button{
-    background-color: #ff3131;
-    color: white;
-    padding: 10px 100px;
-    border: none;
-    cursor: pointer;
-    font-size: 15px;
-}
-
-.available-flights > button:hover{
-    background-color: #ff9393;
+    flex-direction: column;
 }
