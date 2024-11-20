@@ -61,3 +61,10 @@
 .passengers-modal-container .modal > button:hover{
     background-color: #ffadad;
 }
+
+@media  screen and (max-width: 500px){
+    .passengers-modal-container .modal{
+        width: 90%;
+        font-size: 12px;
+    }
+}

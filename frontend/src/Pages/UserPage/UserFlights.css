@@ -10,6 +10,12 @@
     width: 70%;
 }
 
+.user-bookings select{
+    width: 250px;
+    height: 30px;
+    outline: none;
+}
+
 .user-bookings .flight{
     width: 100%;
     background-color: white;
@@ -57,13 +63,14 @@
 
 .user-bookings .flight button{
     border: none;
-    margin-right: 10px;
     background-color: white;
     cursor: pointer;
+    margin: 20px 10px 0 10px;
 }
 
 .user-bookings .flight button img{
     height: 30px;
+    width: 30px;
 }
 
 .user-bookings .no-flights{
@@ -94,6 +101,20 @@
     color: rgb(145, 145, 145);
 }
 
+.user-bookings .Cancelled{
+    background-color: rgb(255, 221, 221);
+    color: red;
+    padding: 2px;
+    text-align: center;
+}
+
+.user-bookings .Booked{
+    background-color: rgb(231, 231, 255);
+    color: rgb(74, 74, 255);
+    padding: 2px;
+    text-align: center;
+}
+
 @media  screen and (max-width: 1150px){
     .user-bookings .container{
         width: 90%;
@@ -113,9 +134,7 @@
     }
 
     .user-bookings .book-date{
-        top: 2px;
-        left: 5px;
-        font-size: 12px;
+        position: static;
     }
 
 }
@@ -124,5 +143,4 @@
     .user-bookings hr{
         display: none;
     }
-
 }

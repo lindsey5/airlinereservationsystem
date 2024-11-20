@@ -350,7 +350,6 @@ export const cancelFlight = async (req, res) => {
         if (now <= departureTime && now >= oneDayBeforeDeparture) {
             throw new Error("The current date is 1 day before or equal to the departure date");
         }
-        
 
         booking.flights[flightIndex].passengers.forEach(passengerObj => {
             const classIndex = flight.classes.findIndex(classObj => classObj.className === booking.class);

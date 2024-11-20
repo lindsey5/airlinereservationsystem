@@ -75,7 +75,13 @@ const UserFlights = () => {
                             passenger.fareType = item.fareType;
                             return passenger
                         })
-                        flightsArr.push({...flight, passengers, class: item.class, bookId: item._id})
+                        flightsArr.push({
+                            ...flight, 
+                            passengers, 
+                            class: item.class, 
+                            bookId: item._id,
+                            booked_on: item.createdAt
+                        })
                     })
             })
             setTitle(e.target.value)
@@ -126,6 +132,7 @@ const UserFlights = () => {
                                     })
                                     } hours
                                 </h4>
+                                <p className={flight.status}>{flight.status}</p>
                             </div>
                             <hr />
                             </div>
@@ -134,10 +141,6 @@ const UserFlights = () => {
                                 <p>{flight.arrival.airport} ({flight.arrival.airport_code})</p>
                                 <h4>{formatDate(flight.arrival.time)}</h4>
                             </div>
-                        </div>
-                        <div>
-                            <p>Class: {flight.class}</p>
-                            <p>Status: {flight.status}</p>
                         </div>
                         <div>
                             <button onClick={() => handlePassengers(flight)}>
