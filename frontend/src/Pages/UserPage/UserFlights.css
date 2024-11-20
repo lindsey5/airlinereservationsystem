@@ -1,6 +1,6 @@
 .user-bookings{
     width: 100%;
-    height: calc(100vh - 80px);
+    min-height: calc(100vh - 80px);
     display: flex;
     justify-content: center;
     background-color: rgb(240, 240, 240);
@@ -15,10 +15,11 @@
     background-color: white;
     margin: 30px 0;
     border-radius: 20px;
-    padding: 10px;
+    padding: 15px 10px;
     display: flex;
     justify-content: space-around;
     align-items: center;
+    position: relative;
 }
 
 .user-bookings .flight img{
@@ -56,6 +57,7 @@
 
 .user-bookings .flight button{
     border: none;
+    margin-right: 10px;
     background-color: white;
     cursor: pointer;
 }
@@ -64,17 +66,44 @@
     height: 30px;
 }
 
-@media  screen and (max-width: 980px){
+.user-bookings .no-flights{
+    width: 100%;
+    height: calc(100vh - 220px);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.user-bookings .no-flights img{
+    height: 200px;
+}
+
+.user-bookings .no-flights p{
+    color: #808080;
+}
+
+.user-bookings .no-flights > div{
+    text-align: center;
+}
+
+.user-bookings .book-date{
+    font-size: 14px;
+    position: absolute;
+    bottom: 2px;
+    right: 10px;
+    color: rgb(145, 145, 145);
+}
+
+@media  screen and (max-width: 1150px){
     .user-bookings .container{
         width: 90%;
     }
 
 }
 
-
 @media  screen and (max-width: 850px) {
     .user-bookings .flight{
-        padding: 5px;
+        padding: 35px 5px;
         flex-direction: column;
     }
 
@@ -83,10 +112,17 @@
         font-size: 13px;
     }
 
+    .user-bookings .book-date{
+        top: 2px;
+        left: 5px;
+        font-size: 12px;
+    }
+
 }
 
 @media  screen and (max-width: 500px){
     .user-bookings hr{
         display: none;
     }
+
 }

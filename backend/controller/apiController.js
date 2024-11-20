@@ -75,11 +75,11 @@ export const getCities = async (req, res) => {
 export const createPaymentLink = async (req, res) => {
     try{
         const line_items = [
-            {currency: 'PHP', amount: 2052 * 100, name: 'Fuel Surcharge', quantity: 1},
-            {currency: 'PHP', amount: 687.50 * 100, name: 'PH Passenger Service Charge', quantity: 1},
-            {currency: 'PHP', amount: 1296 * 100, name: 'PH-VAT', quantity: 1},
-            {currency: 'PHP', amount: 82.50 * 100, name: 'PH PSC Value Added Tax', quantity: 1},
-            {currency: 'PHP', amount: 30 * 100, name: 'Aviation Security Fee', quantity: 1},
+            {currency: 'PHP', amount: 2052 * 100, name: 'Fuel Surcharge', quantity: req.body.bookings.flights.length * req.body.bookings.flights[0].passengers.length},
+            {currency: 'PHP', amount: 687.50 * 100, name: 'PH Passenger Service Charge', quantity: req.body.bookings.flights.length * req.body.bookings.flights[0].passengers.length},
+            {currency: 'PHP', amount: 1296 * 100, name: 'PH-VAT', quantity: req.body.bookings.flights.length * req.body.bookings.flights[0].passengers.length},
+            {currency: 'PHP', amount: 82.50 * 100, name: 'PH PSC Value Added Tax', quantity: req.body.bookings.flights.length * req.body.bookings.flights[0].passengers.length},
+            {currency: 'PHP', amount: 30 * 100, name: 'Aviation Security Fee', quantity: req.body.bookings.flights.length * req.body.bookings.flights[0].passengers.length},
             {currency: 'PHP', amount: 1344 * 100, name: 'Administration Fee', quantity: 1}
         ];
         req.body.bookings.flights.forEach(flight => {
@@ -124,9 +124,10 @@ export const createPaymentLink = async (req, res) => {
         };
         const response = await fetch('https://api.paymongo.com/v1/checkout_sessions', options)
         if(response.ok){
-            const checkoutDataToken = jwt.sign({data: req.body.bookings.flights, class: req.body.bookings.class, fareType: req.body.bookings.fareType}, process.env.JWT_SECRET);
+            const result = await response.json();
+            const checkoutDataToken = jwt.sign({data: req.body.bookings.flights, class: req.body.bookings.class, fareType: req.body.bookings.fareType, checkout_id: result.data.id}, process.env.JWT_SECRET);
             res.cookie('checkoutData', checkoutDataToken, { httpOnly: true, secure: process.env.NODE_ENV === 'production' });
-            res.status(200).json(await response.json());
+            res.status(200).json(result);
         }else{
             throw new Error('Payment failed')
         }

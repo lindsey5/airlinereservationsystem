@@ -8,12 +8,14 @@ import {
      user_book_flight,
     get_flights, 
     admin_book_flight,
-    completeFlight} from '../controller/flightController.js';
+    completeFlight,
+    cancelFlight} from '../controller/flightController.js';
 import { userRequireAuth } from '../middleware/userRequireAuth.js';
 
 const router = express.Router();
 
 router.post('/', create_flight);
+router.put('/cancel', cancelFlight);
 router.put('/:id', completeFlight);
 router.get('/book', userRequireAuth, user_book_flight);
 router.post('/book/admin', admin_book_flight);

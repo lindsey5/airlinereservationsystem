@@ -1,8 +1,9 @@
-import { useEffect } from "react"
 import './PassengersModal.css'
 import { formatDate } from "../../../utils/dateUtils"
 
 const PassengersModal = ({flight, close}) => {
+
+    console.log(flight)
 
     return(
         <div className="passengers-modal-container">
@@ -15,7 +16,6 @@ const PassengersModal = ({flight, close}) => {
                             <tr>
                                 <th>Fullname</th>
                                 <th>Seat</th>
-                                <th>Class</th>
                                 <th>Bronze</th>
                                 <th>Silver</th>
                                 <th>Gold</th>
@@ -27,7 +27,6 @@ const PassengersModal = ({flight, close}) => {
                                 <tr>
                                     <td>{passenger.firstname} {passenger.lastname}</td>
                                     <td>{passenger.seatNumber}</td>
-                                    <td>{passenger.class}</td>
                                     <td>{passenger.fareType === 'Bronze' ? '✅' : '❌'}</td>
                                     <td>{passenger.fareType === 'Silver' ? '✅' : '❌'}</td>
                                     <td>{passenger.fareType === 'Gold' ? '✅' : '❌'}</td>
@@ -39,6 +38,7 @@ const PassengersModal = ({flight, close}) => {
                 </div>
                 <p>Flight No: {flight.flightNumber}</p>
                 <p>Gate Number: {flight.gate_number}</p>
+                <p>Booking Ref: {flight.bookingRef}</p>
                 <div className="passengers-destination">
                     <div>
                         <p>Departure:</p>

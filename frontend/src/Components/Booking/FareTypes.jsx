@@ -20,6 +20,7 @@ const FareTypes = ({setFareType}) => {
                     <hr />
                     <h3>+ {formatPrice(1800)} / passenger</h3>
                     <p>Not refundable</p>
+                    <p>Limited Lounge Access</p>
                     <p>1 piece of hand-carry baggage (max 7kg)</p>
                     <p>1 checked baggage (max 20kg)</p>
                     <p>Preferred seat selection</p>
@@ -32,7 +33,10 @@ const FareTypes = ({setFareType}) => {
                     <hr />
                     <h3>+ {formatPrice(3000)} / passenger</h3>
                     <p>Fully refundable with no fees</p>
-                    <p>Rebooking allowed but change fee and fare difference may apply</p>
+                    <p>Priority Check-in (skip the lines and check in faster with priority access)</p>
+                    <p>Priority Baggage Handling (Get your checked baggage faster with priority baggage handling)</p>
+                    <p>Premium In-Flight Amenities</p>
+                    <p>Unlimited Lounge Access</p>
                     <p>1 piece of hand-carry baggage (max 7kg)</p>
                     <p>1 checked baggage (max 20kg)</p>
                     <p>Preferred seat selection</p>

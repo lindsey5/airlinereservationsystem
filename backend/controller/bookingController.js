@@ -6,7 +6,7 @@ export const getBookings = async (req, res) => {
     try{
         const bookings = await Booking.find({
             user_id,
-        })
+        }).sort({createdAt: -1});
         res.status(200).json(bookings);
 
     }catch(err){

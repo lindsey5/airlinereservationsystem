@@ -24,11 +24,13 @@ const BookingSchema = new Schema({
                 time: {type: Date, required: true},
             },
             flightNumber: { type: String, required: true },
-            gate_number: { type: String, required: true}, 
+            gate_number: { type: String, required: true},
+            passengers: { type: [PassengerSchema], required: true},
+            status: { type: String, enum: ['Booked', 'Cancelled', 'Completed'], default: 'Booked', required: true},
         }], required: true
     },
     class: { type: String, required: true},
-    passengers: { type: [PassengerSchema], required: true},
+    payment_checkout_id: { type: String, required: true},
     fareType: { type: String, enum: ['Bronze', 'Silver', 'Gold'], default: 'Bronze'}
 }, { timestamps: true });
 

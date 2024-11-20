@@ -9,6 +9,7 @@ import jwt from "jsonwebtoken";
 import { sendEmail } from "../service/emailService.js";
 import Booking from "../model/Booking.js";
 import { calculateSeats, createSeats, createClasses } from "../utils/flightUtils.js";
+import { getPaymentId, refundPayment } from "../service/paymentService.js";
 const { ObjectId } = mongoose.Types;
 
 export const create_flight = async (req, res) => {
@@ -123,7 +124,6 @@ export const search_flight = async (req, res) => {
 
         res.status(200).json(searchResults);
     }catch(err){
-        console.log(err)
         const errors = errorHandler(err)
         res.status(400).json({errors});
     }
@@ -205,8 +205,8 @@ export const user_book_flight = async (req, res) => {
         const id = decodedToken.id;
         const checkoutData = jwt.verify(req.cookies.checkoutData, process.env.JWT_SECRET);
         const user = await User.findById(id);
-        checkoutData.data.forEach(async (flight) => {
-            flight.passengers.forEach(async (passenger, i) => {
+        await checkoutData.data.forEach(async (flight) => {
+            flight.passengers.forEach(async (passenger) => {
                 const available_flight = await Flight.findOne({
                     _id: flight.id, 
                     'classes.className': checkoutData.class, 
@@ -232,17 +232,17 @@ export const user_book_flight = async (req, res) => {
                 departure: flightDetails.departure,
                 arrival: flightDetails.arrival,
                 flightNumber: flightDetails.flightNumber,
-                gate_number: flightDetails.gate_number
+                gate_number: flightDetails.gate_number,
+                passengers: flight.passengers
             };
-            
             flights.push(data);
         }
         const booking = await Booking.create({
             user_id: user._id,
             flights,
-            passengers: checkoutData.data[0].passengers,
             class: checkoutData.class,
-            fareType: checkoutData.fareType
+            fareType: checkoutData.fareType,
+            payment_checkout_id: checkoutData.checkout_id
         })
         await booking.save();
         sendEmail(user.email, booking._id);
@@ -288,7 +288,8 @@ export const admin_book_flight = async (req, res) => {
                     departure: flightDetails.departure,
                     arrival: flightDetails.arrival,
                     flightNumber: flightDetails.flightNumber,
-                    gate_number: flightDetails.gate_number
+                    gate_number: flightDetails.gate_number,
+                    passengers: flight.passengers
                 };
                 
                 flights.push(data);
@@ -296,7 +297,6 @@ export const admin_book_flight = async (req, res) => {
             const booking = await Booking.create({
                 booked_by: name,
                 flights,
-                passengers: data.flights[0].passengers,
                 class: data.class,
                 fareType: data.fareType
             })
@@ -325,5 +325,63 @@ export const completeFlight = async (req, res) => {
     }catch(err){
         const errors = errorHandler(err)
         res.status(400).json({errors});
+    }
+}
+
+export const cancelFlight = async (req, res) => {
+    try{
+        const {bookId, flightId} = req.body
+        const booking = await Booking.findById(bookId);
+        const flightIndex = booking.flights.findIndex(flight => flight.id === flightId);
+        booking.flights[flightIndex].status = "Cancelled"
+
+        const flight = await Flight.findById(flightId);
+        const now = new Date();
+
+        // Set current time to midnight for comparison (ignoring time of the day)
+        now.setHours(0, 0, 0, 0);
+        
+        const departureTime = new Date(flight.departure.time);
+        departureTime.setHours(0, 0, 0, 0); 
+        
+        const oneDayBeforeDeparture = new Date(departureTime);
+        oneDayBeforeDeparture.setDate(departureTime.getDate() - 1);
+        
+        if (now <= departureTime && now >= oneDayBeforeDeparture) {
+            throw new Error("The current date is 1 day before or equal to the departure date");
+        }
+        
+
+        booking.flights[flightIndex].passengers.forEach(passengerObj => {
+            const classIndex = flight.classes.findIndex(classObj => classObj.className === booking.class);
+            const seatIndex = flight.classes[classIndex].seats.findIndex(seat => seat.seatNumber === passengerObj.seatNumber);
+            const {seatNumber, status, _id} = flight.classes[classIndex].seats[seatIndex].passenger;
+            flight.classes[classIndex].seats[seatIndex] = {seatNumber, status, _id}
+        })
+
+
+        const refundAmmount = (2052 * 100 * booking.flights[flightIndex].passengers.length) +
+        (687.50 * 100 * booking.flights[flightIndex].passengers.length) + 
+        (1296 * 100 * booking.flights[flightIndex].passengers.length) +
+        (82.50 * 100 * booking.flights[flightIndex].passengers.length) +
+        (30 * 100 * booking.flights[flightIndex].passengers.length) + 
+        (booking.flights[flightIndex].passengers.reduce((total, passenger) => passenger.price + total, 0)) * 100;
+        const payment_id = await getPaymentId(booking.payment_checkout_id);
+        if(!payment_id){
+            throw new Error('Payment Id not found');
+        }
+
+        const refund = await refundPayment(payment_id, refundAmmount);
+
+        if(!refund){
+            throw new Error('Refund Failed');
+        }
+        await booking.save();
+        await flight.save();
+        res.status(200).json({message: 'Flight successfully cancelled'})
+
+    }catch(err){
+        const errors = errorHandler(err);
+        res.status(400).json(errors);
     }
 }

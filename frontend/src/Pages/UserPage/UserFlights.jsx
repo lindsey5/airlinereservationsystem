@@ -4,40 +4,35 @@ import './UserFlights.css'
 import { formatDate } from "../../utils/dateUtils"
 import PassengersModal from "../../Components/User/Modals/PassengersModal"
 import { useEffect } from "react"
+import ErrorCancelModal from "../../Components/User/Modals/ErrorCancelModal"
 
 const UserFlights = () => {
     const {data} = useFetch('/api/booking/bookings');
-    const [flights, setFlights] = useState();
+    const [flights, setFlights] = useState([]);
     const [showPassengers, setShowPassengers] = useState(false);
     const [selectedFlight, setSelectedFlight] = useState();
+    const [title, setTitle] = useState('All');
+    const [showCancelError, setShowCancelError] = useState(false);
 
     useEffect(() => {
         if(data){
-            console.log(data)
             const flightsArr = [];
             data.forEach(item => {
                 item.flights.forEach(flight => {
-                    const isExist = flightsArr.find(flightObj => flightObj.id === flight.id);
-                    const isUpcoming = new Date(isExist?.departure.time) > new Date();
-                    if(isExist && isUpcoming){
-                        const passengers = isExist.passengers.map(passenger => {
+                        const passengers = flight.passengers.map(passenger => {
                             passenger.fareType = item.fareType;
-                            passenger.class = item.class
-                            return passenger
-                        });
-                        isExist.passengers = [...passengers, ...item.passengers]
-                    }else{
-                        const passengers = item.passengers.map(passenger => {
-                            passenger.fareType = item.fareType;
-                            passenger.class = item.class
                             return passenger
                         })
-                        flightsArr.push({...flight, passengers})
-                    }
-                })
+                        flightsArr.push({...flight, 
+                            passengers, 
+                            bookingRef: item._id,
+                            class: item.class, 
+                            bookId: item._id,
+                            booked_on: item.createdAt
+                        })
+                    })
             })
-            const sortedFlights = flightsArr.sort((current, next) => new Date(current.departure.time) - new Date(next.departure.time))
-            setFlights(sortedFlights)
+            setFlights(flightsArr)
         }
     },[data])
 
@@ -46,13 +41,73 @@ const UserFlights = () => {
         setSelectedFlight(flight)
     }
 
+    useEffect(() => {
+        console.log(flights)
+    },[flights])
+
+    const cancelFlight = async ({bookId, flightId}) => {
+        try{
+           if(confirm('Are you sure do you wan\'t to cancel this flight?')){
+                const response = await fetch('/api/flight/cancel',{
+                method: 'PUT',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify({bookId, flightId}),
+                })
+                if(response.ok){
+                    window.location.reload();
+                }
+                if(!response.ok){
+                    setShowCancelError(true)
+                }
+           }
+        }catch(err){
+            console.error(err)
+        }
+    }
+
+    const handleFilter = (e) => {
+        const flightsArr = [];
+            data.forEach(item => {
+                item.flights.forEach(flight => {
+                        const passengers = flight.passengers.map(passenger => {
+                            passenger.fareType = item.fareType;
+                            return passenger
+                        })
+                        flightsArr.push({...flight, passengers, class: item.class, bookId: item._id})
+                    })
+            })
+            setTitle(e.target.value)
+        switch(e.target.value){
+            case 'All':
+                setFlights(flightsArr.sort((current, next) => new Date(current.departure.time) - new Date(next.departure.time)))
+                break;
+            case 'Upcoming':
+                setFlights(flightsArr.sort((current, next) => new Date(current.departure.time) - new Date(next.departure.time)).filter(flight => flight.status !== 'Cancelled'));
+                break;
+            case 'Cancelled':
+                setFlights(flightsArr.sort((current, next) => new Date(current.departure.time) - new Date(next.departure.time)).filter(flight => flight.status === 'Cancelled'));
+                break;
+        }
+    }
+
     return(
         <div className="user-bookings">
+            {showCancelError && <ErrorCancelModal close={() => setShowCancelError(false)}/>}
             {showPassengers && <PassengersModal flight={selectedFlight} close={() => setShowPassengers(false)}/>}
             <div className="container">
-            <h2>Upcoming Flights</h2>
+            <div>
+                <h2>{title} Flights</h2>
+                <select onChange={handleFilter}>
+                    <option value="All">All</option>
+                    <option value="Upcoming">Upcoming</option>
+                    <option value="Cancelled">Cancelled</option>
+                </select>
+            </div>
             {flights && flights.map(flight => 
-                <div className="flight" key={flight.id}>
+
+                <div className="flight" key={flight._id}>
                     <img src={`/icons/${flight.airline}.png`} alt="" />
                         <div className="destination">
                             <div>
@@ -81,14 +136,27 @@ const UserFlights = () => {
                             </div>
                         </div>
                         <div>
-                            <p>Flight No: {flight.flightNumber}</p>
-                            <p>Gate No: {flight.gate_number}</p>
+                            <p>Class: {flight.class}</p>
+                            <p>Status: {flight.status}</p>
                         </div>
-                        <button onClick={() => handlePassengers(flight)}>
-                            <img src="/icons/eye (1).png" alt="" />
-                        </button>
+                        <div>
+                            <button onClick={() => handlePassengers(flight)}>
+                                <img src="/icons/eye (1).png" alt="" />
+                            </button>
+                            {flight.status !== 'Cancelled' && flight.passengers[0].fareType === 'Gold' && 
+                            <button onClick={() => cancelFlight({bookId: flight.bookId, flightId: flight.id})}>
+                                <img src="/icons/cancel.png" alt="cancel" />
+                            </button>}
+                        </div>
+                        <p className="book-date">Book Date: {formatDate(flight.booked_on)}</p>
                 </div>
             )}
+            {flights.length < 1 && <div className="no-flights">
+                        <div>
+                            <img src="/icons/no-travelling.png" alt="" />
+                            <h2>You don't have {title !== 'All' && title + ' '}Flights yet</h2>
+                        </div>
+                    </div>}
             </div>
 
 
