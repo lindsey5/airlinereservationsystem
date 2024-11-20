@@ -142,7 +142,7 @@ const UserFlights = () => {
                             <button onClick={() => handlePassengers(flight)}>
                                 <img src="/icons/eye (1).png" alt="" />
                             </button>
-                            {flight.status !== 'Cancelled' && flight.passengers[0].fareType === 'Gold' && 
+                            {flight.status === 'Booked' && flight.passengers[0].fareType === 'Gold' && 
                             <button onClick={() => cancelFlight({bookId: flight.bookId, flightId: flight.id})}>
                                 <img src="/icons/cancel.png" alt="cancel" />
                             </button>}

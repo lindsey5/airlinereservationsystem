@@ -45,6 +45,24 @@ const AdminFlights = () => {
         document.title = "Flights | Admin";
     }, []);
 
+    const completeFlight = async (flightId) => {
+        try{
+            if(confirm('Flight completed?')){
+                 const response = await fetch(`/api/flight/${flightId}`,{
+                 method: 'PUT',
+                 headers: {
+                     'Content-Type': 'application/json',
+                 },
+                 })
+                 if(response.ok){
+                     window.location.reload();
+                 }
+            }
+         }catch(err){
+             console.error(err)
+         }
+    }
+
     return (
         <main className="admin-page">
             {showMakeFlight && <FlightForm close={() => setShowMakeFlight(false)}/>}
@@ -91,6 +109,10 @@ const AdminFlights = () => {
                                     }}>
                                     <img src="/icons/eye (1).png"/>
                                     </button>
+                                    {flight.status === 'Scheduled' &&
+                                    <button onClick={() => completeFlight(flight._id)}>
+                                    <img src="/icons/check (3).png" alt="" />
+                                </button>}
                                 </td>
                             </tr>
                         )

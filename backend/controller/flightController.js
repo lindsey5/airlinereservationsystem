@@ -315,14 +315,14 @@ export const completeFlight = async (req, res) => {
         updatedFlight.status = 'Completed'
 
         await Booking.updateMany(
-            { 'flights.id': req.params.id },
-            { $set: { status: 'Completed' } }
+            { 'flights.id': req.params.id, 'flights.status': 'Booked' },
+            { $set: { 'flights.$.status': 'Completed' } }
         );
-
         await updatedFlight.save();
         res.status(200).json({message: 'Flight successfully marked as completed'})
 
     }catch(err){
+        console.log(err)
         const errors = errorHandler(err)
         res.status(400).json({errors});
     }

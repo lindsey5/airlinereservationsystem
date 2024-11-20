@@ -115,6 +115,13 @@
     text-align: center;
 }
 
+.user-bookings .Completed{
+    background-color: rgb(231, 255, 231);
+    color: rgb(42, 199, 42);
+    padding: 2px;
+    text-align: center;
+}
+
 @media  screen and (max-width: 1150px){
     .user-bookings .container{
         width: 90%;
