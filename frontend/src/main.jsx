@@ -50,7 +50,7 @@ const router = createBrowserRouter(
       </Route>
 
       <Route path='/about' element={<About />}/>
-      <Route path="/tcu-airlines/ticket" element={<TicketPage />}/>
+      <Route path="/tickets" element={<TicketPage />}/>
 
       <Route element={<UserRoute />}>
         <Route element={<UserLayout />}>

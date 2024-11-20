@@ -37,7 +37,7 @@ export const sendEmail = async (email, id) => {
       subject: "Flight ticket",
       html: `
           <p>Click the link below to view your flight ticket:</p>
-          <a href="https://airlinereservationsystem.onrender.com/tcu-airlines/ticket?data=${id}" style="text-decoration: underline;">
+          <a href="https://airlinereservationsystem.onrender.com/tickets?data=${id}" style="text-decoration: underline;">
               https://airlinereservationsystem.onrender.com/tcu-airlines
           </a>
       `

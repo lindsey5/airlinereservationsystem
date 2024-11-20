@@ -18,13 +18,8 @@
     width: 500px;
 }
 
-.passengers-modal-container .modal > p{
-    font-size: 16px;
-}
-
 .passengers-modal-container .table-container{
     width: 100%;
-    margin-bottom: 50px;
 }
 
 .passengers-modal-container table{
@@ -39,6 +34,11 @@
 
 .passengers-modal-container table td{
     padding: 10px;
+    text-align: center;
+}
+
+.passengers-modal-container .table-container h3,
+.passengers-modal-container .table-container p{
     text-align: center;
 }
 
@@ -65,6 +65,6 @@
 @media  screen and (max-width: 500px){
     .passengers-modal-container .modal{
         width: 90%;
-        font-size: 12px;
+        font-size: 10px;
     }
 }

@@ -41,10 +41,6 @@ const UserFlights = () => {
         setSelectedFlight(flight)
     }
 
-    useEffect(() => {
-        console.log(flights)
-    },[flights])
-
     const cancelFlight = async ({bookId, flightId}) => {
         try{
            if(confirm('Are you sure do you wan\'t to cancel this flight?')){
@@ -87,13 +83,13 @@ const UserFlights = () => {
             setTitle(e.target.value)
         switch(e.target.value){
             case 'All':
-                setFlights(flightsArr.sort((current, next) => new Date(current.departure.time) - new Date(next.departure.time)))
+                setFlights(flightsArr)
                 break;
             case 'Upcoming':
-                setFlights(flightsArr.sort((current, next) => new Date(current.departure.time) - new Date(next.departure.time)).filter(flight => flight.status !== 'Cancelled'));
+                setFlights(flightsArr.filter(flight => flight.status !== 'Cancelled'));
                 break;
             case 'Cancelled':
-                setFlights(flightsArr.sort((current, next) => new Date(current.departure.time) - new Date(next.departure.time)).filter(flight => flight.status === 'Cancelled'));
+                setFlights(flightsArr.filter(flight => flight.status === 'Cancelled'));
                 break;
         }
     }

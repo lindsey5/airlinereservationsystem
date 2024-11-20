@@ -11,9 +11,6 @@ const TicketPage = () => {
     const {data} = useFetch(`/api/booking/${id}`)
     const printRef = useRef();
 
-    useEffect(() => {
-        console.log(data)
-    },[data])
 
     const handleDownload = () => {
     const element = printRef.current;
@@ -36,7 +33,7 @@ const TicketPage = () => {
         <div className="ticket-page">
             <div className='ticket-parent-container' ref={printRef}>
             {data && data.flights.map(flight => 
-                    data.passengers.map(passenger => 
+                    flight.passengers.map(passenger => 
                         <div className="ticket-container">
                             <div className='ticket'>
                                 <div className="ticket-header">
