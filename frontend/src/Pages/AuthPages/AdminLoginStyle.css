@@ -48,14 +48,17 @@
 
 .admin-login-page .login-container h1{
     letter-spacing: 3px;
-    margin-bottom: 70px;
+}
+
+.admin-login-page .login-container p{
+    color: #ff3131;
+    margin-bottom: 30px;
 }
 
 .admin-login-page .login-container > div{
     display: grid;
     width: 340px;;
     grid-template-columns: 1fr;
-    margin-bottom: 30px;
     gap: 10px;
 }
 
@@ -76,8 +79,12 @@
     transition: opacity 0.5s ease-in-out;
 }
 
-.admin-login-page .onFocus{
+.admin-login-page input:focus{
     border: 1px solid #ff3131;
+}
+
+.admin-login-page input:focus + span{
+    color: #ff3131;
 }
 
 .admin-login-page .onFocus::placeholder{
@@ -86,7 +93,6 @@
 
 .admin-login-page .onFocus + span{
     display: block;
-    color: #ff3131;
     animation: show-span 0.5s ease-out forwards;
 }
 
@@ -95,7 +101,7 @@
         top: 50%;
     }
     to{
-        top: -12px
+        top: -13px
     }
 }
 

@@ -7,7 +7,7 @@ import { dataStatus } from "../../utils/dataStatus";
 import FlightForm from "../../Components/Admin/Flights/FlightForm";
 import FlightDetailsModal from "../../Components/Admin/Modals/FlightDetailsModal";
 
-const AdminFlights = () => {
+const FrontDeskFlights = () => {
     const [flights, setFlights] = useState();
     const [searchTerm, setSearchTerm] = useState('');
     const {state, dispatch} = useAdminPaginationReducer();
@@ -42,26 +42,8 @@ const AdminFlights = () => {
     }, [searchTerm])
 
     useEffect(() => {
-        document.title = "Flights | Admin";
+        document.title = "Flights | Front Desk";
     }, []);
-
-    const completeFlight = async (flightId) => {
-        try{
-            if(confirm('Flight completed?')){
-                 const response = await fetch(`/api/flight/${flightId}`,{
-                 method: 'PUT',
-                 headers: {
-                     'Content-Type': 'application/json',
-                 },
-                 })
-                 if(response.ok){
-                     window.location.reload();
-                 }
-            }
-         }catch(err){
-             console.error(err)
-         }
-    }
 
     return (
         <main className="table-page">
@@ -101,11 +83,6 @@ const AdminFlights = () => {
                                 <td>{arrivalTime}</td>
                                 {dataStatus(flight.status)}
                                 <td>
-                                    {flight.status === 'Scheduled' &&
-                                    <button onClick={() => completeFlight(flight._id)}>
-                                        <img src="/icons/check.png" alt="" />
-                                    </button>
-                                    }
                                     <button onClick={() => {
                                         setFlightData(flight)
                                         setShowFlightDetails(true)
@@ -120,9 +97,8 @@ const AdminFlights = () => {
                 </tbody>
             </table>
             </div>
-            <button className='add-btn' onClick={() => setShowMakeFlight(true)}>Make Flight</button>
         </main>
     )
 }
 
-export default AdminFlights
+export default FrontDeskFlights

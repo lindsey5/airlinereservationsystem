@@ -3,7 +3,7 @@ import { errorHandler } from "../utils/errorHandler.js"
 
 export const create_airport = async (req, res) => {
     try{
-        const airport = await Airport.create(req.body);
+        const airport = await Airport.create({...req.body, added_by: req.userId});
         airport.save();
         res.status(200).json(airport);
     }catch(err){

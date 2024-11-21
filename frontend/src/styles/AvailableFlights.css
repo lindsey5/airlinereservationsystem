@@ -8,6 +8,7 @@
     padding-bottom: 30px;
 }
 
+.available-flights.frontdesk,
 .available-flights.admin{
     padding-top: 80px;
 }
@@ -30,4 +31,12 @@
     display: flex;
     justify-content: center;
     flex-direction: column;
+}
+
+
+@media screen and (min-width: 768px) {
+    .available-flights.frontdesk,
+    .available-flights.available-flights.admin{
+        padding-left: 230px;
+    }
 }

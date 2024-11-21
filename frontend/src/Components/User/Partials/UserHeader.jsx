@@ -6,6 +6,7 @@ import { useState } from 'react';
 const UserHeader = () => {
     const navigate = useNavigate();
     const [showDropdown, setShowDropdown] = useState(false);
+    const logout = useLogout();
 
     return (
         <header>
@@ -22,7 +23,7 @@ const UserHeader = () => {
                 <a href="">
                     <button><img src="/icons/settings (1).png" alt="" />Settings</button>
                 </a>
-                <button onClick={useLogout}><img src="/icons/logout.png" alt="" />Log out</button>
+                <button onClick={logout}><img src="/icons/logout.png" alt="" />Log out</button>
             </div>}
         
         </header>

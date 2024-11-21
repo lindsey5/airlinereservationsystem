@@ -1,7 +1,7 @@
 import useAdminPaginationReducer from "../../hooks/adminPaginationReducer";
 import { useState, useEffect } from "react";
 import AdminPagination from "../../Components/Admin/Pagination/AdminPagination";
-import './AdminPage.css'
+import '../../styles/TablePage.css';
 import AirportForm from "../../Components/Admin/Forms/AirportForm";
 import { addAirport, deleteAirport, updateAirport } from "../../Service/Admin/AdminAirportService";
 
@@ -44,7 +44,7 @@ const AdminAirports = () => {
     }, []);
 
     return (
-        <main className="admin-page">
+        <main className="table-page">
             {showAddAirport && <AirportForm title={'Add Airport'} handleSubmit={addAirport} close={() => setShowAddAirport(false)}/>}
             {showEditAirport && <AirportForm title={'Update Airport'} handleSubmit={updateAirport} close={() => setShowEditAirport(false)} data={airportData}/>}
             <h1>Airports</h1>

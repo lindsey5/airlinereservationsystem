@@ -22,6 +22,10 @@ const AirPlaneSchema = new Schema({
         type: String,
         enum: ['Available', 'Assigned', 'In Flight', 'Unavailable'], 
         default: 'Available'
+    },
+    added_by: {
+        type: String,
+        required: true
     }
 })
 

@@ -28,13 +28,16 @@ import BookingPage from './Pages/UserPage/BookingPage';
 import TicketPage from './Pages/UserPage/TicketPage';
 import Success from './Pages/UserPage/Success';
 import About from './Pages/HomePage/About';
-import AdminSearchPage from './Pages/AdminPage/AdminSearchPage';
-import AdminAvailableFlight from './Pages/AdminPage/AdminAvailableFlight';
-import AdminSearchResults from './Pages/AdminPage/AdminSearchResults';
-import AdminBookingPage from './Pages/AdminPage/AdminBookingPage';
 import UserFlights from './Pages/UserPage/UserFlights';
 import Admins from './Pages/AdminPage/Admins';
 import AdminLogin from './Pages/AuthPages/AdminLogin';
+import AdminRoute from './routes/AdminRoute';
+import FrontDeskLayout from './Layouts/FrontDeskLayout';
+import FrontDeskFlights from './Pages/FrontDesk/FrontDeskFlights';
+import FrontDeskSearchResults from './Pages/FrontDesk/FrontDeskSearchResults';
+import FrontDeskSearchPage from './Pages/FrontDesk/FrontDeskSearchPage';
+import FrontDeskAvailableFlights from './Pages/FrontDesk/FrontDeskAvailableFlight';
+import FrontDeskBookingPage from './Pages/FrontDesk/FrontDeskBookingPage';
 
 const router = createBrowserRouter(
   createRoutesFromElements(
@@ -64,19 +67,27 @@ const router = createBrowserRouter(
         </Route>
       </Route>
 
-      <Route path='/admin/'>
-        <Route element={<AdminLayout />}>
-          <Route path='dashboard' element={<AdminDashboard />} />
-          <Route path='pilots' element={<AdminPilots />} />
-          <Route path='airplanes' element={<AdminAirplanes />} />
-          <Route path='flights' element={<AdminFlights />} />
-          <Route path='airports' element={<AdminAirports />} />
-          <Route path='search-results' element={<AdminSearchResults />} />
-          <Route path='booking' element={<AdminBookingPage />} />
-          <Route path='admins' element={<Admins />} />
+      <Route element={<AdminRoute />}>
+        <Route path='/admin/'>
+          <Route element={<AdminLayout />}>
+            <Route path='dashboard' element={<AdminDashboard />} />
+            <Route path='pilots' element={<AdminPilots />} />
+            <Route path='airplanes' element={<AdminAirplanes />} />
+            <Route path='flights' element={<AdminFlights />} />
+            <Route path='airports' element={<AdminAirports />} />
+            <Route path='admins' element={<Admins />} />
+          </Route>
+        </Route>
+      </Route>
+
+      <Route path='/frontdesk/'>
+        <Route element={<FrontDeskLayout />}>
+          <Route path='flights' element={<FrontDeskFlights />} />
+          <Route path='search-results' element={<FrontDeskSearchResults />} />
+          <Route path='booking' element={<FrontDeskBookingPage />} />
           <Route path='flight/'>
-            <Route path='book' element={<AdminSearchPage />}/>
-            <Route path='available' element={<AdminAvailableFlight />} />
+            <Route path='book' element={<FrontDeskSearchPage />} />
+            <Route path='available' element={<FrontDeskAvailableFlights />} />
           </Route>
         </Route>
       </Route>

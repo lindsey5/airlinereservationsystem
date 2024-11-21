@@ -1,7 +1,35 @@
 import Admin from '../model/Admin.js'
 import { errorHandler } from '../utils/errorHandler.js';
 import crypto from 'crypto';
+import bcrypt from 'bcrypt';
+import jwt from 'jsonwebtoken';
 import generateRandomPassword from '../utils/generateRandomPassword.js';
+import { sendNewAdminInfo } from '../service/emailService.js';
+
+export const adminLogin = async (req, res) => {
+    const { employeeId, password } = req.body;
+    try {
+      const admin = await Admin.findOne({ employeeId });
+
+      if (!admin) {
+        throw new Error('Employee id not found');
+      }
+      const isMatch = await bcrypt.compare(password, admin.password);
+  
+      if (!isMatch) {
+        throw new Error('Incorrect employee id or password');
+      }
+
+      const token = jwt.sign({id: admin._id}, process.env.JWT_SECRET,{
+        expiresIn: 24 * 60 * 60
+      })
+      res.cookie('jwt', token, { httpOnly: true, maxAge:  24 * 60 * 60 * 1000 });
+      res.status(201).json({ id: admin._id})
+    } catch (err) {
+        const errors = errorHandler(err);
+        res.status(400).json({errors});
+    }
+  }
 
 export const addAdmin = async (req, res) => {
     const { email } = req.body;
@@ -12,9 +40,17 @@ export const addAdmin = async (req, res) => {
         }
         const randomPassword = generateRandomPassword();
         const randomEmployeeId = `${crypto.randomBytes(5).toString('hex').toUpperCase()}`;
-        const newAdmin = new Admin({...req.body, employeeId: randomEmployeeId, password: randomPassword});
-        newAdmin.save();
-        res.status(201).json({ employeeId: newAdmin.employeeId, password: randomPassword});
+        const newAdmin = new Admin({...req.body, employeeId: randomEmployeeId, password: randomPassword, added_by: req.userId});
+        await newAdmin.save();
+        const data = {
+            email,
+            firstname: newAdmin.firstname,
+            lastname: newAdmin.lastname,
+            employeeId: randomEmployeeId,
+            password: randomPassword,
+        }
+        sendNewAdminInfo(data);
+        res.status(201).json({success: 'New admin successfully added'});
     } catch (error) {
         const errors = errorHandler(error);
         res.status(400).json({errors});

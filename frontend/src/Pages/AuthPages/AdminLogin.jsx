@@ -6,22 +6,21 @@ import { handleBlur, handleFocus } from '../../utils/handleInput';
 function AdminLogin() {
     const [employeeId, setEmpId] = useState('');
     const [password, setPassword] = useState('');
+    const [error, setError] = useState('');
 
     const handleLogin = async () => {
         try {
             // Send a POST request to your Node.js server
-            const response = await axios.post('/admin-login', {
+            const response = await axios.post('/api/admin/login', {
                 employeeId,
                 password,
             });
 
-            // Check if the login was successful
-            if (response.data.success) {
-                console.log('Login successful');
-            } else {
-                console.error('Login failed:');
+            if(response.data.id){
+                window.location.reload();
             }
         } catch (error) {
+            setError(error.response.data.errors[0])
             console.error('Error logging in:', error);
         }
     }
@@ -32,6 +31,7 @@ function AdminLogin() {
                 <div className='login-container'>
                     <img src="/icons/user (2).png" alt="" />
                     <h1>Admin Login</h1>
+                    {error && <p>{error}</p>}
                     <div>
                         <div className='input-container'>
                             <input 

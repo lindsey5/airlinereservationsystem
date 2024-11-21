@@ -1,7 +1,6 @@
 import Flight from "../model/flight.js";
 
 export const one_way_search = async (data, flightClass, price) =>{
-
     try{
         const { departureCountry, departureCity, arrivalCity, arrivalCountry, departureTime } = data;
         const query = {
@@ -11,13 +10,11 @@ export const one_way_search = async (data, flightClass, price) =>{
             'arrival.city': arrivalCity,
             'arrival.country': arrivalCountry,
             'classes': {
-                $elemMatch: { className: flightClass }
+                $elemMatch: { className: flightClass, 'seats.status' : 'available' },
             },
             'departure.time': { $gte: new Date(departureTime) }
         };
-        
         const flights = await Flight.find(query);
-
         const sortedFlights = flights.sort((current, next) => {
             return current.classes.find(classObj => classObj.className === flightClass).price - next.classes.find(classObj => classObj.className === flightClass).price;
         }).filter((flight) => price > 0 ? flight.classes.find(classObj => classObj.className === flightClass).price <= price : true);
@@ -25,6 +22,7 @@ export const one_way_search = async (data, flightClass, price) =>{
         sortedFlights.forEach(flight => flightsArr.push([flight]));
         return flightsArr;
     }catch(err){
+        console.log(err)
         throw new Error('No flights found');
     }
 }
@@ -43,7 +41,7 @@ export const round_trip_search = async (data, flightClass,price) => {
         'arrival.city': arrivalCity,
         'arrival.country': arrivalCountry,
         'classes': {
-            $elemMatch: { className: flightClass }
+            $elemMatch: { className: flightClass, 'seats.status' : 'available' },
         },
         'departure.time': { $gte: new Date(departureTime) }
     };
@@ -54,8 +52,9 @@ export const round_trip_search = async (data, flightClass,price) => {
         'arrival.city': departureCity,
         'arrival.country': departureCountry,
         'classes': {
-            $elemMatch: { className: flightClass }
-        }
+            $elemMatch: { className: flightClass, 'seats.status' : 'available' },
+        },
+        'departure.time': { $gte: new Date(departureTime) }
     }
 
     // Fetch outbound flight results
@@ -118,7 +117,7 @@ export const multi_city_search = async (searchSegments, flightClass, price) => {
             'arrival.city': arrivalCity,
             'arrival.country': arrivalCountry,
             'classes': {
-                $elemMatch: { className: flightClass }
+                $elemMatch: { className: flightClass, 'seats.status' : 'available' },
             },
             'departure.time': { $gte: new Date(departureTime) }
         });

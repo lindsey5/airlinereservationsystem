@@ -6,7 +6,7 @@ const { ObjectId } = mongoose.Types;
 
 export const create_pilot = async(req, res) => {
     try{
-        const newPilot = await Pilot.create(req.body);
+        const newPilot = await Pilot.create({...req.body, added_by: req.userId});
         res.status(200).json(newPilot);
 
     }catch(err){

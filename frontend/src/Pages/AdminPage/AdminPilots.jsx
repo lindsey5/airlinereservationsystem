@@ -1,4 +1,4 @@
-import './AdminPage.css'
+import '../../styles/TablePage.css';
 import PilotForm from '../../Components/Admin/Forms/PilotForm';
 import { useEffect, useState } from 'react';
 import { addPilot, deletePilot, updatePilot } from '../../Service/Admin/AdminPilotService';
@@ -45,7 +45,7 @@ const AdminPilots = () => {
     }, [searchTerm])
     
     return (
-        <main className="admin-page">
+        <main className="table-page">
             {showAddPilot && <PilotForm close={() => setShowAddPilot(false)} handleSubmit={addPilot} title={'Add Pilot'}/>}
             {showEditPilot && <PilotForm close={() => setShowEditPilot(false)} handleSubmit={updatePilot} data={pilotData} title={'Update Pilot'}/>}
             <h1>Pilots</h1>

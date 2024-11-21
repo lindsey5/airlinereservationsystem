@@ -1,5 +1,4 @@
 import './FareTypes.css'
-import { formatPrice } from '../../utils/formatPrice'
 
 const FareTypes = ({setFareType}) => {
     return(

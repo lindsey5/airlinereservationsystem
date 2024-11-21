@@ -31,7 +31,8 @@ export const FlightSchema = new Schema({
             type: String, required: true,
         }
      },
-    classes: { type: [ClassSchema], required: true,}
+    classes: { type: [ClassSchema], required: true,},
+    added_by: { type: String, required: true }
 }, { timestamps: true });
 
 FlightSchema.pre('save', function (next) {

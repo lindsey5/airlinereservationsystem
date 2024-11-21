@@ -4,7 +4,7 @@ import SeatSelection from "../../Components/Seats/SeatSelection";
 import FareTypes from "../../Components/Booking/FareTypes";
 import PassengerForms from "../../Components/Booking/PassengerForms";
 
-const AdminBookingPage = () => {
+const FrontDeskBookingPage = () => {
     const queryParams = new URLSearchParams(window.location.search);
     const encodedData = queryParams.get('data');
     const decodedData = JSON.parse(window.atob(decodeURIComponent(encodedData)));
@@ -59,7 +59,7 @@ const AdminBookingPage = () => {
     const handleBooking = async () => {
         if(fareType === 'Bronze'){
             try{
-                const response = await fetch('/api/flight/book/admin', {
+                const response = await fetch('/api/flight/book/frontdesk', {
                     method: 'POST',
                     headers: {
                         'Content-Type': 'application/json',
@@ -70,7 +70,7 @@ const AdminBookingPage = () => {
                     })
                 })
                 if(response.ok){
-                    window.location.href = '/admin/flight/book'
+                    window.location.href = '/frontdesk/flight/book'
                 }else{
                     alert('Book failed');
                 }
@@ -89,7 +89,7 @@ const AdminBookingPage = () => {
             if(bookings.flights[currentFlightIndex].passengers.length - 1 === currentPassenger){
                 if(currentFlightIndex === bookings.flights.length -1){
                     try{
-                        const response = await fetch('/api/flight/book/admin', {
+                        const response = await fetch('/api/flight/book/frontdesk', {
                             method: 'POST',
                             headers: {
                                 'Content-Type': 'application/json',
@@ -100,7 +100,7 @@ const AdminBookingPage = () => {
                             })
                         })
                         if(response.ok){
-                            window.location.href = '/admin/flight/book'
+                            window.location.href = '/frontdesk/flights'
                         }else{
                             alert('Book failed');
                         }
@@ -128,8 +128,6 @@ const AdminBookingPage = () => {
                     case 'Silver': 
                         price += 1800;
                         break;
-                    case 'Gold':
-                        price += 3000;
                 }
                 const passenger = {
                     firstname: '',
@@ -147,7 +145,7 @@ const AdminBookingPage = () => {
     }
 
     return (
-        <div className="booking-page admin">
+        <div className="booking-page frontdesk">
             <div>
             <p>{decodedData.class}: </p>
             {decodedData && decodedData.flights.map((flight, i) => 
@@ -158,7 +156,7 @@ const AdminBookingPage = () => {
                 </div>
             )}
             </div>
-            {!fareType && <FareTypes setFareType={setFareType}/>}
+            {!fareType && <FareTypes setFareType={setFareType} frontDesk={true}/>}
             {fareType && !showForm &&
             <form onSubmit={handlePassengers}>
             <div className="container">
@@ -223,4 +221,4 @@ const AdminBookingPage = () => {
     )
 }
 
-export default AdminBookingPage
+export default FrontDeskBookingPage

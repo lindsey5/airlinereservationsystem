@@ -1,7 +1,7 @@
 import useAdminPaginationReducer from "../../hooks/adminPaginationReducer";
 import { useState, useEffect } from "react";
 import AdminPagination from "../../Components/Admin/Pagination/AdminPagination";
-import './AdminPage.css'
+import '../../styles/TablePage.css';
 import AddAdminForm from "../../Components/Admin/Forms/AddAdminForm";
 import AddAdminSuccess from "../../Components/Admin/Modals/AddAdminSuccess";
 import { addAdmin, deleteAdmin } from "../../Service/Admin/AdminService";
@@ -12,7 +12,6 @@ const Admins = () => {
     const [admins, setAdmins] = useState();
     const [showAddAdmin, setShowAddAdmin] = useState(false);
     const [showSuccessModal, setShowSuccessModal] = useState(false);
-    const [adminData, setAdminData] = useState();
 
     useEffect(() => {
         const fetchAirplanes = async () => {
@@ -41,7 +40,6 @@ const Admins = () => {
             if(response.errors){
                 alert(response.errors[0]);
             }else{
-                setAdminData({employeeId: response.employeeId, password: response.password});
                 setShowSuccessModal(true)
                 setShowAddAdmin(false);
             }
@@ -49,9 +47,9 @@ const Admins = () => {
     }
 
     return (
-        <main className="admin-page">
+        <main className="table-page">
             {showAddAdmin && <AddAdminForm close={() => setShowAddAdmin(false)} handleSubmit={handleAddAdmin}/>}
-            {showSuccessModal && <AddAdminSuccess adminData={adminData} close={() => window.location.reload()}/>}
+            {showSuccessModal && <AddAdminSuccess close={() => window.location.reload()}/>}
             <h1>Admins</h1>
             <input type="search" placeholder='Search' onChange={(e) => setSearchTerm(e.target.value)}/>
             <AdminPagination state={state} dispatch={dispatch} />

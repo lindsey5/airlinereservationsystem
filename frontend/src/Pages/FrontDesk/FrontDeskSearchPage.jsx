@@ -2,23 +2,23 @@ import { useNavigate } from "react-router-dom"
 import ButtonsContainer from "../../Components/Search/ButtonsContainer"
 import SearchForms from "../../Components/Search/SearchForms"
 import SelectContainer from "../../Components/Search/SelectContainer"
-import './AdminSearchPage.css'
+import './FrontDeskSearchPage.css'
 
-const AdminSearchPage = () => {
+const FrontDeskSearchPage = () => {
     const navigate = useNavigate();
     return(
-        <div className="admin-search-page">
+        <div className="frontdesk-search-page">
             <div>
             <h1>Book Flight</h1>
-            <a href="/admin/flight/available">View Available Flights</a>
+            <a href="/frontdesk/flight/available">View Available Flights</a>
             </div>
             <div className="container">
                 <SelectContainer />
                 <SearchForms />
-                <ButtonsContainer handleSearch={() => navigate('/admin/search-results') }/>
+                <ButtonsContainer handleSearch={() => navigate('/frontdesk/search-results') }/>
             </div>
         </div>
     )
 }
 
-export default AdminSearchPage
+export default FrontDeskSearchPage

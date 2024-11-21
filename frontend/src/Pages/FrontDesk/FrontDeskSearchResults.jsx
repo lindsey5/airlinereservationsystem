@@ -11,7 +11,7 @@ import { formatPrice } from "../../utils/formatPrice";
 import { useNavigate } from "react-router-dom";
 import SearchFilter from "../../Components/Search/SearchFilter";
 
-const AdminSearchResults = () => {
+const FrontDeskSearchResults = () => {
     const {state} = useContext(SearchContext);
     const [results, setResults] = useState([]);
     const [showEdit, setShowEdit] = useState(false);
@@ -65,11 +65,11 @@ const AdminSearchResults = () => {
         params.price = flights.reduce((total, flight) => total + flight.classes.find(classObj => classObj.className === selectedClass).price, 0)
        
         const encoded = encodeURIComponent(utf8ToBase64(JSON.stringify(params)));
-        navigate(`/admin/booking?data=${encoded}`);
+        navigate(`/frontdesk/booking?data=${encoded}`);
     }
 
     return (
-        <div className="search-results admin">
+        <div className="search-results frontdesk">
             <div className="results-parent-container">
                     <div className="search-details-container">
                         <div className="search-details">
@@ -153,4 +153,4 @@ const AdminSearchResults = () => {
 
 }
 
-export default AdminSearchResults
+export default FrontDeskSearchResults

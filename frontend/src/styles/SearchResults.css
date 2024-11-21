@@ -6,7 +6,7 @@
     justify-content: center;
 }
 
-.search-results.admin{
+.search-results.frontdesk{
     padding-top: 80px;
 }
 
@@ -101,5 +101,11 @@
 
     .search-results .search-details-container button{
         margin-top: 20px;
+    }
+}
+
+@media screen and (min-width: 768px) {
+    .search-results.frontdesk{
+        padding-left: 200px;
     }
 }

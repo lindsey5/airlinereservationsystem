@@ -1,11 +1,11 @@
-.admin-search-page{
+.frontdesk-search-page{
     width: 100%;
     min-height: calc(100vh - 140px);
     padding: 90px 50px 50px 50px;
     background-color: rgb(247, 247, 247);
 }
 
-.admin-search-page .container{
+.frontdesk-search-page .container{
     background-color: white;
     padding: 20px;
     border-radius: 20px;
@@ -13,6 +13,13 @@
     box-shadow: 0 0 10px 2px rgb(201, 201, 201);
 }
 
-.admin-search-page a{
+.frontdesk-search-page a{
     color: #ff3131;
+}
+
+
+@media screen and (min-width: 768px) {
+    .frontdesk-search-page{
+        padding-left: 230px;
+    }
 }

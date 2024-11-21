@@ -1,10 +1,10 @@
-import './AdminSidebar.css';
+import '../../styles/sidebar.css'
 import { Link } from 'react-router-dom';
 
 const AdminSideBar = () => {
 
     return (
-        <section className="admin-sidebar">
+        <section className="sidebar">
             <ul>
                 <Link to={'dashboard'}>
                     <li>
@@ -30,12 +30,6 @@ const AdminSideBar = () => {
                     Flights
                     </li>
                 </Link>
-                <Link to={'flight/book'}>
-                    <li>
-                    <img src="/icons/appointment.png" alt="" />
-                    Book Flight
-                    </li>
-                </Link>
                 <Link to={'pilots'}>
                     <li>
                     <img src="/icons/hat.png" alt="" />
@@ -50,8 +44,8 @@ const AdminSideBar = () => {
                 </Link>
                 <Link>
                     <li>
-                    <img src="/icons/air-host.png" alt="" />
-                    Stewards
+                    <img src="/icons/receptionist.png" alt="" />
+                    Front Desk Agents
                     </li>
                 </Link>
             </ul>

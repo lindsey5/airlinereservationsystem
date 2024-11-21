@@ -1,5 +1,5 @@
 import { useEffect, useState } from 'react';
-import './AdminPage.css'
+import '../../styles/TablePage.css';
 import AirplaneForm from '../../Components/Admin/Forms/AirplaneForm';
 import { addAirplane, deleteAirplane, updateAirplane } from '../../Service/Admin/AdminAirplaneService';
 import useAdminPaginationReducer from '../../hooks/adminPaginationReducer';
@@ -41,7 +41,7 @@ const AdminAirplanes = () => {
     }, []);
 
     return (
-        <main className="admin-page">
+        <main className="table-page">
             {showAddAirplane && <AirplaneForm handleSubmit={addAirplane} close={() => setShowAddAirplane(false)} title={'Add Airplane'}/>}
             {showEditAirplane && <AirplaneForm data={airplaneData} handleSubmit={updateAirplane} close={() => setShowEditAirplane(false)} title={'Update Airplane'}/>}
             <h1>Airplanes</h1>

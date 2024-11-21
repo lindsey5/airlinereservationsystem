@@ -5,10 +5,11 @@ import User from "../model/user.js";
 import { multi_city_search, one_way_search, round_trip_search } from "../service/flightSearchService.js";
 import { errorHandler } from "../utils/errorHandler.js";
 import jwt from "jsonwebtoken";
-import { sendEmail } from "../service/emailService.js";
+import { sendTickets } from "../service/emailService.js";
 import Booking from "../model/Booking.js";
 import { calculateSeats, createSeats, createClasses } from "../utils/flightUtils.js";
 import { getPaymentId, refundPayment } from "../service/paymentService.js";
+import { updatePilotStatus } from '../service/pilotService.js';
 
 export const create_flight = async (req, res) => {
     try{
@@ -55,7 +56,8 @@ export const create_flight = async (req, res) => {
             ...data,
             pilot: { captain, co_pilot },
             airplane: { id: airplane_id},
-            classes: newClasses
+            classes: newClasses,
+            added_by: req.userId
         }
 
         const newFlight = new Flight(flightData);
@@ -77,31 +79,6 @@ export const get_flight = async (req, res) => {
         }
         res.status(200).json({flight});
     }catch(err){
-        const errors = errorHandler(err)
-        res.status(400).json({errors});
-    }
-}
-
-export const get_popular_destination = async (req, res) => {
-    try{
-        const limit = parseInt(req.query.limit);
-        const flights = await Flight.aggregate([
-            {$group: 
-                {
-                _id: "$arrival.city", 
-                country:{ $first: "$arrival.country" },
-                totalArrivals: { $sum: 1 }
-                }
-            },
-            { $sort: { totalArrivals: -1 } },
-            { $limit: limit }
-        ]);
-        if(!flights){
-            throw new Error('No popular destination found');
-        }
-        res.status(200).json(flights);
-    }catch(err){
-        console.log(err)
         const errors = errorHandler(err)
         res.status(400).json({errors});
     }
@@ -217,7 +194,7 @@ export const user_book_flight = async (req, res) => {
                     ? passenger.seatNumber === seat.seatNumber
                     : seat.status === 'available');
 
-                available_flight.classes[classIndex].seats[seatIndex].status = 'booked';
+                available_flight.classes[classIndex].seats[seatIndex].status = 'reserved';
                 passenger.seatNumber = available_flight.classes[classIndex].seats[seatIndex].seatNumber;
                 available_flight.classes[classIndex].seats[seatIndex].passenger = passenger;
 
@@ -248,7 +225,7 @@ export const user_book_flight = async (req, res) => {
             payment_checkout_id: checkoutData.checkout_id
         })
         await booking.save();
-        sendEmail(user.email, booking._id);
+        sendTickets(user.email, booking._id);
         res.redirect(`/user/booking/success`);
     }catch(err){
         const errors = errorHandler(err)
@@ -256,7 +233,7 @@ export const user_book_flight = async (req, res) => {
     }
 }
 
-export const admin_book_flight = async (req, res) => {
+export const frontdesk_book_flight = async (req, res) => {
         try{
             const data = {
                 flights: req.body.bookings.flights, 
@@ -274,7 +251,7 @@ export const admin_book_flight = async (req, res) => {
                     const seatIndex = available_flight.classes[classIndex].seats.findIndex(seat => passenger.seatNumber?  passenger.seatNumber === seat.seatNumber :  seat.status === 'available');
     
                     if(seatIndex > -1){
-                        available_flight.classes[classIndex].seats[seatIndex].status = 'booked';
+                        available_flight.classes[classIndex].seats[seatIndex].status = 'reserved';
                         passenger.seatNumber = available_flight.classes[classIndex].seats[seatIndex].seatNumber
                         available_flight.classes[classIndex].seats[seatIndex].passenger = passenger;
                         await available_flight.save();
@@ -304,12 +281,33 @@ export const admin_book_flight = async (req, res) => {
                 fareType: data.fareType
             })
             await booking.save();
-            sendEmail(email, booking._id);
+            sendTickets(email, booking._id);
             res.redirect(`/user/booking/success`);
         }catch(err){
             const errors = errorHandler(err)
             res.status(400).json({errors});
         }
+}
+
+const isPilotHaveNextFlight = async (currentFlight, pilot) => {
+    const flight = await Flight.findOne({
+        $or: [
+            {'pilot.captain' : pilot},
+            {'pilot.co_pilot' : pilot} 
+        ],
+        'departure.airport' :currentFlight.arrival.airport,
+        'departure.time' : {$gt: currentFlight.arrival.time}
+    })
+    return !flight ? false : true
+}
+
+const isPlaneHaveNextFlight = async(currentFlight, airplane) => {
+    const flight = await Flight.findOne({
+        'airplane.id' : airplane,
+        'departure.airport' :currentFlight.arrival.airport,
+        'departure.time' : {$gt: currentFlight.arrival.time}
+    })
+    return !flight ? false : true
 }
 
 export const completeFlight = async (req, res) => {
@@ -319,6 +317,26 @@ export const completeFlight = async (req, res) => {
 
         const plane = await Airplane.findById(updatedFlight.airplane.id);
         plane.currentLocation = updatedFlight.arrival.airport;
+        const [isCaptainHaveNextFlight, isCoPilotHaveNextFlight] = await Promise.all([
+            await isPilotHaveNextFlight(updatedFlight, updatedFlight.pilot.captain),
+            await isPilotHaveNextFlight(updatedFlight, updatedFlight.pilot.co_pilot)
+        ]);
+
+        if(!isCaptainHaveNextFlight){
+            const updatedPilot = await updatePilotStatus(updatedFlight.pilot.captain);
+            if(!updatedPilot) throw new Error('Updating captain error');
+        }
+
+        if(!isCoPilotHaveNextFlight){
+            const updatedPilot = await updatePilotStatus(updatedFlight.pilot.co_pilot);
+            if(!updatedPilot) throw new Error('Updating captain error');
+        }
+
+        if(!await isPlaneHaveNextFlight(updatedFlight, updatedFlight.airplane.id)){
+            const airplane = await Airplane.findById(updatedFlight.airplane.id);
+            airplane.status = 'Available';
+            await airplane.save();
+        }
 
         await Booking.updateMany(
             { 'flights.id': req.params.id, 'flights.status': 'Booked' },
@@ -367,8 +385,6 @@ export const cancelFlight = async (req, res) => {
             const {seatNumber, status, _id} = flight.classes[classIndex].seats[seatIndex].passenger;
             flight.classes[classIndex].seats[seatIndex] = {seatNumber, status, _id}
         })
-
-
         const refundAmmount = (2052 * 100 * booking.flights[flightIndex].passengers.length) +
         (687.50 * 100 * booking.flights[flightIndex].passengers.length) + 
         (1296 * 100 * booking.flights[flightIndex].passengers.length) +

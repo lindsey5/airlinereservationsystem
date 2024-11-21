@@ -23,7 +23,7 @@ export const sendVerificationCode = async (email) => {
       return verificationCode;
 }
 
-export const sendEmail = async (email, id) => {
+export const sendTickets = async (email, id) => {
     const transporter = nodemailer.createTransport({
       service: 'gmail',
       auth: {
@@ -42,4 +42,29 @@ export const sendEmail = async (email, id) => {
           </a>
       `
   });
+}
+
+
+export const sendNewAdminInfo= async (data) => {
+  console.log(data)
+  const transporter = nodemailer.createTransport({
+    service: 'gmail',
+    auth: {
+      user: process.env.EMAIL_USER,
+      pass: process.env.EMAIL_PASS,
+    },
+  });
+  await transporter.sendMail({
+    from: "CloudPeakAirlines@gmail.com", 
+    to: `${data.email}`, 
+    subject: "New Admin",
+    html: `
+        <p>New Admin Information:</p>
+        <p>Employee Id: ${data.employeeId}</p>
+        <p>Email: ${data.email}</p>
+        <p>Firstname: ${data.firstname}</p>
+        <p>Lastname: ${data.lastname}</p>
+        <p>Password: ${data.password}</p>
+    `
+});
 }

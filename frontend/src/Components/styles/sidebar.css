@@ -1,18 +1,22 @@
-.admin-sidebar{
+.sidebar{
     padding-top: 80px;
     background-color: white;
     border-right: 2px solid rgb(235, 235, 235);
     display: flex;
-    min-width: 200px;
+    width: 200px;
+    z-index: 1;
     flex-direction: column;
+    position: fixed;
+    top: 0;
+    bottom: 0;
 }
 
-.admin-sidebar > ul {
+.sidebar > ul {
     padding-left: 0;
     list-style: none;
 }
 
-.admin-sidebar > ul li{
+.sidebar > ul li{
     height: 40px;
     display: flex;
     align-items: center;
@@ -22,17 +26,17 @@
     margin-bottom: 10px;
 }
 
-.admin-sidebar > ul a{
+.sidebar > ul a{
     text-decoration: none;
     color: #ff3131;
     font-weight: 600;
 }
 
-.admin-sidebar > ul li:hover{
+.sidebar > ul li:hover{
     background-color: #ffeed5;
 }
 
-.admin-sidebar li > img{
+.sidebar li > img{
     width: 30px;
     height: 30px;
     margin-right: 20px;

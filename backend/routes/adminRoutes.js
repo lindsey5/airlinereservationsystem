@@ -1,9 +1,11 @@
 import express from 'express';
-import { addAdmin, delete_admin, get_admins } from '../controller/adminController.js';
+import { addAdmin, adminLogin, delete_admin, get_admins } from '../controller/adminController.js';
+import { adminRequireAuth } from '../middleware/adminRequireAuth.js';
 const router = express.Router();
 
-router.post('/', addAdmin)
-router.get('/admins', get_admins);
-router.delete('/:id', delete_admin);
+router.post('/', adminRequireAuth, addAdmin);
+router.post('/login', adminLogin);
+router.get('/admins', adminRequireAuth, get_admins);
+router.delete('/:id', adminRequireAuth, delete_admin);
 
 export default router;

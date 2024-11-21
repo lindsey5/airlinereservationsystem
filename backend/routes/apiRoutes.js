@@ -1,14 +1,16 @@
 import express from 'express';
-import { createPaymentLink, getCities, getCountries, getDashboardDetails, getUser, verifyCode } from '../controller/apiController.js';
+import { createPaymentLink, get_popular_destination, getCities, getCountries, getDashboardDetails, getUser, verifyCode } from '../controller/apiController.js';
 import { userRequireAuth } from '../middleware/userRequireAuth.js';
+import { adminRequireAuth } from '../middleware/adminRequireAuth.js';
 
 const router = express.Router();
 
+router.get('/popular-destinations', get_popular_destination);
 router.post('/verify-code', verifyCode);
-router.get('/countries', getCountries)
+router.get('/countries', getCountries);
 router.get('/cities/:country', getCities)
 router.post('/payment-link', userRequireAuth, createPaymentLink)
 router.get('/user', getUser);
-router.get('/details/dashboard', getDashboardDetails);
+router.get('/details/dashboard', adminRequireAuth, getDashboardDetails);
 
 export default router;

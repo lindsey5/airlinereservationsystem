@@ -5,15 +5,15 @@ import { useNavigate } from "react-router-dom";
 
 const PopularCity = ({elementsRef}) => {
     const [flights, setFlights] = useState();
-    const { data } = useFetch('/api/flight/popular?limit=12');
+    const { data } = useFetch('/api/popular-destinations?limit=12');
     const navigate = useNavigate();
 
     useEffect(() => {
         const setFetchedData = async () => {
             if(data?.length > 0){
-                const updatedData = await Promise.all(data.map(async(flight) => {
-                    const image = await getImage(flight._id, flight.country);
-                    return {...flight, image};
+                const updatedData = await Promise.all(data.map(async(destination) => {
+                    const image = await getImage(destination.city, destination.country);
+                    return {...destination, image};
                 }))
                 setFlights(updatedData);
             }
@@ -44,7 +44,7 @@ const PopularCity = ({elementsRef}) => {
                         <div key={flight._id}>
                             <img src={flight.image} />
                             <div>
-                                <span>{flight._id}, {flight.country}</span>
+                                <span>{flight.city}, {flight.country}</span>
                                 <button className="book-btn" onClick={() => navigate('/user/login')}>Book Flight</button>
                             </div>
                         </div>

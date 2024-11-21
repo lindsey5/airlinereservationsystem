@@ -8,7 +8,7 @@ import ButtonsContainer from "../../Components/Search/ButtonsContainer";
 import SelectContainer from "../../Components/Search/SelectContainer";
 
 const UserHome = () => {
-    const { data } = useFetch('/api/flight/popular?limit=5');
+    const { data } = useFetch('/api/popular-destinations');
     const [popularCity, setPopularCity] = useState();
     const [currentCity, setCurrentCity] = useState(0);
     const navigate = useNavigate();
@@ -44,10 +44,10 @@ const UserHome = () => {
        const getImages = async () => {
             setPopularCity(await Promise.all(data.map(async (item) => {
                 try{
-                    const response = await fetch(`https://pixabay.com/api/?key=46701607-d51d8d8ab7e9bf8a22e03cd3c&q=${item._id} city ${item.country}&image_type=photo`);
+                    const response = await fetch(`https://pixabay.com/api/?key=46701607-d51d8d8ab7e9bf8a22e03cd3c&q=${item.city} city ${item.country}&image_type=photo`);
                     if(response.ok){
                         const result = await response.json();
-                        return {city: item._id, image: result.hits[1].largeImageURL, country: item.country}
+                        return {city: item.city, image: result.hits[1].largeImageURL, country: item.country}
                     }
                 }catch(err){
                     console.log(err);

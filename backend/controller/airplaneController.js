@@ -11,7 +11,7 @@ export const create_airplane = async (req,res) => {
             throw new Error('Invalid column format. Please use the format "3x3" or "3x3x3".');
         }
 
-        const newAirplane = new Airplane(req.body);
+        const newAirplane = new Airplane({...req.body, added_by: req.userId});
         await newAirplane.save();
         res.status(200).json(newAirplane);
     }catch(err){

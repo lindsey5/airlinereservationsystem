@@ -6,7 +6,7 @@ import '../../styles/AvailableFlights.css';
 import '../../styles/Flights.css';
 import { useNavigate } from "react-router-dom";
 
-const AdminAvailableFlights = () => {
+const FrontDeskAvailableFlights = () => {
     const [limit, setLimit] = useState(5);
     const [flights, setFlights] = useState([]);
     const [selectedClass, setSelectedClass] = useState('Economy');
@@ -44,11 +44,11 @@ const AdminAvailableFlights = () => {
             price: flight.classes.find(classObj => classObj.className === selectedClass).price,
         })
         const encoded = encodeURIComponent(utf8ToBase64(JSON.stringify(params)));
-        navigate(`/admin/booking?data=${encoded}`);
+        navigate(`/frontdesk/booking?data=${encoded}`);
     }
 
     return (
-        <div className="available-flights admin">
+        <div className="available-flights frontdesk">
             <div>
             <h1>Available Flights</h1>
             <select onChange={(e) => setSelectedClass(e.target.value)}>
@@ -109,9 +109,9 @@ const AdminAvailableFlights = () => {
                 </div>
                 }
             </div>
-            {flights.length > 0 &&  <button onClick={() => setLimit(prev => prev += 5)} >See more</button>}
+            {flights.length > 0 &&  <button className='see-more' onClick={() => setLimit(prev => prev += 5)} >See more</button>}
         </div>
     )
 }
 
-export default AdminAvailableFlights
+export default FrontDeskAvailableFlights

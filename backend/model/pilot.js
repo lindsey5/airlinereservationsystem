@@ -26,8 +26,11 @@ const PilotSchema = new Schema({
         type: String,
         enum: ['Available', 'Assigned', 'In Flight', 'Unavailable'],
         default: 'Available',
+    },
+    added_by: {
+        type: String,
+        required: true
     }
-
 }, { timestamps: true });
 
 const Pilot = mongoose.model('Pilot', PilotSchema);

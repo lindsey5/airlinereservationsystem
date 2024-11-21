@@ -1,3 +1,93 @@
 .admin-dashboard{
-    background-color: rgb(211, 211, 211);
+    width: 100%;
+    min-height: 100vh;
+    padding: 20px 20px;
+    background-color: #f0f0f0;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+}
+
+
+.admin-dashboard .top-container{
+    display: grid;
+    padding: 20px 0;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 20px;
+}
+
+.admin-dashboard .top-container > div{
+    background-color: white;
+    padding: 15px;
+    display: flex;
+    align-items: center;
+    position: relative;
+}
+
+.admin-dashboard .top-container > div::after,
+.admin-dashboard .bar-chart-container::after,
+.admin-dashboard .pie-container::after{
+    content: "";
+    background-color: #ff3131;
+    position: absolute;
+    height: 10px;
+    left: 0;
+    right: 0;
+    top: -10px;
+    border-top-left-radius: 30px;
+    border-top-right-radius: 30px;
+}
+
+.admin-dashboard .top-container > div h2{
+    margin-bottom: 5px;
+}
+
+.admin-dashboard .top-container > div p{
+    color: rgb(153, 153, 153);
+    font-size: 18px;
+    margin-top: 5px;
+}
+
+.admin-dashboard .img-container{
+    width: 80px;
+    height: 80px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background-color: rgb(255, 207, 207);
+    border-radius: 50%;
+    margin-right: 20px;
+}
+
+.admin-dashboard .img-container img{
+    width: 60%;
+    height: 60%;
+}
+
+.admin-dashboard .chart-container{
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-top: 30px;
+}
+
+.admin-dashboard .bar-chart-container{
+    width: 65%;
+    background-color: white;
+    position: relative;
+}
+
+.admin-dashboard .pie-container{
+    width: 30%;
+    height: 400px;
+    font-size: 13px;
+    background-color: white;
+    text-align: center;
+    position: relative;
+}
+
+@media screen and (min-width: 768px) {
+    .admin-dashboard{
+        padding-left: 250px;
+    }
 }

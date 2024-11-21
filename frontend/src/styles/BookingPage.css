@@ -4,7 +4,7 @@
     background-color: rgb(240, 240, 240);
 }
 
-.booking-page.admin{
+.booking-page.frontdesk{
     padding-top: 70px;
 }
 
@@ -158,5 +158,11 @@
 @media (max-width: 500px){
     .booking-page .container .select-container{
         grid-template-columns: 1fr;
+    }
+}
+
+@media screen and (min-width: 768px) {
+    .booking-page.frontdesk{
+        padding-left: 200px;
     }
 }

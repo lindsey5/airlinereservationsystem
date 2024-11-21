@@ -30,7 +30,7 @@ const BookingSchema = new Schema({
         }], required: true
     },
     class: { type: String, required: true},
-    payment_checkout_id: { type: String, required: true},
+    payment_checkout_id: { type: String },
     fareType: { type: String, enum: ['Bronze', 'Silver', 'Gold'], default: 'Bronze'}
 }, { timestamps: true });
 

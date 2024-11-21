@@ -22,8 +22,11 @@ const AdminSchema = new Schema({
     password: {
         type: String,
         required: true
+    },
+    added_by: {
+        type: String,
+        required: true
     }
-
 }, { timestamps: true })
 
 AdminSchema.pre('save', async function (next) {
