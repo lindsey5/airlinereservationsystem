@@ -31,6 +31,10 @@ const FrontDeskBookingPage = () => {
     }
 
     useEffect(() => {
+        document.title = "Book Flight";
+    },[])
+
+    useEffect(() => {
         setBookings(booking(decodedData.flights.map(flight => ({
             id: flight.id, 
             price: flight.price, 

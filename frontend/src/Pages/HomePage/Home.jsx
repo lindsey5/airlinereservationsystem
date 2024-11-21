@@ -10,6 +10,7 @@ const Home = () => {
     const elementsRef = useRef([]);
 
     useEffect(() => {
+        document.title = "Cloud Peak Airlines";
         const observer = new IntersectionObserver(
           (entries) => {
             entries.forEach((entry) => {
@@ -30,6 +31,7 @@ const Home = () => {
           });
         return () => observer.disconnect();
       }, []);
+
 
     return (
         <main className='home-page'>

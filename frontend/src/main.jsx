@@ -38,6 +38,7 @@ import FrontDeskSearchResults from './Pages/FrontDesk/FrontDeskSearchResults';
 import FrontDeskSearchPage from './Pages/FrontDesk/FrontDeskSearchPage';
 import FrontDeskAvailableFlights from './Pages/FrontDesk/FrontDeskAvailableFlight';
 import FrontDeskBookingPage from './Pages/FrontDesk/FrontDeskBookingPage';
+import FrontDeskAgents from './Pages/AdminPage/FrontDeskAgents';
 
 const router = createBrowserRouter(
   createRoutesFromElements(
@@ -76,6 +77,7 @@ const router = createBrowserRouter(
             <Route path='flights' element={<AdminFlights />} />
             <Route path='airports' element={<AdminAirports />} />
             <Route path='admins' element={<Admins />} />
+            <Route path='front-desks' element={<FrontDeskAgents />}/>
           </Route>
         </Route>
       </Route>
@@ -96,7 +98,6 @@ const router = createBrowserRouter(
     </>
   )
 );
-
 
 createRoot(document.getElementById('root')).render(
   <StrictMode>

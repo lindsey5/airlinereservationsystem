@@ -30,6 +30,7 @@ const FrontDeskSearchResults = () => {
 
     useEffect(() => {
         fetchResults();
+        document.title = "Search Results";
     }, []);
 
     useEffect(() => {

@@ -116,7 +116,7 @@ export const get_available_pilots = async (req, res) => {
             if(flight){
                 const flightArrivalTime = new Date(flight.arrival.time)
                 const isAvailable = flight.arrival.airport === departureAirport && 
-                new Date(flightArrivalTime.setHours(flightArrivalTime.getHours() + 2)) < departureTime;
+                new Date(flightArrivalTime.setHours(flightArrivalTime.getHours() + 5)) < departureTime;
                 return isAvailable ? pilot : null
             }
             return pilot;

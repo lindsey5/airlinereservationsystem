@@ -8,6 +8,8 @@ import Airplane from '../model/airplane.js';
 import Pilot from '../model/pilot.js';
 import Booking from '../model/Booking.js';
 import Admin from '../model/Admin.js';
+import { get_incomes_today, get_incomes_per_month } from '../service/incomesService.js';
+import {get_bookings_per_month} from '../service/bookingService.js';
 dotenv.config();
 
 const url = process.env.NODE_ENV === 'production' ? 'https://airlinereservationsystem.onrender.com' : 'http://localhost:5173';
@@ -130,7 +132,12 @@ export const createPaymentLink = async (req, res) => {
         const response = await fetch('https://api.paymongo.com/v1/checkout_sessions', options)
         if(response.ok){
             const result = await response.json();
-            const checkoutDataToken = jwt.sign({data: req.body.bookings.flights, class: req.body.bookings.class, fareType: req.body.bookings.fareType, checkout_id: result.data.id}, process.env.JWT_SECRET);
+            const checkoutDataToken = jwt.sign({
+                data: req.body.bookings.flights, 
+                class: req.body.bookings.class,
+                fareType: req.body.bookings.fareType, 
+                checkout_id: result.data.id,
+            }, process.env.JWT_SECRET);
             res.cookie('checkoutData', checkoutDataToken, { httpOnly: true, secure: process.env.NODE_ENV === 'production' });
             res.status(200).json(result);
         }else{
@@ -180,42 +187,18 @@ export const getDashboardDetails = async (req, res) => {
         const flights = await Flight.countDocuments({status: 'Scheduled'});
         const airplanes = await Airplane.countDocuments({status: 'Assigned'});
         const pilots = await Pilot.countDocuments({status: 'Assigned'});
-        const currentYear = new Date().getFullYear(); // Get the current year
 
-        const bookingsPerMonth = await Booking.aggregate([
-          {
-            $project: {
-              year: { $year: "$createdAt" }, 
-              month: { $month: "$createdAt" },
-              content: 1, 
-            }
-          },
-          {
-            $match: {
-              year: currentYear
-            }
-          },
-          {
-            $group: {
-              _id: { year: "$year", month: "$month" }, 
-              count: { $sum: 1 }, 
-            }
-          },
-          {
-            $sort: { "_id.year": 1, "_id.month": 1 }
-          }
-        ]);
-        let bookings_array = new Array(12);
-
-        bookingsPerMonth.forEach(booking => {
-            bookings_array[booking._id.month-1] = booking.count
-        });
+        const incomesToday = await get_incomes_today();
+        const incomesPerMonth = await get_incomes_per_month();
+        const bookingsPerMonth = await get_bookings_per_month();
 
         const data = {
             scheduledFlights: flights,
             assignedPlanes: airplanes,
             assignedPilot: pilots,
-            bookingsPerMonth: bookings_array,
+            incomesToday,
+            bookingsPerMonth,
+            incomesPerMonth
         }
         res.status(200).json(data);
 
@@ -248,7 +231,6 @@ export const get_popular_destination = async(req, res) => {
                 if(popularDestinations.length === limit) break;
             }
         }
-
         res.status(200).json(popularDestinations);
     }catch(err){
         const errors = errorHandler(err);

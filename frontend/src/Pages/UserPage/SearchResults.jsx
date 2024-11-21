@@ -30,6 +30,7 @@ const SearchResults = () => {
 
     useEffect(() => {
         fetchResults();
+        document.title = "Search Results";
     }, []);
 
     useEffect(() => {

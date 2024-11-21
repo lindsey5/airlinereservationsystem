@@ -16,7 +16,7 @@ const router = express.Router();
 
 router.post('/', adminRequireAuth, create_flight);
 router.put('/cancel', cancelFlight);
-router.put('/:id', completeFlight);
+router.put('/:id', adminRequireAuth, completeFlight);
 router.get('/book', userRequireAuth, user_book_flight);
 router.post('/book/frontdesk', frontdesk_book_flight);
 router.get('/flights', get_flights);

@@ -13,6 +13,7 @@ import path from 'path';
 import cookieParser from 'cookie-parser';
 import apiRoutes from './routes/apiRoutes.js';
 import adminRoutes from './routes/adminRoutes.js';
+import frontDeskRoutes from './routes/frontDeskRoutes.js';
 
 dotenv.config();
 const PORT = process.env.PORT; 
@@ -42,7 +43,8 @@ app.use('/api/flight', flightRoutes);
 app.use('/api/pilot', pilotRoutes);
 app.use('/api/airport', airportRoutes);
 app.use('/api/user', userRoutes);  
-app.use('/api/booking', bookingRoutes)
+app.use('/api/booking', bookingRoutes);
+app.use('/api/front-desk', frontDeskRoutes);
 
 app.get('/logout', (req, res) => {
     res.clearCookie('jwt', { httpOnly: true, secure: false });

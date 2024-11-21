@@ -10,6 +10,7 @@ import Booking from "../model/Booking.js";
 import { calculateSeats, createSeats, createClasses } from "../utils/flightUtils.js";
 import { getPaymentId, refundPayment } from "../service/paymentService.js";
 import { updatePilotStatus } from '../service/pilotService.js';
+import Payment from "../model/Payment.js";
 
 export const create_flight = async (req, res) => {
     try{
@@ -120,7 +121,6 @@ export const get_available_flights = async (req, res) => {
         )
 
         res.status(200).json(sortedFlights.slice(0, limit));
-
     }catch(err){
         const errors = errorHandler(err)
         res.status(400).json({errors});
@@ -199,9 +199,8 @@ export const user_book_flight = async (req, res) => {
                 available_flight.classes[classIndex].seats[seatIndex].passenger = passenger;
 
                 await available_flight.save();
-                }
+            }
         }
-    
         const flights = [];
         for (const flight of checkoutData.data) {
             const flightDetails = await Flight.findById(flight.id);
@@ -217,6 +216,7 @@ export const user_book_flight = async (req, res) => {
             };
             flights.push(data);
         }
+
         const booking = await Booking.create({
             user_id: user._id,
             flights,
@@ -225,6 +225,39 @@ export const user_book_flight = async (req, res) => {
             payment_checkout_id: checkoutData.checkout_id
         })
         await booking.save();
+
+        checkoutData.data.forEach(async (flight) => {
+            const paymentDetails = [
+                {amount: 2052, name: 'Fuel Surcharge', quantity: flight.passengers.length},
+                {amount: 687.50, name: 'PH Passenger Service Charge', quantity: flight.passengers.length},
+                {amount: 1296, name: 'PH-VAT', quantity: flight.passengers.length},
+                {amount: 82.50, name: 'PH PSC Value Added Tax', quantity: flight.passengers.length},
+                {amount: 30, name: 'Aviation Security Fee', quantity: flight.passengers.length},
+                {amount: 1344, name: 'Administration Fee', quantity: 1}
+            ]
+            flight.passengers.forEach(passenger=> {
+                const item = {
+                    amount: passenger.price, 
+                    name: `${flight.destination} (${passenger.type})`, 
+                    quantity: 1
+                }
+                const isExist = paymentDetails.find(paymentDetail => paymentDetail.name === item.name)
+
+                if(isExist){
+                    isExist.quantity += 1;
+                }else{
+                    paymentDetails.push(item)
+                }
+            })
+            const total_amount = paymentDetails.reduce((total, paymentDetail) => total + (paymentDetail.amount * paymentDetail.quantity), 0)
+            const payment = await Payment.create({
+                booking_id: booking._id,
+                flight_id: flight.id,
+                total_amount, 
+                line_items: paymentDetails
+            })
+            await payment.save();
+        })
         sendTickets(user.email, booking._id);
         res.redirect(`/user/booking/success`);
     }catch(err){
@@ -242,7 +275,7 @@ export const frontdesk_book_flight = async (req, res) => {
             }
             const {name, email} = req.body.bookedBy;
             data.flights.forEach(async (flight) => {
-                flight.passengers.forEach(async (passenger, i) => {
+                flight.passengers.forEach(async (passenger) => {
                     const available_flight = await Flight.findOne({
                         _id: flight.id, 
                         'classes.className': data.class, 
@@ -281,8 +314,41 @@ export const frontdesk_book_flight = async (req, res) => {
                 fareType: data.fareType
             })
             await booking.save();
+
+            data.flights.forEach(async (flight) => {
+                const paymentDetails = [
+                    {amount: 2052, name: 'Fuel Surcharge', quantity: flight.passengers.length},
+                    {amount: 687.50, name: 'PH Passenger Service Charge', quantity: flight.passengers.length},
+                    {amount: 1296, name: 'PH-VAT', quantity: flight.passengers.length},
+                    {amount: 82.50, name: 'PH PSC Value Added Tax', quantity: flight.passengers.length},
+                    {amount: 30, name: 'Aviation Security Fee', quantity: flight.passengers.length},
+                ]
+                flight.passengers.forEach(passenger=> {
+                    const item = {
+                        amount: passenger.price, 
+                        name: `${flight.destination} (${passenger.type})`, 
+                        quantity: 1
+                    }
+                    const isExist = paymentDetails.find(paymentDetail => paymentDetail.name === item.name)
+    
+                    if(isExist){
+                        isExist.quantity += 1;
+                    }else{
+                        paymentDetails.push(item)
+                    }
+                })
+                const total_amount = paymentDetails.reduce((total, paymentDetail) => total + (paymentDetail.amount * paymentDetail.quantity), 0)
+                const payment = await Payment.create({
+                    booking_id: booking._id,
+                    flight_id: flight.id,
+                    total_amount, 
+                    line_items: paymentDetails
+                })
+                await payment.save();
+            })
+
             sendTickets(email, booking._id);
-            res.redirect(`/user/booking/success`);
+            res.redirect(`/frontdesk/flights`);
         }catch(err){
             const errors = errorHandler(err)
             res.status(400).json({errors});
@@ -311,7 +377,7 @@ const isPlaneHaveNextFlight = async(currentFlight, airplane) => {
 }
 
 export const completeFlight = async (req, res) => {
-    try{
+    try{    
         const updatedFlight = await Flight.findById(req.params.id);
         updatedFlight.status = 'Completed'
 
@@ -329,7 +395,7 @@ export const completeFlight = async (req, res) => {
 
         if(!isCoPilotHaveNextFlight){
             const updatedPilot = await updatePilotStatus(updatedFlight.pilot.co_pilot);
-            if(!updatedPilot) throw new Error('Updating captain error');
+            if(!updatedPilot) throw new Error('Updating co-pilot error');
         }
 
         if(!await isPlaneHaveNextFlight(updatedFlight, updatedFlight.airplane.id)){
@@ -391,19 +457,23 @@ export const cancelFlight = async (req, res) => {
         (82.50 * 100 * booking.flights[flightIndex].passengers.length) +
         (30 * 100 * booking.flights[flightIndex].passengers.length) + 
         (booking.flights[flightIndex].passengers.reduce((total, passenger) => passenger.price + total, 0)) * 100;
-        const payment_id = await getPaymentId(booking.payment_checkout_id);
-        if(!payment_id){
-            throw new Error('Payment Id not found');
+        
+        if(booking.payment_checkout_id){
+            const payment_id = await getPaymentId(booking.payment_checkout_id);
+            if(!payment_id){
+                throw new Error('Payment Id not found');
+            }
+
+            const refund = await refundPayment(payment_id, refundAmmount);
+
+            if(!refund){
+                throw new Error('Refund Failed');
+            }
         }
 
-        const refund = await refundPayment(payment_id, refundAmmount);
-
-        if(!refund){
-            throw new Error('Refund Failed');
-        }
         await booking.save();
         await flight.save();
-        res.status(200).json({message: 'Flight successfully cancelled'})
+        res.status(200).json({message: 'Flight successfully cancelled', refundAmmount})
 
     }catch(err){
         const errors = errorHandler(err);

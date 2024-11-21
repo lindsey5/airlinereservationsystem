@@ -1,5 +1,5 @@
 
-export const addAdmin = async (e) => {
+export const addFrontDeskAgent = async (e) => {
     const password = prompt('Enter code to continue');
     if(password === 'admin1234@cloudpeak'){
         const formData = new FormData(e.target);
@@ -9,7 +9,7 @@ export const addAdmin = async (e) => {
             email: formData.get('email'),
         }
         try{
-            const response = await fetch('/api/admin',{
+            const response = await fetch('/api/front-desk',{
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json',
@@ -21,7 +21,7 @@ export const addAdmin = async (e) => {
             return result
 
         }catch(err){
-            alert('Error adding admin')
+            alert('Error adding front desk agent')
         }
     }else{
         alert('Incorrect code')
@@ -29,12 +29,12 @@ export const addAdmin = async (e) => {
 }
 
 
-export const deleteAdmin = async (id) => {
-    if(confirm('Remove this Admin?')){
+export const deleteFrontDeskAgent = async (id) => {
+    if(confirm('Remove this Agent?')){
         const password = prompt('Enter code to continue');
         if(password === 'admin1234@cloudpeak'){
             try{
-                const response = await fetch(`/api/admin/${id}`,{
+                const response = await fetch(`/api/front-desk/${id}`,{
                     method: 'DELETE',
                     headers: {
                         'Content-Type': 'application/json',
@@ -45,7 +45,7 @@ export const deleteAdmin = async (id) => {
                     window.location.reload()
                 }
             }catch(err){
-                alert('Error deleting admin')
+                alert('Error deleting front desk agent')
             }
         }else{
             alert('Code is incorrect');

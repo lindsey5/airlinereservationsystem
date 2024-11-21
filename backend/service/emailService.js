@@ -46,7 +46,6 @@ export const sendTickets = async (email, id) => {
 
 
 export const sendNewAdminInfo= async (data) => {
-  console.log(data)
   const transporter = nodemailer.createTransport({
     service: 'gmail',
     auth: {
@@ -60,6 +59,29 @@ export const sendNewAdminInfo= async (data) => {
     subject: "New Admin",
     html: `
         <p>New Admin Information:</p>
+        <p>Employee Id: ${data.employeeId}</p>
+        <p>Email: ${data.email}</p>
+        <p>Firstname: ${data.firstname}</p>
+        <p>Lastname: ${data.lastname}</p>
+        <p>Password: ${data.password}</p>
+    `
+});
+}
+
+export const sendNewFrontDeskInfo= async (data) => {
+  const transporter = nodemailer.createTransport({
+    service: 'gmail',
+    auth: {
+      user: process.env.EMAIL_USER,
+      pass: process.env.EMAIL_PASS,
+    },
+  });
+  await transporter.sendMail({
+    from: "CloudPeakAirlines@gmail.com", 
+    to: `${data.email}`, 
+    subject: "New Front Desk Agent",
+    html: `
+        <p>New Front Desk Agent Information:</p>
         <p>Employee Id: ${data.employeeId}</p>
         <p>Email: ${data.email}</p>
         <p>Firstname: ${data.firstname}</p>

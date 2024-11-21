@@ -1,7 +1,9 @@
+import { useLogout } from '../../../hooks/useLogout';
 import '../../styles/sidebar.css'
 import { Link } from 'react-router-dom';
 
 const AdminSideBar = () => {
+    const logout = useLogout();
 
     return (
         <section className="sidebar">
@@ -42,10 +44,16 @@ const AdminSideBar = () => {
                     Admins
                     </li>
                 </Link>
-                <Link>
+                <Link to={'front-desks'}>
                     <li>
                     <img src="/icons/receptionist.png" alt="" />
                     Front Desk Agents
+                    </li>
+                </Link>
+                <Link onClick={logout}>
+                    <li>
+                    <img src="/icons/logout.png" alt="" />
+                    Log out
                     </li>
                 </Link>
             </ul>

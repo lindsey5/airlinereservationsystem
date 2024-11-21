@@ -2,17 +2,12 @@ import { useEffect, useState } from "react"
 import './AdminForm.css'
 import { handleBlur, handleFocus } from '../../../utils/handleInput'
 
-const AddAdminForm = ({close, handleSubmit}) => {
-    const [adminData, setAdminData] = useState({
+const AddFrontDeskForm = ({close, handleSubmit}) => {
+    const [frontDeskData, setFrontDeskData] = useState({
         firstname: '',
         lastname: '',
         email: '',
     })
-    useEffect(() => {
-        if(data){
-            setAdminData(data)
-        }
-    },[data])
 
     return (
         <div className='admin-form'>
@@ -25,9 +20,9 @@ const AddAdminForm = ({close, handleSubmit}) => {
                             className='input'
                             type="text"
                             name="firstname"
-                            value={adminData.firstname}
+                            value={frontDeskData.firstname}
                             onChange={(e) => {
-                                setAdminData(prevData => ({...prevData, firstname: e.target.value}))
+                                setFrontDeskData(prevData => ({...prevData, firstname: e.target.value}))
                             }}
                             onFocus={handleFocus}
                             onBlur={handleBlur}
@@ -41,9 +36,9 @@ const AddAdminForm = ({close, handleSubmit}) => {
                             className='input'
                             type="text"
                             name="lastname"
-                            value={adminData.lastname}
+                            value={frontDeskData.lastname}
                             onChange={(e) => {
-                                setAdminData(prevData => ({...prevData, lastname: e.target.value}))
+                                setFrontDeskData(prevData => ({...prevData, lastname: e.target.value}))
                             }}
                             onFocus={handleFocus}
                             onBlur={handleBlur}
@@ -58,9 +53,9 @@ const AddAdminForm = ({close, handleSubmit}) => {
                             className='input'
                             type="text"
                             name="email"
-                            value={adminData.email}
+                            value={frontDeskData.email}
                             onChange={(e) => {
-                                setAdminData(prevData => ({...prevData, email: e.target.value}))
+                                setFrontDeskData(prevData => ({...prevData, email: e.target.value}))
                             }}
                             onFocus={handleFocus}
                             onBlur={handleBlur}
@@ -80,4 +75,4 @@ const AddAdminForm = ({close, handleSubmit}) => {
 
 }
 
-export default AddAdminForm
+export default AddFrontDeskForm

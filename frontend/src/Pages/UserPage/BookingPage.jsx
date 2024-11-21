@@ -28,6 +28,10 @@ const BookingPage = () => {
     }
 
     useEffect(() => {
+        document.title = "Book Flight";
+    },[])
+
+    useEffect(() => {
         setBookings(booking(decodedData.flights.map(flight => ({
             id: flight.id, 
             price: flight.price, 
@@ -81,8 +85,6 @@ const BookingPage = () => {
             }else{
                 setCurrentPassenger(prev => prev + 1);
             }
-
-            window.scrollTo({ top: 0, behavior: 'smooth' })
         }
     }
 
@@ -98,12 +100,13 @@ const BookingPage = () => {
                     case 'Gold':
                         price += 3000;
                 }
+
                 const passenger = {
                     firstname: '',
                     lastname: '',
                     dateOfBirth: '',
                     type: passengerType,
-                    price: price,
+                    price: passengerType === 'Child' ?  price - (price * 0.05) : price ,
                     nationality: '',
                     countryOfIssue: '',
                 }

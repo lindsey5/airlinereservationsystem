@@ -18,7 +18,7 @@ const FareTypes = ({setFareType}) => {
                     <h2>Silver Tier</h2>
                     <hr />
                     <h3>+ PHP 1120.00 / passenger</h3>
-                    <p>Not refundable</p>
+                    <p>Non-refundable</p>
                     <p>Limited Lounge Access</p>
                     <p>1 piece of hand-carry baggage (max 7kg)</p>
                     <p>1 checked baggage (max 20kg)</p>

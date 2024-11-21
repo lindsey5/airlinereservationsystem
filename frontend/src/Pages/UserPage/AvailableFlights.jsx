@@ -13,6 +13,10 @@ const AvailableFlights = () => {
     const {data, loading} = useFetch(`/api/flight/flights/available?limit=${limit}&&selectedClass=${selectedClass}`)
     const navigate = useNavigate();
 
+    useEffect(() => {
+        document.title = "Available Flights";
+    },[])
+
     useEffect(() =>{
         if(data){
             setFlights(data);

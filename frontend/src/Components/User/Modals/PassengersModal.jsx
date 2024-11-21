@@ -4,12 +4,14 @@ import { formatPrice } from '../../../utils/formatPrice'
 
 const PassengersModal = ({flight, close}) => {
 
-    console.log(flight)
-
     return(
         <div className="passengers-modal-container">
             {flight && 
             <div className="modal">
+                <div>
+                    <img src="/icons/tcu_airlines-logo (2).png" alt="" />
+                    <h3>CLOUDPEAK <span>AIRLINES</span></h3>
+                </div>
                 <p>Flight No: {flight.flightNumber}</p>
                 <p>Gate Number: {flight.gate_number}</p>
                 <p>Booking Ref: {flight.bookingRef}</p>

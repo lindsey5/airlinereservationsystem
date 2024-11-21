@@ -1,4 +1,5 @@
 import { useNavigate } from "react-router-dom"
+import { useEffect } from "react"
 import ButtonsContainer from "../../Components/Search/ButtonsContainer"
 import SearchForms from "../../Components/Search/SearchForms"
 import SelectContainer from "../../Components/Search/SelectContainer"
@@ -6,6 +7,11 @@ import './FrontDeskSearchPage.css'
 
 const FrontDeskSearchPage = () => {
     const navigate = useNavigate();
+
+    useEffect(() => {
+        document.title = "Book Flight | Front Desk";
+    },[])
+    
     return(
         <div className="frontdesk-search-page">
             <div>

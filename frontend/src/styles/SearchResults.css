@@ -1,5 +1,4 @@
 .search-results{
-    width: 100%;
     min-height: calc(100vh - 80px);
     display: flex;
     background-color: rgb(235, 235, 235);
