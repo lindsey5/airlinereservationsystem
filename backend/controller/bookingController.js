@@ -1,10 +1,8 @@
-import { query } from "express";
 import Booking from "../model/Booking.js";
 import { errorHandler } from "../utils/errorHandler.js"
 
 export const getBookings = async (req, res) => {
     const user_id = req.userId;
-    const limit = req.query.limit || 10;
 
     try{
         const bookings = await Booking.find({
@@ -19,7 +17,8 @@ export const getBookings = async (req, res) => {
                     (req.query.filter === 'Upcoming' && 
                         (booking.flights[i].departure.time < new Date() || 
                         booking.flights[i].status !== 'Booked'))
-                    || (req.query.filter === 'Completed' && booking.flights[i].status !== 'Completed')
+                    || (req.query.filter === 'Completed' && booking.flights[i].status !== 'Completed') ||
+                    (req.query.filter === 'In-Flight' && booking.flights[i].status !== 'In-Flight')
                     ){
                     booking.flights.splice(i, 1);
                 }

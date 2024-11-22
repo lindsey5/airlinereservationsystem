@@ -31,7 +31,6 @@ const GenerateSeats = ({flightData, close}) =>{
     const [showPassenger, setShowPassenger] = useState(false);
     const [state, dispatch] = useReducer(passengerReducer, passengerState)
     const [letters, setLetters] = useState([]);
-    const [selectSeats, setSelectSeats] = useState(false);
     let index = 0;
     const passengerRef = useRef();
 
@@ -117,7 +116,7 @@ const GenerateSeats = ({flightData, close}) =>{
                 <h2>Passenger Information</h2>
                 <div>
                 <p>Name: {state.name}</p>
-                <p>Flight Price: {formatPrice(state.flightPrice)} ({state.type})</p>
+                <p>Amount Paid: {formatPrice(state.flightPrice)} ({state.type})</p>
                 <p>Class: {state.flightClass}</p>
                 <p>Tier: {state.fareType}</p>
                 <p>Seat: {state.seatNumber}</p>
@@ -156,7 +155,7 @@ const GenerateSeats = ({flightData, close}) =>{
                                 <>
                                 <button 
                                     onClick={() => 
-                                        seat.status === 'booked' ? 
+                                        seat.status === 'reserved' ? 
                                         handleShowPassenger({
                                             ...seat.passenger, 
                                             flightClass: classObj.className,
@@ -164,10 +163,10 @@ const GenerateSeats = ({flightData, close}) =>{
                                         }) : ''}
                                     className='seat'
                                     key={seat._id} 
-                                    disabled={selectSeats || seat.status === 'booked' ? false : true}
+                                    disabled={seat.status === 'reserved' ? false : true}
                                     value={seat.seatNumber}
                                 >
-                                {seat.status === 'booked' && <img className='check' src="/icons/check (3).png" alt="" />}
+                                {seat.status === 'reserved' && <img className='check' src="/icons/check (3).png" alt="" />}
                                 <img src={`/icons/${classObj.className}-seat.png`}/>
                                 </button>
                                 {position % columns[index] === 0 && position !== sumOfColumns && 

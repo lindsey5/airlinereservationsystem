@@ -26,7 +26,7 @@ const BookingSchema = new Schema({
             flightNumber: { type: String, required: true },
             gate_number: { type: String, required: true},
             passengers: { type: [PassengerSchema], required: true},
-            status: { type: String, enum: ['Booked', 'Cancelled', 'Completed'], default: 'Booked', required: true},
+            status: { type: String, enum: ['Booked', 'Cancelled', 'Completed', 'In-Flight'], default: 'Booked', required: true},
         }], required: true
     },
     class: { type: String, required: true},

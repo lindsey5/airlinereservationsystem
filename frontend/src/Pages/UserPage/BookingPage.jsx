@@ -4,6 +4,7 @@ import { createPaymentLink } from "../../Service/paymentService";
 import SeatSelection from "../../Components/Seats/SeatSelection";
 import FareTypes from "../../Components/Booking/FareTypes";
 import PassengerForms from "../../Components/Booking/PassengerForms";
+import PaymentSummary from "../../Components/Booking/PaymentSummary";
 
 const BookingPage = () => {
     const queryParams = new URLSearchParams(window.location.search);
@@ -58,17 +59,18 @@ const BookingPage = () => {
     }, [bookings])
 
     const handleBooking = async () => {
-        if(fareType === 'Bronze'){
-            const response = await createPaymentLink(bookings);
-            response ? window.location.href = response.data.attributes.checkout_url : alert('Payment failed')
-        }else{
-            setCurrentPassenger(0);
-            setShowSeats(true);
+        if(confirm('Click ok to continue')){
+            if(fareType === 'Bronze'){
+                const response = await createPaymentLink(bookings);
+                response ? window.location.href = response.data.attributes.checkout_url : alert('Payment failed')
+            }else{
+                setCurrentPassenger(0);
+                setShowSeats(true);
+            }
         }
     }
 
     const handleSelectedSeat = async (seatNumber) => {
-        if(confirm('Click ok to continue')){
             bookings.flights[currentFlightIndex].passengers[currentPassenger].seatNumber = seatNumber;
             if(bookings.flights[currentFlightIndex].passengers.length - 1 === currentPassenger){
                 if(currentFlightIndex === bookings.flights.length -1){
@@ -85,7 +87,6 @@ const BookingPage = () => {
             }else{
                 setCurrentPassenger(prev => prev + 1);
             }
-        }
     }
 
     const handlePassengers = (e) => {
@@ -170,7 +171,7 @@ const BookingPage = () => {
                     currentPassenger={currentPassenger}
                     bookings={bookings}
                     setBookings={setBookings}
-                    handleBooking={handleBooking}
+                    submit={handleBooking}
                 />}
                 { showSeats && 
                 <SeatSelection 

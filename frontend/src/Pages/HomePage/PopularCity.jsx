@@ -26,7 +26,7 @@ const PopularCity = ({elementsRef}) => {
             const response = await fetch(`https://pixabay.com/api/?key=46701607-d51d8d8ab7e9bf8a22e03cd3c&q=${city} city ${country}&image_type=photo`);
             if(response.ok){
                 const result = await response.json();
-                return result.hits[1].largeImageURL;
+                return result.hits[0].largeImageURL;
             }
         }catch(err){
             console.error(err)

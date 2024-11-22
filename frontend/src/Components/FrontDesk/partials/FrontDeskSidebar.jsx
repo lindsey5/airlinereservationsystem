@@ -1,10 +1,15 @@
 import '../../styles/sidebar.css'
 import { Link } from 'react-router-dom';
+import { useLogout } from '../../../hooks/useLogout';
+import { useContext } from 'react';
+import { SideBarContext } from '../../../Context/sideBarContext';
 
 const FrontDeskSideBar = () => {
+    const logout = useLogout();
+    const { showSideBar } = useContext(SideBarContext);
 
     return (
-        <section className="sidebar">
+        <section className={`sidebar ${showSideBar ? 'show' : ''}`}>
             <ul>
                 <Link to={'flights'}>
                     <li>
@@ -16,6 +21,12 @@ const FrontDeskSideBar = () => {
                     <li>
                     <img src="/icons/appointment.png" alt="" />
                     Book Flight
+                    </li>
+                </Link>
+                <Link onClick={logout}>
+                    <li>
+                    <img src="/icons/logout.png" alt="" />
+                    Log out
                     </li>
                 </Link>
             </ul>

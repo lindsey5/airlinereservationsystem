@@ -4,7 +4,7 @@
     border-right: 2px solid rgb(235, 235, 235);
     display: flex;
     width: 200px;
-    z-index: 1;
+    z-index: 2;
     flex-direction: column;
     position: fixed;
     top: 0;
@@ -40,4 +40,15 @@
     width: 30px;
     height: 30px;
     margin-right: 20px;
+}
+
+
+@media screen and (max-width: 768px) {
+    .sidebar{
+        display: none;
+    }
+
+    .sidebar.show{
+        display: flex;
+    }
 }

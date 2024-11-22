@@ -115,10 +115,10 @@
     text-align: center;
 }
 
-.user-bookings .Booked{
+.user-bookings .Booked,
+.user-bookings .In{
     background-color: rgb(231, 231, 255);
     color: rgb(74, 74, 255);
-    padding: 2px;
     text-align: center;
 }
 

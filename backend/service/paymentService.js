@@ -1,3 +1,4 @@
+import Payment from "../model/Payment.js";
 
 export const getPaymentId = async (checkout_id) => {
     try{
@@ -5,7 +6,7 @@ export const getPaymentId = async (checkout_id) => {
             method: 'GET',
             headers: {
               accept: 'application/json',
-              authorization: 'Basic c2tfdGVzdF9EYllaMVRHYTlFcGFBZzVwVmdHM1NDdTk6'
+              authorization: `Basic ${process.env.PAYMONGO_KEY}`
             }
           };
           
@@ -19,7 +20,6 @@ export const getPaymentId = async (checkout_id) => {
         console.log(err)
         return null
     }
-
 }
 
 export const refundPayment = async (payment_id, amount) => {
@@ -29,7 +29,7 @@ export const refundPayment = async (payment_id, amount) => {
             headers: {
               accept: 'application/json',
               'content-type': 'application/json',
-              authorization: 'Basic c2tfdGVzdF9EYllaMVRHYTlFcGFBZzVwVmdHM1NDdTk6'
+              authorization: `Basic ${process.env.PAYMONGO_KEY}`
             },
             body: JSON.stringify({
               data: {
@@ -46,9 +46,44 @@ export const refundPayment = async (payment_id, amount) => {
           if(response.ok){
             return await response.json();
           }
-
+          console.log(await response.json())
           return null
     }catch(err){
         return null
     }
+}
+
+export const createPayment = async (data, booking_id) => {
+      data.flights.forEach(async (flight) => {
+        const paymentDetails = [
+            {amount: 1500, name: 'Fuel Surcharge', quantity: flight.passengers.length},
+            {amount: 600, name: 'VAT', quantity: flight.passengers.length},
+            {amount: 687.50, name: 'Passenger Service Charge', quantity: flight.passengers.length},
+            {amount: 850, name: 'Terminal Fee', quantity: flight.passengers.length},
+            {amount: 30, name: 'Aviation Security Fee', quantity: flight.passengers.length},
+            {amount: 1344, name: 'Administration Fee', quantity: 1}
+        ]
+        flight.passengers.forEach(passenger=> {
+            const item = {
+                amount: passenger.price, 
+                name: `${flight.destination}-${passenger.type} (${data.fareType} Tier)`, 
+                quantity: 1
+            }
+            const isExist = paymentDetails.find(paymentDetail => paymentDetail.name === item.name)
+
+            if(isExist){
+                isExist.quantity += 1;
+            }else{
+                paymentDetails.push(item)
+            }
+        })
+        const total_amount = paymentDetails.reduce((total, paymentDetail) => total + (paymentDetail.amount * paymentDetail.quantity), 0)
+        const payment = await Payment.create({
+            booking_id: booking_id,
+            flight_id: flight.id,
+            total_amount, 
+            line_items: paymentDetails
+        })
+        await payment.save();
+      })
 }

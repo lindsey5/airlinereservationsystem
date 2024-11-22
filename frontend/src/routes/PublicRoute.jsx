@@ -19,7 +19,7 @@ const PublicRoute = () => {
     }
 
     if (user) {
-      const navigateTo = user === 'user' ? "/user/home" : "/admin/dashboard";
+      const navigateTo = user === 'user' ? "/user/home" : user === 'admin' ? "/admin/dashboard" : '/frontdesk/flights';
       return <Navigate to={navigateTo} />;
     }
 

@@ -1,8 +1,21 @@
-import './PassengersModal.css'
+import './FlightModal.css'
 import { formatDate } from "../../../utils/dateUtils"
 import { formatPrice } from '../../../utils/formatPrice'
+import { useNavigate } from 'react-router-dom'
 
-const PassengersModal = ({flight, close}) => {
+const FlightModal = ({flight, close}) => {
+    const navigate = useNavigate();
+
+    const utf8ToBase64 = (str) => {
+        // Create a UTF-8 encoded byte array from the string
+        const encoder = new TextEncoder();
+        const uint8Array = encoder.encode(str);
+    
+        // Convert the byte array to a Base64 encoded string
+        let binary = '';
+        uint8Array.forEach(byte => binary += String.fromCharCode(byte));
+        return btoa(binary);
+    }
 
     return(
         <div className="passengers-modal-container">
@@ -70,4 +83,4 @@ const PassengersModal = ({flight, close}) => {
     )
 }
 
-export default PassengersModal
+export default FlightModal

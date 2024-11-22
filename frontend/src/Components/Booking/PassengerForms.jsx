@@ -1,8 +1,44 @@
 import { useState, useEffect } from 'react';
 import './PassengerForms.css';
+import PaymentSummary from './PaymentSummary';
 
-const PassengerForms = ({setCurrentPassenger, currentPassenger, bookings, setBookings, handleBooking}) => {
+const PassengerForms = ({setCurrentPassenger, currentPassenger, bookings, setBookings, submit}) => {
     const [isValid, setIsValid] = useState(false);
+    const [showSummary, setShowSummary] = useState(true);
+    const [lineItems, setLineItems] = useState();
+
+    const handlePaymentSummary = () => {
+        const line_items = [
+            {currency: 'PHP', amount: 1500, name: 'Fuel Surcharge', quantity: bookings.flights.length * bookings.flights[0].passengers.length},
+            {currency: 'PHP', amount: 687.50, name: 'Passenger Service Charge', quantity: bookings.flights.length * bookings.flights[0].passengers.length},
+            {currency: 'PHP', amount: 850, name: 'Terminal Fee', quantity: bookings.flights.length * bookings.flights[0].passengers.length},
+            {currency: 'PHP', amount: 30, name: 'Aviation Security Fee', quantity: bookings.flights.length * bookings.flights[0].passengers.length},
+            {currency: 'PHP', amount: 1344, name: 'Administration Fee', quantity: 1},
+            {currency: 'PHP', amount: 600, name: 'VAT', quantity: bookings.flights.length * bookings.flights[0].passengers.length}
+        ];
+        bookings.flights.forEach(flight => {
+            flight.passengers.forEach(passenger=> {
+                const item = {
+                    currency: 'PHP',
+                    amount: passenger.price, 
+                    name: `${flight.destination}-${passenger.type} (${bookings.fareType} Tier)`, 
+                    quantity: 1
+                }
+                const isExist = line_items.find(line_item => line_item.name === item.name)
+
+                if(isExist){
+                    isExist.quantity += 1;
+                }else{
+                    line_items.push(item)
+                }
+            })
+        })
+        setLineItems(line_items);
+    }
+
+    useEffect(() => {
+        handlePaymentSummary();
+    }, [bookings])
 
     const setPassengerDetail = (e, type) => {
         e.preventDefault();
@@ -32,8 +68,12 @@ const PassengerForms = ({setCurrentPassenger, currentPassenger, bookings, setBoo
 
     return(
         <div className="passenger-forms">
+            {showSummary && <PaymentSummary line_items={lineItems} close={() => setShowSummary(false)}/>}
             <div className='container'>
+                <div>
                 <h1>Passenger Details</h1>
+                <button className='payment-summary-btn' onClick={() => setShowSummary(true)}>Show Payment Summary</button>
+                </div>
                 <div className='passenger-details-container'>
                     <div className='side-bar'>
                     {Array.from({ length: bookings.flights[0].passengers.length }, (_, i) => (
@@ -97,7 +137,7 @@ const PassengerForms = ({setCurrentPassenger, currentPassenger, bookings, setBoo
                     </div>
                 </div>
                 <button 
-                    onClick={handleBooking}
+                    onClick={submit}
                     className='book-btn' 
                     type='submit' disabled={isValid ? false : true}
                 >Book Flight</button>

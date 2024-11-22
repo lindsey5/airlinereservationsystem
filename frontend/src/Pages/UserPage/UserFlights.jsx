@@ -2,13 +2,13 @@ import { useState } from "react"
 import useFetch from "../../hooks/useFetch"
 import './UserFlights.css'
 import { formatDate } from "../../utils/dateUtils"
-import PassengersModal from "../../Components/User/Modals/PassengersModal"
+import FlightModal from "../../Components/User/Modals/FlightModal"
 import { useEffect } from "react"
 import ErrorCancelModal from "../../Components/User/Modals/ErrorCancelModal"
 
 const UserFlights = () => {
     const [flights, setFlights] = useState([]);
-    const [showPassengers, setShowPassengers] = useState(false);
+    const [showFlight, setShowFlight] = useState(false);
     const [selectedFlight, setSelectedFlight] = useState();
     const [title, setTitle] = useState('All');
     const [showCancelError, setShowCancelError] = useState(false);
@@ -48,8 +48,8 @@ const UserFlights = () => {
         setLimit(5)
     }, [title])
 
-    const handlePassengers = (flight) => {
-        setShowPassengers(true);
+    const handleFlight = (flight) => {
+        setShowFlight(true);
         setSelectedFlight(flight)
     }
 
@@ -98,13 +98,14 @@ const UserFlights = () => {
     return(
         <div className="user-bookings">
             {showCancelError && <ErrorCancelModal close={() => setShowCancelError(false)}/>}
-            {showPassengers && <PassengersModal flight={selectedFlight} close={() => setShowPassengers(false)}/>}
+            {showFlight && <FlightModal flight={selectedFlight} close={() => setShowFlight(false)}/>}
             <div className="container">
             <div>
-                <h2>{title} Flights</h2>
+                <h1>{title} Flights</h1>
                 <select onChange={handleFilter}>
                     <option value="All">All</option>
                     <option value="Upcoming">Upcoming</option>
+                    <option value="In-Flight">In-Flight</option>
                     <option value="Cancelled">Cancelled</option>
                     <option value="Completed">Completed</option>
                 </select>
@@ -140,10 +141,10 @@ const UserFlights = () => {
                             </div>
                         </div>
                         <div>
-                            <button onClick={() => handlePassengers(flight)}>
+                            <button onClick={() => handleFlight(flight)}>
                                 <img src="/icons/eye (1).png" alt="" />
                             </button>
-                            {flight.status === 'Booked' && flight.passengers[0].fareType === 'Gold' && 
+                            {!flight.departure.time <= new Date() && flight.status === 'Booked' && flight.passengers[0].fareType === 'Gold' && 
                             <button onClick={() => cancelFlight({bookId: flight.bookId, flightId: flight.id})}>
                                 <img src="/icons/cancel.png" alt="cancel" />
                             </button>}
@@ -155,7 +156,7 @@ const UserFlights = () => {
             {flights.length < 1 && <div className="no-flights">
                         <div>
                             <img src="/icons/no-travelling.png" alt="" />
-                            <h2>You don't have {title !== 'All' && title + ' '}Flights yet</h2>
+                            <h2>You don't have {title !== 'All' && title + ' '}Flights</h2>
                         </div>
                     </div>}
             </div>

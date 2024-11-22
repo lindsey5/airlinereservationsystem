@@ -2,7 +2,7 @@ import { fetchUserType } from "../hooks/fetchUserType";
 import { useState, useEffect} from "react";
 import { Outlet, Navigate } from "react-router-dom";
 
-const UserRoute = () => {
+const FrontDeskRoute = () => {
     const [user, setUser] = useState(null);
     const [loading, setLoading] = useState(true);
 
@@ -17,8 +17,8 @@ const UserRoute = () => {
     if (loading) {
       return null;
     }
-    
-    return user === 'user' ? <Outlet /> : <Navigate to="/" />;
+
+    return user === 'front-desk' ? <Outlet /> : <Navigate to="/" />;
 };
 
-export default UserRoute
+export default FrontDeskRoute

@@ -1,7 +1,7 @@
 .search-results{
     min-height: calc(100vh - 80px);
     display: flex;
-    background-color: rgb(235, 235, 235);
+    background-color: rgb(247, 247, 247);
     justify-content: center;
 }
 
@@ -39,6 +39,8 @@
     box-sizing: border-box;
     border-radius: 15px;
     margin: 20px 0;
+    box-shadow: 0 0 5px 2px rgb(199, 199, 199);
+    border: 1px solid rgb(219, 219, 219);
 }
 
 .search-results .search-details{

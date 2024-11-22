@@ -1,36 +1,37 @@
-import React, { useState } from 'react';
+import React, { useRef, useState } from 'react';
 import './AdminLoginStyle.css';
-import axios from 'axios';
 import { handleBlur, handleFocus } from '../../utils/handleInput';
+import {useAdminLogin, useFrontDeskLogin} from '../../hooks/useLogin';
 
 function AdminLogin() {
     const [employeeId, setEmpId] = useState('');
     const [password, setPassword] = useState('');
     const [error, setError] = useState('');
+    const [userType, setUserType] = useState('Admin');
+    const userTypeRef = useRef([]);
 
     const handleLogin = async () => {
-        try {
-            // Send a POST request to your Node.js server
-            const response = await axios.post('/api/admin/login', {
-                employeeId,
-                password,
-            });
-
-            if(response.data.id){
-                window.location.reload();
-            }
-        } catch (error) {
-            setError(error.response.data.errors[0])
-            console.error('Error logging in:', error);
-        }
+        userType === 'Admin' ? await useAdminLogin(employeeId, password, setError) : await useFrontDeskLogin(employeeId, password, setError);
     }
 
+    const handleUserType = (index, typeOfUser) => {
+        for(let i =0; i < userTypeRef.current.length; i++){
+            userTypeRef.current[i].classList.remove('selected');
+        }
+        userTypeRef.current[index].classList.add('selected')
+        setUserType(typeOfUser)
+        setError('');
+    }
 
     return(
         <div className='admin-login-page'>
                 <div className='login-container'>
                     <img src="/icons/user (2).png" alt="" />
-                    <h1>Admin Login</h1>
+                    <h2>{userType} Login</h2>
+                    <div className='user-btn-container'>
+                        <button className='selected' ref={(e) => userTypeRef.current[0] = e} onClick={() => handleUserType(0, 'Admin')}>Admin</button>
+                        <button ref={(e) => userTypeRef.current[1] = e} onClick={() => handleUserType(1, 'Front Desk')}>Front Desk</button>
+                    </div>
                     {error && <p>{error}</p>}
                     <div>
                         <div className='input-container'>
@@ -58,7 +59,7 @@ function AdminLogin() {
                         <span>Password</span>
                     </div>
                 </div>
-                <button onClick={handleLogin}>LOG IN</button>
+                <button className='login-btn' onClick={handleLogin}>LOG IN</button>
             </div>
         </div>
     );

@@ -70,7 +70,6 @@ const SearchForms = () =>{
                 flag = false;
             }
         });
-        console.log(flag)
         dispatch({type: 'SET_VALIDATION', payload: flag})
     }, [state.flights]);
 

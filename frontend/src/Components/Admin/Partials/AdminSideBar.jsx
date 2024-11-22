@@ -1,12 +1,15 @@
 import { useLogout } from '../../../hooks/useLogout';
 import '../../styles/sidebar.css'
 import { Link } from 'react-router-dom';
+import { useContext } from 'react';
+import { SideBarContext } from '../../../Context/sideBarContext';
 
 const AdminSideBar = () => {
     const logout = useLogout();
+    const { showSideBar } = useContext(SideBarContext);
 
     return (
-        <section className="sidebar">
+        <section className={`sidebar ${showSideBar ? 'show' : ''}`}>
             <ul>
                 <Link to={'dashboard'}>
                     <li>

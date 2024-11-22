@@ -2,7 +2,25 @@
     width: 100%;
     display: flex;
     justify-content: center;
-    padding: 30px 0;
+    padding: 30px 20px;
+    box-sizing: border-box;
+}
+
+.passenger-forms > .container > div:first-child{
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    width: 100%;
+}
+
+.passenger-forms .payment-summary-btn{
+    background-color: rgb(247, 247, 247);
+    border: none;
+    color: #ff3131;
+    font-size: 16px;
+    cursor: pointer;
+    position: relative;
+    text-decoration: underline;
 }
 
 .passenger-forms .passenger-details-container{
@@ -84,18 +102,6 @@
     outline: none;
 }
 
-.passenger-forms .checkbox{
-    display: flex;
-    align-items: center;
-    width: 400px;
-
-}
-
-.passenger-forms .checkbox input{
-    margin: 0;
-}
-
-
 .passenger-forms .book-btn{
     padding: 10px 50px;
     float: right;
@@ -113,3 +119,8 @@
     background-color: #ff9c9c;
 }
 
+@media screen and (max-width: 850px) {
+    .passenger-forms{
+        justify-content: start;
+    }
+}

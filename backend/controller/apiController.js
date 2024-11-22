@@ -10,6 +10,7 @@ import Booking from '../model/Booking.js';
 import Admin from '../model/Admin.js';
 import { get_incomes_today, get_incomes_per_month } from '../service/incomesService.js';
 import {get_bookings_per_month} from '../service/bookingService.js';
+import FrontDeskAgent from '../model/FrontDeskAgent.js';
 dotenv.config();
 
 const url = process.env.NODE_ENV === 'production' ? 'https://airlinereservationsystem.onrender.com' : 'http://localhost:5173';
@@ -82,19 +83,19 @@ export const getCities = async (req, res) => {
 export const createPaymentLink = async (req, res) => {
     try{
         const line_items = [
-            {currency: 'PHP', amount: 2052 * 100, name: 'Fuel Surcharge', quantity: req.body.bookings.flights.length * req.body.bookings.flights[0].passengers.length},
-            {currency: 'PHP', amount: 687.50 * 100, name: 'PH Passenger Service Charge', quantity: req.body.bookings.flights.length * req.body.bookings.flights[0].passengers.length},
-            {currency: 'PHP', amount: 1296 * 100, name: 'PH-VAT', quantity: req.body.bookings.flights.length * req.body.bookings.flights[0].passengers.length},
-            {currency: 'PHP', amount: 82.50 * 100, name: 'PH PSC Value Added Tax', quantity: req.body.bookings.flights.length * req.body.bookings.flights[0].passengers.length},
+            {currency: 'PHP', amount: 1500 * 100, name: 'Fuel Surcharge', quantity: req.body.bookings.flights.length * req.body.bookings.flights[0].passengers.length},
+            {currency: 'PHP', amount: 687.50 * 100, name: 'Passenger Service Charge', quantity: req.body.bookings.flights.length * req.body.bookings.flights[0].passengers.length},
+            {currency: 'PHP', amount: 850 * 100, name: 'Terminal Fee', quantity: req.body.bookings.flights.length * req.body.bookings.flights[0].passengers.length},
             {currency: 'PHP', amount: 30 * 100, name: 'Aviation Security Fee', quantity: req.body.bookings.flights.length * req.body.bookings.flights[0].passengers.length},
-            {currency: 'PHP', amount: 1344 * 100, name: 'Administration Fee', quantity: 1}
+            {currency: 'PHP', amount: 1344 * 100, name: 'Administration Fee', quantity: 1},
+            {currency: 'PHP', amount: 600 * 100, name: 'VAT', quantity: req.body.bookings.flights.length * req.body.bookings.flights[0].passengers.length}
         ];
         req.body.bookings.flights.forEach(flight => {
             flight.passengers.forEach(passenger=> {
                 const item = {
                     currency: 'PHP',
                     amount: passenger.price * 100, 
-                    name: `${flight.destination} (${passenger.type}) `, 
+                    name: `${flight.destination}-${passenger.type} (${req.body.bookings.fareType} Tier)`, 
                     quantity: 1
                 }
                 const isExist = line_items.find(line_item => line_item.name === item.name)
@@ -133,7 +134,7 @@ export const createPaymentLink = async (req, res) => {
         if(response.ok){
             const result = await response.json();
             const checkoutDataToken = jwt.sign({
-                data: req.body.bookings.flights, 
+                flights: req.body.bookings.flights, 
                 class: req.body.bookings.class,
                 fareType: req.body.bookings.fareType, 
                 checkout_id: result.data.id,
@@ -160,11 +161,16 @@ export const getUser = async(req, res) => {
                 
                 const user = await User.findById(decodedToken.id);
                 const admin = await Admin.findById(decodedToken.id);
+                const frontDesk = await FrontDeskAgent.findById(decodedToken.id);
                 if(user){
                     return res.status(200).json({user: 'user'});
                 }
                 if(admin){
                     return res.status(200).json({user: 'admin'});
+                }
+
+                if(frontDesk){
+                    return res.status(200).json({user: 'front-desk'});
                 }
 
                 return res.status(401).json({ error: 'No token found' });

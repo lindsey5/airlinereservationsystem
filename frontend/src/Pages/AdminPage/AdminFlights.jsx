@@ -48,6 +48,24 @@ const AdminFlights = () => {
     const completeFlight = async (flightId) => {
         try{
             if(confirm('Flight completed?')){
+                 const response = await fetch(`/api/flight/${flightId}/complete`,{
+                 method: 'PUT',
+                 headers: {
+                     'Content-Type': 'application/json',
+                 },
+                 })
+                 if(response.ok){
+                     window.location.reload();
+                 }
+            }
+         }catch(err){
+             console.error(err)
+         }
+    }
+
+    const updateFlight = async (flightId) => {
+        try{
+            if(confirm('Set flight status to in-flight?')){
                  const response = await fetch(`/api/flight/${flightId}`,{
                  method: 'PUT',
                  headers: {
@@ -101,8 +119,8 @@ const AdminFlights = () => {
                                 <td>{arrivalTime}</td>
                                 {dataStatus(flight.status)}
                                 <td>
-                                    {flight.status === 'Scheduled' &&
-                                    <button onClick={() => completeFlight(flight._id)}>
+                                    {flight.status !== 'Completed' && flight.status !== 'Cancelled' &&
+                                    <button onClick={() => flight.status === 'Scheduled' ? updateFlight(flight._id) : completeFlight(flight._id)}>
                                         <img src="/icons/check.png" alt="" />
                                     </button>
                                     }

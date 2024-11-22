@@ -179,3 +179,29 @@ export const multi_city_search = async (searchSegments, flightClass, price) => {
 
     return sortedFlights;
 };
+
+
+export const reserveSeats = async (data) =>{
+    for (const flight of data.flights) {
+        for (const passenger of flight.passengers) {
+            const available_flight = await Flight.findOne({
+                _id: flight.id,
+                'classes.className': data.class,
+            });
+
+            // Find the index of the class matching the given class name
+            const classIndex = available_flight.classes.findIndex(classObj => classObj.className === data.class);
+
+            // Find the seat index that matches the passenger's seatNumber or available status
+            const seatIndex = available_flight.classes[classIndex].seats.findIndex(seat => passenger.seatNumber 
+                ? passenger.seatNumber === seat.seatNumber
+                : seat.status === 'available');
+
+            available_flight.classes[classIndex].seats[seatIndex].status = 'reserved';
+            passenger.seatNumber = available_flight.classes[classIndex].seats[seatIndex].seatNumber;
+            available_flight.classes[classIndex].seats[seatIndex].passenger = passenger;
+
+            await available_flight.save();
+        }
+    }
+}

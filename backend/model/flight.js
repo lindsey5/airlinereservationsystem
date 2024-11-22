@@ -6,7 +6,7 @@ const Schema = mongoose.Schema;
 export const FlightSchema = new Schema({
     flightNumber: { type: String, unique: true },
     airline: { type: String,required: true, },
-    status: { type: String, default: 'Scheduled'},
+    status: { type: String, default: 'Scheduled', enum: ['Scheduled', 'Cancelled', 'In-Flight', 'Completed']},
     gate_number: { type: String, required: true}, 
     departure: {
         airport: { type: String, required: true, },

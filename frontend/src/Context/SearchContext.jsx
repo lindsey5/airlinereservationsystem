@@ -17,8 +17,6 @@ const SearchReducer = (state, action) => {
             return { ...state, flights: toggleShowCountries(state, action) };
         case 'TOGGLE_SHOW_CITIES': 
             return { ...state, flights: toggleShowCities(state, action) };
-        case 'SET_CITIES':
-            return { ...state, flights: setCities(state, action)}
         case 'SET_COUNTRY':
             return {...state, flights: action.flights};
         case 'SET_CITY':
@@ -44,7 +42,6 @@ const SearchReducer = (state, action) => {
         case 'SET_VALIDATION':
             return {...state, isValid: action.payload}
         case 'SET_PRICE':
-            console.log(action.price)
             return {...state, price: action.price}
         case 'RESET': 
             return SearchState
@@ -69,7 +66,7 @@ export const SearchContextProvider = ({ children }) => {
         <SearchContext.Provider value={{ state, dispatch, setCountryAsync }}>
             {children}
         </SearchContext.Provider>
-    );
+    )
 };
 
 const setFlights = (state) => {
@@ -136,11 +133,10 @@ const setCountry = async (state, action) =>{
         
         i === action.index
             ? {
-                  ...flight,
-
-                  ...(action.route === 'from'
-                      ? { FromCountry: action.country, FromCities: cities, FromCity: null, showFromCountries: false, showFromCities: true}
-                      : { ToCountry: action.country, ToCities: cities, ToCity: null, showToCountries: false, showToCities: true}),
+                ...flight,
+                ...(action.route === 'from'
+                ? { FromCountry: action.country, FromCities: cities, FromCity: null, showFromCountries: false, showFromCities: true}
+                : { ToCountry: action.country, ToCities: cities, ToCity: null, showToCountries: false, showToCities: true}),
               }
             : flight
     )
@@ -162,7 +158,6 @@ const setCities = async (country) => {
         const response = await fetch(`/api/cities/${country}`);
         if (response.ok) {
             const result = await response.json();
-            console.log(result)
             return result;
         }
 
@@ -173,6 +168,8 @@ const setCities = async (country) => {
 }
 
 const setCity = (state, action) => {
+    console.log(action)
+    console.log(state.flights)
     const newFlights =  state.flights.map((flight, i) =>
         i === action.index
             ? {

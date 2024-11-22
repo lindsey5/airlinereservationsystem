@@ -39,13 +39,17 @@ import FrontDeskSearchPage from './Pages/FrontDesk/FrontDeskSearchPage';
 import FrontDeskAvailableFlights from './Pages/FrontDesk/FrontDeskAvailableFlight';
 import FrontDeskBookingPage from './Pages/FrontDesk/FrontDeskBookingPage';
 import FrontDeskAgents from './Pages/AdminPage/FrontDeskAgents';
+import FrontDeskLogin from './Pages/AuthPages/FrontDeskLogin';
+import FrontDeskRoute from './routes/FrontDeskRoute';
+import { SideBarContextProvider } from './Context/sideBarContext';
 
 const router = createBrowserRouter(
   createRoutesFromElements(
     <>
       <Route element={<PublicRoute />}>
         <Route path="/" element={<Home />} />
-        <Route path='/admin/login' element={<AdminLogin />} />
+        <Route path='/login' element={<AdminLogin />} />
+        <Route path='/frontdesk/login' element={<FrontDeskLogin />} />
         <Route path='/user/' >
           <Route path='login' element={<UserLogin />} />
           <Route path='signup' element={<UserSignup />} />
@@ -82,14 +86,16 @@ const router = createBrowserRouter(
         </Route>
       </Route>
 
-      <Route path='/frontdesk/'>
-        <Route element={<FrontDeskLayout />}>
-          <Route path='flights' element={<FrontDeskFlights />} />
-          <Route path='search-results' element={<FrontDeskSearchResults />} />
-          <Route path='booking' element={<FrontDeskBookingPage />} />
-          <Route path='flight/'>
-            <Route path='book' element={<FrontDeskSearchPage />} />
-            <Route path='available' element={<FrontDeskAvailableFlights />} />
+      <Route element={<FrontDeskRoute />}>
+        <Route path='/frontdesk/'>
+          <Route element={<FrontDeskLayout />}>
+            <Route path='flights' element={<FrontDeskFlights />} />
+            <Route path='search-results' element={<FrontDeskSearchResults />} />
+            <Route path='booking' element={<FrontDeskBookingPage />} />
+            <Route path='flight/'>
+              <Route path='book' element={<FrontDeskSearchPage />} />
+              <Route path='available' element={<FrontDeskAvailableFlights />} />
+            </Route>
           </Route>
         </Route>
       </Route>
@@ -102,7 +108,9 @@ const router = createBrowserRouter(
 createRoot(document.getElementById('root')).render(
   <StrictMode>
     <SearchContextProvider>
-      <RouterProvider router={router} />
+      <SideBarContextProvider>
+        <RouterProvider router={router} />
+      </SideBarContextProvider>
     </SearchContextProvider>
   </StrictMode>,
 )

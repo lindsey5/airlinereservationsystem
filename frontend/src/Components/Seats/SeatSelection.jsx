@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import useFetch from "../../hooks/useFetch"
 import './SeatSelection.css';
 
@@ -8,6 +8,7 @@ const SeatSelection = ({bookings, currentFlightIndex, currentPassenger, handleSe
     const [sumOfColumns, setSumOfColumns] = useState();
     const [columns, setColumns] = useState();
     const [letters, setLetters] = useState([]);
+    const seatsContainerRef = useRef();
     let index = 0;
     let num = 1;
 
@@ -55,10 +56,10 @@ const SeatSelection = ({bookings, currentFlightIndex, currentPassenger, handleSe
     return (
         <div className="seat-selection-container">
             {flight && sumOfColumns && 
-                <div className="seat-selection">
+                <div className="seat-selection" ref={seatsContainerRef}>
                     <div className="logo">
                         <img src="/icons/tcu_airlines-logo (2).png" alt="" />
-                        <h3>TCU <span>AIRLINES</span></h3>
+                        <h3>CLOUDPEAK <span>AIRLINES</span></h3>
                     </div>
                     <h2>Passenger #{currentPassenger + 1}</h2>
                     <p>Flight #{currentFlightIndex + 1}</p>
@@ -72,7 +73,6 @@ const SeatSelection = ({bookings, currentFlightIndex, currentPassenger, handleSe
                 {
                     flight.classes.map((classObj) => 
                         classObj.seats.map((seat) =>{
-                            
                             const position = seat.seatNumber.charAt(0).toUpperCase().charCodeAt(0) - 64;
                             if(position % columns[index] === 0 && position !== sumOfColumns){
                                 index ++;
@@ -80,7 +80,7 @@ const SeatSelection = ({bookings, currentFlightIndex, currentPassenger, handleSe
                                 index = 0;
                             }
 
-                            const isExist = bookings.flights[currentFlightIndex].passengers.find(passenger => passenger?.seatNumber === seat.seatNumber);
+                            const isReserved = bookings.flights[currentFlightIndex].passengers.find(passenger => passenger?.seatNumber === seat.seatNumber);
 
                             return (
                                 <>
@@ -88,10 +88,21 @@ const SeatSelection = ({bookings, currentFlightIndex, currentPassenger, handleSe
                                     className='seat'
                                     key={seat._id} 
                                     value={seat.seatNumber}
-                                    onClick={()=> handleSelectedSeat(seat.seatNumber)}
-                                    disabled={bookings.class !== classObj.className || seat?.passenger || isExist ? true : false}
+                                    onClick={async () => {
+                                        if (confirm('Click OK to continue')) {
+                                            await handleSelectedSeat(seat.seatNumber);
+                                            // Scroll to the element smoothly first
+                                            setTimeout(() => {
+                                                seatsContainerRef.current.scrollIntoView({
+                                                    behavior: 'smooth',
+                                                    block: 'start',
+                                                });
+                                              }, 10);
+                                        }
+                                      }}
+                                    disabled={bookings.class !== classObj.className || seat?.passenger || isReserved ? true : false}
                                 >
-                                <img src={`/icons/${bookings.class !== classObj.className || seat?.passenger || isExist ? 'close' : classObj.className + '-seat'}.png`}/>
+                                <img src={`/icons/${bookings.class !== classObj.className || seat?.passenger || isReserved ? 'close' : classObj.className + '-seat'}.png`}/>
                                 </button>
                                 {position % columns[index] === 0 && position !== sumOfColumns && <div style={{textAlign: 'center'}}>{num++}</div> }
                                 </>

@@ -34,7 +34,6 @@ const FareTypes = ({setFareType}) => {
                     <p>Fully refundable with no fees</p>
                     <p>Priority Check-in (skip the lines and check in faster with priority access)</p>
                     <p>Priority Baggage Handling (Get your checked baggage faster with priority baggage handling)</p>
-                    <p>Premium In-Flight Amenities</p>
                     <p>Unlimited Lounge Access</p>
                     <p>1 piece of hand-carry baggage (max 7kg)</p>
                     <p>1 checked baggage (max 20kg)</p>
