@@ -23,6 +23,12 @@ const FrontDeskSideBar = () => {
                     Book Flight
                     </li>
                 </Link>
+                <Link to={'flights/customer'}>
+                    <li>
+                    <img src="/icons/plane.png" alt="" />
+                    Customer Flights
+                    </li>
+                </Link>
                 <Link onClick={logout}>
                     <li>
                     <img src="/icons/logout.png" alt="" />

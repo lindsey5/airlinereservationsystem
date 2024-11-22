@@ -496,6 +496,7 @@ export const cancelFlight = async (req, res) => {
 
         // Iterate through the passengers for this flight and restore their seat status
         booking.flights[flightIndex].passengers.forEach(passengerObj => {
+            passengerObj.ticketStatus = 'Cancelled'
             // Find the class and seat index based on the class and seat number of the passenger
             const classIndex = flight.classes.findIndex(classObj => classObj.className === booking.class);
             const seatIndex = flight.classes[classIndex].seats.findIndex(seat => seat.seatNumber === passengerObj.seatNumber);
@@ -506,7 +507,6 @@ export const cancelFlight = async (req, res) => {
             // Restore the seat information by resetting the passenger data in the flight's seat array
             flight.classes[classIndex].seats[seatIndex] = { seatNumber, status, _id };
         });
-
         // Find the payment related to this booking and flight
         const payment = await Payment.findOne({ booking_id: bookId, flight_id: flightId });
         
@@ -535,9 +535,9 @@ export const cancelFlight = async (req, res) => {
                 throw new Error('Refund Failed');
             }
         }
-
+        console.log(booking)
         // Save the updated booking, flight, and payment entities to the database
-        await booking.save();
+        //await booking.save();
         await flight.save();
         await payment.save();
 
@@ -563,6 +563,62 @@ export const updateFlightStatus = async (req, res) => {
     }catch(err){
         console.log(err)
         const errors = errorHandler(err);  // Call the error handler to format the error
-        res.status(400).json(errors);  // Send a 400 error with the formatted errors
+        res.status(400).json({errors});  // Send a 400 error with the formatted errors
+    }
+}
+
+export const get_customer_flights = async (req, res) => {
+    // Parse page and limit values from query parameters (defaults if not provided)
+    const page = parseInt(req.query.page) || 1; 
+    const limit = parseInt(req.query.limit) || 10; 
+    const skip = (page - 1) * limit; 
+    // Capture the search term for filtering flights (if provided)
+    const searchTerm = req.query.searchTerm;
+    console.log(searchTerm)
+    try {
+        // If a search term is provided, construct the search criteria using regular expressions for flexible matching
+        const searchCriteria = searchTerm
+            ? {
+                $or: [
+                    // Searching in various fields such as departure and arrival airports, cities, countries, etc.
+                    { 'flights.id': { $regex: new RegExp(searchTerm, 'i') } },
+                    { 'flights.airline': { $regex: new RegExp(searchTerm, 'i') } },
+                    { 'flights.departure.airport': { $regex: new RegExp(searchTerm, 'i') } },
+                    { 'flights.departure.airport_code': { $regex: new RegExp(searchTerm, 'i') } },
+                    { 'flights.departure.country': { $regex: new RegExp(searchTerm, 'i') } },
+                    { 'flights.arrival.airport': { $regex: new RegExp(searchTerm, 'i') } },
+                    { 'flights.arrival.airport_code': { $regex: new RegExp(searchTerm, 'i') } },
+                    { 'flights.arrival.city': { $regex: new RegExp(searchTerm, 'i') } },
+                    { 'flights.arrival.country': { $regex: new RegExp(searchTerm, 'i') } },
+                    { 'flights.flightNumber': { $regex: new RegExp(searchTerm, 'i') } },
+                    { 'flights.gateNumber': { $regex: new RegExp(searchTerm, 'i') } },
+                    { 'flights.status': { $regex: new RegExp(searchTerm, 'i') } },
+                    { 'class': { $regex: new RegExp(searchTerm, 'i') } },
+                    { 'fareType': { $regex: new RegExp(searchTerm, 'i') } },
+                ]
+            }
+            : {}; 
+            const customerFlights = []
+            const bookings = await Booking.find(searchCriteria).sort({createdAt: -1});
+            bookings.forEach(booking => {
+                booking.flights.forEach(flight => {
+                    customerFlights.push({
+                        class: booking.class,    
+                        fareType: booking.fareType, 
+                        flight,
+                        bookingRef: booking._id,
+                        bookDate: booking.createdAt
+                      });
+                })
+            })
+            const totalPages = Math.ceil(customerFlights.length / limit);
+            res.status(200).json({
+                currentPage: page,
+                totalPages: totalPages,
+                flights: customerFlights.slice(skip, limit * (skip + 1))
+            });
+    }catch(err){
+        const errors= errorHandler(err);
+        res.status(400).json({errors});
     }
 }

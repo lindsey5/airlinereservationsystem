@@ -42,6 +42,7 @@ import FrontDeskAgents from './Pages/AdminPage/FrontDeskAgents';
 import FrontDeskLogin from './Pages/AuthPages/FrontDeskLogin';
 import FrontDeskRoute from './routes/FrontDeskRoute';
 import { SideBarContextProvider } from './Context/sideBarContext';
+import CustomerFlights from './Pages/FrontDesk/CustomerFlights';
 
 const router = createBrowserRouter(
   createRoutesFromElements(
@@ -92,6 +93,7 @@ const router = createBrowserRouter(
             <Route path='flights' element={<FrontDeskFlights />} />
             <Route path='search-results' element={<FrontDeskSearchResults />} />
             <Route path='booking' element={<FrontDeskBookingPage />} />
+            <Route path='flights/customer' element={<CustomerFlights />} />
             <Route path='flight/'>
               <Route path='book' element={<FrontDeskSearchPage />} />
               <Route path='available' element={<FrontDeskAvailableFlights />} />

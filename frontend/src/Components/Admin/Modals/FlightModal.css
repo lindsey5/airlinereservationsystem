@@ -5,7 +5,7 @@
     left: 0;
     bottom: 0;
     background-color: rgb(0, 0, 0, 0.5);
-    z-index: 2;
+    z-index: 4;
     overflow-y: auto;
     display: flex;
     justify-content: center;
@@ -30,7 +30,7 @@
 
 .modal-container .flight-details{
     display: grid;
-    grid-template-columns: repeat(2, 270px);
+    grid-template-columns: repeat(2, 1fr);
 }
 
 .modal-container .flight-details > div{
@@ -66,4 +66,5 @@
     left: 50%;
     transform: translateX(-50%);
     background-color: white;
+    border: 1px solid grey;
 }

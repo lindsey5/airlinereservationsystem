@@ -78,6 +78,9 @@ const SeatSelection = ({bookings, currentFlightIndex, currentPassenger, handleSe
                                 index ++;
                             }else{
                                 index = 0;
+                            }  
+                            if(position === sumOfColumns){
+                                num++;
                             }
 
                             const isReserved = bookings.flights[currentFlightIndex].passengers.find(passenger => passenger?.seatNumber === seat.seatNumber);
@@ -104,7 +107,8 @@ const SeatSelection = ({bookings, currentFlightIndex, currentPassenger, handleSe
                                 >
                                 <img src={`/icons/${bookings.class !== classObj.className || seat?.passenger || isReserved ? 'close' : classObj.className + '-seat'}.png`}/>
                                 </button>
-                                {position % columns[index] === 0 && position !== sumOfColumns && <div style={{textAlign: 'center'}}>{num++}</div> }
+                                {position % columns[index] === 0 && position !== sumOfColumns && 
+                                <div style={{textAlign: 'center', padding: '10px'}}>{num}</div>}
                                 </>
                             )
                         })

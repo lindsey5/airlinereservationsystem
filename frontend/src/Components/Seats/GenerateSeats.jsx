@@ -32,6 +32,7 @@ const GenerateSeats = ({flightData, close}) =>{
     const [state, dispatch] = useReducer(passengerReducer, passengerState)
     const [letters, setLetters] = useState([]);
     let index = 0;
+    let num = 1;
     const passengerRef = useRef();
 
     useEffect(() => {
@@ -151,6 +152,10 @@ const GenerateSeats = ({flightData, close}) =>{
                                 index = 0;
                             }
 
+                            if(position === sumOfColumns){
+                                num++
+                            }
+
                             return (
                                 <>
                                 <button 
@@ -170,7 +175,7 @@ const GenerateSeats = ({flightData, close}) =>{
                                 <img src={`/icons/${classObj.className}-seat.png`}/>
                                 </button>
                                 {position % columns[index] === 0 && position !== sumOfColumns && 
-                                <div></div>}
+                                <div style={{textAlign: 'center', padding: '10px'}}>{num}</div>}
                                 </>
                             )
                         })
