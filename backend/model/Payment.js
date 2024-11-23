@@ -14,6 +14,11 @@ const PaymentSchema = new Schema({
         }],
         required: true
     },
+    payment_date: {
+        type: String, 
+        required: true,
+        default: new Date().toISOString().split('T')[0]
+    }
 }, { timestamps: true });
 
 const Payment = mongoose.model('Payment', PaymentSchema);

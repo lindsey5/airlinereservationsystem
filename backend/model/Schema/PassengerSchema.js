@@ -1,3 +1,4 @@
+import { request } from "express";
 import mongoose from "mongoose";
 const Schema = mongoose.Schema;
 import { v4 as uuidv4 } from "uuid";
@@ -50,6 +51,14 @@ const PassengerSchema = new Schema({
       type: Boolean,
       required: true,
       default: false,
+    },
+    request: {
+      type: String,
+    },
+    fareType: {
+      type: String,
+      required: true,
+      enum: ['Bronze', 'Silver', 'Gold'],
     },
     ticketNumber: {
       type: String,

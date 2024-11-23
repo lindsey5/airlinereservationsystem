@@ -14,6 +14,7 @@ import cookieParser from 'cookie-parser';
 import apiRoutes from './routes/apiRoutes.js';
 import adminRoutes from './routes/adminRoutes.js';
 import frontDeskRoutes from './routes/frontDeskRoutes.js';
+import paymentRoutes from './routes/paymentRoutes.js';
 
 dotenv.config();
 const PORT = process.env.PORT; 
@@ -45,6 +46,7 @@ app.use('/api/airport', airportRoutes);
 app.use('/api/user', userRoutes);  
 app.use('/api/booking', bookingRoutes);
 app.use('/api/front-desk', frontDeskRoutes);
+app.use('/api/payment', paymentRoutes);
 
 app.get('/logout', (req, res) => {
     res.clearCookie('jwt', { httpOnly: true, secure: false });

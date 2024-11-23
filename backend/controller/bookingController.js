@@ -5,24 +5,34 @@ export const getBookings = async (req, res) => {
     const user_id = req.userId;
 
     try{
-        const bookings = await Booking.find({
-            user_id,
-        }).sort({createdAt: -1})
+        const bookings = await Booking.find({ user_id }).sort({ createdAt: -1 });
 
-        for(const booking of bookings){
-            for(let i = 0; i < booking.flights.length; i++){
-                if((req.query.filter === 'Cancelled' && 
-                    booking.flights[i].status !== 'Cancelled')
-                    || 
-                    (req.query.filter === 'Upcoming' && 
-                        (booking.flights[i].departure.time < new Date() || 
-                        booking.flights[i].status !== 'Booked'))
-                    || (req.query.filter === 'Completed' && booking.flights[i].status !== 'Completed') ||
-                    (req.query.filter === 'In-Flight' && booking.flights[i].status !== 'In-Flight')
-                    ){
-                    booking.flights.splice(i, 1);
+        for (const booking of bookings) {
+            // Create a new filtered array for flights instead of modifying the original array
+            booking.flights = booking.flights.filter(flight => {
+                const now = new Date();
+                const flightStatus = flight.status;
+                const flightDepartureTime = new Date(flight.departure.time);
+                
+                // Check filter conditions based on the query parameter
+                if (req.query.filter === 'Cancelled' && flightStatus !== 'Cancelled') {
+                    return false; // Exclude this flight
                 }
-            }
+                
+                if (req.query.filter === 'Upcoming' && (flightDepartureTime < now || flightStatus !== 'Booked')) {
+                    return false; // Exclude this flight
+                }
+        
+                if (req.query.filter === 'Completed' && flightStatus !== 'Completed') {
+                    return false; // Exclude this flight
+                }
+        
+                if (req.query.filter === 'In-Flight' && flightStatus !== 'In-Flight') {
+                    return false; // Exclude this flight
+                }
+        
+                return true; // Include this flight
+            });
         }
 
         res.status(200).json(bookings);

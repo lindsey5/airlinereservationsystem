@@ -35,24 +35,33 @@ const AvailableFlights = () => {
     }
 
     const handleSelect = (flight) => {
-        const params = {flights: [], price: 0, class: selectedClass}
-        params.price = flight.classes.find(classObj => classObj.className === selectedClass).price
+        // Initialize an object to store selected flight details and price
+        const params = { flights: [], price: 0, class: selectedClass };
     
+        // Find the price for the selected class in the flight's classes and update params.price
+        params.price = flight.classes.find(classObj => classObj.className === selectedClass).price;
+    
+        // Add the selected flight's details to the flights array in the params object
         params.flights.push({ 
-            id: flight._id,
-            departure: flight.departure.airport,
-            departure_country: flight.departure.country,
-            departure_code: flight.departure.airport_code,
-            departure_time: formatDate(flight.departure.time),
-            arrival: flight.arrival.airport,
-            arrival_country: flight.arrival.country,
-            arrival_code: flight.arrival.airport_code,
-            arrival_time: formatDate(flight.arrival.time),
-            price: flight.classes.find(classObj => classObj.className === selectedClass).price,
-        })
+            id: flight._id, // Store the flight's unique ID
+            departure: flight.departure.airport, // Departure airport name
+            departure_country: flight.departure.country, // Departure country
+            departure_code: flight.departure.airport_code, // IATA code for the departure airport
+            departure_time: formatDate(flight.departure.time), // Formatted departure time
+            arrival: flight.arrival.airport, // Arrival airport name
+            arrival_country: flight.arrival.country, // Arrival country
+            arrival_code: flight.arrival.airport_code, // IATA code for the arrival airport
+            arrival_time: formatDate(flight.arrival.time), // Formatted arrival time
+            price: flight.classes.find(classObj => classObj.className === selectedClass).price, // Price for the selected class
+        });
+    
+        // Encode the params object (flight details and price) into a URL-friendly string
         const encoded = encodeURIComponent(utf8ToBase64(JSON.stringify(params)));
+    
+        // Navigate to the booking page with the encoded flight data as a URL parameter
         navigate(`/user/booking?data=${encoded}`);
-    }
+    };
+    
 
     return (
         <div className="available-flights">

@@ -112,7 +112,6 @@ export const createPaymentLink = async (req, res) => {
             const result = await response.json();
             const checkoutDataToken = jwt.sign({
                 flights: req.body.bookings.flights, 
-                line_items,
                 class: req.body.bookings.class,
                 fareType: req.body.bookings.fareType, 
                 checkout_id: result.data.id,
@@ -175,7 +174,6 @@ export const getDashboardDetails = async (req, res) => {
         const incomesToday = await get_incomes_today();
         const incomesPerMonth = await get_incomes_per_month();
         const bookingsPerMonth = await get_bookings_per_month();
-
         const data = {
             scheduledFlights: flights,
             assignedPlanes: airplanes,

@@ -2,7 +2,7 @@ import { useEffect, useState } from "react";
 import '../../styles/BookingPage.css';
 import SeatSelection from "../../Components/Seats/SeatSelection";
 import FareTypes from "../../Components/Booking/FareTypes";
-import PassengerForms from "../../Components/Booking/PassengerForms";
+import PassengerForm from "../../Components/Booking/PassengerForm";
 
 const FrontDeskBookingPage = () => {
     const queryParams = new URLSearchParams(window.location.search);
@@ -115,8 +115,10 @@ const FrontDeskBookingPage = () => {
 
     const handlePassengers = (e) => {
         e.preventDefault();
+        const updatedBookings = { ...bookings };
+        
         passengersType.forEach(passengerType => {
-            decodedData.flights.forEach((flight, i)=> {
+            decodedData.flights.forEach((flight, i) => {
                 let price = flight.price;
                 switch(fareType){
                     case 'Silver': 
@@ -125,21 +127,25 @@ const FrontDeskBookingPage = () => {
                     case 'Gold':
                         price += 3000;
                 }
-
+    
                 const passenger = {
                     firstname: '',
                     lastname: '',
                     dateOfBirth: '',
                     type: passengerType,
-                    price: passengerType === 'Child' ?  price - (price * 0.05) : price ,
+                    price: passengerType === 'Child' ? price - (price * 0.05) : price,
                     nationality: '',
                     countryOfIssue: '',
-                }
-                bookings.flights[i].passengers.push(passenger)
-            })
-        })
+                };
+    
+                updatedBookings.flights[i].passengers.push(passenger);
+            });
+        });
+    
+        setBookings(updatedBookings);
         setShowForm(true);
-    }
+    };
+    
 
     return (
         <div className="booking-page frontdesk">
@@ -196,7 +202,7 @@ const FrontDeskBookingPage = () => {
                 </div>
                 </form>}
                 {showForm && 
-                <PassengerForms 
+                <PassengerForm
                     setCurrentPassenger={setCurrentPassenger}
                     currentPassenger={currentPassenger}
                     bookings={bookings}

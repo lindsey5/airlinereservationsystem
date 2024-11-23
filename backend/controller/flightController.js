@@ -147,7 +147,7 @@ export const search_flight = async (req, res) => {
 export const get_available_flights = async (req, res) => {
     // Parse query parameters for the limit and flight class
     const limit = parseInt(req.query.limit) || 10; // Default limit to 10 if not provided
-    const flightClass = req.query.flightClass || 'Economy'; // Default to 'Economy' class if not provided
+    const flightClass = req.query.selectedClass || 'Economy'; // Default to 'Economy' class if not provided
     
     try {
         // Find flights that meet the following criteria:
@@ -166,7 +166,7 @@ export const get_available_flights = async (req, res) => {
             current.classes.find(classObj => classObj.className === flightClass).price - 
             next.classes.find(classObj => classObj.className === flightClass).price
         );
-
+        
         // Return the sorted flights, limiting the results to the specified number (e.g., 10)
         res.status(200).json(sortedFlights.slice(0, limit));
     } catch (err) {
@@ -242,7 +242,6 @@ export const user_book_flight = async (req, res) => {
 
         // Extract the checkout data from cookies and verify it to ensure integrity
         const checkoutData = jwt.verify(req.cookies.checkoutData, process.env.JWT_SECRET);
-
         // Find the user in the database using the ID from the decoded token
         const user = await User.findById(id);
 
@@ -257,6 +256,16 @@ export const user_book_flight = async (req, res) => {
             // Fetch the full details of each flight using its ID
             const flightDetails = await Flight.findById(flight.id);
 
+            const passengers = flight.passengers.map(passenger => {
+                // Check if the passenger qualifies for a discount (PWD or senior citizen)
+                const isDiscounted = (passenger.pwd || passenger.senior_citizen) 
+                && flight.departure_country === 'Philippines' 
+                && flight.arrival_country === 'Philippines' 
+                && checkoutData.class !== 'First';
+                // Apply a 20% discount if the passenger qualifies for the discount
+                const fareAmount = isDiscounted ? passenger.price * 0.80 : passenger.price
+                return {...passenger, price: fareAmount}
+            })
             // Prepare the flight data to include all necessary flight details
             const data = {
                 id: flight.id,  // Flight ID
@@ -265,7 +274,7 @@ export const user_book_flight = async (req, res) => {
                 arrival: flightDetails.arrival,  // Arrival information
                 flightNumber: flightDetails.flightNumber,  // Flight number
                 gate_number: flightDetails.gate_number,  // Gate number for the flight
-                passengers: flight.passengers  // List of passengers on this flight
+                passengers
             };
 
             // Push the detailed flight data to the `flights` array
@@ -322,6 +331,16 @@ export const frontdesk_book_flight = async (req, res) => {
         for (const flight of data.flights) {
             // Fetch the full details of the flight using its ID
             const flightDetails = await Flight.findById(flight.id);
+            const passengers = flight.passengers.map(passenger => {
+                // Check if the passenger qualifies for a discount (PWD or senior citizen)
+                const isDiscounted = (passenger.pwd || passenger.senior_citizen) 
+                && flight.departure_country === 'Philippines' 
+                && flight.arrival_country === 'Philippines' 
+                && data.class !== 'First';
+                // Apply a 20% discount if the passenger qualifies for the discount
+                const fareAmount = isDiscounted ? passenger.price * 0.80 : passenger.price
+                passenger.price = fareAmount;
+            }) 
 
             // Structure the flight data to include relevant information
             const flightData = {
@@ -331,7 +350,7 @@ export const frontdesk_book_flight = async (req, res) => {
                 arrival: flightDetails.arrival,  // Arrival details
                 flightNumber: flightDetails.flightNumber,  // Flight number
                 gate_number: flightDetails.gate_number,  // Gate number for the flight
-                passengers: flight.passengers  // Passengers associated with this flight
+                passengers,
             };
 
             // Add the structured flight data to the `flights` array
@@ -485,16 +504,6 @@ export const cancelFlight = async (req, res) => {
         // Calculate the date 1 day before the flight's departure
         const oneDayBeforeDeparture = new Date(departureTime);
         oneDayBeforeDeparture.setDate(departureTime.getDate() - 1);
-
-       // Check if the current date is within the last 24 hours before the flight's departure
-        if (now <= departureTime && now >= oneDayBeforeDeparture) {
-            throw new Error("The current date is 1 day before or equal to the departure date");
-        }
-
-        // Check if the booking was made on the current day (same day cancellation is not allowed)
-        if (booking.createdAt === new Date()) {
-            throw new Error('You cannot cancel a flight on the day it was booked');
-        }
 
         // Iterate through the passengers for this flight and restore their seat status
         booking.flights[flightIndex].passengers.forEach(passengerObj => {

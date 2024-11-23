@@ -29,13 +29,12 @@ const SearchResults = () => {
     }
 
     useEffect(() => {
-        fetchResults();
         document.title = "Search Results";
     }, []);
 
     useEffect(() => {
         fetchResults()
-    }, [state.price, state.flightClass])
+    }, [state])
 
     const utf8ToBase64 = (str) => {
         // Create a UTF-8 encoded byte array from the string

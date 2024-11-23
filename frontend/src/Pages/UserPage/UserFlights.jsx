@@ -14,32 +14,23 @@ const UserFlights = () => {
     const [title, setTitle] = useState('All');
     const [showCancelError, setShowCancelError] = useState(false);
     const [limit, setLimit] = useState(5);
-    const {data} = useFetch(`/api/booking/bookings?filter=${title}`);
+    const {data, loading} = useFetch(`/api/booking/bookings?filter=${title}`);
     const [showRefund, setShowRefund] = useState(false);
 
     useEffect(() => {
         if(data){
             const flightsArr = [];
-            let total = 0;
-
-            for(const item of data){
-                for(const flight of item.flights){
-                    if(total !== limit){
-                        flightsArr.push({...flight, 
-                            passengers: flight.passengers,
-                            fareType: item.fareType, 
-                            bookingRef: item._id,
-                            class: item.class, 
-                            bookId: item._id,
-                            booked_on: item.createdAt
-                        })
-                        total ++;
-                    }else{
-                        break;
-                    }
-                }
-            }
-            setFlights(flightsArr)
+            data.forEach((item) => {
+                item.flights.forEach(flight => {
+                    flightsArr.push({...flight, 
+                        fareType: item.fareType, 
+                        bookingRef: item._id,
+                        class: item.class, 
+                        booked_on: item.createdAt
+                    })
+                })
+            })
+            setFlights(flightsArr.slice(0, limit));
         }
     },[data, limit])
 
@@ -53,20 +44,7 @@ const UserFlights = () => {
     }
 
     const handleFilter = (e) => {
-        const flightsArr = [];
-            data.forEach(item => {
-                item.flights.forEach(flight => {
-                        flightsArr.push({...flight, 
-                            passengers: flight.passengers,
-                            fareType: item.fareType, 
-                            bookingRef: item._id,
-                            class: item.class, 
-                            bookId: item._id,
-                            booked_on: item.createdAt
-                        })
-                    })
-            })
-            setTitle(e.target.value)
+        setTitle(e.target.value)
     }
 
     return(
@@ -131,7 +109,7 @@ const UserFlights = () => {
                 </div>
             )}
             {flights.length > 0 &&  <button className='see-more' onClick={() => setLimit(prev => prev += 5)} >See more</button>}
-            {flights.length < 1 && <div className="no-flights">
+            {flights.length < 1 && !loading && <div className="no-flights">
                         <div>
                             <img src="/icons/no-travelling.png" alt="" />
                             <h2>You don't have {title !== 'All' && title + ' '}Flights</h2>

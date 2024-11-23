@@ -83,25 +83,9 @@ const GenerateSeats = ({flightData, close}) =>{
     }, [columns])
 
     const handleShowPassenger = (passenger) => {
-        const classPrice = flight.classes.find(classObj => classObj.className === passenger.flightClass).price
-        let fareType = ''
-        if(passenger.price === classPrice){
-                fareType = 'Bronze';
-        }else if(passenger.price === classPrice + 1800){
-            fareType = 'Silver';
-        }else if(passenger.price === classPrice + 3000){
-            fareType = 'Gold';
-        }
-        
         const passengerObj = {
             name: passenger.firstname + ' ' + passenger.lastname,
-            nationality: passenger.nationality,
-            countryOfIssue: passenger.countryOfIssue,
-            flightPrice: passenger.price,
-            type: passenger.type,
-            flightClass: passenger.flightClass,
-            seatNumber: passenger.seatNumber,
-            fareType
+            ...passenger,
         }
         dispatch({type: 'SET_PASSENGER', payload: passengerObj})
         setShowPassenger(true);
@@ -121,11 +105,12 @@ const GenerateSeats = ({flightData, close}) =>{
                     <p>Name: {state.name}</p>
                     <p>Nationality: {state.nationality}</p>
                     <p>Country of Issue: {state.countryOfIssue}</p>
-                    <p>Ticket Amount: {formatPrice(state.flightPrice)} ({state.type})</p>
+                    <p>Ticket Amount: {formatPrice(state.price)} ({state.type})</p>
                     <hr />
                     <p>Class: {state.flightClass}</p>
                     <p>{state.fareType} Tier</p>
                     <p>Seat: {state.seatNumber}</p>
+                    <p>Request: {state.request}</p>
                 </div>
                 <button onClick={hidePassenger}>Close</button>
             </div>

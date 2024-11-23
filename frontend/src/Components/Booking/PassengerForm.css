@@ -1,22 +1,22 @@
-.passenger-forms{
+.passenger-form{
     width: 100%;
     display: flex;
     justify-content: center;
     box-sizing: border-box;
 }
 
-.passenger-forms > .container{
+.passenger-form > .container{
     margin: 20px;
 }
 
-.passenger-forms > .container > div:first-child{
+.passenger-form > .container > div:first-child{
     display: flex;
     align-items: center;
     justify-content: space-between;
     width: 100%;
 }
 
-.passenger-forms .payment-summary-btn{
+.passenger-form .payment-summary-btn{
     background-color: rgb(247, 247, 247);
     border: none;
     color: #ff3131;
@@ -26,13 +26,13 @@
     text-decoration: underline;
 }
 
-.passenger-forms .passenger-details-container{
+.passenger-form .passenger-details-container{
     display: flex;
     position: relative;
     box-shadow: 0 0 10px 5px rgb(209, 209, 209);
 }
 
-.passenger-forms .side-bar button{
+.passenger-form .side-bar button{
     width: 200px;
     height: 50px;
     border: none;
@@ -45,12 +45,12 @@
     padding-left: 20px;
 }
 
-.passenger-forms .side-bar .selected{
+.passenger-form .side-bar .selected{
     color: #ff3131;
     font-weight: 600;
 }
 
-.passenger-forms .side-bar .selected::after{
+.passenger-form .side-bar .selected::after{
     content: "";
     position: absolute;
     width: 5px;
@@ -62,84 +62,85 @@
     background-color: #ff3131;
 }
 
-.passenger-forms .passenger-details{
+.passenger-form .passenger-details{
     padding: 10px 30px;
     background-color: white;
     color: rgb(143, 143, 143);
 }
 
-.passenger-forms .passenger-details > div:first-child{
+.passenger-form .passenger-details > div:first-child{
     margin: 0;
     color: black;
 }
 
-.passenger-forms .passenger-details > div:first-child div{
+.passenger-form .passenger-details > div:first-child div{
     display: flex;
     flex-wrap: wrap;
 }
 
-.passenger-forms .passenger-details > div:first-child p{
+.passenger-form .passenger-details > div:first-child p{
     margin-right: 20px;
     color: black;
 }
 
-.passenger-forms .passenger-details > div{
+.passenger-form .passenger-details > div{
     margin: 35px 0;
 }
 
-.passenger-forms .passenger-details p{
+.passenger-form .passenger-details p{
     font-size: 15px;
     color: rgb(180, 180, 180);
 }
 
-.passenger-forms .passenger-details .name-container{
+.passenger-form .passenger-details .name-container{
     display: grid;
     grid-template-columns: repeat(2, 1fr);
     gap: 30px;
 }
 
-.passenger-forms .passenger-details input[type="text"],
-.passenger-forms .passenger-details input[type="date"]{
+.passenger-form .passenger-details input[type="text"],
+.passenger-form .passenger-details input[type="date"]{
     display: block;
     width: 230px;
     height: 25px;
     outline: none;
 }
 
-.passenger-forms .passenger-details textarea{
+.passenger-form .passenger-details textarea{
     display: block;
     width: 50%;
     height: 50px;
     outline: none;
 }
 
-.passenger-forms .passenger-details .checkbox-container{
+.passenger-form .passenger-details .checkbox-container{
     display: flex;
+    margin-top: 10px;
 }
 
-.passenger-forms .passenger-details .checkbox-container input{
-    
+.passenger-form .passenger-details .checkbox-container input{
+    margin-right: 10px;
 }
 
-.passenger-forms .book-btn{
+.passenger-form .book-btn{
     padding: 10px 50px;
     float: right;
     margin-top: 50px;
 }
 
-.passenger-forms .book-btn:not(:disabled){
+.passenger-form .book-btn:not(:disabled){
     background-color: #ff3131;
     color: white;
     cursor: pointer;
     border: none;
 }
 
-.passenger-forms .book-btn:not(:disabled):hover{
+.passenger-form .book-btn:not(:disabled):hover{
     background-color: #ff9c9c;
 }
 
 @media screen and (max-width: 850px) {
-    .passenger-forms{
+    .passenger-form{
         justify-content: start;
     }
 }
