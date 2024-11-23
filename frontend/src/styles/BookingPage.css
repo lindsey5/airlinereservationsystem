@@ -115,7 +115,7 @@
 }
 
 @media (max-width: 500px){
-    .booking-page .container .select-container{
+    .booking-page > form .container .select-container{
         grid-template-columns: 1fr;
     }
 }
