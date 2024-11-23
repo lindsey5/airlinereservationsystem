@@ -241,6 +241,7 @@ export const get_popular_destination = async(req, res) => {
                 if(popularDestinations.length === limit) break;
             }
         }
+        popularDestinations.length < 1 ?  res.status(400).json({messsage: "No popular destinations yet"}) :
         res.status(200).json(popularDestinations);
     }catch(err){
         const errors = errorHandler(err);

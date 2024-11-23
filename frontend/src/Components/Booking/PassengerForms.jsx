@@ -75,8 +75,8 @@ const PassengerForms = ({setCurrentPassenger, currentPassenger, bookings, setBoo
             {showSummary && <PaymentSummary line_items={lineItems} close={() => setShowSummary(false)}/>}
             <div className='container'>
                 <div>
-                <h1>Passenger Details</h1>
-                <button className='payment-summary-btn' onClick={() => setShowSummary(true)}>Show Payment Summary</button>
+                    <h1>Passenger Details</h1>
+                    <button className='payment-summary-btn' onClick={() => setShowSummary(true)}>Show Payment Summary</button>
                 </div>
                 <div className='passenger-details-container'>
                     <div className='side-bar'>

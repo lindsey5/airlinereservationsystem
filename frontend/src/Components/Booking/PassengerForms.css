@@ -2,8 +2,11 @@
     width: 100%;
     display: flex;
     justify-content: center;
-    padding: 30px 20px;
     box-sizing: border-box;
+}
+
+.passenger-forms > .container{
+    margin: 20px;
 }
 
 .passenger-forms > .container > div:first-child{
