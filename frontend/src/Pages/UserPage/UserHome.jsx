@@ -54,7 +54,7 @@ const UserHome = () => {
                 }
             })))
        }
-       if(data){
+       if(data?.length > 0){
         getImages();
        }
 

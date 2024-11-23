@@ -8,13 +8,16 @@ const PassengerForms = ({setCurrentPassenger, currentPassenger, bookings, setBoo
     const [lineItems, setLineItems] = useState();
 
     const handlePaymentSummary = () => {
+        const vatRate = 12 / 100;
+        const totalTicketPrice = bookings.flights.reduce((total, flights) => {
+            return total + flights.passengers.reduce((total, passenger) => total + passenger.price, 0)
+        }, 0)
         const line_items = [
-            {currency: 'PHP', amount: 1500, name: 'Fuel Surcharge', quantity: bookings.flights.length * bookings.flights[0].passengers.length},
-            {currency: 'PHP', amount: 687.50, name: 'Passenger Service Charge', quantity: bookings.flights.length * bookings.flights[0].passengers.length},
-            {currency: 'PHP', amount: 850, name: 'Terminal Fee', quantity: bookings.flights.length * bookings.flights[0].passengers.length},
-            {currency: 'PHP', amount: 30, name: 'Aviation Security Fee', quantity: bookings.flights.length * bookings.flights[0].passengers.length},
-            {currency: 'PHP', amount: 1344, name: 'Administration Fee', quantity: 1},
-            {currency: 'PHP', amount: 600, name: 'VAT', quantity: bookings.flights.length * bookings.flights[0].passengers.length}
+            {amount: 1500, name: 'Fuel Surcharge', quantity: bookings.flights.length * bookings.flights[0].passengers.length},
+            {amount: 687.50, name: 'Passenger Service Charge', quantity: bookings.flights.length * bookings.flights[0].passengers.length},
+            {amount: 850, name: 'Terminal Fee', quantity: bookings.flights.length * bookings.flights[0].passengers.length},
+            {amount: 30, name: 'Aviation Security Fee', quantity: bookings.flights.length * bookings.flights[0].passengers.length},
+            {amount: 1344, name: 'Administration Fee', quantity: 1},
         ];
         bookings.flights.forEach(flight => {
             flight.passengers.forEach(passenger=> {
@@ -33,6 +36,7 @@ const PassengerForms = ({setCurrentPassenger, currentPassenger, bookings, setBoo
                 }
             })
         })
+        line_items.push({amount: vatRate * totalTicketPrice , name: 'VAT (12%) on Ticket Price', quantity: 1})
         setLineItems(line_items);
     }
 

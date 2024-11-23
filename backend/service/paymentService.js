@@ -55,13 +55,15 @@ export const refundPayment = async (payment_id, amount) => {
 
 export const createPayment = async (data, booking_id) => {
       data.flights.forEach(async (flight) => {
+        const vatRate = 12 / 100;
+        const totalTicketPrice = flight.passengers.reduce((total, passenger) => passenger.price + total, 0)
+        
         const paymentDetails = [
             {amount: 1500, name: 'Fuel Surcharge', quantity: flight.passengers.length},
-            {amount: 600, name: 'VAT', quantity: flight.passengers.length},
             {amount: 687.50, name: 'Passenger Service Charge', quantity: flight.passengers.length},
             {amount: 850, name: 'Terminal Fee', quantity: flight.passengers.length},
             {amount: 30, name: 'Aviation Security Fee', quantity: flight.passengers.length},
-            {amount: 1344, name: 'Administration Fee', quantity: 1}
+            {amount: vatRate * totalTicketPrice , name: 'VAT (12%) on Ticket Price', quantity: 1},
         ]
         flight.passengers.forEach(passenger=> {
             const item = {
@@ -86,4 +88,14 @@ export const createPayment = async (data, booking_id) => {
         })
         await payment.save();
       })
+
+      const adminFee = await Payment.create({
+        booking_id: booking_id,
+        total_amount: 1344,
+        line_items: [
+          {amount: 1344, name: 'Administration Fee', quantity: 1}
+        ]
+      })
+
+      await adminFee.save();
 }

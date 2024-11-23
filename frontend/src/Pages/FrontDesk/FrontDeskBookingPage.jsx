@@ -16,8 +16,6 @@ const FrontDeskBookingPage = () => {
     const [showSeats, setShowSeats] = useState(false);
     const [fareType, setFareType] = useState();
     const [email, setEmail] = useState('');
-    const [showSummary, setShowSummary] = useState(false);
-    const [lineItems, setItems] = useState();
 
     const booking = (flights) =>  { 
         return {
@@ -59,47 +57,18 @@ const FrontDeskBookingPage = () => {
 
     }, [bookings])
 
-    const handleBooking = async (e) => {
-        e.preventDefault();
-        const line_items = [
-            {currency: 'PHP', amount: 1500, name: 'Fuel Surcharge', quantity: bookings.flights.length * bookings.flights[0].passengers.length},
-            {currency: 'PHP', amount: 687.50, name: 'Passenger Service Charge', quantity: bookings.flights.length * bookings.flights[0].passengers.length},
-            {currency: 'PHP', amount: 850, name: 'Terminal Fee', quantity: bookings.flights.length * bookings.flights[0].passengers.length},
-            {currency: 'PHP', amount: 30, name: 'Aviation Security Fee', quantity: bookings.flights.length * bookings.flights[0].passengers.length},
-            {currency: 'PHP', amount: 1344, name: 'Administration Fee', quantity: 1},
-            {currency: 'PHP', amount: 600, name: 'VAT', quantity: bookings.flights.length * bookings.flights[0].passengers.length}
-        ];
-        bookings.flights.forEach(flight => {
-            flight.passengers.forEach(passenger=> {
-                const item = {
-                    currency: 'PHP',
-                    amount: passenger.price, 
-                    name: `${flight.destination}-${passenger.type} (${bookings.fareType} Tier)`, 
-                    quantity: 1
-                }
-                const isExist = line_items.find(line_item => line_item.name === item.name)
-
-                if(isExist){
-                    isExist.quantity += 1;
-                }else{
-                    line_items.push(item)
-                }
-            })
-        })
-
-
-        console.log(line_items)
-        /*if(fareType === 'Bronze'){
+    const handleBooking = async () => {
+        if(fareType === 'Bronze'){
             try{
                 const response = await fetch('/api/flight/book/frontdesk', {
                     method: 'POST',
                     headers: {
                         'Content-Type': 'application/json',
                     },
-                    body: JSON.stringify({ bookings, email})
+                    body: JSON.stringify({ bookings, email })
                 })
                 if(response.ok){
-                    window.location.href = '/frontdesk/flight/book'
+                    window.location.href = '/frontdesk/flights'
                 }else{
                     alert('Book failed');
                 }
@@ -109,11 +78,10 @@ const FrontDeskBookingPage = () => {
         }else{
             setCurrentPassenger(0);
             setShowSeats(true);
-        }*/
+        }
     }
 
     const handleSelectedSeat = async (seatNumber) => {
-        if(confirm('Click ok to continue')){
             bookings.flights[currentFlightIndex].passengers[currentPassenger].seatNumber = seatNumber;
             if(bookings.flights[currentFlightIndex].passengers.length - 1 === currentPassenger){
                 if(currentFlightIndex === bookings.flights.length -1){
@@ -141,7 +109,6 @@ const FrontDeskBookingPage = () => {
                 setCurrentPassenger(prev => prev + 1);
             }
             window.scrollTo(0, 0);
-        }
     }
 
     const handlePassengers = (e) => {
@@ -232,7 +199,7 @@ const FrontDeskBookingPage = () => {
                     currentPassenger={currentPassenger}
                     bookings={bookings}
                     setBookings={setBookings}
-                    handleBooking={handleBooking}
+                    submit={handleBooking}
                 />}
                 { showSeats && 
                 <SeatSelection 

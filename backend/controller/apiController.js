@@ -82,13 +82,17 @@ export const getCities = async (req, res) => {
 };
 export const createPaymentLink = async (req, res) => {
     try{
+        const vatRate = 12 / 100;
+        const totalTicketPrice = req.body.bookings.flights.reduce((total, flight) => {
+            return total + flight.passengers.reduce((total, passenger) => total + passenger.price, 0)
+        }, 0)
         const line_items = [
             {currency: 'PHP', amount: 1500 * 100, name: 'Fuel Surcharge', quantity: req.body.bookings.flights.length * req.body.bookings.flights[0].passengers.length},
             {currency: 'PHP', amount: 687.50 * 100, name: 'Passenger Service Charge', quantity: req.body.bookings.flights.length * req.body.bookings.flights[0].passengers.length},
             {currency: 'PHP', amount: 850 * 100, name: 'Terminal Fee', quantity: req.body.bookings.flights.length * req.body.bookings.flights[0].passengers.length},
             {currency: 'PHP', amount: 30 * 100, name: 'Aviation Security Fee', quantity: req.body.bookings.flights.length * req.body.bookings.flights[0].passengers.length},
             {currency: 'PHP', amount: 1344 * 100, name: 'Administration Fee', quantity: 1},
-            {currency: 'PHP', amount: 600 * 100, name: 'VAT', quantity: req.body.bookings.flights.length * req.body.bookings.flights[0].passengers.length}
+            {currency: 'PHP', amount: (vatRate * totalTicketPrice) * 100, name: 'VAT (12%) on Ticket Price', quantity: 1},
         ];
         req.body.bookings.flights.forEach(flight => {
             flight.passengers.forEach(passenger=> {

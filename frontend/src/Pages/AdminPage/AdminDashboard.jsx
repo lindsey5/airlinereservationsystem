@@ -38,7 +38,7 @@ const AdminDashboard = () => {
                         <img src="/icons/peso.png" alt="" />
                     </div>
                     <div>
-                        <h2>{data?.incomesToday[0]._id && formatPrice(data.incomesToday[0]._id)}</h2>
+                        <h2>{data?.incomesToday[0]?._id ? formatPrice(data.incomesToday[0]?._id) : 'No Incomes'}</h2>
                         <p>Incomes Today</p>
                     </div>
                 </div>

@@ -5,6 +5,7 @@ import { formatDate } from "../../utils/dateUtils"
 import FlightModal from "../../Components/User/Modals/FlightModal"
 import { useEffect } from "react"
 import ErrorCancelModal from "../../Components/User/Modals/ErrorCancelModal"
+import { cancelFlight } from "../../Service/flightService"
 
 const UserFlights = () => {
     const [flights, setFlights] = useState([]);
@@ -51,28 +52,6 @@ const UserFlights = () => {
     const handleFlight = (flight) => {
         setShowFlight(true);
         setSelectedFlight(flight)
-    }
-
-    const cancelFlight = async ({bookId, flightId}) => {
-        try{
-           if(confirm('Are you sure do you wan\'t to cancel this flight?')){
-                const response = await fetch(`/api/flight/cancel`,{
-                method: 'PUT',
-                headers: {
-                    'Content-Type': 'application/json',
-                },
-                body: JSON.stringify({bookId, flightId}),
-                })
-                if(response.ok){
-                    window.location.reload();
-                }
-                if(!response.ok){
-                    setShowCancelError(true)
-                }
-           }
-        }catch(err){
-            console.error(err)
-        }
     }
 
     const handleFilter = (e) => {
@@ -145,7 +124,7 @@ const UserFlights = () => {
                                 <img src="/icons/eye (1).png" alt="" />
                             </button>
                             {!flight.departure.time <= new Date() && flight.status === 'Booked' && flight.passengers[0].fareType === 'Gold' && 
-                            <button onClick={() => cancelFlight({bookId: flight.bookId, flightId: flight.id})}>
+                            <button onClick={() => cancelFlight({bookId: flight.bookId, flightId: flight.id, showError: () => setShowCancelError(true)})}>
                                 <img src="/icons/cancel.png" alt="cancel" />
                             </button>}
                         </div>

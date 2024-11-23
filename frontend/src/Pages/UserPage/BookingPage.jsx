@@ -4,7 +4,6 @@ import { createPaymentLink } from "../../Service/paymentService";
 import SeatSelection from "../../Components/Seats/SeatSelection";
 import FareTypes from "../../Components/Booking/FareTypes";
 import PassengerForms from "../../Components/Booking/PassengerForms";
-import PaymentSummary from "../../Components/Booking/PaymentSummary";
 
 const BookingPage = () => {
     const queryParams = new URLSearchParams(window.location.search);

@@ -11,6 +11,8 @@ import { calculateSeats, createSeats, createClasses } from "../utils/flightUtils
 import { createPayment, getPaymentId, refundPayment } from "../service/paymentService.js";
 import { updatePilotStatus } from '../service/pilotService.js';
 import Payment from "../model/Payment.js";
+import mongoose from "mongoose";
+const { ObjectId } = mongoose.Types;
 
 export const create_flight = async (req, res) => {
     try{
@@ -459,7 +461,7 @@ export const cancelFlight = async (req, res) => {
     try {
         // Extracting the booking ID and flight ID from the request body
         const { bookId, flightId } = req.body;
-        
+
         // Find the booking by ID from the database
         const booking = await Booking.findById(bookId);
         
@@ -484,7 +486,7 @@ export const cancelFlight = async (req, res) => {
         const oneDayBeforeDeparture = new Date(departureTime);
         oneDayBeforeDeparture.setDate(departureTime.getDate() - 1);
 
-        // Check if the current date is within the last 24 hours before the flight's departure
+       // Check if the current date is within the last 24 hours before the flight's departure
         if (now <= departureTime && now >= oneDayBeforeDeparture) {
             throw new Error("The current date is 1 day before or equal to the departure date");
         }
@@ -535,16 +537,16 @@ export const cancelFlight = async (req, res) => {
                 throw new Error('Refund Failed');
             }
         }
-        console.log(booking)
         // Save the updated booking, flight, and payment entities to the database
-        //await booking.save();
+        await booking.save();
         await flight.save();
         await payment.save();
 
         // Respond with a success message and the refund amount
-        res.status(200).json({ message: 'Flight successfully cancelled', refundAmount });
+        res.status(200).json({ message: 'Flight successfully cancelled', refundAmount, booking });
 
     } catch (err) {
+        console.log(err)
         const errors = errorHandler(err);  // Call the error handler to format the error
         res.status(400).json(errors);  // Send a 400 error with the formatted errors
     }
@@ -574,13 +576,12 @@ export const get_customer_flights = async (req, res) => {
     const skip = (page - 1) * limit; 
     // Capture the search term for filtering flights (if provided)
     const searchTerm = req.query.searchTerm;
-    console.log(searchTerm)
     try {
         // If a search term is provided, construct the search criteria using regular expressions for flexible matching
         const searchCriteria = searchTerm
             ? {
                 $or: [
-                    // Searching in various fields such as departure and arrival airports, cities, countries, etc.
+                    { _id: ObjectId.isValid(searchTerm) ? new ObjectId(searchTerm) : null },
                     { 'flights.id': { $regex: new RegExp(searchTerm, 'i') } },
                     { 'flights.airline': { $regex: new RegExp(searchTerm, 'i') } },
                     { 'flights.departure.airport': { $regex: new RegExp(searchTerm, 'i') } },

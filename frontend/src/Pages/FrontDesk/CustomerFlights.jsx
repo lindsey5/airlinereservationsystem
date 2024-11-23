@@ -4,13 +4,17 @@ import AdminPagination from "../../Components/Admin/Pagination/AdminPagination";
 import '../../styles/TablePage.css';
 import { formatDate } from "../../utils/dateUtils";
 import { dataStatus } from "../../utils/dataStatus";
-import FlightForm from "../../Components/Admin/Flights/FlightForm";
-import FlightDetailsModal from "../../Components/Admin/Modals/FlightDetailsModal";
+import { cancelFlight } from "../../Service/flightService";
+import ErrorCancelModal from "../../Components/User/Modals/ErrorCancelModal";
+import RefundSummary from "../../Components/Booking/RefundSummary";
 
 const CustomerFlights = () => {
     const [flights, setFlights] = useState();
     const [searchTerm, setSearchTerm] = useState('');
     const {state, dispatch} = useAdminPaginationReducer();
+    const [showCancelError, setShowCancelError] = useState(false);
+    const [showRefund, setShowRefund] = useState(false);
+    const [selectedFlight, setSelectedFlight] = useState();
 
     useEffect(() => {
         const fetchFlights = async () => {
@@ -44,6 +48,8 @@ const CustomerFlights = () => {
 
     return (
         <main className="table-page">
+            {showRefund && <RefundSummary flight={selectedFlight} close={() => setShowRefund(false)} showError={() => setShowCancelError(true)}/>}
+            {showCancelError && <ErrorCancelModal close={() => setShowCancelError(false)}/>}
             <h1>Customer Flights</h1>
             <input type="search" placeholder='Search' onChange={(e) => setSearchTerm(e.target.value)}/>
             <AdminPagination state={state} dispatch={dispatch} />
@@ -60,14 +66,12 @@ const CustomerFlights = () => {
                         <th>Arrival</th>
                         <th>Arrival Time</th>
                         <th>Status</th>
-                        <th>Book Date</th>
                         <th>Passengers</th>
                         <th>Action</th>
                     </tr>
                 </thead>
                 <tbody>
                     {flights && flights.map((flight, i) => {
-                        console.log(flight.flight)
                         const departureTime = formatDate(flight.flight.departure.time);
                         const arrivalTime = formatDate(flight.flight.arrival.time);
 
@@ -82,14 +86,16 @@ const CustomerFlights = () => {
                                 <td>{flight.flight.arrival.airport} ({flight.flight.arrival.airport_code})</td>
                                 <td>{arrivalTime}</td>
                                 {dataStatus(flight.flight.status)}
-                                <td>{formatDate(flight.bookDate)}</td>
                                 <td>{flight.flight.passengers.length}</td>
                                 <td>
+                                {flight.flight.status === 'Booked' && 
                                     <button onClick={() => {
-                                        
+                                        setShowRefund(true);
+                                        setSelectedFlight({...flight.flight, fareType: flight.fareType, bookingRef: flight.bookingRef })
                                     }}>
                                     <img src="/icons/cancel.png"/>
                                     </button>
+                                }
                                 </td>
                             </tr>
                         )
