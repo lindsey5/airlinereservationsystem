@@ -41,7 +41,7 @@ import FrontDeskBookingPage from './Pages/FrontDesk/FrontDeskBookingPage';
 import FrontDeskAgents from './Pages/AdminPage/FrontDeskAgents';
 import FrontDeskLogin from './Pages/AuthPages/FrontDeskLogin';
 import FrontDeskRoute from './routes/FrontDeskRoute';
-import { SideBarContextProvider } from './Context/sideBarContext';
+import { SideBarContextProvider } from './Context/SideBarContext';
 import CustomerFlights from './Pages/FrontDesk/CustomerFlights';
 
 const router = createBrowserRouter(
