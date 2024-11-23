@@ -58,8 +58,8 @@ const RefundSummary = ({flight, close, showError}) => {
                         <tr>
                             <td>{item.name}</td>
                             <td>{item.quantity}</td>
-                            <td>{item.amount}</td>
-                            <td>{item.quantity * item.amount}</td>
+                            <td>{Math.round(item.amount * 100) / 100}</td>
+                            <td>{Math.round(item.quantity * item.amount * 100) / 100}</td>
                         </tr>
                         )}
                         </tbody>

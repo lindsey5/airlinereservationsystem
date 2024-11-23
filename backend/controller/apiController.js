@@ -14,7 +14,7 @@ import FrontDeskAgent from '../model/FrontDeskAgent.js';
 dotenv.config();
 
 const url = process.env.NODE_ENV === 'production' ? 'https://airlinereservationsystem.onrender.com' : 'http://localhost:5173';
-console.log(url)
+
 export const verifyCode = async (req, res) => {
     try {
         // Verify the JWT and decode its payload
