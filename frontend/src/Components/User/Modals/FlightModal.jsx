@@ -28,6 +28,7 @@ const FlightModal = ({flight, close}) => {
                 <p>Flight No: {flight.flightNumber}</p>
                 <p>Gate Number: {flight.gate_number}</p>
                 <p>Booking Ref: {flight.bookingRef}</p>
+                <p>{flight.fareType} Tier</p>
                 <p>{flight.class} Class</p>
                 <div className="passengers-destination">
                     <div>

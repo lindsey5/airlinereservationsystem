@@ -23,13 +23,10 @@ const UserFlights = () => {
 
             for(const item of data){
                 for(const flight of item.flights){
-                    const passengers = flight.passengers.map(passenger => {
-                        passenger.fareType = item.fareType;
-                        return passenger
-                    })
                     if(total !== limit){
                         flightsArr.push({...flight, 
-                            passengers, 
+                            passengers: flight.passengers,
+                            fareType: item.fareType, 
                             bookingRef: item._id,
                             class: item.class, 
                             bookId: item._id,
@@ -58,13 +55,10 @@ const UserFlights = () => {
         const flightsArr = [];
             data.forEach(item => {
                 item.flights.forEach(flight => {
-                        const passengers = flight.passengers.map(passenger => {
-                            passenger.fareType = item.fareType;
-                            return passenger
-                        })
-                        flightsArr.push({
-                            ...flight, 
-                            passengers, 
+                        flightsArr.push({...flight, 
+                            passengers: flight.passengers,
+                            fareType: item.fareType, 
+                            bookingRef: item._id,
                             class: item.class, 
                             bookId: item._id,
                             booked_on: item.createdAt
@@ -123,7 +117,7 @@ const UserFlights = () => {
                             <button onClick={() => handleFlight(flight)}>
                                 <img src="/icons/eye (1).png" alt="" />
                             </button>
-                            {!flight.departure.time <= new Date() && flight.status === 'Booked' && flight.passengers[0].fareType === 'Gold' && 
+                            {!flight.departure.time <= new Date() && flight.status === 'Booked' && flight.fareType === 'Gold' && 
                             <button onClick={() => cancelFlight({bookId: flight.bookId, flightId: flight.id, showError: () => setShowCancelError(true)})}>
                                 <img src="/icons/cancel.png" alt="cancel" />
                             </button>}

@@ -4,7 +4,6 @@ export const one_way_search = async (data, flightClass, price) =>{
     try{
         const { departureCountry, departureCity, arrivalCity, arrivalCountry, departureTime } = data;
         const query = {
-            status: 'Scheduled', 
             'departure.country': departureCountry,
             'departure.city': departureCity,
             'arrival.city': arrivalCity,
