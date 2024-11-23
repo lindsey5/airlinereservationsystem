@@ -9,7 +9,7 @@
     overflow-y: auto;
 }
 
-.summary .container{
+.summary .summary-container{
     position: absolute;
     top: 50px;
     left: 50%;
@@ -20,7 +20,7 @@
     flex-direction: column;
 }
 
-.summary .container .header{
+.summary .summary-container .header{
     background-color: #ff3131;
     color: white;
     flex: 1;
@@ -29,7 +29,7 @@
     border-top-right-radius: 20px;
 }
 
-.summary .container .items{
+.summary .summary-container .items{
     display: grid;
     width: 325px;
     grid-template-columns: 1fr 1fr;
@@ -38,46 +38,44 @@
     padding: 10px 30px;
 }
 
-.summary .container .items-container{
+.summary .summary-container .items-container{
     width: 400px;
 }
 
-.summary .container .items-container .toggle-container{
+.summary .summary-container .items-container .toggle-container{
     display: flex;
     justify-content: space-between;
     align-items: center;
     padding: 0 10px;
-    font-weight: 600;
 }
 
-.summary .container .taxes-and-fees,
-.summary .container .fare-details{
+.summary .summary-container .taxes-and-fees,
+.summary .summary-container .fare-details{
     display: grid;
     grid-template-columns: repeat(2, 1fr);
     gap: 10px;
     margin: 0 20px;
 }
 
-.summary .container .items-container button{
+.summary .summary-container .items-container button{
     background-color: white;
     border: none;
     font-size: 15px;
     cursor: pointer;
     display: flex;
     align-items: center;
-    font-weight: 600;
 }
 
-.summary .container .items-container button img{
+.summary .summary-container .items-container button img{
     width: 15px;
     margin-left: 10px;
 }
 
-.summary .container .pay-btn-container{
+.summary .summary-container .pay-btn-container{
     padding: 20px;
 }
 
-.summary .container .pay-btn-container button{
+.summary .summary-container .pay-btn-container button{
     width: 100%;
     height: 35px;
     font-size: 20px;
@@ -85,12 +83,12 @@
     margin: 10px 0;
 }
 
-.summary .container .pay-btn-container button:first-child{
+.summary .summary-container .pay-btn-container button:first-child{
     background-color: #ff3131;
     color: white;
     border: none;
 }
 
-.summary .container .pay-btn-container button:first-child:hover{
+.summary .summary-container .pay-btn-container button:first-child:hover{
     background-color: #ffafaf;
 }

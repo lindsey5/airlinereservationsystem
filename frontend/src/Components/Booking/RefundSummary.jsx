@@ -41,18 +41,16 @@ const RefundSummary = ({flight, close, showError}) => {
         if(vatRate * totalTicketPrice){
             taxesAndFees.push({currency: 'PHP', amount: vatRate * totalTicketPrice , name: 'VAT (12%) on base fare', quantity: 1})
         }
-        console.log(taxesAndFees)
         line_items.push({currency: 'PHP', amount: taxesAndFees.reduce((total, fee) => total + (fee.amount * fee.quantity), 0), name: 'Taxes and Fees'})
         line_items.push({currency: 'PHP', amount: fareDetails.reduce((total, fare) => fare.amount + total ,0), name: 'Fares'})
         
         setPaymentDetails({taxesAndFees, fareDetails})
         set_line_items(line_items);
-        console.log(flight)
     },[flight])
 
     return (
         <div className="summary">
-            <div className='container'>
+            <div className='summary-container'>
                 <div className='header'>
                     <h2>Refund Summary</h2>
                 </div>

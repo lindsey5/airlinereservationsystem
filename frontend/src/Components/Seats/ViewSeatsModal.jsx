@@ -1,4 +1,4 @@
-import GenerateSeats from "../../Seats/GenerateSeats"
+import GenerateSeats from "./GenerateSeats"
 
 const ViewSeatsModal = ({flightData, close}) => {
     

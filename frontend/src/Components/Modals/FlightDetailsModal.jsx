@@ -1,8 +1,8 @@
 import { useEffect, useState } from "react"
 import './FlightModal.css';
-import { formatDate } from "../../../utils/dateUtils";
-import { get_pilot } from "../../../Service/PilotService";
-import ViewSeatsModal from "./ViewSeatsModal";
+import { formatDate } from "../../utils/dateUtils";
+import { get_pilot } from "../../Service/PilotService";
+import ViewSeatsModal from "../Seats/ViewSeatsModal";
 
 const FlightDetailsModal = ({flightData, close}) => {
     const [captain, setCaptain] = useState();

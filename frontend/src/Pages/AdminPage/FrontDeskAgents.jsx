@@ -4,7 +4,7 @@ import AdminPagination from "../../Components/Admin/Pagination/AdminPagination";
 import '../../styles/TablePage.css';
 import { addFrontDeskAgent, deleteFrontDeskAgent } from "../../Service/FrontDeskService";
 import AddFrontDeskForm from "../../Components/Admin/Forms/AddFrontDeskForm";
-import AddFrontDeskSuccess from "../../Components/Admin/Modals/AddFrontDeskSuccess";
+import AddFrontDeskSuccess from "../../Components/Modals/AddFrontDeskSuccess";
 
 const FrontDeskAgents = () => {
     const [searchTerm, setSearchTerm] = useState('');

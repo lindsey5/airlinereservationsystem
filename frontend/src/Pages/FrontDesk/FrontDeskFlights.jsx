@@ -5,7 +5,7 @@ import '../../styles/TablePage.css';
 import { formatDate } from "../../utils/dateUtils";
 import { dataStatus } from "../../utils/dataStatus";
 import FlightForm from "../../Components/Admin/Flights/FlightForm";
-import FlightDetailsModal from "../../Components/Admin/Modals/FlightDetailsModal";
+import FlightDetailsModal from "../../Components/Modals/FlightDetailsModal";
 
 const FrontDeskFlights = () => {
     const [flights, setFlights] = useState();

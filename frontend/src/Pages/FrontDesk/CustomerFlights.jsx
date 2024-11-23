@@ -5,7 +5,7 @@ import '../../styles/TablePage.css';
 import { formatDate } from "../../utils/dateUtils";
 import { dataStatus } from "../../utils/dataStatus";
 import { cancelFlight } from "../../Service/flightService";
-import ErrorCancelModal from "../../Components/User/Modals/ErrorCancelModal";
+import ErrorCancelModal from "../../Components/Modals/ErrorCancelModal";
 import RefundSummary from "../../Components/Booking/RefundSummary";
 
 const CustomerFlights = () => {

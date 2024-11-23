@@ -4,8 +4,8 @@ import './UserFlights.css'
 import { formatDate } from "../../utils/dateUtils"
 import FlightModal from "../../Components/User/Modals/FlightModal"
 import { useEffect } from "react"
-import ErrorCancelModal from "../../Components/User/Modals/ErrorCancelModal"
-import { cancelFlight } from "../../Service/flightService"
+import ErrorCancelModal from "../../Components/Modals/ErrorCancelModal"
+import RefundSummary from "../../Components/Booking/RefundSummary"
 
 const UserFlights = () => {
     const [flights, setFlights] = useState([]);
@@ -15,6 +15,7 @@ const UserFlights = () => {
     const [showCancelError, setShowCancelError] = useState(false);
     const [limit, setLimit] = useState(5);
     const {data} = useFetch(`/api/booking/bookings?filter=${title}`);
+    const [showRefund, setShowRefund] = useState(false);
 
     useEffect(() => {
         if(data){
@@ -70,6 +71,7 @@ const UserFlights = () => {
 
     return(
         <div className="user-bookings">
+            {showRefund && <RefundSummary flight={selectedFlight} close={() => setShowRefund(false)} showError={() => setShowCancelError(true)}/>}
             {showCancelError && <ErrorCancelModal close={() => setShowCancelError(false)}/>}
             {showFlight && <FlightModal flight={selectedFlight} close={() => setShowFlight(false)}/>}
             <div className="container">
@@ -118,7 +120,10 @@ const UserFlights = () => {
                                 <img src="/icons/eye (1).png" alt="" />
                             </button>
                             {!flight.departure.time <= new Date() && flight.status === 'Booked' && flight.fareType === 'Gold' && 
-                            <button onClick={() => cancelFlight({bookId: flight.bookId, flightId: flight.id, showError: () => setShowCancelError(true)})}>
+                                <button onClick={() => {
+                                        setShowRefund(true);
+                                        setSelectedFlight({...flight, fareType: flight.fareType, bookingRef: flight.bookingRef })
+                                    }}>
                                 <img src="/icons/cancel.png" alt="cancel" />
                             </button>}
                         </div>

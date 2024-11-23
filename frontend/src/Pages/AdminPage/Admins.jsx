@@ -3,7 +3,7 @@ import { useState, useEffect } from "react";
 import AdminPagination from "../../Components/Admin/Pagination/AdminPagination";
 import '../../styles/TablePage.css';
 import AddAdminForm from "../../Components/Admin/Forms/AddAdminForm";
-import AddAdminSuccess from "../../Components/Admin/Modals/AddAdminSuccess";
+import AddAdminSuccess from "../../Components/Modals/AddAdminSuccess";
 import { addAdmin, deleteAdmin } from "../../Service/Admin/AdminService";
 
 const Admins = () => {

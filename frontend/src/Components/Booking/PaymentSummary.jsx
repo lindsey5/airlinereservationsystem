@@ -8,7 +8,7 @@ const PaymentSummary  = ({line_items, close, paymentDetails}) => {
     
     return (
         <div className="summary">
-            <div className='container'>
+            <div className='summary-container'>
                 <div className='header'>
                 <h2>Payment Summary</h2>
                 </div>
