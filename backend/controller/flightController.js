@@ -155,7 +155,7 @@ export const get_available_flights = async (req, res) => {
         // - The specified class (e.g., 'Economy') has available seats
         // - The flight's departure time is in the future (greater than or equal to the current time)
         const flights = await Flight.find({ 
-            status: { $nin: ['Completed', 'Cancelled'] }, // Filter out completed or cancelled flights
+            status: 'Scheduled',
             'classes.className': flightClass,  // Ensure the flight has the specified class (e.g., 'Economy')
             'classes.seats.status': 'available', // Ensure the seat status in the class is 'available'
             'departure.time': { $gte: new Date().setHours(new Date().getHours() + 3) } // Ensure the departure time is in the future
@@ -437,7 +437,7 @@ export const completeFlight = async (req, res) => {
 
         // Update all bookings that have this flight with the status 'Completed'
         await Booking.updateMany(
-            { 'flights.id': req.params.id, 'flights.status': 'In Flight' },  // Find bookings that have this flight and are in 'Booked' status
+            { 'flights.id': req.params.id, 'flights.status': 'In-Flight' },  // Find bookings that have this flight and are in 'Booked' status
             { $set: { 'flights.$.status': 'Completed' } }  // Set the flight's status in the booking to 'Completed'
         );
 

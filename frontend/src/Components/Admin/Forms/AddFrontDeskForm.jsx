@@ -12,7 +12,7 @@ const AddFrontDeskForm = ({close, handleSubmit}) => {
     return (
         <div className='admin-form'>
             <div className='container'>
-            <h2>Add Admin</h2>
+            <h2>Add Front Desk Agent</h2>
             <form onSubmit={handleSubmit}>
             <div style={{display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '20px'}}>
                     <div className='input-container'>

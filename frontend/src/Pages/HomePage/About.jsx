@@ -35,7 +35,7 @@ const About = () => {
                 <h2>CloudPeak <span>Airlines</span></h2>
             </header>
             <div class="container" ref={el => elementsRef.current[0] = el}>
-                <h1>Programming Team</h1>
+                <h1>Developer Team</h1>
                 <div class="gallery-container">
                     <div class="gallery">
                         <img src="/members/Programming Team/aaron.JPG" alt="Profile" />
@@ -53,6 +53,12 @@ const About = () => {
                     </div>
                 </div>
                 <div className='gallery-container'>
+                    <div class="gallery">
+                        <img src="/members/Design Team/UPO, KEITH.jpg" alt="Profile" />
+                        <div>
+                            <h3>Keith Upo</h3>
+                        </div>
+                    </div>
                     <div class="gallery">
                         <img src="/members/Programming Team/Retrita,karl.jpeg" alt="Profile" />
                         <div>

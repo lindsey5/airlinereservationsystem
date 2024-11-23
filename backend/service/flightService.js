@@ -4,7 +4,7 @@ export const one_way_search = async (data, flightClass, price) =>{
     try{
         const { departureCountry, departureCity, arrivalCity, arrivalCountry, departureTime } = data;
         const query = {
-            status: { $nin: ['Completed', 'Cancelled'] }, 
+            status: 'Scheduled', 
             'departure.country': departureCountry,
             'departure.city': departureCity,
             'arrival.city': arrivalCity,
@@ -35,7 +35,7 @@ export const round_trip_search = async (data, flightClass,price) => {
     };
 
     const outBoundQuery = {
-        status: { $nin: ['Completed', 'Cancelled'] }, 
+        status: 'Scheduled', 
         'departure.country': departureCountry,
         'departure.city': departureCity,
         'arrival.city': arrivalCity,
@@ -47,6 +47,7 @@ export const round_trip_search = async (data, flightClass,price) => {
     };
 
     const returnQuery = {
+        status: 'Scheduled', 
         'departure.country': arrivalCountry,
         'departure.city': arrivalCity,
         'arrival.city': departureCity,
@@ -111,7 +112,7 @@ export const multi_city_search = async (searchSegments, flightClass, price) => {
 
         // Find flights for the current segment
         const flights = await Flight.find({
-            status: { $nin: ['Completed', 'Cancelled'] }, 
+            status: 'Scheduled', 
             'departure.country': departureCountry,
             'departure.city': departureCity,
             'arrival.city': arrivalCity,

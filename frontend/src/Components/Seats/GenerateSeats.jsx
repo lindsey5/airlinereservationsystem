@@ -95,6 +95,8 @@ const GenerateSeats = ({flightData, close}) =>{
         
         const passengerObj = {
             name: passenger.firstname + ' ' + passenger.lastname,
+            nationality: passenger.nationality,
+            countryOfIssue: passenger.countryOfIssue,
             flightPrice: passenger.price,
             type: passenger.type,
             flightClass: passenger.flightClass,
@@ -116,11 +118,14 @@ const GenerateSeats = ({flightData, close}) =>{
                 <img src="/icons/tcu_airlines-logo (2).png" alt="" />
                 <h2>Passenger Information</h2>
                 <div>
-                <p>Name: {state.name}</p>
-                <p>Amount Paid: {formatPrice(state.flightPrice)} ({state.type})</p>
-                <p>Class: {state.flightClass}</p>
-                <p>Tier: {state.fareType}</p>
-                <p>Seat: {state.seatNumber}</p>
+                    <p>Name: {state.name}</p>
+                    <p>Nationality: {state.nationality}</p>
+                    <p>Country of Issue: {state.countryOfIssue}</p>
+                    <p>Ticket Amount: {formatPrice(state.flightPrice)} ({state.type})</p>
+                    <hr />
+                    <p>Class: {state.flightClass}</p>
+                    <p>{state.fareType} Tier</p>
+                    <p>Seat: {state.seatNumber}</p>
                 </div>
                 <button onClick={hidePassenger}>Close</button>
             </div>
