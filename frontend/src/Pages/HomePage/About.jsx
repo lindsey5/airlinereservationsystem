@@ -54,12 +54,6 @@ const About = () => {
                 </div>
                 <div className='gallery-container'>
                     <div class="gallery">
-                        <img src="/members/Design Team/UPO, KEITH.jpg" alt="Profile" />
-                        <div>
-                            <h3>Keith Upo</h3>
-                        </div>
-                    </div>
-                    <div class="gallery">
                         <img src="/members/Programming Team/Retrita,karl.jpeg" alt="Profile" />
                         <div>
                             <h3>Karl Retrita</h3>
