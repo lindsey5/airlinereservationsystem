@@ -37,12 +37,15 @@ const AvailableFlights = () => {
     const handleSelect = (flight) => {
         const params = {flights: [], price: 0, class: selectedClass}
         params.price = flight.classes.find(classObj => classObj.className === selectedClass).price
+    
         params.flights.push({ 
             id: flight._id,
             departure: flight.departure.airport,
+            departure_country: flight.departure.country,
             departure_code: flight.departure.airport_code,
             departure_time: formatDate(flight.departure.time),
             arrival: flight.arrival.airport,
+            arrival_country: flight.arrival.country,
             arrival_code: flight.arrival.airport_code,
             arrival_time: formatDate(flight.arrival.time),
             price: flight.classes.find(classObj => classObj.className === selectedClass).price,

@@ -98,11 +98,27 @@
     gap: 30px;
 }
 
-.passenger-forms .passenger-details input{
+.passenger-forms .passenger-details input[type="text"],
+.passenger-forms .passenger-details input[type="date"]{
     display: block;
     width: 230px;
     height: 25px;
     outline: none;
+}
+
+.passenger-forms .passenger-details textarea{
+    display: block;
+    width: 50%;
+    height: 50px;
+    outline: none;
+}
+
+.passenger-forms .passenger-details .checkbox-container{
+    display: flex;
+}
+
+.passenger-forms .passenger-details .checkbox-container input{
+    
 }
 
 .passenger-forms .book-btn{

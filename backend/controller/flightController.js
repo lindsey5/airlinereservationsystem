@@ -515,11 +515,8 @@ export const cancelFlight = async (req, res) => {
         // Set the payment status to 'refunded'
         payment.status = 'refunded';
 
-        // Filter out any line items related to the administration fee, which is not refundable
-        const filteredLineItems = payment.line_items.filter(item => item.name !== 'Administration Fee');
-        
         // Calculate the total refundable amount by summing the line items (assuming the amounts are in the smallest unit, e.g., cents)
-        const refundAmount = filteredLineItems.reduce((total, item) => item.amount + total, 0) * 100;
+        const refundAmount = payment.line_items.reduce((total, item) => item.amount + total, 0) * 100;
 
         // If the booking has a payment checkout ID, initiate the refund process
         if (booking.payment_checkout_id) {

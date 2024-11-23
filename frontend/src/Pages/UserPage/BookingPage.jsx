@@ -35,6 +35,8 @@ const BookingPage = () => {
         setBookings(booking(decodedData.flights.map(flight => ({
             id: flight.id, 
             price: flight.price, 
+            departure_country: flight.departure_country,
+            arrival_country: flight.arrival_country,
             destination: `${flight.departure_code} to ${flight.arrival_code}`,
             passengers: [],
         }
@@ -106,9 +108,12 @@ const BookingPage = () => {
                     lastname: '',
                     dateOfBirth: '',
                     type: passengerType,
-                    price: passengerType === 'Child' ?  price - (price * 0.05) : price ,
+                    price: price,
                     nationality: '',
                     countryOfIssue: '',
+                    request: '',
+                    pwd: false,
+                    senior_citizen: false
                 }
                 bookings.flights[i].passengers.push(passenger)
             })

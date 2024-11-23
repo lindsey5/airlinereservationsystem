@@ -82,36 +82,9 @@ export const getCities = async (req, res) => {
 };
 export const createPaymentLink = async (req, res) => {
     try{
-        const vatRate = 12 / 100;
-        const totalTicketPrice = req.body.bookings.flights.reduce((total, flight) => {
-            return total + flight.passengers.reduce((total, passenger) => total + passenger.price, 0)
-        }, 0)
-        const line_items = [
-            {currency: 'PHP', amount: 1500 * 100, name: 'Fuel Surcharge', quantity: req.body.bookings.flights.length * req.body.bookings.flights[0].passengers.length},
-            {currency: 'PHP', amount: 687.50 * 100, name: 'Passenger Service Charge', quantity: req.body.bookings.flights.length * req.body.bookings.flights[0].passengers.length},
-            {currency: 'PHP', amount: 850 * 100, name: 'Terminal Fee', quantity: req.body.bookings.flights.length * req.body.bookings.flights[0].passengers.length},
-            {currency: 'PHP', amount: 30 * 100, name: 'Aviation Security Fee', quantity: req.body.bookings.flights.length * req.body.bookings.flights[0].passengers.length},
-            {currency: 'PHP', amount: 1344 * 100, name: 'Administration Fee', quantity: 1},
-            {currency: 'PHP', amount: (vatRate * totalTicketPrice) * 100, name: 'VAT (12%) on Ticket Price', quantity: 1},
-        ];
-        req.body.bookings.flights.forEach(flight => {
-            flight.passengers.forEach(passenger=> {
-                const item = {
-                    currency: 'PHP',
-                    amount: passenger.price * 100, 
-                    name: `${flight.destination}-${passenger.type} (${req.body.bookings.fareType} Tier)`, 
-                    quantity: 1
-                }
-                const isExist = line_items.find(line_item => line_item.name === item.name)
-
-                if(isExist){
-                    isExist.quantity += 1;
-                }else{
-                    line_items.push(item)
-                }
-            })
-        })
-
+        const line_items = req.body.bookings.line_items
+            .map(item => ({...item, amount: item.amount * 100}))
+            .sort((current, next) => current.name.localeCompare(next.name));
         const options = {
             method: 'POST',
             headers: {
@@ -139,6 +112,7 @@ export const createPaymentLink = async (req, res) => {
             const result = await response.json();
             const checkoutDataToken = jwt.sign({
                 flights: req.body.bookings.flights, 
+                line_items,
                 class: req.body.bookings.class,
                 fareType: req.body.bookings.fareType, 
                 checkout_id: result.data.id,

@@ -35,6 +35,8 @@ const FrontDeskBookingPage = () => {
         setBookings(booking(decodedData.flights.map(flight => ({
             id: flight.id, 
             price: flight.price, 
+            departure_country: flight.departure_country,
+            arrival_country: flight.arrival_country,
             destination: `${flight.departure_code} to ${flight.arrival_code}`,
             passengers: [],
         }

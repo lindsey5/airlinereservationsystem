@@ -46,7 +46,6 @@ export const refundPayment = async (payment_id, amount) => {
           if(response.ok){
             return await response.json();
           }
-          console.log(await response.json())
           return null
     }catch(err){
         return null
@@ -56,29 +55,33 @@ export const refundPayment = async (payment_id, amount) => {
 export const createPayment = async (data, booking_id) => {
       data.flights.forEach(async (flight) => {
         const vatRate = 12 / 100;
-        const totalTicketPrice = flight.passengers.reduce((total, passenger) => passenger.price + total, 0)
-        
+        const totalTicketPrice = flight.passengers.reduce((total, passenger) => 
+            total + ((passenger.pwd || passenger.senior_citizen) 
+                && flight.departure_country === 'Philippines' 
+                && flight.arrival_country === 'Philippines' ? 0 : passenger.price), 0)
         const paymentDetails = [
-            {amount: 1500, name: 'Fuel Surcharge', quantity: flight.passengers.length},
-            {amount: 687.50, name: 'Passenger Service Charge', quantity: flight.passengers.length},
-            {amount: 850, name: 'Terminal Fee', quantity: flight.passengers.length},
-            {amount: 30, name: 'Aviation Security Fee', quantity: flight.passengers.length},
-            {amount: vatRate * totalTicketPrice , name: 'VAT (12%) on Ticket Price', quantity: 1},
+          {amount: 523, name: 'Fuel Surcharge', quantity: flight.passengers.length},
+          {amount: 450, name: 'Passenger Service Charge', quantity:  flight.passengers.length},
+          {amount: 900, name: 'Terminal Fee', quantity: flight.passengers.length},
+          {amount: 30, name: 'Aviation Security Fee', quantity: flight.passengers.length},
         ]
+        
         flight.passengers.forEach(passenger=> {
+            const isDiscounted = (passenger.pwd || passenger.senior_citizen) 
+            && flight.departure_country === 'Philippines' 
+            && flight.arrival_country === 'Philippines';
+            const fareAmount = isDiscounted ? passenger.price * 0.80 : passenger.price;
             const item = {
-                amount: passenger.price, 
-                name: `${flight.destination}-${passenger.type} (${data.fareType} Tier)`, 
+                currency: 'PHP',
+                amount: fareAmount, 
+                name: `${flight.destination}-${passenger.type} (${data.fareType} Tier)`,
                 quantity: 1
-            }
-            const isExist = paymentDetails.find(paymentDetail => paymentDetail.name === item.name)
-
-            if(isExist){
-                isExist.quantity += 1;
-            }else{
-                paymentDetails.push(item)
-            }
+            };
+            paymentDetails.push(item); 
         })
+        if(vatRate * totalTicketPrice){
+          paymentDetails.push({currency: 'PHP', amount: vatRate * totalTicketPrice , name: 'VAT (12%) on base fare', quantity: 1})
+        }
         const total_amount = paymentDetails.reduce((total, paymentDetail) => total + (paymentDetail.amount * paymentDetail.quantity), 0)
         const payment = await Payment.create({
             booking_id: booking_id,
@@ -91,9 +94,9 @@ export const createPayment = async (data, booking_id) => {
 
       const adminFee = await Payment.create({
         booking_id: booking_id,
-        total_amount: 1344,
+        total_amount: 400,
         line_items: [
-          {amount: 1344, name: 'Administration Fee', quantity: 1}
+          {amount: 400, name: 'Administration Fee', quantity: 1}
         ]
       })
 

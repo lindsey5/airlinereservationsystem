@@ -41,6 +41,16 @@ const PassengerSchema = new Schema({
       enum: ['Booked', 'Ticketed', 'Cancelled'],
       default: 'Booked'
     },
+    pwd: {
+      type: Boolean,
+      required: true,
+      default: false,
+    },
+    senior_citizen: {
+      type: Boolean,
+      required: true,
+      default: false,
+    },
     ticketNumber: {
       type: String,
       required: true,
