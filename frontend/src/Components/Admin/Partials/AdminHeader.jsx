@@ -1,5 +1,5 @@
 import './AdminHeader.css';
-import { SideBarContext } from "../../../Context/sideBarContext";
+import { SideBarContext } from "../../../Context/SideBarContext";
 import { useContext } from 'react';
 
 const AdminHeader = () => {

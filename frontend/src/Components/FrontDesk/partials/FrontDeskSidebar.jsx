@@ -2,7 +2,7 @@ import '../../styles/sidebar.css'
 import { Link } from 'react-router-dom';
 import { useLogout } from '../../../hooks/useLogout';
 import { useContext } from 'react';
-import { SideBarContext } from '../../../Context/sideBarContext';
+import { SideBarContext } from '../../../Context/SideBarContext';
 
 const FrontDeskSideBar = () => {
     const logout = useLogout();

@@ -1,5 +1,5 @@
 import { useContext } from "react";
-import { SideBarContext } from "../../../Context/sideBarContext";
+import { SideBarContext } from "../../../Context/SideBarContext";
 
 const FrontDeskHeader = () => {
     const { setShowSideBar } = useContext(SideBarContext);

@@ -2,7 +2,7 @@ import { useLogout } from '../../../hooks/useLogout';
 import '../../styles/sidebar.css'
 import { Link } from 'react-router-dom';
 import { useContext } from 'react';
-import { SideBarContext } from '../../../Context/sideBarContext';
+import { SideBarContext } from '../../../Context/SideBarContext';
 
 const AdminSideBar = () => {
     const logout = useLogout();
