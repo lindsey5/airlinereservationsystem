@@ -11,7 +11,6 @@ const TicketPage = () => {
     const {data} = useFetch(`/api/booking/${id}`)
     const printRef = useRef();
 
-
     const handleDownload = () => {
     const element = printRef.current;
 
@@ -32,8 +31,9 @@ const TicketPage = () => {
     return (
         <div className="ticket-page">
             <div className='ticket-parent-container' ref={printRef}>
-            {data && data.flights.map(flight => 
-                    flight.passengers.map(passenger => 
+            {data && data.flights.map(flight => {
+                if(flight.status !== 'Cancelled'){
+                    return flight.passengers.map(passenger => 
                         <div className="ticket-container">
                             <div className='ticket'>
                                 <div className="ticket-header">
@@ -110,7 +110,8 @@ const TicketPage = () => {
                             </div>
                         </div>
                     )
-            )}
+                }
+            })}
 
 
             </div>
