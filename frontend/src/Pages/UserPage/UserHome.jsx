@@ -64,7 +64,7 @@ const UserHome = () => {
           const intervalId = setInterval(() => {
             setCurrentCity((prev) => (prev === popularCity.length - 1 ? 0 : prev + 1));
     
-          }, 5000);
+          }, 10000);
           return () => clearInterval(intervalId); 
       }, [popularCity]);
 
