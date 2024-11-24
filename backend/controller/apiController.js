@@ -219,6 +219,18 @@ export const get_popular_destination = async(req, res) => {
         res.status(400).json({errors});
     }
 }
+
+const formatDate = (date) => {
+    return date.toLocaleString('en-US', {
+        month: '2-digit',
+        day: '2-digit',
+        year: 'numeric',
+        hour: '2-digit',
+        minute: '2-digit',
+        hour12: true,
+      })
+}
+
 //GEMINI_API_KEY=AIzaSyCNmxh93Y4CByup2KWsS0pCoSnUqKsdVUc
 export const chat_a_bot = async (req, res) => {
     try{
@@ -227,16 +239,24 @@ export const chat_a_bot = async (req, res) => {
             'classes.seats.status': 'available', // Ensure the seat status in the class is 'available'
             'departure.time': { $gte: new Date().setHours(new Date().getHours() + 3) } // Ensure the departure time is in the future
         });
-        const formatDate = (date) => {
-            return date.toLocaleString('en-US', {
-                month: '2-digit',
-                day: '2-digit',
-                year: 'numeric',
-                hour: '2-digit',
-                minute: '2-digit',
-                hour12: true,
-              })
+
+        const popularDestinations = [];
+        const bookings = await Booking.find({'flights.status' : {$ne: 'Cancelled'}});
+        const limit = 5;
+        
+        for(const booking of bookings){
+            for(const flight of booking.flights){
+                const index = popularDestinations.findIndex(destination => destination.city === flight.arrival.city)
+                if(index< 0){
+                    popularDestinations.push({
+                        city: flight.arrival.city,
+                        country: flight.arrival.country,
+                    })
+                }
+                if(popularDestinations.length === limit) break;
+            }
         }
+
         const prompt = req.body.prompt;
         const genAI = new GoogleGenerativeAI(process.env.GEMINI_API_KEY);
         const model = genAI.getGenerativeModel({
@@ -252,6 +272,9 @@ export const chat_a_bot = async (req, res) => {
               6. Passenger details can only be modified if the current time is more than 2 hours before departure.
               7. Seat Selection is for Silver and Gold Tier
 
+                Payment Methods are: 
+                Maya, Gcash, Visa, Mastercard
+
               Fare Tier Details:
               - Bronze: Non-refundable, 1 hand-carry baggage (7kg), no seat selection.
               - Silver: +PHP 1120 per passenger, non-refundable, 1 hand-carry baggage (7kg), 1 checked baggage (20kg), preferred seat selection.
@@ -263,6 +286,12 @@ export const chat_a_bot = async (req, res) => {
                         return `${flight.departure.airport}(${formatDate(new Date(flight.departure.time))}) 
                         to ${flight.arrival.airport} (${formatDate(new Date(flight.arrival.time))}) 
                         prices: ${flight.classes.map(classObj => `${classObj.className} (${classObj.price})`)}`
+                    })
+                }
+            Popular Destinations are: 
+                ${
+                    popularDestinations.map(destination => {
+                        return `${destination.city}, ${destination.country}`
                     })
                 }
             `,
