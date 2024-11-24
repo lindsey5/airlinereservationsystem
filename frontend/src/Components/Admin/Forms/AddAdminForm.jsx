@@ -8,11 +8,6 @@ const AddAdminForm = ({close, handleSubmit}) => {
         lastname: '',
         email: '',
     })
-    useEffect(() => {
-        if(data){
-            setAdminData(data)
-        }
-    },[data])
 
     return (
         <div className='admin-form'>
