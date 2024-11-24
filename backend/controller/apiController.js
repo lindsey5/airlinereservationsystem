@@ -193,7 +193,7 @@ export const getDashboardDetails = async (req, res) => {
 export const get_popular_destination = async(req, res) => {
     try{
         const popularDestinations = [];
-        const bookings = await Booking.find();
+        const bookings = await Booking.find({'flights.status' : {$ne: 'Cancelled'}});
         const limit = req.query.limit || 5;
         
         for(const booking of bookings){
