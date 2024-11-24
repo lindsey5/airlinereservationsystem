@@ -6,6 +6,7 @@ import Footer from "../HomePage/Footer";
 import { useNavigate } from "react-router-dom";
 import ButtonsContainer from "../../Components/Search/ButtonsContainer";
 import SelectContainer from "../../Components/Search/SelectContainer";
+import PopularCity from "../HomePage/PopularCity";
 
 const UserHome = () => {
     const { data } = useFetch('/api/popular-destinations');
@@ -70,7 +71,7 @@ const UserHome = () => {
 
     return (
         <div className="user-home">
-                <div className="city-container">
+            <div className="city-container">
                     {popularCity && popularCity.map((city, i) => 
                          <img key={i} className='city' src={popularCity[currentCity].image} alt="" style={{display: currentCity == i ? 'block' : 'none'}} />
                     )}
@@ -90,7 +91,8 @@ const UserHome = () => {
                         <SearchForms />
                         <ButtonsContainer handleSearch={() => navigate('/user/search-results')}/>
                     </div>
-                </div>
+            </div>
+            <PopularCity elementsRef={elementsRef}/>
             <div className="bg-white w-full flex flex-col items-center justify-center opacity-0 py-[200px]" ref={el => elementsRef.current[1] = el}>
                 <div className="mx-auto px-4 w-full box-border h-full">
                     <div className="airline-details bg-white text-center flex justify-center flex-col items-center h-full">
@@ -103,7 +105,7 @@ const UserHome = () => {
                     </div>
                 </div>
             </div>
-            <div className="px-4 mb-[100px] flex justify-center items-center opacity-0" ref={el => elementsRef.current[0] = el}>
+            <div className="bg-white px-4 mb-[100px] flex justify-center items-center opacity-0" ref={el => elementsRef.current[2] = el}>
                 <div>
                     <h2 className="text-3xl font-bold text-center my-8">Why book with CloudPeak airlines?</h2>
                     <div className="flex justify-center flex-wrap">

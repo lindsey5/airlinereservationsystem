@@ -1,10 +1,12 @@
 .user-home{
     width: 100%;
+    background-color: white;
 }
 
 .user-home .city-container{
     position: relative;
     z-index: 2;
+    margin-bottom: 300px;
 }
 
 .user-home .city-container h1{
