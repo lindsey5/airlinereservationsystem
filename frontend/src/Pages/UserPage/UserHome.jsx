@@ -7,7 +7,6 @@ import { useNavigate } from "react-router-dom";
 import ButtonsContainer from "../../Components/Search/ButtonsContainer";
 import SelectContainer from "../../Components/Search/SelectContainer";
 import PopularCity from "../HomePage/PopularCity";
-import ChatBotInterface from "./ChatBotInterface";
 
 const UserHome = () => {
     const { data } = useFetch('/api/popular-destinations');
@@ -71,7 +70,6 @@ const UserHome = () => {
 
     return (
         <div className="user-home">
-            <ChatBotInterface />
             <div className="city-container">
                     {popularCity && popularCity.map((city, i) => 
                          <img key={i} className='city' src={popularCity[currentCity].image} alt="" style={{display: currentCity == i ? 'block' : 'none'}} />

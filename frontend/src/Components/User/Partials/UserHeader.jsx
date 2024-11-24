@@ -18,7 +18,7 @@ const UserHeader = () => {
             {showDropdown && 
             <div className='dropdown'>
                 <a href="/user/flights">
-                    <button><img src="/icons/plane.png" alt="" />Your Flights</button>
+                    <button><img src="/icons/plane.png" alt="" />My Flights</button>
                 </a>
                 <a href="">
                     <button><img src="/icons/settings (1).png" alt="" />Settings</button>
