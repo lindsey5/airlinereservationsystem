@@ -21,6 +21,7 @@ const FlightFirstForm = ({state, dispatch, handleSubmit, close}) => {
     const validate = async (e) => {
         e.preventDefault();
         setError('');
+        const flightDepartureTime = new Date(state.departure.time)
 
         if(!state.departure.airport){
             setError('*Please select departure airport');
@@ -28,6 +29,8 @@ const FlightFirstForm = ({state, dispatch, handleSubmit, close}) => {
             setError('*Please select arrival airport');
         }else if(state.departure.airport === state.arrival.airport){
             setError('*Departure and Arrival airport cannot be the same');
+        }else if(new Date(state.arrival.time) < flightDepartureTime){
+            setError('*The arrival time must be later than the departure time.');
         }else if(!state.captain){
             setError('*Please select captain');
         }else if(!state.co_pilot){

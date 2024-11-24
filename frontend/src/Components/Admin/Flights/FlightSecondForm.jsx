@@ -1,21 +1,9 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { handleBlur, handleFocus, handleNegative, handleNegativeAndDecimal } from "../../../utils/handleInput";
+import useFetch from "../../../hooks/useFetch";
 
 const FlightSecondForm = ({state, dispatch, close}) => {
     const [error, setError] = useState();
-
-    const handleClasses = (className) => {
-        const classname = state.classes.find(item => item.className === className);
-        if (classname) {
-            dispatch({type: 'SET_CLASSES', payload: state.classes.filter(class_name => class_name !== classname)})
-        } else {
-            dispatch({type: 'SET_CLASSES', payload: [...state.classes, { className }]})
-        }
-    };
-
-    const getClassSeats = (className) => {
-        return state.classes.find(classType => classType.className === className).seats;
-    }
 
     const createFlight = async (e) => {
         e.preventDefault();
@@ -41,12 +29,33 @@ const FlightSecondForm = ({state, dispatch, close}) => {
         }
     }
 
+    const handleClasses = (className) => {
+        const classname = state.classes.find(item => item.className === className);
+        if (classname) {
+            dispatch({type: 'SET_CLASSES', payload: state.classes.filter(class_name => class_name !== classname)})
+        } else {
+            dispatch({type: 'SET_CLASSES', payload: [...state.classes, { className }]})
+        }
+    };
+    
+    const getClassSeats = (className) => {
+        return state.classes.find(classType => classType.className === className).seats;
+    }
+
+    const { data } = useFetch(`/api/airplane/${state.airplane.id}`);
+
+    useEffect(() => {
+        console.log(data)
+    }, [data]);
+
     return (
         <div className="container">
              <span className='close'onClick={close}>X</span>
             <form onSubmit={createFlight}>
-                <p>Plane ID: {state.airplane.id}</p>
                 <h2>Select Classes</h2>
+                <p>Plane ID: {state.airplane.id}</p>
+                <p>Seat Capacity: {data && data.passengerSeatingCapacity}</p>
+                <p>Columns: {data && data.columns}</p>
                 <div style={{marginTop: '50px'}}>
                     <label htmlFor="ecomony">Economy</label>
                     <input type="checkbox" name="economy" onClick={() => handleClasses('Economy')}/>
@@ -56,7 +65,7 @@ const FlightSecondForm = ({state, dispatch, close}) => {
                     <input type="checkbox" name="first" onClick={() => handleClasses('First')}/>
                 </div>
                 {state.classes.length > 0 && state.classes.map(className =>  
-                    <div>
+                    <div key={className.className}>
                         <h3>{className.className}</h3>
                         <div style={{display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '20px'}}>
                             <div className='input-container'>

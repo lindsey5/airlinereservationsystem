@@ -214,7 +214,7 @@ export const get_flights = async (req, res) => {
 
         // Fetch flights based on search criteria, sorted by creation date (newest first)
         const flights = await Flight.find(searchCriteria)
-            .sort({ 'departure.time': 1 }) 
+            .sort({ 'departure.time': -1 }) 
             .skip(skip)               // Skipping records based on the pagination parameters
             .limit(limit);            // Limiting the number of records returned based on the limit
 
