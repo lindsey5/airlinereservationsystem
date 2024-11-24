@@ -274,6 +274,7 @@ export const chat_a_bot = async (req, res) => {
           for await (const chunk of result.stream) {
             fullResponse += chunk.text();
           }
+          console.log(fullResponse)
           res.status(200).json({ message: fullResponse });
     }catch(err){
         console.log(err)
