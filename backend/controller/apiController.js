@@ -197,8 +197,7 @@ export const get_popular_destination = async(req, res) => {
         const limit = req.query.limit || 5;
         
         for(const booking of bookings){
-            const filteredFlights = booking.flights.filter(flight => flight.status === 'Completed');
-            for(const flight of filteredFlights){
+            for(const flight of booking.flights){
                 const index = popularDestinations.findIndex(destination => destination.city === flight.arrival.city)
                 if(index > -1){
                     popularDestinations[index].total += flight.passengers.length
