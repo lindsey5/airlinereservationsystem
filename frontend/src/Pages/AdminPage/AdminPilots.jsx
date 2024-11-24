@@ -1,7 +1,7 @@
 import '../../styles/TablePage.css';
 import PilotForm from '../../Components/Admin/Forms/PilotForm';
 import { useEffect, useState } from 'react';
-import { addPilot, deletePilot, updatePilot } from '../../Service/Admin/AdminPilotService';
+import { addPilot, deletePilot, updatePilot } from '../../Service/PilotService';
 import AdminPagination from '../../Components/Admin/Pagination/AdminPagination';
 import useAdminPaginationReducer from '../../hooks/adminPaginationReducer';
 import { dataStatus } from '../../utils/dataStatus';

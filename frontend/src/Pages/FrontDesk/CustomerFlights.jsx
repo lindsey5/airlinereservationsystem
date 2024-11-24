@@ -4,7 +4,6 @@ import AdminPagination from "../../Components/Admin/Pagination/AdminPagination";
 import '../../styles/TablePage.css';
 import { formatDate } from "../../utils/dateUtils";
 import { dataStatus } from "../../utils/dataStatus";
-import { cancelFlight } from "../../Service/flightService";
 import ErrorCancelModal from "../../Components/Modals/ErrorCancelModal";
 import RefundSummary from "../../Components/Booking/RefundSummary";
 
@@ -66,6 +65,7 @@ const CustomerFlights = () => {
                         <th>Arrival</th>
                         <th>Arrival Time</th>
                         <th>Status</th>
+                        <th>Fare Type</th>
                         <th>Passengers</th>
                         <th>Action</th>
                     </tr>
@@ -74,6 +74,11 @@ const CustomerFlights = () => {
                     {flights && flights.map((flight, i) => {
                         const departureTime = formatDate(flight.flight.departure.time);
                         const arrivalTime = formatDate(flight.flight.arrival.time);
+
+                        let date1 = new Date(); 
+                        let date2 = new Date(flight.flight.departure.time);
+                        let diffMillis = date2 - date1;
+                        let diffHours = diffMillis / (1000 * 60 * 60)
 
                         return (
                             <tr key={i}>
@@ -86,15 +91,22 @@ const CustomerFlights = () => {
                                 <td>{flight.flight.arrival.airport} ({flight.flight.arrival.airport_code})</td>
                                 <td>{arrivalTime}</td>
                                 {dataStatus(flight.flight.status)}
+                                <td>{flight.fareType}</td>
                                 <td>{flight.flight.passengers.length}</td>
                                 <td>
-                                {flight.flight.status === 'Booked' && 
-                                    <button onClick={() => {
-                                        setShowRefund(true);
-                                        setSelectedFlight({...flight.flight, fareType: flight.fareType, bookingRef: flight.bookingRef })
-                                    }}>
-                                    <img src="/icons/cancel.png"/>
-                                    </button>
+                                {!(diffHours <= 2) && !(new Date() >= new Date(flight.flight.departure.time)) && flight.flight.status === 'Booked' && 
+                                    <>
+                                        {flight.fareType === 'Gold' && 
+                                        <button onClick={() => {
+                                            setShowRefund(true);
+                                            setSelectedFlight({...flight.flight, fareType: flight.fareType, bookingRef: flight.bookingRef })
+                                        }}>
+                                        <img src="/icons/cancel.png"/>
+                                        </button>}
+                                        <button>
+                                            <img src="/icons/editing.png"/>
+                                        </button>
+                                    </>
                                 }
                                 </td>
                             </tr>

@@ -1,7 +1,7 @@
 import { useEffect, useState } from 'react';
 import '../../styles/TablePage.css';
 import AirplaneForm from '../../Components/Admin/Forms/AirplaneForm';
-import { addAirplane, deleteAirplane, updateAirplane } from '../../Service/Admin/AdminAirplaneService';
+import { addAirplane, deleteAirplane, updateAirplane } from '../../Service/AirplaneService';
 import useAdminPaginationReducer from '../../hooks/adminPaginationReducer';
 import AdminPagination from '../../Components/Admin/Pagination/AdminPagination';
 import { dataStatus } from '../../utils/dataStatus';

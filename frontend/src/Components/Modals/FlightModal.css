@@ -24,10 +24,6 @@
     margin-right: 20px;
 }
 
-.modal-container .modal .view-seats-btn{
-    cursor: pointer;
-}
-
 .modal-container .flight-details{
     display: grid;
     grid-template-columns: repeat(2, 1fr);
@@ -57,14 +53,4 @@
 
 .modal-container .close-btn:hover{
     background-color: #ffa3a3;
-}
-
-.modal-container .view-seats{
-    position: absolute;
-    padding: 10px;
-    top: 0;
-    left: 50%;
-    transform: translateX(-50%);
-    background-color: white;
-    border: 1px solid grey;
 }

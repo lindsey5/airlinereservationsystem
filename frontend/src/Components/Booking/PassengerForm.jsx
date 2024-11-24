@@ -218,7 +218,7 @@ const PassengerForms = ({setCurrentPassenger, currentPassenger, bookings, setBoo
                             />
                         </div>
                         <div>
-                            Request (Optional)
+                            Request (optional)
                             <textarea 
                                 value={bookings.flights[0].passengers[currentPassenger].request}
                                 onChange={e => setPassengerDetails(e, 'request')}>

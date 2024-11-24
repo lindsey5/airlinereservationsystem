@@ -4,7 +4,7 @@ import AdminPagination from "../../Components/Admin/Pagination/AdminPagination";
 import '../../styles/TablePage.css';
 import AddAdminForm from "../../Components/Admin/Forms/AddAdminForm";
 import AddAdminSuccess from "../../Components/Modals/AddAdminSuccess";
-import { addAdmin, deleteAdmin } from "../../Service/Admin/AdminService";
+import { addAdmin, deleteAdmin } from "../../Service/AdminService";
 
 const Admins = () => {
     const [searchTerm, setSearchTerm] = useState('');

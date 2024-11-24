@@ -1,9 +1,9 @@
 import { Link, useNavigate } from 'react-router-dom'
 import './UserSignup.css'
-import {  sendSignupVerificationCode, verifyCode } from '../../Service/Email/emailService'
+import {  sendSignupVerificationCode, verifyCode } from '../../Service/emailService'
 import {  useState, useEffect } from 'react'
 import { handleNegativeAndDecimal } from '../../utils/handleInput'
-import { signupUser } from '../../Service/User/userService'
+import { signupUser } from '../../Service/userService'
 
 const UserSignup = () => {
     const [code, setCode] = useState(['', '', '', '', '', '']);

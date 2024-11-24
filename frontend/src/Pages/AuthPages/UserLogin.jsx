@@ -1,7 +1,7 @@
 import { useState, useEffect } from 'react'
 import './UserLogin.css'
 import { useNavigate } from 'react-router-dom';
-import { loginUser } from '../../Service/User/userService';
+import { loginUser } from '../../Service/userService';
 
 const UserLogin = () => {
     const [showPassword, setShowPassword] = useState(false);

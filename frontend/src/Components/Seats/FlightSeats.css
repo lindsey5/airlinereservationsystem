@@ -1,0 +1,9 @@
+.flight-seats{
+    position: absolute;
+    padding: 10px;
+    top: 0;
+    left: 50%;
+    transform: translateX(-50%);
+    background-color: white;
+    border: 1px solid grey;
+}

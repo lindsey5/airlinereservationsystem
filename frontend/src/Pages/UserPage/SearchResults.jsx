@@ -34,7 +34,7 @@ const SearchResults = () => {
 
     useEffect(() => {
         fetchResults()
-    }, [state])
+    }, [state.flightClass, state.price])
 
     const utf8ToBase64 = (str) => {
         // Create a UTF-8 encoded byte array from the string

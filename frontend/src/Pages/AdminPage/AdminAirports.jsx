@@ -3,7 +3,7 @@ import { useState, useEffect } from "react";
 import AdminPagination from "../../Components/Admin/Pagination/AdminPagination";
 import '../../styles/TablePage.css';
 import AirportForm from "../../Components/Admin/Forms/AirportForm";
-import { addAirport, deleteAirport, updateAirport } from "../../Service/Admin/AdminAirportService";
+import { addAirport, deleteAirport, updateAirport } from "../../Service/AirportService";
 
 const AdminAirports = () => {
     const [airports, setAirports] = useState();

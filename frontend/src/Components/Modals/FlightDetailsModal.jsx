@@ -2,7 +2,7 @@ import { useEffect, useState } from "react"
 import './FlightModal.css';
 import { formatDate } from "../../utils/dateUtils";
 import { get_pilot } from "../../Service/PilotService";
-import ViewSeatsModal from "../Seats/ViewSeatsModal";
+import FlightSeats from "../Seats/FlightSeats";
 
 const FlightDetailsModal = ({flightData, close}) => {
     const [captain, setCaptain] = useState();
@@ -27,7 +27,7 @@ const FlightDetailsModal = ({flightData, close}) => {
 
     return (
         <div className="modal-container">
-            {showSeats && flightData && <ViewSeatsModal flightData={flightData} close={() => setShowSeats(false)}/>}
+            {showSeats && flightData && <FlightSeats flightData={flightData} close={() => setShowSeats(false)}/>}
             {!showSeats && <div className="modal">
                 <div style={{display: 'flex', alignItems: 'center'}}>
                     <img src={`/icons/${flightData.airline}.png`} alt="" />

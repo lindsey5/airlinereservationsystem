@@ -134,6 +134,7 @@ const FrontDeskBookingPage = () => {
                     dateOfBirth: '',
                     type: passengerType,
                     price: passengerType === 'Child' ? price - (price * 0.05) : price,
+                    fareType,
                     nationality: '',
                     countryOfIssue: '',
                 };

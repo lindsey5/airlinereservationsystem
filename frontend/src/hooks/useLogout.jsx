@@ -5,7 +5,7 @@ export const useLogout = () => {
   
     const logout = async () => {
       await fetch('/logout');
-
+      sessionStorage.removeItem("state");
       navigate('/', { replace: true });
     };
     return logout;

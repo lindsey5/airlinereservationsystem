@@ -83,8 +83,7 @@ export const getCities = async (req, res) => {
 export const createPaymentLink = async (req, res) => {
     try{
         const line_items = req.body.bookings.line_items
-            .map(item => ({...item, amount: item.amount * 100}))
-            .sort((current, next) => current.name.localeCompare(next.name));
+            .map(item => ({...item, amount: Math.round(item.amount * 100)}))
         const options = {
             method: 'POST',
             headers: {
@@ -108,6 +107,7 @@ export const createPaymentLink = async (req, res) => {
             })
         };
         const response = await fetch('https://api.paymongo.com/v1/checkout_sessions', options)
+        
         if(response.ok){
             const result = await response.json();
             const checkoutDataToken = jwt.sign({

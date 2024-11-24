@@ -196,8 +196,8 @@ export const get_flights = async (req, res) => {
                     { 'departure.airport_code': { $regex: new RegExp(searchTerm, 'i') } },
                     { 'departure.city': { $regex: new RegExp(searchTerm, 'i') } },
                     { 'departure.country': { $regex: new RegExp(searchTerm, 'i') } },
-                    { 'arrival.aiport': { $regex: new RegExp(searchTerm, 'i') } },
-                    { 'arrival.aiport_code': { $regex: new RegExp(searchTerm, 'i') } },
+                    { 'arrival.airport': { $regex: new RegExp(searchTerm, 'i') } },
+                    { 'arrival.airport_code': { $regex: new RegExp(searchTerm, 'i') } },
                     { 'arrival.city': { $regex: new RegExp(searchTerm, 'i') } },
                     { 'arrival.country': { $regex: new RegExp(searchTerm, 'i') } },
                     { 'airplane.id': { $regex: new RegExp(searchTerm, 'i') } },
@@ -211,7 +211,7 @@ export const get_flights = async (req, res) => {
 
         // Fetch flights based on search criteria, sorted by creation date (newest first)
         const flights = await Flight.find(searchCriteria)
-            .sort({ createdAt: -1 })  // Sorting by creation date (descending order)
+            .sort({ 'departure.time': -1 }) 
             .skip(skip)               // Skipping records based on the pagination parameters
             .limit(limit);            // Limiting the number of records returned based on the limit
 
@@ -339,7 +339,8 @@ export const frontdesk_book_flight = async (req, res) => {
                 && data.class !== 'First';
                 // Apply a 20% discount if the passenger qualifies for the discount
                 const fareAmount = isDiscounted ? passenger.price * 0.80 : passenger.price
-                passenger.price = fareAmount;
+
+                return { ...passenger, price: fareAmount}
             }) 
 
             // Structure the flight data to include relevant information
@@ -376,6 +377,7 @@ export const frontdesk_book_flight = async (req, res) => {
         
         res.status(200).json(payment);
     } catch (err) {
+        console.log(err)
         // If an error occurs, handle it by calling the errorHandler function
         const errors = errorHandler(err);
         
@@ -504,6 +506,16 @@ export const cancelFlight = async (req, res) => {
         // Calculate the date 1 day before the flight's departure
         const oneDayBeforeDeparture = new Date(departureTime);
         oneDayBeforeDeparture.setDate(departureTime.getDate() - 1);
+
+        // Check if the current date is within the last 24 hours before the flight's departure
+        if (now <= departureTime && now >= oneDayBeforeDeparture) {
+            throw new Error("The current date is 1 day before or equal to the departure date");
+        }
+        
+        // Check if the booking was made on the current day (same day cancellation is not allowed)
+        if (booking.createdAt === new Date()) {
+            throw new Error('You cannot cancel a flight on the day it was booked');
+        }
 
         // Iterate through the passengers for this flight and restore their seat status
         booking.flights[flightIndex].passengers.forEach(passengerObj => {

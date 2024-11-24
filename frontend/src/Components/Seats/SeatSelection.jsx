@@ -68,54 +68,54 @@ const SeatSelection = ({bookings, currentFlightIndex, currentPassenger, handleSe
                     <p>{bookings.fareType} Tier</p>
                     <p>{bookings.class}</p>
                 <div className="seats">
-                <div className='seats-rows-container' style={{gridTemplateColumns: columns.length > 1 ? `repeat(${sumOfColumns+ columns.length -1}, 1fr)` : `repeat(${sumOfColumns}, 1fr)`}}>
-                {letters.length > 0 && letters.map(letter => <div className="letter">{letter}</div>)}
-                {
-                    flight.classes.map((classObj) => 
-                        classObj.seats.map((seat) =>{
-                            const position = seat.seatNumber.charAt(0).toUpperCase().charCodeAt(0) - 64;
-                            if(position % columns[index] === 0 && position !== sumOfColumns){
-                                index ++;
-                            }else{
-                                index = 0;
-                            }  
-                            if(position === sumOfColumns){
-                                num++;
-                            }
+                    <div className='seats-rows-container' style={{gridTemplateColumns: columns.length > 1 ? `repeat(${sumOfColumns+ columns.length -1}, 1fr)` : `repeat(${sumOfColumns}, 1fr)`}}>
+                    {letters.length > 0 && letters.map(letter => <div className="letter">{letter}</div>)}
+                    {
+                        flight.classes.map((classObj) => 
+                            classObj.seats.map((seat) =>{
+                                const position = seat.seatNumber.charAt(0).toUpperCase().charCodeAt(0) - 64;
+                                if(position % columns[index] === 0 && position !== sumOfColumns){
+                                    index ++;
+                                }else{
+                                    index = 0;
+                                }  
+                                if(position === sumOfColumns){
+                                    num++;
+                                }
 
-                            const isReserved = bookings.flights[currentFlightIndex].passengers.find(passenger => passenger?.seatNumber === seat.seatNumber);
+                                const isReserved = bookings.flights[currentFlightIndex].passengers.find(passenger => passenger?.seatNumber === seat.seatNumber);
 
-                            return (
-                                <>
-                                <button 
-                                    className='seat'
-                                    key={seat._id} 
-                                    value={seat.seatNumber}
-                                    onClick={async () => {
-                                        if (confirm('Click OK to continue')) {
-                                            await handleSelectedSeat(seat.seatNumber);
-                                            // Scroll to the element smoothly first
-                                            setTimeout(() => {
-                                                seatsContainerRef.current.scrollIntoView({
-                                                    behavior: 'smooth',
-                                                    block: 'start',
-                                                });
-                                              }, 10);
-                                        }
-                                      }}
-                                    disabled={bookings.class !== classObj.className || seat?.passenger || isReserved ? true : false}
-                                >
-                                <img src={`/icons/${bookings.class !== classObj.className || seat?.passenger || isReserved ? 'close' : classObj.className + '-seat'}.png`}/>
-                                </button>
-                                {position % columns[index] === 0 && position !== sumOfColumns && 
-                                <div style={{textAlign: 'center', padding: '10px'}}>{num}</div>}
-                                </>
-                            )
-                        })
-                    )
-                }
+                                return (
+                                    <>
+                                    <button 
+                                        className='seat'
+                                        key={seat._id} 
+                                        value={seat.seatNumber}
+                                        onClick={async () => {
+                                            if (confirm('Click OK to continue')) {
+                                                await handleSelectedSeat(seat.seatNumber);
+                                                // Scroll to the element smoothly first
+                                                setTimeout(() => {
+                                                    seatsContainerRef.current.scrollIntoView({
+                                                        behavior: 'smooth',
+                                                        block: 'start',
+                                                    });
+                                                }, 10);
+                                            }
+                                        }}
+                                        disabled={bookings.class !== classObj.className || seat?.passenger || isReserved ? true : false}
+                                    >
+                                    <img src={`/icons/${bookings.class !== classObj.className || seat?.passenger || isReserved ? 'close' : classObj.className + '-seat'}.png`}/>
+                                    </button>
+                                    {position % columns[index] === 0 && position !== sumOfColumns && 
+                                    <div style={{textAlign: 'center', padding: '10px'}}>{num}</div>}
+                                    </>
+                                )
+                            })
+                        )
+                    }
+                </div>
             </div>
-        </div>
         </div>}
         </div>
     )
