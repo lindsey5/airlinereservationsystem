@@ -152,12 +152,11 @@ const FlightSeats = ({flightData, close}) =>{
                                     <>
                                     <button 
                                         onClick={() => 
-                                            seat.status === 'reserved' ? 
                                             handleShowPassenger({
                                                 ...seat.passenger, 
                                                 flightClass: classObj.className,
                                                 seatNumber: seat.seatNumber
-                                            }) : ''}
+                                            })}
                                         className='seat'
                                         key={seat._id} 
                                         disabled={seat.status === 'reserved' ? false : true}

@@ -96,13 +96,13 @@ const CustomerFlights = () => {
                                 <td>
                                 {!(diffHours <= 2) && !(new Date() >= new Date(flight.flight.departure.time)) && flight.flight.status === 'Booked' && 
                                     <>
-                                        {flight.fareType === 'Gold' && 
+                                       
                                         <button onClick={() => {
                                             setShowRefund(true);
                                             setSelectedFlight({...flight.flight, fareType: flight.fareType, bookingRef: flight.bookingRef })
                                         }}>
                                         <img src="/icons/cancel.png"/>
-                                        </button>}
+                                        </button>
                                         <button>
                                             <img src="/icons/editing.png"/>
                                         </button>

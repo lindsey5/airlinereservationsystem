@@ -8,6 +8,7 @@ export const get_payment = async (req,res) => {
             booking_id,
             flight_id,
         });
+        
         res.status(200).json(payment);
 
     }catch(err){

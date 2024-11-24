@@ -509,7 +509,7 @@ export const cancelFlight = async (req, res) => {
 
         // Check if the current date is within the last 24 hours before the flight's departure
         if (now <= departureTime && now >= oneDayBeforeDeparture) {
-            throw new Error("The current date is 1 day before or equal to the departure date");
+            throw new Error("You cannot cancel a flight 1 day before the departure");
         }
         
         // Check if the booking was made on the current day (same day cancellation is not allowed)
@@ -517,18 +517,17 @@ export const cancelFlight = async (req, res) => {
             throw new Error('You cannot cancel a flight on the day it was booked');
         }
 
-        // Iterate through the passengers for this flight and restore their seat status
+        // Iterate through the passengers for this flight
         booking.flights[flightIndex].passengers.forEach(passengerObj => {
             passengerObj.ticketStatus = 'Cancelled'
             // Find the class and seat index based on the class and seat number of the passenger
             const classIndex = flight.classes.findIndex(classObj => classObj.className === booking.class);
             const seatIndex = flight.classes[classIndex].seats.findIndex(seat => seat.seatNumber === passengerObj.seatNumber);
             
-            // Get the seat details, including passenger's seat number, status, and ID
-            const { seatNumber, status, _id } = flight.classes[classIndex].seats[seatIndex].passenger;
-            
-            // Restore the seat information by resetting the passenger data in the flight's seat array
-            flight.classes[classIndex].seats[seatIndex] = { seatNumber, status, _id };
+            // Get the seat details
+            const { seatNumber, _id } = flight.classes[classIndex].seats[seatIndex];
+            // Reset the seat
+            flight.classes[classIndex].seats[seatIndex] = { seatNumber, status: 'available', _id };
         });
         // Find the payment related to this booking and flight
         const payment = await Payment.findOne({ booking_id: bookId, flight_id: flightId });
@@ -538,6 +537,10 @@ export const cancelFlight = async (req, res) => {
 
         // Calculate the total refundable amount by summing the line items (assuming the amounts are in the smallest unit, e.g., cents)
         const refundAmount = payment.line_items.reduce((total, item) => item.amount + total, 0) * 100;
+        // Save the updated booking, flight, and payment entities to the database
+        await booking.save();
+        await flight.save();
+        await payment.save();
 
         // If the booking has a payment checkout ID, initiate the refund process
         if (booking.payment_checkout_id) {
@@ -546,19 +549,15 @@ export const cancelFlight = async (req, res) => {
             if (!payment_id) {
                 throw new Error('Payment Id not found');  // Throw error if payment ID cannot be found
             }
-
+        
             // Initiate the refund process with the payment ID and refund amount
             const refund = await refundPayment(payment_id, refundAmount);
-
+        
             // If the refund fails, throw an error
             if (!refund) {
                 throw new Error('Refund Failed');
             }
         }
-        // Save the updated booking, flight, and payment entities to the database
-        await booking.save();
-        await flight.save();
-        await payment.save();
 
         // Respond with a success message and the refund amount
         res.status(200).json({ message: 'Flight successfully cancelled', refundAmount, booking });
