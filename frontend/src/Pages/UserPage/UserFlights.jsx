@@ -16,6 +16,7 @@ const UserFlights = () => {
     const [limit, setLimit] = useState(5);
     const {data, loading} = useFetch(`/api/booking/bookings?filter=${title}`);
     const [showRefund, setShowRefund] = useState(false);
+    const [error, setError] = useState('');
 
     useEffect(() => {
         if(data){
@@ -49,8 +50,8 @@ const UserFlights = () => {
 
     return(
         <div className="user-bookings">
-            {showRefund && <RefundSummary flight={selectedFlight} close={() => setShowRefund(false)} showError={() => setShowCancelError(true)}/>}
-            {showCancelError && <ErrorCancelModal close={() => setShowCancelError(false)}/>}
+            {showRefund && <RefundSummary flight={selectedFlight} close={() => setShowRefund(false)} showError={() => setShowCancelError(true)} setError={setError}/>}
+            {showCancelError && <ErrorCancelModal close={() => setShowCancelError(false)} error={error}/>}
             {showFlight && <FlightModal flight={selectedFlight} close={() => setShowFlight(false)}/>}
             <div className="container">
             <div>
@@ -97,7 +98,7 @@ const UserFlights = () => {
                             <button onClick={() => handleFlight(flight)}>
                                 <img src="/icons/eye (1).png" alt="" />
                             </button>
-                            {!flight.departure.time <= new Date() && flight.status === 'Booked' && flight.fareType === 'Gold' && 
+                            {!(flight.departure.time <= new Date()) && flight.status === 'Booked' &&  
                                 <button onClick={() => {
                                         setShowRefund(true);
                                         setSelectedFlight({...flight, fareType: flight.fareType, bookingRef: flight.bookingRef })

@@ -14,6 +14,7 @@ const CustomerFlights = () => {
     const [showCancelError, setShowCancelError] = useState(false);
     const [showRefund, setShowRefund] = useState(false);
     const [selectedFlight, setSelectedFlight] = useState();
+    const [error, setError] = useState('');
 
     useEffect(() => {
         const fetchFlights = async () => {
@@ -47,8 +48,8 @@ const CustomerFlights = () => {
 
     return (
         <main className="table-page">
-            {showRefund && <RefundSummary flight={selectedFlight} close={() => setShowRefund(false)} showError={() => setShowCancelError(true)}/>}
-            {showCancelError && <ErrorCancelModal close={() => setShowCancelError(false)}/>}
+            {showRefund && <RefundSummary flight={selectedFlight} close={() => setShowRefund(false)} showError={() => setShowCancelError(true)} setError={setError}/>}
+            {showCancelError && <ErrorCancelModal close={() => setShowCancelError(false)} error={error}/>}
             <h1>Customer Flights</h1>
             <input type="search" placeholder='Search' onChange={(e) => setSearchTerm(e.target.value)}/>
             <AdminPagination state={state} dispatch={dispatch} />
@@ -96,13 +97,13 @@ const CustomerFlights = () => {
                                 <td>
                                 {!(diffHours <= 2) && !(new Date() >= new Date(flight.flight.departure.time)) && flight.flight.status === 'Booked' && 
                                     <>
-                                       
-                                        <button onClick={() => {
-                                            setShowRefund(true);
-                                            setSelectedFlight({...flight.flight, fareType: flight.fareType, bookingRef: flight.bookingRef })
-                                        }}>
-                                        <img src="/icons/cancel.png"/>
-                                        </button>
+                                        {flight.fareType === 'Gold' && 
+                                            <button onClick={() => {
+                                                setShowRefund(true);
+                                                setSelectedFlight({...flight.flight, fareType: flight.fareType, bookingRef: flight.bookingRef })
+                                            }}>
+                                                <img src="/icons/cancel.png"/>
+                                            </button>}
                                         <button>
                                             <img src="/icons/editing.png"/>
                                         </button>

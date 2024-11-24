@@ -101,7 +101,7 @@ export const createPaymentLink = async (req, res) => {
                   line_items,
                   success_url: `${url}/api/flight/book`,
                   cancel_url: url,
-                  description: 'Flight/s'
+                  description: 'Tickets'
                 }
               }
             })

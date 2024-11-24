@@ -494,27 +494,12 @@ export const cancelFlight = async (req, res) => {
 
         // Retrieve the flight details from the database
         const flight = await Flight.findById(flightId);
-        
-        // Get the current date and reset time (set to midnight) to avoid time-related issues
-        const now = new Date();
-        now.setHours(0, 0, 0, 0);
-
-        // Get the flight's departure time and reset time (set to midnight)
         const departureTime = new Date(flight.departure.time);
-        departureTime.setHours(0, 0, 0, 0);
-        
-        // Calculate the date 1 day before the flight's departure
-        const oneDayBeforeDeparture = new Date(departureTime);
-        oneDayBeforeDeparture.setDate(departureTime.getDate() - 1);
-
-        // Check if the current date is within the last 24 hours before the flight's departure
-        if (now <= departureTime && now >= oneDayBeforeDeparture) {
-            throw new Error("You cannot cancel a flight 1 day before the departure");
-        }
-        
-        // Check if the booking was made on the current day (same day cancellation is not allowed)
-        if (booking.createdAt === new Date()) {
-            throw new Error('You cannot cancel a flight on the day it was booked');
+        const dateBeforeDeparture = new Date(departureTime);
+        dateBeforeDeparture.setDate(dateBeforeDeparture.getDate() - 1);
+    
+        if (new Date() <= departureTime && new Date() >= dateBeforeDeparture) {
+            throw new Error("You cannot cancel a flight 24 hours or less than before the departure");
         }
 
         // Iterate through the passengers for this flight
@@ -565,7 +550,7 @@ export const cancelFlight = async (req, res) => {
     } catch (err) {
         console.log(err)
         const errors = errorHandler(err);  // Call the error handler to format the error
-        res.status(400).json(errors);  // Send a 400 error with the formatted errors
+        res.status(400).json({errors});  // Send a 400 error with the formatted errors
     }
 }
 

@@ -4,10 +4,9 @@ import { cancelFlight } from "../../Service/flightService";
 import './Summary.css';
 import useFetch from "../../hooks/useFetch";
 
-const RefundSummary = ({flight, close, showError}) => {
+const RefundSummary = ({flight, close, showError, setError}) => {
     const { data } = useFetch(`/api/payment?booking_id=${flight.bookingRef}&&flight_id=${flight.id}`)
     const [showItems, setShowItems] = useState(false);
-
     return (
         <div className="summary">
             <div className='summary-container'>
@@ -42,7 +41,7 @@ const RefundSummary = ({flight, close, showError}) => {
                     </div>
                 </div>}
                 <div className='pay-btn-container'>
-                <button onClick={() => cancelFlight({bookId: flight.bookingRef, flightId: flight.id, showError })}>Cancel Flight</button>
+                <button onClick={() => cancelFlight({bookId: flight.bookingRef, flightId: flight.id, showError, setError })}>Cancel Flight</button>
                 <button onClick={close}>Close</button>
                 </div>
             </div>
