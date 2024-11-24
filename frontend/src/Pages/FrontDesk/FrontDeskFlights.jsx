@@ -14,13 +14,14 @@ const FrontDeskFlights = () => {
     const [showMakeFlight, setShowMakeFlight] = useState(false);
     const [flightData, setFlightData] = useState();
     const [showFlightDetails, setShowFlightDetails] = useState(false);
+    const [status, setStatus] = useState('Scheduled');
 
     useEffect(() => {
         const fetchFlights = async () => {
             dispatch({type: 'SET_DISABLED_NEXT_BTN', payload: true})
             dispatch({type: 'SET_DISABLED_PREV_BTN', payload: true})
             try{
-                const response = await fetch(`/api/flight/flights?page=${state.currentPage}&&limit=50&&searchTerm=${searchTerm}`);
+                const response = await fetch(`/api/flight/flights?page=${state.currentPage}&&limit=50&&searchTerm=${searchTerm}&&status=${status}`);
                 if(response.ok){
                     const result = await response.json();
                     result.currentPage === result.totalPages || result.totalPages === 0 ? dispatch({type: 'SET_DISABLED_NEXT_BTN', payload: true}) :  dispatch({type: 'SET_DISABLED_NEXT_BTN', payload: false});
@@ -35,7 +36,7 @@ const FrontDeskFlights = () => {
 
         fetchFlights();
 
-    },[state.currentPage, searchTerm])
+    },[state.currentPage, searchTerm, status])
 
     useEffect(() => {
         dispatch({type:'SET_CURRENT_PAGE', payload: 1})
@@ -52,6 +53,12 @@ const FrontDeskFlights = () => {
             <h1>Flights</h1>
             <input type="search" placeholder='Search' onChange={(e) => setSearchTerm(e.target.value)}/>
             <AdminPagination state={state} dispatch={dispatch} />
+            <select onChange={(e) => setStatus(e.target.value)}>
+                <option value="Scheduled">Scheduled</option>
+                <option value="Completed">Completed</option>
+                <option value="Cancelled">Cancelled</option>
+                <option value="All">All</option>
+            </select>
             <div className='table-container'>
             <table>
                 <thead>
