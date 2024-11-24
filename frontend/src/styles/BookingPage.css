@@ -115,6 +115,26 @@
 }
 
 @media (max-width: 500px){
+    .booking-page > div:first-child div{
+        margin: 0 5px;
+    }
+
+    .booking-page > div:first-child{
+        font-size: 12px;
+    }
+
+    .booking-page > div:first-child p:first-child{
+        margin-left: 10px;
+    }
+
+    .booking-page > div:first-child div img{
+        height: 20px;
+    }
+    
+
+    .booking-page > form .container{
+        width: 90%;
+    }
     .booking-page > form .container .select-container{
         grid-template-columns: 1fr;
     }
