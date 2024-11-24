@@ -17,7 +17,7 @@
     outline: none;
 }
 
-.table-page select{
+.table-page > select{
     width: 200px;
     height: 30px;
     margin: 20px 0;

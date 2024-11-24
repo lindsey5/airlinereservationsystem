@@ -57,18 +57,18 @@ const CustomerFlights = () => {
             <table>
                 <thead>
                     <tr>
-                        <th>Booking Ref</th>
-                        <th>Flight Number</th>
-                        <th>Airline</th>
-                        <th>Gate No</th>
-                        <th>Departure</th>
-                        <th>Departure Time</th>
-                        <th>Arrival</th>
-                        <th>Arrival Time</th>
-                        <th>Status</th>
-                        <th>Fare Type</th>
-                        <th>Passengers</th>
-                        <th>Action</th>
+                        <th style={{fontSize: '15px'}}>Booking Ref</th>
+                        <th style={{fontSize: '15px'}}>Flight Number</th>
+                        <th style={{fontSize: '15px'}}>Airline</th>
+                        <th style={{fontSize: '15px'}}>Gate No</th>
+                        <th style={{fontSize: '15px'}}>Departure</th>
+                        <th style={{fontSize: '15px'}}>Departure Time</th>
+                        <th style={{fontSize: '15px'}}>Arrival</th>
+                        <th style={{fontSize: '15px'}}>Arrival Time</th>
+                        <th style={{fontSize: '15px'}}>Status</th>
+                        <th style={{fontSize: '15px'}}>Fare Type</th>
+                        <th style={{fontSize: '15px'}}>Passengers</th>
+                        <th style={{fontSize: '15px'}}>Action</th>
                     </tr>
                 </thead>
                 <tbody>
