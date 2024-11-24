@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react"
+import { useEffect, useRef, useState } from "react"
 import useFetch from "../../hooks/useFetch";
 import { formatDate, formatDateOnly, getTime } from "../../utils/dateUtils";
 import { formatPrice } from "../../utils/formatPrice";
@@ -10,7 +10,9 @@ const AvailableFlights = () => {
     const [limit, setLimit] = useState(5);
     const [flights, setFlights] = useState([]);
     const [selectedClass, setSelectedClass] = useState('Economy');
-    const {data, loading} = useFetch(`/api/flight/flights/available?limit=${limit}&&selectedClass=${selectedClass}`)
+    const [searchTerm, setSearchTerm] = useState('');
+    const searchRef = useRef();
+    const {data, loading} = useFetch(`/api/flight/flights/available?limit=${limit}&&selectedClass=${selectedClass}&&searchTerm=${searchTerm}`)
     const navigate = useNavigate();
 
     useEffect(() => {
@@ -66,7 +68,12 @@ const AvailableFlights = () => {
     return (
         <div className="available-flights">
             <div>
-            <h1>Available Flights</h1>
+            <div>
+                <h1>Available Flights</h1>
+                <input type="search" className="search-bar" placeholder="Search city" ref={searchRef}/>
+                <button onClick={() => setSearchTerm(searchRef.current.value)}>Search</button>
+            </div>
+
             <select onChange={(e) => setSelectedClass(e.target.value)}>
                     <option value="Economy">Economy</option>
                     <option value="Business">Business</option>
@@ -111,7 +118,7 @@ const AvailableFlights = () => {
                     </div>
                     <div>
                         <h4 style={{marginBottom: '5px'}}>{selectedClass}</h4>
-                        <h2>{formatPrice(flight.classes.find(classObj => classObj.className === selectedClass).price)}</h2>
+                        <h2>{formatPrice(flight.classes.find(classObj => classObj.className === selectedClass)?.price)}</h2>
                         <button className="select-btn" onClick={() => handleSelect(flight)}>Select</button>
                     </div>
                 </div>

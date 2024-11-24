@@ -148,13 +148,18 @@ export const get_available_flights = async (req, res) => {
     // Parse query parameters for the limit and flight class
     const limit = parseInt(req.query.limit) || 10; // Default limit to 10 if not provided
     const flightClass = req.query.selectedClass || 'Economy'; // Default to 'Economy' class if not provided
-    
+    const searchTerm = req.query.searchTerm;
+
     try {
         // Find flights that meet the following criteria:
         // - Status is not 'Completed' or 'Cancelled'
         // - The specified class (e.g., 'Economy') has available seats
         // - The flight's departure time is in the future (greater than or equal to the current time)
         const flights = await Flight.find({ 
+            $or: [
+                {'departure.city' : { $regex: new RegExp(searchTerm, 'i') }},
+                {'arrival.city' : { $regex: new RegExp(searchTerm, 'i') }}
+            ],
             status: 'Scheduled',
             'classes.className': flightClass,  // Ensure the flight has the specified class (e.g., 'Economy')
             'classes.seats.status': 'available', // Ensure the seat status in the class is 'available'
