@@ -64,10 +64,12 @@ const AvailableFlights = () => {
         navigate(`/user/booking?data=${encoded}`);
     };
     
-
     return (
         <div className="available-flights">
             <div>
+            {loading && <div className="loader-container">
+                <div className="loader"></div>
+            </div>}
             <div>
                 <h1>Available Flights</h1>
                 <input type="search" className="search-bar" placeholder="Search city" ref={searchRef}/>

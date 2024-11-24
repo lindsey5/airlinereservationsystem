@@ -43,6 +43,7 @@ import FrontDeskLogin from './Pages/AuthPages/FrontDeskLogin';
 import FrontDeskRoute from './routes/FrontDeskRoute';
 import { SideBarContextProvider } from './Context/SideBarContext';
 import CustomerFlights from './Pages/FrontDesk/CustomerFlights';
+import './styles/loader.css';
 
 const router = createBrowserRouter(
   createRoutesFromElements(

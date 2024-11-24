@@ -73,6 +73,9 @@ const FrontDeskSearchResults = () => {
 
     return (
         <div className="search-results frontdesk">
+            {loading && <div className="loader-container">
+                <div className="loader"></div>
+            </div>}
             <div className="results-parent-container">
                     <div className="search-details-container">
                         <div className="search-details">

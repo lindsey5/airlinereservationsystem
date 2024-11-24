@@ -7,8 +7,19 @@ import useFetch from "../../hooks/useFetch";
 const RefundSummary = ({flight, close, showError, setError}) => {
     const { data } = useFetch(`/api/payment?booking_id=${flight.bookingRef}&&flight_id=${flight.id}`)
     const [showItems, setShowItems] = useState(false);
+    const [loading, setLoading] = useState(false);
+
+    const handleCancel = async (flight) => {
+        setLoading(true);
+        await cancelFlight({bookId: flight.bookingRef, flightId: flight.id, showError, setError });
+        setLoading(false);
+    }
+
     return (
         <div className="summary">
+            {loading && <div className="loader-container">
+                <div className="loader"></div>
+            </div>}
             <div className='summary-container'>
                 <div className='header'>
                     <h2>Refund Summary</h2>
@@ -41,7 +52,7 @@ const RefundSummary = ({flight, close, showError, setError}) => {
                     </div>
                 </div>}
                 <div className='pay-btn-container'>
-                <button onClick={() => cancelFlight({bookId: flight.bookingRef, flightId: flight.id, showError, setError })}>Cancel Flight</button>
+                <button onClick={() => handleCancel(flight)}>Cancel Flight</button>
                 <button onClick={close}>Close</button>
                 </div>
             </div>

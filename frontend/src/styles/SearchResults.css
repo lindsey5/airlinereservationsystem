@@ -3,6 +3,7 @@
     display: flex;
     background-color: rgb(247, 247, 247);
     justify-content: center;
+    padding-bottom: 20px;
 }
 
 .search-results.frontdesk{
