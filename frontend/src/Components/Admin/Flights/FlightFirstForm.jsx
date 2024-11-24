@@ -44,10 +44,6 @@ const FlightFirstForm = ({state, dispatch, handleSubmit, close}) => {
         }
     }
 
-    useEffect(() => {
-        console.log(state)
-    }, [state])
-
     const fetchAvailablePlanes = async () => {
         try{
             const response = await fetch(`/api/airplane/airplanes/available?departureTime=${state.departure.time}&&departureAirport=${state.departure.airport}`)

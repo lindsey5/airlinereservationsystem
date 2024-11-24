@@ -31,6 +31,7 @@ const FlightSecondForm = ({state, dispatch, close}) => {
 
     const handleClasses = (className) => {
         const classname = state.classes.find(item => item.className === className);
+
         if (classname) {
             dispatch({type: 'SET_CLASSES', payload: state.classes.filter(class_name => class_name !== classname)})
         } else {
@@ -45,8 +46,15 @@ const FlightSecondForm = ({state, dispatch, close}) => {
     const { data } = useFetch(`/api/airplane/${state.airplane.id}`);
 
     useEffect(() => {
-        console.log(data)
-    }, [data]);
+        if(state.classes.length > 0){
+            const classes = ['First', 'Business', 'Economy'];
+            const sortedClasses = classes.map(className => 
+                state.classes.find(classObj => classObj.className === className)
+            ).filter(classObj => classObj)
+            dispatch({type: 'SET_CLASSES', payload: sortedClasses})
+        }
+
+    }, [state.classes])
 
     return (
         <div className="container">
