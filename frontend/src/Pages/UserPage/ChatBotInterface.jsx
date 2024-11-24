@@ -2,7 +2,9 @@ import { useEffect, useState, useRef } from 'react';
 import './ChatBot.css'
 
 const ChatBotInterface = () => {
-    const [messages, setMessages] = useState([{from: 'Bot', message: 'Hello! How may I assist you?'}]);
+    const [messages, setMessages] = useState([{
+        from: 'Bot', message: 'Hello! How can I assist you?'}
+    ]);
     const [loading, setLoading] = useState(false);
     const [message, setMessage] = useState('');
     const [showBot, setShowBot] = useState('');
@@ -22,7 +24,8 @@ const ChatBotInterface = () => {
         setMessages(prev => [...prev, {from: 'Bot', message: botMessage}]);
     }
 
-    const sendMessage = async (message) => {
+    const sendMessage = async (message, e) => {
+        e.preventDefault();
         setLoading(true);
         setMessage('')
         setMessages(prev => [...prev, {from: 'You', message}])
@@ -53,10 +56,10 @@ const ChatBotInterface = () => {
                     </div>
                     )}
                     </div>
-                    {!loading && <div className='input-container'>
+                    {!loading && <form className='input-container' onSubmit={(e) => sendMessage(message, e)}>
                         <input type="text" value={message} onChange={(e) => setMessage(e.target.value)}/>
-                        <button onClick={() => sendMessage(message)}>Send</button>
-                    </div>}
+                        <button type='submit'>Send</button>
+                    </form>}
                 </div>}
         </div>
     )

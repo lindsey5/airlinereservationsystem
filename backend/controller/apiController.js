@@ -294,6 +294,7 @@ export const chat_a_bot = async (req, res) => {
                         return `${destination.city}, ${destination.country}`
                     })
                 }
+            Answer only the message that related to flight reservation
             `,
           });
 
