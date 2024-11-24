@@ -26,11 +26,13 @@ const ChatBotInterface = () => {
 
     const sendMessage = async (message, e) => {
         e.preventDefault();
-        setLoading(true);
-        setMessage('')
-        setMessages(prev => [...prev, {from: 'You', message}])
-        await getBotResponse(message)
-        setLoading(false);
+        if(message){
+            setLoading(true);
+            setMessage('')
+            setMessages(prev => [...prev, {from: 'You', message}])
+            await getBotResponse(message)
+            setLoading(false);
+        }
     }
 
     useEffect(() => {
