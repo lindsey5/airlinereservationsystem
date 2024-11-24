@@ -2,11 +2,20 @@ import { useEffect, useState } from "react"
 import useFetch from "../../hooks/useFetch"
 import './PopularCity.css'
 import { useNavigate } from "react-router-dom";
+import { fetchUserType } from "../../hooks/fetchUserType";
 
 const PopularCity = ({elementsRef}) => {
-    const [flights, setFlights] = useState();
+    const [cities, setCities] = useState();
     const { data } = useFetch('/api/popular-destinations?limit=12');
+    const [user, setUser] = useState(null);
     const navigate = useNavigate();
+
+    useEffect(() => {
+      const fetchData = async () => {
+        setUser(await fetchUserType())
+      };
+      fetchData();
+    }, []);
 
     useEffect(() => {
         const setFetchedData = async () => {
@@ -15,7 +24,7 @@ const PopularCity = ({elementsRef}) => {
                     const image = await getImage(destination.city, destination.country);
                     return {...destination, image};
                 }))
-                setFlights(updatedData);
+                setCities(updatedData);
             }
         }
         setFetchedData();
@@ -40,12 +49,12 @@ const PopularCity = ({elementsRef}) => {
                     <h1>Popular Cities</h1>
                 </div>
                 <div className="available-flights-container opacity-0" ref={el => elementsRef.current[0] = el}>
-                {flights && flights.map(flight =>
-                        <div key={flight._id}>
-                            <img src={flight.image} />
+                {cities && cities.map(city =>
+                        <div key={city.city}>
+                            <img src={city.image} />
                             <div>
-                                <span>{flight.city}, {flight.country}</span>
-                                <button className="book-btn" onClick={() => navigate('/user/login')}>Book Flight</button>
+                                <span>{city.city}, {city.country}</span>
+                                {!user && <button className="book-btn" onClick={() => navigate('/user/login')}>Book Flight</button>}
                             </div>
                         </div>
                     )}

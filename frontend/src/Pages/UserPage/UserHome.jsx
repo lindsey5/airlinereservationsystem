@@ -26,7 +26,6 @@ const UserHome = () => {
                 }
             });
           },
-          { threshold: 0.2 }
         );
     
         elementsRef.current.forEach((el) => {

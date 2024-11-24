@@ -11,7 +11,7 @@ const UserFlights = () => {
     const [flights, setFlights] = useState([]);
     const [showFlight, setShowFlight] = useState(false);
     const [selectedFlight, setSelectedFlight] = useState();
-    const [title, setTitle] = useState('All');
+    const [title, setTitle] = useState('Upcoming');
     const [showCancelError, setShowCancelError] = useState(false);
     const [limit, setLimit] = useState(5);
     const {data, loading} = useFetch(`/api/booking/bookings?filter=${title}`);
@@ -57,11 +57,11 @@ const UserFlights = () => {
             <div>
                 <h1>{title} Flights</h1>
                 <select onChange={handleFilter}>
-                    <option value="All">All</option>
                     <option value="Upcoming">Upcoming</option>
                     <option value="In-Flight">In-Flight</option>
                     <option value="Cancelled">Cancelled</option>
                     <option value="Completed">Completed</option>
+                    <option value="All">All</option>
                 </select>
             </div>
             {flights.length > 0 && flights.map(flight => 

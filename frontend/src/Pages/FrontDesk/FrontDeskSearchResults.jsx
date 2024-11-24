@@ -107,6 +107,7 @@ const FrontDeskSearchResults = () => {
                                     <p>{formatDateOnly(flight.departure.time)} - Departure</p>
                                     <h2>{getTime(flight.departure.time)}</h2>
                                     <p>{flight.departure.airport} ({flight.departure.airport_code})</p>
+                                    <p>{flight.departure.city}, {flight.departure.country}</p>
                                 </div>
                                 <div className="mid-div">
                                 <hr />
@@ -126,6 +127,7 @@ const FrontDeskSearchResults = () => {
                                     <p>{formatDateOnly(flight.arrival.time)} - Arrival</p>
                                     <h2>{getTime(flight.arrival.time)}</h2>
                                     <p>{flight.arrival.airport} ({flight.arrival.airport_code})</p>
+                                    <p>{flight.arrival.city}, {flight.arrival.country}</p>
                                 </div>
                             </div>
                         </div>
