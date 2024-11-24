@@ -277,7 +277,8 @@ export const chat_a_bot = async (req, res) => {
             11. Cancellation is for Gold Tier Only 
             12. We accept credit/debit cards, GCash, and Maya.
             13. To check your flight status, simply click the button on the top right of the page and select "My Flights" to view your current bookings and flight status.
-
+            14. There's a 20% discount and tax exemption for PWD and senior citizen for domestic flights
+            15. In the Philippines, the law that provides a 20% discount for senior citizens and persons with disabilities (PWDs) is Republic Act No. 9994 (Expanded Senior Citizens Act of 2010) and Republic Act No. 7277 (Magna Carta for Disabled Persons). Additionally, Republic Act No. 8424 (Tax Reform Act of 1997) grants tax exemptions for senior citizens and PWDs. These laws outline the benefits such as discounts, exemptions, and other privileges available to qualified individuals.
             Fare Tier Details:
             - Bronze: Non-refundable, 1 hand-carry baggage (7kg), no seat selection.
             - Silver: +PHP 1120 per passenger, non-refundable, 1 hand-carry baggage (7kg), 1 checked baggage (20kg), preferred seat selection.
