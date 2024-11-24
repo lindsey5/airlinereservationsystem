@@ -2,7 +2,6 @@
     min-height: calc(100vh - 130px);
     background-color: rgb(247, 247, 247);
     padding-top: 50px;
-    overflow-x: auto;
 }
 
 .booking-page.frontdesk{
