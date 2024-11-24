@@ -24,6 +24,7 @@
 
 .admin-login-page .login-container{
     border-radius: 20px;
+    width: 300px;
     display: flex;
     flex-direction: column;
     align-items: center;
@@ -48,6 +49,7 @@
 
 .admin-login-page .login-container .user-btn-container{
     display: grid;
+    width: 100%;
     grid-template-columns: 1fr 1fr;
     margin: 30px 0 50px 0;
 }
@@ -88,7 +90,7 @@
 
 .admin-login-page .login-container > div{
     display: grid;
-    width: 340px;;
+    width: 100%;
     grid-template-columns: 1fr;
     gap: 10px;
 }
@@ -158,4 +160,10 @@
 
 .admin-login-page .login-container .login-btn:hover{
     background-color: #ffabab;
+}
+
+@media screen and (max-width: 425px){
+    .admin-login-page .login-container{
+        width: 80%;
+    }
 }
