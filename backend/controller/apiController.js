@@ -11,6 +11,7 @@ import Admin from '../model/Admin.js';
 import { get_incomes_today, get_incomes_per_month } from '../service/incomesService.js';
 import {get_bookings_per_month} from '../service/bookingService.js';
 import FrontDeskAgent from '../model/FrontDeskAgent.js';
+import { GoogleGenerativeAI } from "@google/generative-ai";
 dotenv.config();
 
 const url = process.env.NODE_ENV === 'production' ? 'https://cloudpeakairlines.onrender.com' : 'http://localhost:5173';
@@ -214,6 +215,68 @@ export const get_popular_destination = async(req, res) => {
         popularDestinations.length < 1 ?  res.status(400).json({messsage: "No popular destinations yet"}) :
         res.status(200).json(popularDestinations);
     }catch(err){
+        const errors = errorHandler(err);
+        res.status(400).json({errors});
+    }
+}
+//GEMINI_API_KEY=AIzaSyCNmxh93Y4CByup2KWsS0pCoSnUqKsdVUc
+export const chat_a_bot = async (req, res) => {
+    try{
+        const flights = await Flight.find({ 
+            status: 'Scheduled',
+            'classes.seats.status': 'available', // Ensure the seat status in the class is 'available'
+            'departure.time': { $gte: new Date().setHours(new Date().getHours() + 3) } // Ensure the departure time is in the future
+        });
+        const formatDate = (date) => {
+            return date.toLocaleString('en-US', {
+                month: '2-digit',
+                day: '2-digit',
+                year: 'numeric',
+                hour: '2-digit',
+                minute: '2-digit',
+                hour12: true,
+              })
+        }
+        const prompt = req.body.prompt;
+        const genAI = new GoogleGenerativeAI(process.env.GEMINI_API_KEY);
+        const model = genAI.getGenerativeModel({
+            model: "gemini-1.5-flash",
+            systemInstruction: `
+            Today is ${formatDate(new Date())}
+              You are an assistant for an airline reservation system don't Do not take the customer's details.. Follow these rules strictly:
+              1. Flights cannot be canceled within 24 hours of the departure date.
+              2. Flight cancellation is only allowed for Gold Tier tickets.
+              3. Flight date changes are not allowed.
+              4. Seat selection is available for Silver and Gold Tier fares only.
+              5. Tickets are sent to your account email address.
+              6. Passenger details can only be modified if the current time is more than 2 hours before departure.
+              7. Seat Selection is for Silver and Gold Tier
+
+              Fare Tier Details:
+              - Bronze: Non-refundable, 1 hand-carry baggage (7kg), no seat selection.
+              - Silver: +PHP 1120 per passenger, non-refundable, 1 hand-carry baggage (7kg), 1 checked baggage (20kg), preferred seat selection.
+              - Gold: +PHP 3000 per passenger, fully refundable, 1 hand-carry baggage (7kg), 1 checked baggage (20kg), priority check-in, priority baggage handling, unlimited lounge access, preferred seat selection.
+            Prompt "There is No available flight for ___"
+            Available Flights are: 
+                ${
+                    flights.map(flight => {
+                        return `${flight.departure.airport}(${formatDate(new Date(flight.departure.time))}) 
+                        to ${flight.arrival.airport} (${formatDate(new Date(flight.arrival.time))}) 
+                        prices: ${flight.classes.map(classObj => `${classObj.className} (${classObj.price})`)}`
+                    })
+                }
+            `,
+          });
+
+          const result = await model.generateContentStream(prompt);
+
+          let fullResponse = '';
+          for await (const chunk of result.stream) {
+            fullResponse += chunk.text();
+          }
+          res.status(200).json({ message: fullResponse });
+    }catch(err){
+        console.log(err)
         const errors = errorHandler(err);
         res.status(400).json({errors});
     }

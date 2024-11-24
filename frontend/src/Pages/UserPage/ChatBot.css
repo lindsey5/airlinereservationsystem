@@ -1,0 +1,110 @@
+.chat-bot-container{
+    position: fixed;
+    z-index: 10;
+    background-color: white;
+    width: 80px;
+    height: 80px;
+    border-radius: 50%;
+    border: 1px solid rgb(177, 177, 177);
+    box-shadow:  0 0 5px 3px rgb(202, 202, 202);
+    bottom: 20px;
+    right: 20px;
+}
+
+.chat-bot-button{
+    width: 100%;
+    height: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+}
+
+.chat-bot-button > img{
+    width: 70%;
+    height: 70%;
+}
+
+.chat-bot-container .container{
+    position: absolute;
+    bottom: 100%;
+    right: 60px;
+    width: 300px;
+    height: 400px;
+    border-radius: 20px;
+    border: 1px solid grey;
+    background-color: white;
+}
+
+.chat-bot-container .container .header{
+    background-color: #ff3131;
+    border-top-left-radius: 20px;
+    border-top-right-radius: 20px;
+    width: 100%;
+    height: 80px;
+}
+
+.chat-bot-container .messages-container{
+    padding: 10px;
+    display: flex;
+    flex-direction: column;
+    height: 60%;
+    overflow-y: auto;
+}
+
+
+.chat-bot-container .messages-container .message-box{
+    display: flex;
+    align-items: center;
+    padding: 5px;
+}
+
+.chat-bot-container .messages-container .message-box p{
+    padding: 7px;
+    border-radius: 8px;
+}
+
+.chat-bot-container .messages-container .message-box img{
+    height: 30px;
+    margin-right: 10px;
+}
+
+.chat-bot-container .messages-container .message-box.Bot{
+    justify-content: flex-start;
+}
+
+.chat-bot-container .messages-container .message-box.You{
+    justify-content: flex-end;
+}
+
+.chat-bot-container .message-box.Bot p{
+    background-color: #ff3131;
+    color: white;
+}
+
+.chat-bot-container .message-box.You p{
+    background-color: rgb(194, 194, 194);
+}
+
+.chat-bot-container .input-container{
+    width: 100%;
+    padding: 10px;
+    display: grid;
+    align-items: center;
+    grid-template-columns: 1fr 70px;
+    box-sizing: border-box;
+    gap: 20px;
+}
+
+.chat-bot-container .input-container input{
+    height: 20px;
+    outline: none;
+}
+
+.chat-bot-container .input-container button{
+    background-color: #ff3131;
+    color: white;
+    border: none;
+    height: 25px;
+    cursor: pointer;
+}
