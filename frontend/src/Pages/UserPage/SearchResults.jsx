@@ -130,7 +130,6 @@ const SearchResults = () => {
                                     <p>{formatDateOnly(flight.arrival.time)} - Arrival</p>
                                     <h2>{getTime(flight.arrival.time)}</h2>
                                     <p>{flight.arrival.airport} ({flight.arrival.airport_code})</p>
-                                    <p>{flight.arrival.airport} ({flight.arrival.airport_code})</p>
                                     <p>{flight.arrival.city}, {flight.arrival.country}</p>
                                 </div>
                             </div>
