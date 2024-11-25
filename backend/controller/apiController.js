@@ -284,7 +284,7 @@ export const chat_a_bot = async (req, res) => {
             - Silver: +PHP 1120 per passenger, non-refundable, 1 hand-carry baggage (7kg), 1 checked baggage (20kg), preferred seat selection.
             - Gold: +PHP 3000 per passenger, fully refundable, 1 hand-carry baggage (7kg), 1 checked baggage (20kg), priority check-in, priority baggage handling, unlimited lounge access, preferred seat selection.
             Prompt "There is No available flight for ___"
-            If they asked what are the available flights, don't provide all the flights instead provide today's flights
+            If they asked what are the available flights, ask them to what is the departure city and arrival city then what is the date
             Available Flights are: 
                 ${
                     flights.map(flight => {

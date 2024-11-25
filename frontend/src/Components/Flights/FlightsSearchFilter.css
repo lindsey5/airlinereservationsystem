@@ -1,0 +1,72 @@
+.flights-search-filter{
+    width: 110px;
+    height: 30px;
+    background-color: red;
+    position: relative;
+}
+
+.flights-search-filter > button{
+    width: 100%;
+    height: 100%;
+    display: flex;
+    justify-content: space-around;
+    align-items: center;
+    background-color: white;
+    border: 1px solid rgb(170, 170, 170);
+    font-size: 15px;
+    cursor: pointer;
+}
+
+.flights-search-filter img{
+    width: 25px;
+    height: 80%;
+    background-color: white;
+}
+
+.flights-search-filter .filter-container{
+    position: absolute;
+    width: 300px;
+    top: calc(100% + 2px);
+    background-color: white;
+    padding: 20px 15px;
+    border: 1px solid rgb(170, 170, 170);
+    border-radius: 10px;
+}
+
+.flights-search-filter .filter-container > div{
+    display: flex;
+    width: 100%;
+    color: rgb(156, 156, 156);
+    justify-content: space-between;
+}
+
+.flights-search-filter .filter-container > div:not(:last-child){
+    border-bottom: 1px solid rgb(201, 201, 201);
+    margin-bottom: 20px;
+    padding-bottom: 20px;
+}
+
+.flights-search-filter .filter-container select{
+    width: 50%;
+    height: 30px;
+    outline: none;
+}
+
+.flights-search-filter .filter-container .date-container input{
+    margin-top: 5px;
+}
+
+.flights-search-filter .filter-container button{
+    cursor: pointer;
+}
+
+.flights-search-filter .filter-container button:first-child{
+    background-color: #ff3131;
+    padding: 5px 40px;
+    color: white;
+    border: none;
+}
+
+.flights-search-filter .filter-container button:first-child:hover{
+    background-color: #ffabab;
+}

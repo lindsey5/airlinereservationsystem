@@ -132,22 +132,6 @@ const PassengerForms = ({setCurrentPassenger, currentPassenger, bookings, setBoo
         // Always call handlePaymentSummary
         handlePaymentSummary();
     }, [bookings]); // Run this effect whenever 'bookings' changes
-    
-
-    const handleToggle = (type) =>{
-        setBookings(prev => {
-            const updatedFlights = prev.flights.map(flight => {
-              const updatedPassengers = flight.passengers.map((passenger, idx) => {
-                if (idx === currentPassenger) {
-                  return { ...passenger, [type]: !passenger[type]};
-                }
-                return passenger;
-              });
-              return { ...flight, passengers: updatedPassengers };
-            });
-            return { ...prev, flights: updatedFlights };
-          })
-    }
 
     return(
         <div className="passenger-form">
@@ -226,17 +210,44 @@ const PassengerForms = ({setCurrentPassenger, currentPassenger, bookings, setBoo
                         </div>
                         <div>
                             <div className='checkbox-container'>
-                                <input type="checkbox" 
+                                <input type="checkbox" name="discount"
                                 checked={bookings.flights[0].passengers[currentPassenger].pwd}
-                                onChange={() =>{
-                                    handleToggle('pwd')
-                                }}/>I am a person with disability
-                            </div><div className='checkbox-container'>
-                                <input type="checkbox" 
+                                onClick={() =>{
+                                    setBookings(prev => {
+                                        const updatedFlights = prev.flights.map(flight => {
+                                          const updatedPassengers = flight.passengers.map((passenger, idx) => {
+                                            if (idx === currentPassenger) {
+                                            
+                                              return { ...passenger, pwd: !passenger.pwd, senior_citizen: false};
+                                            }
+                                            return passenger;
+                                          });
+                                          return { ...flight, passengers: updatedPassengers };
+                                        });
+                                        return { ...prev, flights: updatedFlights };
+                                      })
+                                }}/>
+                                I am a person with disability
+                            </div>
+                            <div className='checkbox-container'>
+                                <input type="checkbox" name="discount"
                                 checked={bookings.flights[0].passengers[currentPassenger].senior_citizen}
-                                onChange={() =>{
-                                    handleToggle('senior_citizen')
-                                }}/>I am a senior citizen
+                                onClick={() =>{
+                                    setBookings(prev => {
+                                        const updatedFlights = prev.flights.map(flight => {
+                                          const updatedPassengers = flight.passengers.map((passenger, idx) => {
+                                            if (idx === currentPassenger) {
+                                            
+                                              return { ...passenger, pwd: false, senior_citizen: !passenger.senior_citizen};
+                                            }
+                                            return passenger;
+                                          });
+                                          return { ...flight, passengers: updatedPassengers };
+                                        });
+                                        return { ...prev, flights: updatedFlights };
+                                      })
+                                }}/>
+                                I am a senior citizen
                             </div>
                         </div>
                     </div>

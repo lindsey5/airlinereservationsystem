@@ -187,10 +187,11 @@ export const get_flights = async (req, res) => {
     const page = parseInt(req.query.page) || 1; 
     const limit = parseInt(req.query.limit) || 10; 
     const skip = (page - 1) * limit; // Calculate the number of records to skip for pagination
-    
+    const type = req.query.type;
+    const {departureTime, arrivalTime} = req.query;
     // Capture the search term for filtering flights (if provided)
     const searchTerm = req.query.searchTerm;
-    
+
     try {
         // If a search term is provided, construct the search criteria using regular expressions for flexible matching
         const searchCriteria = searchTerm
@@ -200,28 +201,38 @@ export const get_flights = async (req, res) => {
                     { 'departure.airport': { $regex: new RegExp(searchTerm, 'i') } },
                     { 'departure.airport_code': { $regex: new RegExp(searchTerm, 'i') } },
                     { 'departure.city': { $regex: new RegExp(searchTerm, 'i') } },
-                    { 'departure.country': { $regex: new RegExp(searchTerm, 'i') } },
                     { 'arrival.airport': { $regex: new RegExp(searchTerm, 'i') } },
                     { 'arrival.airport_code': { $regex: new RegExp(searchTerm, 'i') } },
                     { 'arrival.city': { $regex: new RegExp(searchTerm, 'i') } },
-                    { 'arrival.country': { $regex: new RegExp(searchTerm, 'i') } },
                     { 'airplane.id': { $regex: new RegExp(searchTerm, 'i') } },
                     { 'pilot.captain': { $regex: new RegExp(searchTerm, 'i') } },
                     { 'pilot.co_pilot': { $regex: new RegExp(searchTerm, 'i') } },
                     { flightNumber: { $regex: new RegExp(searchTerm, 'i') } },
-                ]
+                ],
             }
             : {}; // If no search term, no filtering is applied
-        
-        if(req.query.status !== 'All'){
-            searchCriteria.status = req.query.status;
+        if(req.query.status !== 'All') searchCriteria.status = req.query.status;
+        if(departureTime) searchCriteria['departure.time'] = {
+            $gte: new Date(req.query.departureTime), 
+            $lte: new Date(req.query.departureTime).setHours(23, 59, 59, 999)
         }
-
+        if(arrivalTime) searchCriteria['arrival.time'] = {
+            $gte: new Date(req.query.arrivalTime), 
+            $lte: new Date(req.query.arrivalTime).setHours(23, 59, 59, 999)
+        };
+        
+        if (type === 'Domestic') {
+            searchCriteria['departure.country'] = 'Philippines';
+            searchCriteria['arrival.country'] = 'Philippines';
+        }
         // Fetch flights based on search criteria, sorted by creation date (newest first)
         const flights = await Flight.find(searchCriteria)
             .sort({ 'departure.time': -1 }) 
             .skip(skip)               // Skipping records based on the pagination parameters
             .limit(limit);            // Limiting the number of records returned based on the limit
+        const filteredFlights = type === 'International' ? flights
+        .filter(flight => flight.departure.country !== 'Philippines' || flight.arrival.country !== 'Philippines') 
+        : flights;
 
         // Get the total number of flights matching the search criteria (for pagination)
         const totalFlights = await Flight.countDocuments(searchCriteria);
@@ -231,9 +242,10 @@ export const get_flights = async (req, res) => {
         res.status(200).json({
             currentPage: page,
             totalPages: totalPages,
-            flights
+            flights: filteredFlights
         });
     } catch (err) {
+        console.log(err)
         // Handle any errors and return a response with the error details
         const errors = errorHandler(err);
         res.status(400).json({ errors });
