@@ -1,6 +1,6 @@
 .chat-bot-container{
     position: fixed;
-    z-index: 2;
+    z-index: 3;
     background-color: white;
     width: 80px;
     height: 80px;
@@ -27,13 +27,11 @@
 
 .chat-bot-container .container{
     position: absolute;
-    bottom: 100%;
-    right: 60px;
+    bottom: 115%;
+    right: 0;
     width: 400px;
     height: 500px;
-    border-top-left-radius: 20px;
-    border-top-right-radius: 20px;
-    border-bottom-left-radius: 20px;
+    border-radius: 20px;
     border: 1px solid grey;
     background-color: white;
 }
@@ -98,22 +96,30 @@
 .chat-bot-container .input-container{
     width: 100%;
     padding: 10px;
-    display: grid;
+    display: flex;
     align-items: center;
-    grid-template-columns: 1fr 100px;
     box-sizing: border-box;
     gap: 20px;
 }
 
 .chat-bot-container .input-container input{
+    flex: 1;
     height: 30px;
     outline: none;
+    border: 1px solid grey;
 }
 
 .chat-bot-container .input-container button{
+    width: 60px;
     background-color: #ff3131;
     color: white;
     border: none;
     height: 33px;
     cursor: pointer;
+}
+
+@media screen and (max-width: 425px) {
+    .chat-bot-container .container{
+        width: 90vw;
+    }
 }
