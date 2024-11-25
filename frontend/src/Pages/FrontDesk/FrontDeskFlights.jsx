@@ -60,7 +60,7 @@ const FrontDeskFlights = () => {
 
     useEffect(() => {
         fetchFlights();
-    },[state.currentPage, searchTerm, status, filter])
+    },[state.currentPage, searchTerm])
 
     useEffect(() => {
         dispatch({type:'SET_CURRENT_PAGE', payload: 1})
