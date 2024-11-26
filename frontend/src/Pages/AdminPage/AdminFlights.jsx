@@ -41,6 +41,38 @@ const AdminFlights = () => {
     const [showFlightDetails, setShowFlightDetails] = useState(false);
     const [filter, setFilter] = useReducer(filterReducer, filterState);
 
+      // Function to generate CSV data
+  const generateCSV = () => {
+    const csvRows = [];
+    const headers = ['Flight No', 'Airline', 'Gate No', 'Departure Airport', 'Departure Country', 'Departure City', 'Departure Time',
+        'Arrival Airport', 'Arrival Country', 'Arrival City', 'Arrival Time', 'Plane ID', 'Captain', 'Co-Pilot'];
+    csvRows.push(headers.join(',')); // Add header row
+
+    // Add data rows
+    flights.forEach(row => {
+      const values = [row.flightNumber, row.airline, row.gate_number, 
+        `${row.departure.airport} (${row.departure.airport_code})`,
+        row.departure.country, row.departure.city, row.departure.time,
+        `${row.arrival.airport} (${row.arrival.airport_code})`,
+        row.arrival.country, row.arrival.city, row.arrival.time,
+        row.airplane.id, row.pilot.captain, row.pilot.co_pilot 
+    ]
+      csvRows.push(values);
+    });
+
+    // Create a Blob from the CSV string
+    const csvBlob = new Blob([csvRows.join('\n')], { type: 'text/csv' });
+    const csvUrl = URL.createObjectURL(csvBlob);
+
+    // Create a link to download the CSV
+    const link = document.createElement('a');
+    link.href = csvUrl;
+    link.download = 'flights_report.csv';
+    link.click();
+  };
+
+
+
     const fetchFlights = async () => {
         dispatch({type: 'SET_DISABLED_NEXT_BTN', payload: true})
         dispatch({type: 'SET_DISABLED_PREV_BTN', payload: true})
@@ -59,8 +91,8 @@ const AdminFlights = () => {
     }
 
     useEffect(() => {
-        console.log(filter)
-    }, [filter])
+        console.log(flights)
+    }, [flights])
 
     useEffect(() => {
         fetchFlights()
@@ -115,6 +147,7 @@ const AdminFlights = () => {
             {showMakeFlight && <FlightForm close={() => setShowMakeFlight(false)}/>}
             {showFlightDetails && <FlightDetailsModal flightData={flightData} close={() => setShowFlightDetails(false)}/>}
             <h1>Flights</h1>
+            <button onClick={generateCSV}>Generate Reports</button>
             <AdminPagination state={state} dispatch={dispatch} />
             <div style={{display: 'flex'}}>
                 <input type="search" placeholder='Search' style={{marginRight: '30px'}} onChange={(e) => setSearchTerm(e.target.value)}/>

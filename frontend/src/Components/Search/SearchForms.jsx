@@ -54,7 +54,7 @@ const SearchForms = () =>{
         state.flights.forEach((flight, i) => {
             if(i > 0){
                 const prevIndexDate =  new Date(state.flights[i - 1].DepartureTime);
-                const completedPrevIndexDate = new Date(prevIndexDate.setHours(prevIndexDate.getHours() + 5));
+                const completedPrevIndexDate = new Date(prevIndexDate.setHours(prevIndexDate.getHours() + 2));
 
                 if(flight.FromCountry !== state.flights[i-1].ToCountry ||
                     flight.FromCity !== state.flights[i-1].ToCity || flight.DepartureTime <= completedPrevIndexDate
