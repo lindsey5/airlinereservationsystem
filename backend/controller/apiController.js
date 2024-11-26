@@ -262,7 +262,7 @@ export const chat_a_bot = async (req, res) => {
         const model = genAI.getGenerativeModel({
             model: "gemini-1.5-flash",
             systemInstruction: `
-            Today is ${new Date()} plus one day
+            Today is ${formatDate(new Date())}
             You are an assistant for an airline reservation system don't Do not take the customer's details.. Follow these rules strictly:
             1. Flights cannot be canceled within 24 hours of the departure date.
             2. Flight cancellation is only allowed for Gold Tier tickets.
