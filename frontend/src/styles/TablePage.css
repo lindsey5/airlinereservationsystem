@@ -6,6 +6,22 @@
     background-color: rgb(247, 247, 247);
 }
 
+.report-btn{
+    background-color: #ff3131;
+    height: 30px;
+    border: none;
+    color: white;
+    position: absolute;
+    bottom: 40px;
+    right: 15px;
+    font-size: 18px;
+    cursor: pointer;
+}
+
+.report-btn:hover{
+    background-color: #f13434;
+}
+
 .table-page > h1{
     font-size: 30px;
 }

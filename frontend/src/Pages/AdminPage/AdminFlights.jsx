@@ -71,8 +71,6 @@ const AdminFlights = () => {
     link.click();
   };
 
-
-
     const fetchFlights = async () => {
         dispatch({type: 'SET_DISABLED_NEXT_BTN', payload: true})
         dispatch({type: 'SET_DISABLED_PREV_BTN', payload: true})
@@ -147,7 +145,6 @@ const AdminFlights = () => {
             {showMakeFlight && <FlightForm close={() => setShowMakeFlight(false)}/>}
             {showFlightDetails && <FlightDetailsModal flightData={flightData} close={() => setShowFlightDetails(false)}/>}
             <h1>Flights</h1>
-            <button onClick={generateCSV}>Generate Reports</button>
             <AdminPagination state={state} dispatch={dispatch} />
             <div style={{display: 'flex'}}>
                 <input type="search" placeholder='Search' style={{marginRight: '30px'}} onChange={(e) => setSearchTerm(e.target.value)}/>
@@ -203,6 +200,7 @@ const AdminFlights = () => {
                 </tbody>
             </table>
             </div>
+            <button className='report-btn' onClick={generateCSV}>Generate Report</button>
             <button className='add-btn' onClick={() => setShowMakeFlight(true)}>Make Flight</button>
         </main>
     )
