@@ -45,7 +45,7 @@ const AdminFlights = () => {
   const generateCSV = () => {
     const csvRows = [];
     const headers = ['Flight No', 'Airline', 'Gate No', 'Departure Airport', 'Departure Country', 'Departure City', 'Departure Time',
-        'Arrival Airport', 'Arrival Country', 'Arrival City', 'Arrival Time', 'Plane ID', 'Captain', 'Co-Pilot'];
+        'Arrival Airport', 'Arrival Country', 'Arrival City', 'Arrival Time', 'Status', 'Plane ID', 'Captain', 'Co-Pilot', 'Created By'];
     csvRows.push(headers.join(',')); // Add header row
 
     // Add data rows
@@ -55,7 +55,7 @@ const AdminFlights = () => {
         row.departure.country, row.departure.city, row.departure.time,
         `${row.arrival.airport} (${row.arrival.airport_code})`,
         row.arrival.country, row.arrival.city, row.arrival.time,
-        row.airplane.id, row.pilot.captain, row.pilot.co_pilot 
+        row.status, row.airplane.id, row.pilot.captain, row.pilot.co_pilot, row.added_by
     ]
       csvRows.push(values);
     });
@@ -87,10 +87,6 @@ const AdminFlights = () => {
 
         }
     }
-
-    useEffect(() => {
-        console.log(flights)
-    }, [flights])
 
     useEffect(() => {
         fetchFlights()
