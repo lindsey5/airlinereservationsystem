@@ -249,6 +249,7 @@ const PassengerForms = ({setCurrentPassenger, currentPassenger, bookings, setBoo
                                 }}/>
                                 I am a senior citizen
                             </div>
+                            <p>For Domestic Flights, 20% Discount and tax exemption if PWD or senior citizen</p>
                         </div>
                     </div>
                 </div>

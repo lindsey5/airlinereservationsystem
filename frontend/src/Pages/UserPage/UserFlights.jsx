@@ -105,6 +105,9 @@ const UserFlights = () => {
                                     }}>
                                 <img src="/icons/cancel.png" alt="cancel" />
                             </button>}
+                            <button>
+                                <img src="/icons/editing.png" alt="" />
+                            </button>
                         </div>
                         <p className="book-date">Book Date: {formatDate(flight.booked_on)}</p>
                 </div>
