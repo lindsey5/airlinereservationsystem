@@ -6,6 +6,7 @@ import FlightModal from "../../Components/User/Modals/FlightModal"
 import { useEffect } from "react"
 import ErrorCancelModal from "../../Components/Modals/ErrorCancelModal"
 import RefundSummary from "../../Components/Booking/RefundSummary"
+import { useNavigate } from "react-router-dom"
 
 const UserFlights = () => {
     const [flights, setFlights] = useState([]);
@@ -17,6 +18,7 @@ const UserFlights = () => {
     const {data, loading} = useFetch(`/api/booking/bookings?filter=${title}`);
     const [showRefund, setShowRefund] = useState(false);
     const [error, setError] = useState('');
+    const navigate = useNavigate();
 
     useEffect(() => {
         if(data){
@@ -48,6 +50,23 @@ const UserFlights = () => {
         setTitle(e.target.value)
     }
 
+    const utf8ToBase64 = (str) => {
+        // Create a UTF-8 encoded byte array from the string
+        const encoder = new TextEncoder();
+        const uint8Array = encoder.encode(str);
+    
+        // Convert the byte array to a Base64 encoded string
+        let binary = '';
+        uint8Array.forEach(byte => binary += String.fromCharCode(byte));
+        return btoa(binary);
+    }
+
+    const editPassengers = (flight) => {
+        const params = flight;
+        const encoded = encodeURIComponent(utf8ToBase64(JSON.stringify(params)));
+        navigate(`/user/passengers/edit?data=${encoded}`);
+    }
+
     return(
         <div className="user-bookings">
             {showRefund && <RefundSummary flight={selectedFlight} close={() => setShowRefund(false)} showError={() => setShowCancelError(true)} setError={setError}/>}
@@ -64,8 +83,12 @@ const UserFlights = () => {
                     <option value="All">All</option>
                 </select>
             </div>
-            {flights.length > 0 && flights.map(flight => 
-                <div className="flight" key={flight._id}>
+            {flights.length > 0 && flights.map(flight => {
+                let date1 = new Date(); 
+                let date2 = new Date(flight.departure.time);
+                let diffMillis = date2 - date1;
+                let diffHours = diffMillis / (1000 * 60 * 60)
+                return <div className="flight" key={flight._id}>
                     <img src={`/icons/${flight.airline}.png`} alt="" />
                         <div className="destination">
                             <div>
@@ -98,6 +121,7 @@ const UserFlights = () => {
                             <button onClick={() => handleFlight(flight)}>
                                 <img src="/icons/eye (1).png" alt="" />
                             </button>
+                            
                             {!(flight.departure.time <= new Date()) && flight.status === 'Booked' &&  
                                 <button onClick={() => {
                                         setShowRefund(true);
@@ -105,12 +129,13 @@ const UserFlights = () => {
                                     }}>
                                 <img src="/icons/cancel.png" alt="cancel" />
                             </button>}
-                            <button>
+                            {diffHours > 2 && flight.status === 'Booked' && 
+                            <button onClick={() => editPassengers(flight)}>
                                 <img src="/icons/editing.png" alt="" />
-                            </button>
+                            </button>}
                         </div>
                         <p className="book-date">Book Date: {formatDate(flight.booked_on)}</p>
-                </div>
+                </div>}
             )}
             {flights.length > 0 &&  <button className='see-more' onClick={() => setLimit(prev => prev += 5)} >See more</button>}
             {flights.length < 1 && !loading && <div className="no-flights">

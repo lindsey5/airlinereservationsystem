@@ -6,6 +6,7 @@ import { formatDate } from "../../utils/dateUtils";
 import { dataStatus } from "../../utils/dataStatus";
 import ErrorCancelModal from "../../Components/Modals/ErrorCancelModal";
 import RefundSummary from "../../Components/Booking/RefundSummary";
+import { useNavigate } from "react-router-dom";
 
 const CustomerFlights = () => {
     const [flights, setFlights] = useState();
@@ -15,6 +16,7 @@ const CustomerFlights = () => {
     const [showRefund, setShowRefund] = useState(false);
     const [selectedFlight, setSelectedFlight] = useState();
     const [error, setError] = useState('');
+    const navigate = useNavigate();
 
     useEffect(() => {
         const fetchFlights = async () => {
@@ -45,6 +47,23 @@ const CustomerFlights = () => {
     useEffect(() => {
         document.title = "Flights | Front Desk";
     }, []);
+
+    const utf8ToBase64 = (str) => {
+        // Create a UTF-8 encoded byte array from the string
+        const encoder = new TextEncoder();
+        const uint8Array = encoder.encode(str);
+    
+        // Convert the byte array to a Base64 encoded string
+        let binary = '';
+        uint8Array.forEach(byte => binary += String.fromCharCode(byte));
+        return btoa(binary);
+    }
+
+    const editPassengers = (flight) => {
+        const params = flight;
+        const encoded = encodeURIComponent(utf8ToBase64(JSON.stringify(params)));
+        navigate(`/frontdesk/flight/passengers/edit?data=${encoded}`);
+    }
 
     return (
         <main className="table-page">
@@ -104,7 +123,7 @@ const CustomerFlights = () => {
                                             }}>
                                                 <img src="/icons/cancel.png"/>
                                             </button>}
-                                        <button>
+                                        <button onClick={() => editPassengers({...flight.flight, bookingRef: flight.bookingRef})}>
                                             <img src="/icons/editing.png"/>
                                         </button>
                                     </>

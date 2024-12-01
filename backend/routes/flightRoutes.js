@@ -10,7 +10,8 @@ import {
     completeFlight,
     cancelFlight,
     updateFlightStatus,
-    get_customer_flights} from '../controller/flightController.js';
+    get_customer_flights,
+    update_flight_passengers} from '../controller/flightController.js';
 import { userRequireAuth } from '../middleware/userRequireAuth.js';
 import { adminRequireAuth } from '../middleware/adminRequireAuth.js';
 
@@ -18,6 +19,7 @@ const router = express.Router();
 
 router.post('/', adminRequireAuth, create_flight);
 router.put('/cancel', cancelFlight);
+router.put('/passengers', update_flight_passengers);
 router.put('/:id', adminRequireAuth, updateFlightStatus);
 router.put('/:id/complete', adminRequireAuth, completeFlight);
 router.get('/flights/customer', get_customer_flights);

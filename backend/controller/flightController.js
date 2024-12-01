@@ -645,3 +645,28 @@ export const get_customer_flights = async (req, res) => {
         res.status(400).json({errors});
     }
 }
+
+export const update_flight_passengers = async (req, res) => {
+    try{
+        const { booking_id, flight_id, passengers } = req.body;
+        const booking = await Booking.findById(booking_id);
+        const flightIndex = booking.flights.findIndex(flight => flight.id === flight_id);
+        booking.flights[flightIndex].passengers = passengers;
+
+        const flight = await Flight.findById(flight_id);
+        passengers.forEach(passenger => {
+            const classIndex = flight.classes.findIndex(classObj => classObj.className === booking.class);
+            const seatIndex = flight.classes[classIndex].seats.findIndex(seat => seat.seatNumber === passenger.seatNumber);
+            console.log(flight.classes[classIndex].seats[seatIndex].passenger)
+            flight.classes[classIndex].seats[seatIndex].passenger = passenger;
+        })
+
+        await booking.save();
+        await flight.save();
+        res.status(200).json({success: 'Flight successfully updated'});
+    }catch(err){
+        console.log(err)
+        const errors = errorHandler(err);
+        res.status(400).json({errors});
+    }
+}

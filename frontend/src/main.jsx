@@ -44,6 +44,7 @@ import FrontDeskRoute from './routes/FrontDeskRoute';
 import { SideBarContextProvider } from './Context/SideBarContext';
 import CustomerFlights from './Pages/FrontDesk/CustomerFlights';
 import './styles/loader.css';
+import EditPassengers from './Components/Booking/EditPassengers';
 
 const router = createBrowserRouter(
   createRoutesFromElements(
@@ -70,6 +71,7 @@ const router = createBrowserRouter(
             <Route path='booking' element={<BookingPage />} />
             <Route path='booking/success' element={<Success />} />
             <Route path='flights' element={<UserFlights />} />
+            <Route path='passengers/edit' element={<EditPassengers />} />
           </Route>
         </Route>
       </Route>
@@ -96,6 +98,7 @@ const router = createBrowserRouter(
             <Route path='booking' element={<FrontDeskBookingPage />} />
             <Route path='flights/customer' element={<CustomerFlights />} />
             <Route path='flight/'>
+              <Route path='passengers/edit' element={<EditPassengers />} />
               <Route path='book' element={<FrontDeskSearchPage />} />
               <Route path='available' element={<FrontDeskAvailableFlights />} />
             </Route>
