@@ -109,9 +109,10 @@ export const createPaymentLink = async (req, res) => {
         };
         const response = await fetch('https://api.paymongo.com/v1/checkout_sessions', options)
         
-        if(response.ok){
+        if(response.ok){    
             const result = await response.json();
             const checkoutDataToken = jwt.sign({
+                line_items: line_items.map(item => ({...item, amount: Math.round(item.amount / 100)})),
                 flights: req.body.bookings.flights, 
                 class: req.body.bookings.class,
                 fareType: req.body.bookings.fareType, 

@@ -267,7 +267,6 @@ export const user_book_flight = async (req, res) => {
 
         // Reserve seats based on the checkout data (this function updates seat availability)
         await reserveSeats(checkoutData);
-
         // Prepare an array to hold the flight details for the user's booking
         const flights = [];
 
@@ -317,7 +316,7 @@ export const user_book_flight = async (req, res) => {
         await booking.save();
 
         // Send the ticket details to the user via email
-        sendTickets(user.email, booking._id);
+        sendTickets(user.email, booking._id, booking, checkoutData.line_items);
 
         // Redirect the user to a success page after completing the booking
         res.redirect(`/user/booking/success`);
