@@ -52,8 +52,10 @@ export const sendTickets = async (email, id, booking, line_items) => {
           CLOUDPEAK AIRLINES
         </div>
         <h1>Your Itinerary</h1>
-        <p>Booking Number: ${id}</p>
-        <table width="100%" style="margin-bottom: 30px; background-color: white;">
+        <p style="font-size: 17px;">Booking Number: ${id}</p>
+        <p style="margin: 30px 0 10px 0; font-size: 17px;">Click the link below to view your flight ticket:</p>
+        <a href="https://cloudpeakairlines.onrender.com/tickets?data=${id}" style="color: #ff3131; font-size: 17px; text-decoration: underline">https://cloudpeakairlines.onrender.com</a>
+        <table width="100%" style="margin: 50px 0 30px 0; background-color: white;">
             <thead>
               <tr>
                 <th style="background-color: #ff3131; color: white; padding: 10px; font-size: 15px; font-weight: 400;">Flight</th>
@@ -114,8 +116,6 @@ export const sendTickets = async (email, id, booking, line_items) => {
               </tr>
             </tbody>
           </table>
-          <p style="margin: 0 0 10px; font-size: 17px;">Click the link below to view your flight ticket:</p>
-          <a href="https://cloudpeakairlines.onrender.com/tickets?data=${id}" style="color: #ff3131; font-size: 17px;">https://cloudpeakairlines.onrender.com</a>
           </div>
       </body>
       </html>
