@@ -1,12 +1,14 @@
 import { useNavigate } from 'react-router-dom'
 import { useLogout } from '../../../hooks/useLogout'
 import './UserHeader.css'
-import { useState } from 'react';
+import { useContext, useState } from 'react';
+import { SettingsContext } from '../../../Context/SettingsContext';
 
 const UserHeader = () => {
     const navigate = useNavigate();
     const [showDropdown, setShowDropdown] = useState(false);
     const logout = useLogout();
+    const { setShowSettings } = useContext(SettingsContext);
 
     return (
         <header>
@@ -20,9 +22,7 @@ const UserHeader = () => {
                 <a href="/user/flights">
                     <button><img src="/icons/plane.png" alt="" />My Flights</button>
                 </a>
-                <a href="">
-                    <button><img src="/icons/settings (1).png" alt="" />Settings</button>
-                </a>
+                <button onClick={() => setShowSettings(true)}><img src="/icons/settings (1).png" alt="" />Settings</button>
                 <button onClick={logout}><img src="/icons/logout.png" alt="" />Log out</button>
             </div>}
         

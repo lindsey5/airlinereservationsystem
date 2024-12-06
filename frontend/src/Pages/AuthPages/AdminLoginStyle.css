@@ -102,13 +102,13 @@
 
 .admin-login-page .input-container span{
     position: absolute;
-    top: 10px;
-    left: 7px;
+    top: 6px;
+    left: 5px;
     font-size: 14px;
     color: grey;
-    background-color: white;
     padding: 3px 5px;
     display: none;
+    background-color: white;
     transition: opacity 0.5s ease-in-out;
 }
 
@@ -126,12 +126,12 @@
 
 .admin-login-page .onFocus + span{
     display: block;
-    animation: show-span 0.5s ease-out forwards;
+    animation: show-span 0.3s ease-out forwards;
 }
 
 @keyframes show-span {
     from{
-        top: 50%;
+        top: 6px;
     }
     to{
         top: -13px

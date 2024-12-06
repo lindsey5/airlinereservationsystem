@@ -1,5 +1,5 @@
 import express from 'express';
-import { chat_a_bot, createPaymentLink, get_popular_destination, getCities, getCountries, getDashboardDetails, getUser, verifyCode } from '../controller/apiController.js';
+import { chat_a_bot, createPaymentLink, get_popular_destination, getCities, getCountries, getDashboardDetails, getUserType, verifyCode } from '../controller/apiController.js';
 import { userRequireAuth } from '../middleware/userRequireAuth.js';
 import { adminRequireAuth } from '../middleware/adminRequireAuth.js';
 
@@ -11,7 +11,7 @@ router.post('/verify-code', verifyCode);
 router.get('/countries', getCountries);
 router.get('/cities/:country', getCities)
 router.post('/payment-link', userRequireAuth, createPaymentLink)
-router.get('/user', getUser);
+router.get('/user-type', getUserType);
 router.get('/details/dashboard', adminRequireAuth, getDashboardDetails);
 
 export default router;

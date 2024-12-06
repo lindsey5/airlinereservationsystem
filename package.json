@@ -1,7 +1,7 @@
 {
   "name": "airlinereservationsystem",
   "version": "1.0.0",
-  "main": "index.js",
+  "main": "backend/app.js",
   "scripts": {
     "dev": "cross-env NODE_ENV=development nodemon backend/app.js",
     "build": "npm install && npm install --prefix frontend && npm run build --prefix frontend",

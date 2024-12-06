@@ -1,6 +1,6 @@
 import { Link, useNavigate } from 'react-router-dom'
 import './UserSignup.css'
-import {  sendSignupVerificationCode, verifyCode } from '../../Service/emailService'
+import {  sendVerificationCode, verifyCode } from '../../Service/emailService'
 import {  useState, useEffect } from 'react'
 import { handleNegativeAndDecimal } from '../../utils/handleInput'
 import { signupUser } from '../../Service/userService'
@@ -12,6 +12,8 @@ const UserSignup = () => {
     const [loading, setLoading] = useState(false);
     const [error, setError] = useState('');
     const [showOtherDetails, setShowOtherDetails] = useState(false);
+    const [count, setCount] = useState(60);
+    const [counter, setCounter] = useState(false);
     const navigate = useNavigate();
     const [userData, setUserData] = useState({
         email: '',
@@ -29,17 +31,37 @@ const UserSignup = () => {
         document.title = "User Signup";
     },[]);
 
+    useEffect(() => {
+        let intervalId;
+        if (counter) {
+            intervalId = setInterval(() => {
+                setCount(prev => {
+                    if (prev > 0) {
+                        return prev - 1;
+                    } else {
+                        clearInterval(intervalId); 
+                        return prev; 
+                    }
+                });
+            }, 1000);
+        }
+
+    }, [counter]);
+    
+
     const sendCodeToEmail = async (e) => {
         e.preventDefault();
         setLoading(true);
         setError('');
         setCode(['', '', '', '', '', '']);
-        const result = await sendSignupVerificationCode(userData.email);
+        const result = await sendVerificationCode(userData.email);
         if(result.errors){
             setError(result.errors[0]);
         }else{
             setShowEmail(false)
-            setShowVerify(true)
+            setShowVerify(true);
+            setCount(60)
+            setCounter(true);
         }
 
         setLoading(false)
@@ -102,9 +124,9 @@ const UserSignup = () => {
                     <form onSubmit={verifyEmail}>
                         <p>A Verification code has been sent to </p>
                         <p style={{fontWeight: '600'}}>{userData.email}</p>
-                        <p>Code expires in 60 seconds</p>
+                        <p>Code expires in {count} seconds</p>
                         <p style={{color: 'red'}}>{error}</p>
-                        <div className='email-code'>
+                        {<div className='email-code'>
                         <input
                             type="number"
                             value={code[0]}
@@ -153,7 +175,7 @@ const UserSignup = () => {
                             onKeyPress={handleNegativeAndDecimal}
                             onChange={(e) => handleCode(e, 5)}
                         />
-                        </div>
+                        </div>}
                         <button type='submit'>Verify</button>
                         <div className='option'>
                             <p onClick={sendCodeToEmail}

@@ -66,7 +66,7 @@ const FlightsSearchFilter = ({setFilter, filter, filterResults}) => {
                         />
                     </div>
                     <div className='date-container'>
-                        Arrival Time
+                        Arrival Date
                         <input 
                             type="date" 
                             name='type' 

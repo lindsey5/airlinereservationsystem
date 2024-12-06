@@ -1,10 +1,10 @@
-export const sendSignupVerificationCode = async (email) => {
+export const sendVerificationCode = async (email) => {
     try{
-        const response = await fetch(`/api/user/signup/verification-code?email=${email}`, {
+        const response = await fetch(`/api/user/verification-code?email=${email}`, {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json',
-            },
+            }
         })
         return await response.json();
     }catch(err){

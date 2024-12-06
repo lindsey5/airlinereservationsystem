@@ -52,10 +52,9 @@ export const userLogin = async (req, res) => {
     }
   }
 
-export const signupVerificationCode = async (req, res) => {
+export const post_verification_code = async (req, res) => {
     try{    
         const user = await User.findOne({ email: req.query.email});
-
         if(user){
             throw new Error('The email is already registered')
         }

@@ -129,7 +129,7 @@ export const createPaymentLink = async (req, res) => {
     }
 }
 
-export const getUser = async(req, res) => {
+export const getUserType = async(req, res) => {
     try{
         const token = req.cookies.jwt;
         if (token) {

@@ -37,3 +37,23 @@ export const loginUser = async (email, password) => {
     }
 
 }
+
+export const updateUser = async (data) => {
+    if(confirm('Click ok to continue')){
+        try{
+            const response = await fetch('/api/user', {
+                method: 'PUT',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify(data),
+            })
+    
+            if(response.ok){
+                window.location.reload();
+            }
+        }catch(err){
+            alert('Updating error');
+        }
+    }
+}

@@ -1,0 +1,95 @@
+.settings{
+    position: fixed;
+    top: 0;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    background-color: rgb(70, 70, 70, 0.5);
+    z-index: 5;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.settings .container{
+    padding: 30px;
+    border-radius: 20px;
+    background-color: white;
+    position: relative;
+}
+
+.settings .container a{
+    color: #ff3131;
+}
+
+.settings .container .close-btn{
+    position: absolute;
+    right: 30px;
+    background-color: #ff3131;
+    border: none;
+    font-size: 25px;
+    color: white;
+    cursor: pointer;
+}
+
+.settings .container .details-container{
+    margin-top: 25px;
+}
+
+.settings .container .details-container > div{
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin: 15px 0;
+}
+
+.settings .container .details-container > div .change-btn{
+    margin-left: 30px;
+    background-color: white;
+    border: none;
+    color: #ff3131;
+    cursor: pointer;
+    font-weight: 600;
+    font-size: 15px;
+}
+
+.settings .container .details-container > div input{
+    margin-left: 10px;
+    height: 25px;
+    font-size: 15px;
+    outline: none;
+}
+
+.settings .container .details-container > div input:not(:disabled){
+    border: 1px solid black;
+}
+
+.settings .container select{
+    width: 150px;
+    height: 30px;
+}
+
+.settings .buttons{
+    display: flex;
+    justify-content: space-between;
+}
+
+.settings .buttons button{
+    width: 130px;
+    height: 25px;
+}
+
+.settings .buttons button:not(:disabled){
+    cursor: pointer;
+}
+
+.settings .buttons button:nth-child(2):not(:disabled){
+    background-color: #ff3131;
+    border: none;
+    color: white;
+}
+
+.settings .buttons button:nth-child(2):not(:disabled):hover,
+.settings .container .close-btn:hover{
+    background-color: #ffa4a4;
+}

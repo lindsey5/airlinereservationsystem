@@ -460,7 +460,7 @@ export const completeFlight = async (req, res) => {
         // If the captain does not have a next flight, update their status
         if (!isCaptainHaveNextFlight) {
             const updatedPilot = await updatePilotStatus(updatedFlight.pilot.captain);
-            if (!updatedPilot) throw new Error('Updating captain error');  // Throw error if captain status update fails
+            //if (!updatedPilot) throw new Error('Updating captain error');  // Throw error if captain status update fails
         }
 
         // If the co-pilot does not have a next flight, update their status
