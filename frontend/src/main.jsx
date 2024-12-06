@@ -27,7 +27,6 @@ import AvailableFlights from './Pages/UserPage/AvailableFlights';
 import BookingPage from './Pages/UserPage/BookingPage';
 import TicketPage from './Pages/UserPage/TicketPage';
 import Success from './Pages/UserPage/Success';
-import About from './Pages/HomePage/About';
 import UserFlights from './Pages/UserPage/UserFlights';
 import Admins from './Pages/AdminPage/Admins';
 import AdminLogin from './Pages/AuthPages/AdminLogin';
@@ -45,6 +44,8 @@ import { SideBarContextProvider } from './Context/SideBarContext';
 import CustomerFlights from './Pages/FrontDesk/CustomerFlights';
 import './styles/loader.css';
 import EditPassengers from './Components/Booking/EditPassengers';
+import ChangePassword from './Pages/AdminPage/ChangePassword';
+import OurTeam from './Pages/HomePage/OurTeam';
 
 const router = createBrowserRouter(
   createRoutesFromElements(
@@ -59,7 +60,7 @@ const router = createBrowserRouter(
         </Route>
       </Route>
 
-      <Route path='/about' element={<About />}/>
+      <Route path='/our-team' element={<OurTeam />}/>
       <Route path="/tickets" element={<TicketPage />}/>
 
       <Route element={<UserRoute />}>
@@ -72,6 +73,7 @@ const router = createBrowserRouter(
             <Route path='booking/success' element={<Success />} />
             <Route path='flights' element={<UserFlights />} />
             <Route path='passengers/edit' element={<EditPassengers />} />
+            <Route path='change-password' element={<ChangePassword />} />
           </Route>
         </Route>
       </Route>

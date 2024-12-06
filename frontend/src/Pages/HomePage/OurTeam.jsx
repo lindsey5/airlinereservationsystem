@@ -1,8 +1,8 @@
 import { useNavigate } from 'react-router-dom';
-import './About.css';
+import './OurTeam.css';
 import { useRef, useEffect } from 'react';
 
-const About = () => {
+const OurTeam = () => {
     const elementsRef = useRef([]);
     const navigate = useNavigate();
 
@@ -29,10 +29,10 @@ const About = () => {
       }, []);
 
     return(
-        <div className="about">
+        <div className="our-team">
             <header onClick={() => navigate('/')}>
                 <img src="/icons/tcu_airlines-logo (2).png" alt="" />
-                <h2>CloudPeak <span>Airlines</span></h2>
+                <h3>CLOUDPEAK <span>AIRLINES</span></h3>
             </header>
             <div class="container" ref={el => elementsRef.current[0] = el}>
                 <h1>Developer Team</h1>
@@ -130,4 +130,4 @@ const About = () => {
     )
 }
 
-export default About
+export default OurTeam

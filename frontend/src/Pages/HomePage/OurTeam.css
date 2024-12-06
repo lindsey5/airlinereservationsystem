@@ -1,4 +1,4 @@
-.about{
+.our-team{
     display: flex;
     justify-content: center;
     align-items: center;
@@ -7,7 +7,7 @@
     padding-top: 10px;
 }
 
-.about .container {
+.our-team .container {
     width: 100%;
     display: flex;
     flex-direction: column;
@@ -17,11 +17,11 @@
     transform: translateX(-200px);
 }
 
-.about header img{
+.our-team header img{
     height: 60px;
 }
 
-.about header{
+.our-team header{
     display: flex;
     align-items: center;
     position: fixed;
@@ -34,27 +34,27 @@
     cursor: pointer;
 }
 
-.about header h2{
+.our-team header h3{
     color: #ff3131;
 }
 
-.about header span{
+.our-team header span{
     color: #ffbd59;
 }
 
-.about h1{
+.our-team h1{
     text-align: center;
     margin-top: 80px;
 }
 
-.about .gallery-container{
+.our-team .gallery-container{
     margin: 0;
     display: flex;
     justify-content: center;
     flex-wrap: wrap;
 }
 
-.about .gallery {
+.our-team .gallery {
     display: flex;
     flex-direction: column;
     margin: 10px;
@@ -65,30 +65,30 @@
     background-color: white;
 }
 
-.about .gallery img {
+.our-team .gallery img {
     width: 100%;
     height: 400px;
     object-fit: cover;
 }
 
-.about .gallery div{
+.our-team .gallery div{
     padding: 0 10px;
 }
 
-.about .gallery p{
+.our-team .gallery p{
     color: rgb(128, 128, 128);
     font-size: 18px;
 }
 
-.about .gallery h2{
+.our-team .gallery h2{
     margin-bottom: 5px;
 }
 
-.about .gallery h5 {
+.our-team .gallery h5 {
     text-align: center;
 }
 
-.about .animate{
+.our-team .animate{
     opacity: 1;
     transform: translateX(0);
     transition: 1s ease-out;

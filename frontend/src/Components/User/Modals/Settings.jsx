@@ -35,7 +35,7 @@ const Settings = () => {
             <div className='container'>
                 <button className='close-btn' onClick={() => setShowSettings(false)}>X</button>
                 <h2>Settings</h2>
-                <a href="">Change Password</a>
+                <a href="/user/change-password">Change Password</a>
                 <div className='details-container'>
                     <div>
                         <p>Email:</p>

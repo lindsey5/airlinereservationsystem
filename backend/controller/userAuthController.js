@@ -6,6 +6,7 @@ import User from '../model/user.js';
 
 export const userLogin = async (req, res) => {
     const { email, password } = req.body;
+
     try {
       const user = await User.findOne({ email });
     
@@ -16,7 +17,7 @@ export const userLogin = async (req, res) => {
       const isMatch = await bcrypt.compare(password, user.password);
   
       if (!isMatch) {
-        throw new Error('Invalid email or password');
+        throw new Error('Incorrect Password');
       }
       
       const token = jwt.sign({id: user._id}, process.env.JWT_SECRET,{
@@ -64,7 +65,6 @@ export const post_verification_code = async (req, res) => {
           secure: process.env.NODE_ENV === 'production' });
         res.status(200).json({message: 'Verification code successfully sent'})
     }catch(err){
-        console.log(err)
         const errors = errorHandler(err);
         res.status(400).json({errors});
     }

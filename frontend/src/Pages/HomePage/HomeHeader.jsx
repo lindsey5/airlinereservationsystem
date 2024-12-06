@@ -15,7 +15,7 @@ const HomeHeader = () => {
             <ul>
                 <li onClick={() => navigate('/user/login')}>Log in</li>
                 <li onClick={() => navigate('/user/signup')}>Sign up</li>
-                <li onClick={() => navigate('/about')}>About us</li>
+                <li onClick={() => navigate('/our-team')}>Our Team</li>
             </ul>
             <button onClick={() => setShowDropdown(!showDropdown)}>
             <img src="/icons/menu.png" alt="" />
@@ -23,7 +23,7 @@ const HomeHeader = () => {
             <div className={`dropdown ${showDropdown ? 'show' : ''}`}>
                 <li onClick={() => navigate('/user/login')}>Log in</li>
                 <li onClick={() => navigate('/user/signup')}>Sign up</li>
-                <li onClick={() => navigate('/about')}>About us</li>
+                <li onClick={() => navigate('/our-team')}>Our Team</li>
             </div>
         </header>
     )
