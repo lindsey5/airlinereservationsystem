@@ -32,7 +32,6 @@ const TicketPage = () => {
         <div className="ticket-page">
             <div className='ticket-parent-container' ref={printRef}>
             {data && data.flights.map(flight => {
-                if(flight.status !== 'Cancelled'){
                     return flight.passengers.map(passenger => 
                         <div className="ticket-container">
                             <div className='ticket'>
@@ -111,9 +110,7 @@ const TicketPage = () => {
                         </div>
                     )
                 }
-            })}
-
-
+            )}
             </div>
             <button onClick={handleDownload}>Download Ticket</button>
         </div>
