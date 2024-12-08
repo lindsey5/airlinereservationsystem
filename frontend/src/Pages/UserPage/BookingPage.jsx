@@ -4,6 +4,7 @@ import { createPaymentLink } from "../../Service/paymentService";
 import SeatSelection from "../../Components/Seats/SeatSelection";
 import FareTypes from "../../Components/Booking/FareTypes";
 import PassengerForm from "../../Components/Booking/PassengerForm";
+import TermsModal from "../../Components/User/Modals/TermsModal";
 
 const BookingPage = () => {
     const queryParams = new URLSearchParams(window.location.search); // Create a new URLSearchParams object to parse the query string from the current URL
@@ -16,6 +17,7 @@ const BookingPage = () => {
     const [passengersType, setPassengersType] = useState();
     const [showSeats, setShowSeats] = useState(false);
     const [fareType, setFareType] = useState();
+    const [showTerms, setShowTerms] = useState(true);
 
     useEffect(() => {
         document.title = "Book Flight";
@@ -167,6 +169,7 @@ const BookingPage = () => {
                 </div>
             )}
             </div>
+            {showTerms && <TermsModal setShowTerms={setShowTerms}/>}
             {!fareType && <FareTypes setFareType={setFareType}/>}
             {fareType && !showForm &&
             <form onSubmit={handlePassengers}>
