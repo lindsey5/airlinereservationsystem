@@ -375,6 +375,7 @@ export const frontdesk_book_flight = async (req, res) => {
                 flightNumber: flightDetails.flightNumber,  // Flight number
                 gate_number: flightDetails.gate_number,  // Gate number for the flight
                 passengers,
+                booking_ref: `${crypto.randomBytes(4).toString('hex').toUpperCase()}`
             };
 
             // Add the structured flight data to the `flights` array
