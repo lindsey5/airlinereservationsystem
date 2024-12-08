@@ -46,6 +46,8 @@ import './styles/loader.css';
 import EditPassengers from './Components/Booking/EditPassengers';
 import ChangePassword from './Pages/AdminPage/ChangePassword';
 import OurTeam from './Pages/HomePage/OurTeam';
+import FAQ from './Pages/HomePage/FAQ';
+import TermsAndConditions from './Pages/HomePage/TermsAndConditions';
 
 const router = createBrowserRouter(
   createRoutesFromElements(
@@ -61,7 +63,9 @@ const router = createBrowserRouter(
       </Route>
 
       <Route path='/our-team' element={<OurTeam />}/>
+      <Route path='/FAQ' element={<FAQ />} />
       <Route path="/tickets" element={<TicketPage />}/>
+      <Route path="/terms-and-conditions" element={<TermsAndConditions />} />
 
       <Route element={<UserRoute />}>
         <Route element={<UserLayout />}>
