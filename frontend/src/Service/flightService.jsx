@@ -1,7 +1,7 @@
-export const cancelFlight = async ({bookId, flightId, showError, setError}) => {
+export const cancelPassengerFlight = async ({bookId, flightId, showError, setError}) => {
     try{
        if(confirm('Are you sure do you wan\'t to cancel this flight?')){
-            const response = await fetch(`/api/flight/cancel`,{
+            const response = await fetch(`/api/flight/cancel/passenger`,{
             method: 'PUT',
             headers: {
                 'Content-Type': 'application/json',

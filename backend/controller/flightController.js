@@ -459,7 +459,7 @@ export const completeFlight = async (req, res) => {
         // If the captain does not have a next flight, update their status
         if (!isCaptainHaveNextFlight) {
             const updatedPilot = await updatePilotStatus(updatedFlight.pilot.captain);
-            //if (!updatedPilot) throw new Error('Updating captain error');  // Throw error if captain status update fails
+            if (!updatedPilot) throw new Error('Updating captain error');  // Throw error if captain status update fails
         }
 
         // If the co-pilot does not have a next flight, update their status
@@ -497,7 +497,7 @@ export const completeFlight = async (req, res) => {
 }
 
 // Function to cancel a flight and process any related refund
-export const cancelFlight = async (req, res) => {
+export const cancelPassengerFlight = async (req, res) => {
     try {
         // Extracting the booking ID and flight ID from the request body
         const { bookId, flightId } = req.body;

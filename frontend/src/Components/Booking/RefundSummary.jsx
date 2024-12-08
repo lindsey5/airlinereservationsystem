@@ -1,6 +1,6 @@
-import { useEffect, useState } from "react"
+import { useState } from "react"
 import { formatPrice } from "../../utils/formatPrice";
-import { cancelFlight } from "../../Service/flightService";
+import { cancelPassengerFlight } from "../../Service/flightService";
 import './Summary.css';
 import useFetch from "../../hooks/useFetch";
 
@@ -11,7 +11,7 @@ const RefundSummary = ({flight, close, showError, setError}) => {
 
     const handleCancel = async (flight) => {
         setLoading(true);
-        await cancelFlight({bookId: flight.bookingRef, flightId: flight.id, showError, setError });
+        await cancelPassengerFlight({bookId: flight.bookingRef, flightId: flight.id, showError, setError });
         setLoading(false);
     }
 
