@@ -39,7 +39,7 @@ const TicketPage = () => {
                                     <img src="/icons/tcu_airlines-logo (2).png" alt="" />
                                     <h3>CLOUDPEAK AIRLINES TICKET</h3>
                                 </div>
-                                <p style={{marginLeft: '20px', fontSize: '14px'}}>Booking ref: {data._id}</p>
+                                <p style={{marginLeft: '20px', fontSize: '20px'}}>Booking ref: {data.booking_ref}</p>
                                 <div className="passenger-ticket-container">
                                     <div>
                                         <p>Flight:</p>

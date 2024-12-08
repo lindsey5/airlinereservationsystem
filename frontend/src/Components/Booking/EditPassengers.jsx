@@ -6,7 +6,11 @@ const EditPassengers = () => {
     const decodedData = JSON.parse(window.atob(decodeURIComponent(encodedData))); // Decode the retrieved value from the query from the url then parse to JSON
     const [currentPassenger, setCurrentPassenger] = useState(0);
     const [flight, setFlight] = useState();
-
+    let date1 = new Date(); 
+    let date2 = new Date(decodedData.departure.time);
+    let diffMillis = date2 - date1;
+    let diffHours = diffMillis / (1000 * 60 * 60)
+    
     useEffect(() => {
         setFlight(decodedData)
     }, [])
@@ -21,7 +25,7 @@ const EditPassengers = () => {
                         'Content-Type': 'application/json',
                     },
                     body: JSON.stringify({
-                        booking_id: flight.bookingRef,
+                        booking_id: flight.booking_id,
                         flight_id: flight.id,
                         passengers: flight.passengers
                     }),
@@ -44,7 +48,6 @@ const EditPassengers = () => {
         setFlight(prev => {
             const passengers = prev.passengers;
             passengers[currentPassenger][type] = e.target.value;
-            console.log(passengers[currentPassenger])
             return {...prev, passengers}
         })
     };
@@ -71,8 +74,9 @@ const EditPassengers = () => {
                             <h2>{flight && flight.fareType} Tier</h2>
                             <h2>{flight && flight.passengers[currentPassenger].seatNumber}</h2>
                             <div>
-                            <p>{flight && flight.departure.airport_code} to {flight && flight.arrival.airport_code} ✈</p>
+                                <p>{flight && flight.departure.airport_code} to {flight && flight.arrival.airport_code} ✈</p>
                             </div>
+                            <p>Booking Ref: {flight?.bookingRef}</p>
                         </div>
                         <hr />
                         <div>
@@ -121,12 +125,14 @@ const EditPassengers = () => {
                                 onChange={e => setPassengerDetails(e, 'request')}>
                             </textarea>
                         </div>
+                        <h4>You can update the passenger(s) information atleast two hours before departure</h4>
                     </div>
                 </div>
                 <button 
                     onClick={() => updatePassengers(flight)}
                     className='book-btn' 
                     type='submit' 
+                    disabled={diffHours <= 2}
                 >Update</button>
             </div>
         </div>

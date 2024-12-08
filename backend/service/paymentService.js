@@ -43,7 +43,8 @@ export const refundPayment = async (payment_id, amount) => {
           };
           const response= await fetch('https://api.paymongo.com/refunds', options)
           if(response.ok){
-            return await response.json();
+            const result = await response.json();
+            return result;
           }
           return null
     }catch(err){

@@ -11,6 +11,7 @@ import { calculateSeats, createSeats, createClasses } from "../utils/flightUtils
 import { createPayment, getPaymentId, refundPayment } from "../service/paymentService.js";
 import { updatePilotStatus } from '../service/pilotService.js';
 import Payment from "../model/Payment.js";
+import crypto from 'crypto';
 import mongoose from "mongoose";
 const { ObjectId } = mongoose.Types;
 
@@ -308,7 +309,8 @@ export const user_book_flight = async (req, res) => {
             flights,  // Include the detailed flight information in the booking
             class: checkoutData.class,  // Class selected (e.g., Economy, Business)
             fareType: checkoutData.fareType,  // Fare type (e.g., "Bronze", "Silver", "Gold")
-            payment_checkout_id: checkoutData.checkout_id  // Checkout ID for payment tracking
+            payment_checkout_id: checkoutData.checkout_id,  // Checkout ID for payment tracking
+            booking_ref: `${crypto.randomBytes(4).toString('hex').toUpperCase()}`
         });
 
         // Create a payment record associated with the booking
@@ -558,7 +560,6 @@ export const cancelPassengerFlight = async (req, res) => {
         
             // Initiate the refund process with the payment ID and refund amount
             const refund = await refundPayment(payment_id, refundAmount);
-        
             // If the refund fails, throw an error
             if (!refund) {
                 throw new Error('Refund Failed');
@@ -627,11 +628,13 @@ export const get_customer_flights = async (req, res) => {
             bookings.forEach(booking => {
                 booking.flights.forEach(flight => {
                     customerFlights.push({
+                        booking_id: booking._id,
                         class: booking.class,    
                         fareType: booking.fareType, 
                         flight,
-                        bookingRef: booking._id,
-                        bookDate: booking.createdAt
+                        bookingRef: booking.booking_ref,
+                        bookDate: booking.createdAt,
+                        payment_method: booking.payment_checkout_id ? 'Online Payment' : 'Cash'
                       });
                 })
             })

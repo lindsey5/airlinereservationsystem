@@ -5,16 +5,15 @@ import './Summary.css';
 import useFetch from "../../hooks/useFetch";
 
 const RefundSummary = ({flight, close, showError, setError}) => {
-    const { data } = useFetch(`/api/payment?booking_id=${flight.bookingRef}&&flight_id=${flight.id}`)
+    const { data } = useFetch(`/api/payment?booking_id=${flight.booking_id}&&flight_id=${flight.id}`)
     const [showItems, setShowItems] = useState(false);
     const [loading, setLoading] = useState(false);
 
     const handleCancel = async (flight) => {
         setLoading(true);
-        await cancelPassengerFlight({bookId: flight.bookingRef, flightId: flight.id, showError, setError });
+        await cancelPassengerFlight({bookId: flight.booking_id, flightId: flight.id, showError, setError });
         setLoading(false);
     }
-
     return (
         <div className="summary">
             {loading && <div className="loader-container">

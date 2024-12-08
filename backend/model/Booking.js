@@ -1,10 +1,12 @@
 import mongoose from "mongoose";
 import PassengerSchema from "./Schema/PassengerSchema.js";
+import crypto from 'crypto'
 const Schema = mongoose.Schema;
 
 const BookingSchema = new Schema({
     user_id: { type: String },
     booked_by: { type: String},
+    booking_ref: { type: String, unique: true },
     flights: {
         type: [{
             id: {type: String, required: true},

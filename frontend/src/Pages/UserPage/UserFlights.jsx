@@ -28,7 +28,8 @@ const UserFlights = () => {
                 item.flights.forEach(flight => {
                     flightsArr.push({...flight, 
                         fareType: item.fareType, 
-                        bookingRef: item._id,
+                        bookingRef: item.booking_ref,
+                        booking_id: item._id,
                         class: item.class, 
                         booked_on: item.createdAt
                     })
@@ -45,7 +46,8 @@ const UserFlights = () => {
                 item.flights.forEach(flight => {
                     flightsArr.push({...flight, 
                         fareType: item.fareType, 
-                        bookingRef: item._id,
+                        bookingRef: item.booking_ref,
+                        booking_id: item._id,
                         class: item.class, 
                         booked_on: item.createdAt
                     })
@@ -102,10 +104,7 @@ const UserFlights = () => {
                 </select>
             </div>
             {flights.length > 0 && flights.map(flight => {
-                let date1 = new Date(); 
-                let date2 = new Date(flight.departure.time);
-                let diffMillis = date2 - date1;
-                let diffHours = diffMillis / (1000 * 60 * 60)
+                console.log(flight)
                 return <div className="flight" key={flight._id}>
                     <img src={`/icons/${flight.airline}.png`} alt="" />
                         <div className="destination">
@@ -140,17 +139,17 @@ const UserFlights = () => {
                                 <img src="/icons/eye (1).png" alt="" />
                             </button>
                             
-                            {!(flight.departure.time <= new Date()) && flight.status === 'Booked' &&  
+                            {!(flight.departure.time <= new Date()) && flight.status === 'Booked' &&  flight.fareType === 'Gold' &&
                                 <button onClick={() => {
+                                    console.log(flight)
                                         setShowRefund(true);
-                                        setSelectedFlight({...flight, fareType: flight.fareType, bookingRef: flight.bookingRef })
+                                        setSelectedFlight({...flight, fareType: flight.fareType, bookingRef: flight.bookingRef, booking_id: flight.booking_id})
                                     }}>
                                 <img src="/icons/cancel.png" alt="cancel" />
                             </button>}
-                            {diffHours > 2 && flight.status === 'Booked' && 
                             <button onClick={() => editPassengers(flight)}>
                                 <img src="/icons/editing.png" alt="" />
-                            </button>}
+                            </button>
                         </div>
                         <p className="book-date">Book Date: {formatDate(flight.booked_on)}</p>
                 </div>}
