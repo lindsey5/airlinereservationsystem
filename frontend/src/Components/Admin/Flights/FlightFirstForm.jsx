@@ -227,23 +227,25 @@ const FlightFirstForm = ({state, dispatch, handleSubmit, close}) => {
                 <div className="inputs">
                     <div>
                         <p>Captain</p>
-                        <select onChange={(e) => 
-                                dispatch({type: 'SET_CAPTAIN', payload: e.target.value})
-                        }>
+                        <select 
+                            value={state.captain}
+                            onChange={(e) =>  dispatch({type: 'SET_CAPTAIN', payload: e.target.value})}
+                        >
                         <option></option>
                         {availablePilots.length > 0 && availablePilots.map(pilot => 
-                            <option key={pilot._id} value={pilot._id}>{pilot._id}</option>
+                            <option key={pilot._id} value={pilot._id}>{pilot.firstname} {pilot.lastname} ({pilot._id})</option>
                         )}
                         </select>
                     </div>
                     <div>
                         <p>Co-pilot</p>
-                        <select onChange={(e) => 
-                                dispatch({type: 'SET_CO_PILOT', payload: e.target.value})
-                        }>
+                        <select 
+                            value={state.co_pilot}
+                            onChange={(e) => dispatch({type: 'SET_CO_PILOT', payload: e.target.value})}
+                        >
                         <option></option>
                         {availablePilots.length > 0 && availablePilots.map(pilot => 
-                            <option key={pilot._id} value={pilot._id}>{pilot._id}</option>
+                            <option key={pilot._id} value={pilot._id}>{pilot.firstname} {pilot.lastname} ({pilot._id})</option>
                         )}
                         </select>
                     </div>
@@ -251,12 +253,13 @@ const FlightFirstForm = ({state, dispatch, handleSubmit, close}) => {
                 <div className="inputs">
                     <div>
                         <p>Airplane</p>
-                        <select onChange={(e) => 
-                                dispatch({type: 'SET_AIRPLANE', payload: e.target.value})
-                        }>
+                        <select 
+                            value={state.airplane.id}
+                            onChange={(e) => dispatch({type: 'SET_AIRPLANE', payload: e.target.value})}
+                        >
                             <option></option>
                         {availablePlanes.length > 0 && availablePlanes.map(plane => 
-                            <option key={plane._id} value={plane._id}>{plane._id}</option>
+                            <option key={plane._id} value={plane._id}>{plane.model} ({plane._id})</option>
                         )}
 
                         </select>

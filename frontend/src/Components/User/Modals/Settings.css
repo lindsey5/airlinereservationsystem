@@ -71,8 +71,8 @@
 
 .settings .buttons{
     display: flex;
-    justify-content: space-between;
-    margin-top: 50px;
+    justify-content: end;
+    margin-top: 35px;
 }
 
 .settings .buttons button{
@@ -81,16 +81,13 @@
 }
 
 .settings .buttons button:not(:disabled){
-    cursor: pointer;
-}
-
-.settings .buttons button:nth-child(2):not(:disabled){
     background-color: #ff3131;
     border: none;
     color: white;
+    cursor: pointer;
 }
 
-.settings .buttons button:nth-child(2):not(:disabled):hover,
+.settings .buttons button:not(:disabled):hover,
 .settings .container .close-btn:hover{
     background-color: #ffa4a4;
 }

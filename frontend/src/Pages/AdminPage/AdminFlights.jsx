@@ -52,9 +52,9 @@ const AdminFlights = () => {
     flights.forEach(row => {
       const values = [row.flightNumber, row.airline, row.gate_number, 
         `${row.departure.airport} (${row.departure.airport_code})`,
-        row.departure.country, row.departure.city, row.departure.time,
+        row.departure.country, row.departure.city, formatDate(row.departure.time),
         `${row.arrival.airport} (${row.arrival.airport_code})`,
-        row.arrival.country, row.arrival.city, row.arrival.time,
+        row.arrival.country, row.arrival.city, formatDate(row.arrival.time),
         row.status, row.airplane.id, row.pilot.captain, row.pilot.co_pilot, row.added_by
     ]
       csvRows.push(values);

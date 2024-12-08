@@ -113,7 +113,7 @@ export const get_available_pilots = async (req, res) => {
                 ],
                 'pilot.status': { $ne: 'Unavailable' }
               }).sort({ 'arrival.time': -1 });                 
-            if(flight){
+            if(flight && pilot.status === 'Assigned'){
                 const flightArrivalTime = new Date(flight.arrival.time)
                 const isAvailable = flight.arrival.airport === departureAirport && 
                 new Date(flightArrivalTime.setHours(flightArrivalTime.getHours() + 5)) < departureTime;
@@ -122,6 +122,7 @@ export const get_available_pilots = async (req, res) => {
             return pilot;
         }));
         const filteredPilots = availablePilots.filter(pilot => pilot !== null)
+        console.log(filteredPilots)
         res.status(200).json(filteredPilots)
 
     }catch(err){

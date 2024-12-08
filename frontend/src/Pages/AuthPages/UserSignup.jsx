@@ -213,13 +213,7 @@ const UserSignup = () => {
                                 src={`/icons/${showPassword.confirmPass ? 'hidden' : 'eye (1)'}.png`} alt="" />
                         </div>
                         
-                        <div className='other-details'>
-                            <input 
-                                type="number" min='1'  
-                                placeholder='Age'
-                                onChange={(e) => setUserData(prev => ({...prev, age: e.target.value}))}
-                                required onKeyPress={handleNegativeAndDecimal}
-                            />
+                        <div>
                             <select onChange={(e) => setUserData(prev => ({...prev, gender: e.target.value}))}>
                             <option value="Male">Male</option>
                             <option value="Female">Female</option>

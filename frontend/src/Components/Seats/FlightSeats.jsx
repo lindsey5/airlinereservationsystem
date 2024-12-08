@@ -34,7 +34,6 @@ const FlightSeats = ({flightData, close}) =>{
     let index = 0;
     let num = 1;
     const passengerRef = useRef();
-    const seatsRef = useRef([]);
 
     useEffect(() => {
         if (passengerRef.current) {
@@ -44,6 +43,8 @@ const FlightSeats = ({flightData, close}) =>{
           });
         }
       }, [showPassenger, state]);
+
+
 
     useEffect(() => {
         const setData = async () => {
