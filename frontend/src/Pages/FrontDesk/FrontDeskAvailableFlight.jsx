@@ -20,8 +20,8 @@ const FrontDeskAvailableFlights = () => {
     },[])
 
     useEffect(() =>{
-        if(data){
-            setFlights(data);
+        if(data?.flights){
+            setFlights(data.flights);
         }
     },[data, limit, selectedClass])
 
@@ -127,7 +127,7 @@ const FrontDeskAvailableFlights = () => {
                 </div>
                 }
             </div>
-            {flights.length > 0 &&  <button className='see-more' onClick={() => setLimit(prev => prev += 5)} >See more</button>}
+            {flights.length > 0 && flights.length !== data.totalFlights &&  <button className='see-more' onClick={() => setLimit(prev => prev += 5)} >See more</button>}
         </div>
     )
 }
