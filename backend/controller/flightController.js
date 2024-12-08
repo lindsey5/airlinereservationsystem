@@ -266,7 +266,6 @@ export const user_book_flight = async (req, res) => {
         const checkoutData = jwt.verify(req.cookies.checkoutData, process.env.JWT_SECRET);
         // Find the user in the database using the ID from the decoded token
         const user = await User.findById(id);
-
         // Reserve seats based on the checkout data (this function updates seat availability)
         await reserveSeats(checkoutData);
         // Prepare an array to hold the flight details for the user's booking
@@ -276,7 +275,6 @@ export const user_book_flight = async (req, res) => {
         for (const flight of checkoutData.flights) {
             // Fetch the full details of each flight using its ID
             const flightDetails = await Flight.findById(flight.id);
-
             const passengers = flight.passengers.map(passenger => {
                 // Check if the passenger qualifies for a discount (PWD or senior citizen)
                 const isDiscounted = (passenger.pwd || passenger.senior_citizen) 
