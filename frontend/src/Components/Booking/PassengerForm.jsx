@@ -7,6 +7,7 @@ const PassengerForms = ({setCurrentPassenger, currentPassenger, bookings, setBoo
     const [showSummary, setShowSummary] = useState(true);
     const [lineItems, setLineItems] = useState();
     const [paymentDetails, setPaymentDetails] = useState();
+    const [isAgreed, setIsAgreed] = useState(false);
 
     const handlePaymentSummary = () => {
         // Define the VAT rate (12%)
@@ -123,15 +124,15 @@ const PassengerForms = ({setCurrentPassenger, currentPassenger, bookings, setBoo
                 passenger.dateOfBirth &&
                 passenger.nationality &&
                 passenger.countryOfIssue
-            )
-        );
+            ) 
+        ) && isAgreed;
     
         // Set the validity state based on the result
         setIsValid(isValid);
     
         // Always call handlePaymentSummary
         handlePaymentSummary();
-    }, [bookings]); // Run this effect whenever 'bookings' changes
+    }, [bookings, isAgreed]); // Run this effect whenever 'bookings' changes
 
     return(
         <div className="passenger-form">
@@ -209,6 +210,7 @@ const PassengerForms = ({setCurrentPassenger, currentPassenger, bookings, setBoo
                             </textarea>
                         </div>
                         <div>
+                            <p>For Domestic Flights, 20% Discount and tax exemption if PWD or senior citizen</p>
                             <div className='checkbox-container'>
                                 <input type="checkbox" name="discount"
                                 checked={bookings.flights[0].passengers[currentPassenger].pwd}
@@ -249,11 +251,14 @@ const PassengerForms = ({setCurrentPassenger, currentPassenger, bookings, setBoo
                                 }}/>
                                 I am a senior citizen
                             </div>
-                            <p>For Domestic Flights, 20% Discount and tax exemption if PWD or senior citizen</p>
                         </div>
                     </div>
                 </div>
-                <button 
+                <div className='checkbox-container last'>
+                            <input type="checkbox" onClick={() => setIsAgreed(prev => !prev)}/>
+                            I have read and agreed to CloudPeak <a href="/privacy-policy" target="_blank">Privacy Policy</a>
+                        </div>
+                        <button 
                     onClick={submit}
                     className='book-btn' 
                     type='submit' disabled={isValid ? false : true}

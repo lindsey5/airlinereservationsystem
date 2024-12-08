@@ -48,6 +48,7 @@ import ChangePassword from './Pages/AdminPage/ChangePassword';
 import OurTeam from './Pages/HomePage/OurTeam';
 import FAQ from './Pages/HomePage/FAQ';
 import TermsAndConditions from './Pages/HomePage/TermsAndConditions';
+import PrivacyPolicy from './Pages/HomePage/PrivacyPolicy';
 
 const router = createBrowserRouter(
   createRoutesFromElements(
@@ -63,6 +64,7 @@ const router = createBrowserRouter(
       </Route>
 
       <Route path='/our-team' element={<OurTeam />}/>
+      <Route path='/privacy-policy' element={<PrivacyPolicy />} />
       <Route path='/FAQ' element={<FAQ />} />
       <Route path="/tickets" element={<TicketPage />}/>
       <Route path="/terms-and-conditions" element={<TermsAndConditions />} />

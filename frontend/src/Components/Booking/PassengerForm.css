@@ -6,7 +6,7 @@
 }
 
 .passenger-form > .container{
-    margin: 20px;
+    margin: 20px 20px 50px 20px;
 }
 
 .passenger-form > .container > div:first-child{
@@ -63,7 +63,7 @@
 }
 
 .passenger-form .passenger-details{
-    padding: 10px 30px;
+    padding: 10px 30px 30px 30px;
     background-color: white;
     color: rgb(143, 143, 143);
 }
@@ -113,19 +113,32 @@
     outline: none;
 }
 
-.passenger-form .passenger-details .checkbox-container{
+.passenger-form .checkbox-container{
     display: flex;
     margin-top: 10px;
 }
 
-.passenger-form .passenger-details .checkbox-container input{
+.passenger-form .checkbox-container input{
     margin-right: 10px;
 }
 
+.passenger-form .checkbox-container.last{
+    margin-top: 30px;
+    justify-content: end;
+}
+
+.passenger-form .checkbox-container a{
+    margin-left: 5px;
+    color: #ff3131;
+    font-weight: 600;
+}
+
 .passenger-form .book-btn{
+    margin-top: 20px;
     padding: 10px 50px;
+    font-size: 20px;
     float: right;
-    margin-top: 50px;
+    border-radius: 15px;
 }
 
 .passenger-form .book-btn:not(:disabled){
