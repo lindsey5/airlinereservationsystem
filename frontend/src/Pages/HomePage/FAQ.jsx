@@ -60,6 +60,18 @@ const FAQ = () => {
                 You can check your booking status by logging in your account in the website
               </p>
             </li>
+            <li>
+              <strong>What are the payment methods</strong>
+              <p>
+              We offer multiple payment options, including credit/debit cards, GCash, and Maya, to make your transaction as convenient as possible.
+              </p>
+            </li>
+            <li>
+              <strong>There's a discount for senior citizen and PWD?</strong>
+              <p>
+                Yes, there's a 20% discount for senior citizen and PWD for domestic flights in the Philippines, in accordance with Republic Act No. 9994 and Republic Act No. 7277.
+              </p>
+            </li>
           </ul>
         </section>
         <section>

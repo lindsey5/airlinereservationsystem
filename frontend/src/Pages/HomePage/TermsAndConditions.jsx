@@ -31,7 +31,7 @@ const TermsAndConditions = () => {
         </p>
         <h3>Payment</h3>
         <p>
-          All payments must be made in full at the time of booking. We accept various payment methods, including credit cards, debit cards, and online banking.
+          All payments must be made in full at the time of booking. We accept various payment methods, including credit cards, debit cards, and e-wallets.
         </p>
         <h3>Confirmation</h3>
         <p>
@@ -47,12 +47,10 @@ const TermsAndConditions = () => {
         <h2>4. Fares and Fees</h2>
         <h3>Fare Class and Baggage Allowance</h3>
         <p>
-          We offer a range of fare types, including bronze, silver, and gold class. Each fare type has its own baggage allowance, which may vary depending on the specific route and airline.
+          We offer a range of fare types, including bronze, silver, and gold tier. Each fare type has its own baggage allowance. Services like priority check-in and boarding, seat selection, excess baggage, and in-flight meals and beverages are determined by the type of flight fare selected.
         </p>
         <h3>Additional Fees</h3>
-        <p>
-          Additional fees may apply for services such as priority check-in and boarding, seat selection, excess baggage, in-flight meals and beverages, and airport taxes and fees.
-        </p>
+          <p>Additional charges may apply for taxes and other fees.</p>
         <h3>Currency Conversion</h3>
         <p>
           Fares may be displayed in multiple currencies. However, all payments will be processed in the local currency of the country where the booking is made.
@@ -80,7 +78,7 @@ const TermsAndConditions = () => {
         <h3>Passenger Responsibilities</h3>
         <h4>Check-in Procedures</h4>
         <p>
-          You may check in online or at the airport counter.
+          You may check in at the airport counter.
         </p>
         <h4>Identification</h4>
         <p>
