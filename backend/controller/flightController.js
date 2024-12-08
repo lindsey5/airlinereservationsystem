@@ -170,8 +170,7 @@ export const get_available_flights = async (req, res) => {
 
         // Sort the flights by price (ascending order) based on the selected flight class
         const sortedFlights = flights.sort((current, next) => 
-            current.classes.find(classObj => classObj.className === flightClass).price - 
-            next.classes.find(classObj => classObj.className === flightClass).price
+            current.departure.time - next.departure.time
         );
         const totalFlights = await Flight.countDocuments(query);
 
