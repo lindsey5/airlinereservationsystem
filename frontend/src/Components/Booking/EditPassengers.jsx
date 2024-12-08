@@ -10,7 +10,7 @@ const EditPassengers = () => {
     let date2 = new Date(decodedData.departure.time);
     let diffMillis = date2 - date1;
     let diffHours = diffMillis / (1000 * 60 * 60)
-    
+
     useEffect(() => {
         setFlight(decodedData)
     }, [])
@@ -132,7 +132,7 @@ const EditPassengers = () => {
                     onClick={() => updatePassengers(flight)}
                     className='book-btn' 
                     type='submit' 
-                    disabled={diffHours <= 2}
+                    disabled={diffHours <= 2 || flight?.status !== 'Booked'}
                 >Update</button>
             </div>
         </div>

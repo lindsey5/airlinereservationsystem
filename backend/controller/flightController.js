@@ -605,7 +605,7 @@ export const get_customer_flights = async (req, res) => {
         const searchCriteria = searchTerm
             ? {
                 $or: [
-                    { _id: ObjectId.isValid(searchTerm) ? new ObjectId(searchTerm) : null },
+                    { 'booking_ref': { $regex: new RegExp(searchTerm, 'i') } },
                     { 'flights.id': { $regex: new RegExp(searchTerm, 'i') } },
                     { 'flights.airline': { $regex: new RegExp(searchTerm, 'i') } },
                     { 'flights.departure.airport': { $regex: new RegExp(searchTerm, 'i') } },
