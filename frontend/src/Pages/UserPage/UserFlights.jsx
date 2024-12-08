@@ -19,6 +19,7 @@ const UserFlights = () => {
     const [showRefund, setShowRefund] = useState(false);
     const [error, setError] = useState('');
     const navigate = useNavigate();
+    const [showSeeMore, setShowSeeMore] = useState(true);
 
     useEffect(() => {
         if(data){
@@ -36,6 +37,23 @@ const UserFlights = () => {
             setFlights(flightsArr.slice(0, limit));
         }
     },[data, limit])
+
+    useEffect(() => {
+        if(flights.length > 0){
+            const flightsArr = [];
+            data.forEach((item) => {
+                item.flights.forEach(flight => {
+                    flightsArr.push({...flight, 
+                        fareType: item.fareType, 
+                        bookingRef: item._id,
+                        class: item.class, 
+                        booked_on: item.createdAt
+                    })
+                })
+            })
+            if(flights.length === flightsArr.length) setShowSeeMore(false)
+        }
+    }, [flights])
 
     useEffect(() => {
         setLimit(5)
@@ -137,7 +155,7 @@ const UserFlights = () => {
                         <p className="book-date">Book Date: {formatDate(flight.booked_on)}</p>
                 </div>}
             )}
-            {flights.length > 0 &&  <button className='see-more' onClick={() => setLimit(prev => prev += 5)} >See more</button>}
+            {flights.length > 0 && showSeeMore && <button className='see-more' onClick={() => setLimit(prev => prev += 5)} >See more</button>}
             {flights.length < 1 && !loading && <div className="no-flights">
                         <div>
                             <img src="/icons/no-travelling.png" alt="" />

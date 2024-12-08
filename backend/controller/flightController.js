@@ -151,11 +151,7 @@ export const get_available_flights = async (req, res) => {
     const searchTerm = req.query.searchTerm;
 
     try {
-        // Find flights that meet the following criteria:
-        // - Status is not 'Completed' or 'Cancelled'
-        // - The specified class (e.g., 'Economy') has available seats
-        // - The flight's departure time is in the future (greater than or equal to the current time)
-        const flights = await Flight.find({ 
+        const query = { 
             $or: [
                 {'departure.city' : { $regex: new RegExp(searchTerm, 'i') }},
                 {'arrival.city' : { $regex: new RegExp(searchTerm, 'i') }}
@@ -164,16 +160,22 @@ export const get_available_flights = async (req, res) => {
             'classes.className': flightClass,  // Ensure the flight has the specified class (e.g., 'Economy')
             'classes.seats.status': 'available', // Ensure the seat status in the class is 'available'
             'departure.time': { $gte: new Date().setHours(new Date().getHours() + 3) } // Ensure the departure time is in the future
-        });
+        }
+        // Find flights that meet the following criteria:
+        // - Status is not 'Completed' or 'Cancelled'
+        // - The specified class (e.g., 'Economy') has available seats
+        // - The flight's departure time is in the future (greater than or equal to the current time)
+        const flights = await Flight.find(query).limit(limit);
 
         // Sort the flights by price (ascending order) based on the selected flight class
         const sortedFlights = flights.sort((current, next) => 
             current.classes.find(classObj => classObj.className === flightClass).price - 
             next.classes.find(classObj => classObj.className === flightClass).price
         );
-        
+        const totalFlights = await Flight.countDocuments(query);
+
         // Return the sorted flights, limiting the results to the specified number (e.g., 10)
-        res.status(200).json(sortedFlights.slice(0, limit));
+        res.status(200).json({flights: sortedFlights, totalFlights});
     } catch (err) {
         // If an error occurs, handle it and send a 400 status with the error message
         const errors = errorHandler(err);

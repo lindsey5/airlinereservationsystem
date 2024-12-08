@@ -20,8 +20,8 @@ const AvailableFlights = () => {
     },[])
 
     useEffect(() =>{
-        if(data){
-            setFlights(data);
+        if(data?.flights){
+            setFlights(data.flights);
         }
     },[data, limit, selectedClass])
 
@@ -136,7 +136,7 @@ const AvailableFlights = () => {
                 </div>
                 }
             </div>
-            {flights.length > 0 &&  <button className='see-more' onClick={() => setLimit(prev => prev += 5)} >See more</button>}
+            {flights.length > 0 && data?.totalFlights !== flights.length && <button className='see-more' onClick={() => setLimit(prev => prev += 5)} >See more</button>}
         </div>
     )
 }
