@@ -30,12 +30,13 @@ const FrontDeskBookingPage = () => {
     
         doc.setFontSize(15);
         doc.text('Customer Receipt', 40, 10, null, null, 'center');
-    
-        let yPosition = 30;  // Initial yPosition after title
+        doc.setFontSize(8);
+        doc.text('CloudPeak Airlines', 40, 20, null, null, 'center');
+        doc.text('cloudpeakairlines@gmail.com', 40, 25, null, null, 'center');
+        let yPosition = 35;  // Initial yPosition after title
         const margin = 10;
         const lineHeight = 10;  // Space between lines
         const itemWidth = 60;  // Width for price column
-        doc.setFontSize(8);
     
         // Helper function to track the total content height
         const getContentHeight = () => yPosition + lineHeight;
@@ -74,7 +75,7 @@ const FrontDeskBookingPage = () => {
         const startY = yPosition;
         const endX = 70;  // Width of receipt
     
-        doc.setLineWidth(0.5);  // Set line width
+        doc.setLineWidth(0.3);  // Set line width
         doc.line(startX, startY, endX, startY);  // Draw the horizontal line
     
         // Add total amount
@@ -174,7 +175,7 @@ const FrontDeskBookingPage = () => {
                 if(response.ok){
                     const result = await response.json();
                     generateReceipt(result.booking_ref);
-                    window.location.href = '/frontdesk/flights'
+                    window.location.href = '/frontdesk/flights/customer'
                 }else{
                     alert('Book failed');
                 }
@@ -202,7 +203,7 @@ const FrontDeskBookingPage = () => {
                         if(response.ok){
                             const result = await response.json();
                             generateReceipt(result.booking_ref);
-                            window.location.href = '/frontdesk/flights';
+                            window.location.href = '/frontdesk/flights/customer';
                         }else{
                             alert('Book failed');
                         }
