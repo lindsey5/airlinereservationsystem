@@ -111,14 +111,15 @@ export const createPaymentLink = async (req, res) => {
         
         if(response.ok){    
             const result = await response.json();
-            const checkoutDataToken = jwt.sign({
+            const checkoutData = {
                 line_items: line_items.map(item => ({...item, amount: Math.round(item.amount / 100)})),
                 flights: req.body.bookings.flights, 
                 class: req.body.bookings.class,
                 fareType: req.body.bookings.fareType, 
                 checkout_id: result.data.id,
-            }, process.env.JWT_SECRET);
-            res.cookie('checkoutData', checkoutDataToken, { httpOnly: true, secure: process.env.NODE_ENV === 'production' });
+            }
+            req.session.checkoutData = checkoutData;
+            console.log(req.session)
             res.status(200).json(result);
         }else{
             throw new Error('Payment failed')

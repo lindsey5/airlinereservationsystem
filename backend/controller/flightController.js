@@ -263,7 +263,7 @@ export const user_book_flight = async (req, res) => {
         const id = decodedToken.id;  // User's ID from the decoded token
 
         // Extract the checkout data from cookies and verify it to ensure integrity
-        const checkoutData = jwt.verify(req.cookies.checkoutData, process.env.JWT_SECRET);
+        const checkoutData = req.session.checkoutData
         // Find the user in the database using the ID from the decoded token
         const user = await User.findById(id);
         // Reserve seats based on the checkout data (this function updates seat availability)
@@ -285,6 +285,7 @@ export const user_book_flight = async (req, res) => {
                 const fareAmount = isDiscounted ? passenger.price * 0.80 : passenger.price
                 return {...passenger, price: fareAmount}
             })
+            console.log(passengers.length)
             // Prepare the flight data to include all necessary flight details
             const data = {
                 id: flight.id,  // Flight ID
@@ -299,7 +300,6 @@ export const user_book_flight = async (req, res) => {
             // Push the detailed flight data to the `flights` array
             flights.push(data);
         }
-
         // Create a new booking record in the database with the user's information and flight details
         const booking = await Booking.create({
             user_id: user._id,  // Link the booking to the user by their ID
@@ -315,7 +315,7 @@ export const user_book_flight = async (req, res) => {
 
         // Save the newly created booking to the database
         await booking.save();
-
+        res.clearCookie('checkoutData');
         // Send the ticket details to the user via email
         sendTickets(user.email, booking._id, booking, checkoutData.line_items);
 

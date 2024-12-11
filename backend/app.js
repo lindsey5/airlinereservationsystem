@@ -15,6 +15,7 @@ import apiRoutes from './routes/apiRoutes.js';
 import adminRoutes from './routes/adminRoutes.js';
 import frontDeskRoutes from './routes/frontDeskRoutes.js';
 import paymentRoutes from './routes/paymentRoutes.js';
+import session from 'express-session';
 
 dotenv.config();
 const PORT = process.env.PORT; 
@@ -36,6 +37,17 @@ app.use(express.static('public'));
 app.use(express.urlencoded({ extended: true}));
 app.use(express.json());
 app.use(cookieParser());
+
+app.use(session({
+  secret: process.env.SESSION_KEY,  // Secret to sign the session ID cookie (keep it safe)
+  resave: false,              // Prevents session from being re-saved if not modified
+  saveUninitialized: true,    // Saves a session that is not initialized (default: true)
+  cookie: {
+    secure: false,            // Set to true if you're using HTTPS
+    httpOnly: true,           // Helps mitigate XSS attacks
+    maxAge: 1000 * 60 * 60 * 24 // Cookie expiration time (1 day)
+  }
+}));
 
 app.use('/api', apiRoutes);
 app.use('/api/admin', adminRoutes);
