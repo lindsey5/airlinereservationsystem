@@ -85,10 +85,9 @@ const FrontDeskBookingPage = () => {
             doc.internal.pageSize.height += 15;  // Add 15mm for total and final line
         }
     
-        doc.setFontSize(15);
         yPosition += lineHeight;  // Adjust Y position for total
-        doc.text(`Total: ${totalAmount.toFixed(2)}`, margin, yPosition);  // Format total to two decimals
-    
+        doc.text('Total: ', margin, yPosition);  // Format total to two decimals
+        doc.text(`${totalAmount}`, 60, yPosition);
         // Save the PDF
         doc.save('receipt.pdf');
     };
@@ -175,7 +174,7 @@ const FrontDeskBookingPage = () => {
                 if(response.ok){
                     const result = await response.json();
                     generateReceipt(result.booking_ref);
-                    //window.location.href = '/frontdesk/flights'
+                    window.location.href = '/frontdesk/flights'
                 }else{
                     alert('Book failed');
                 }
