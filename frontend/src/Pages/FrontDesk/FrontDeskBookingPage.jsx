@@ -3,6 +3,9 @@ import '../../styles/BookingPage.css';
 import SeatSelection from "../../Components/Seats/SeatSelection";
 import FareTypes from "../../Components/Booking/FareTypes";
 import PassengerForm from "../../Components/Booking/PassengerForm";
+import jsPDF from 'jspdf'
+import { formatDate } from "../../utils/dateUtils";
+import { getFlight } from "../../Service/flightService";
 
 const FrontDeskBookingPage = () => {
     const queryParams = new URLSearchParams(window.location.search);
@@ -16,6 +19,80 @@ const FrontDeskBookingPage = () => {
     const [showSeats, setShowSeats] = useState(false);
     const [fareType, setFareType] = useState();
     const [email, setEmail] = useState('');
+    const [maximumPassengers, setMaximumPassengers] = useState();
+
+    const generateReceipt = (booking_ref) => {
+        const initialPageHeight = 200;  
+        const doc = new jsPDF({
+            unit: 'mm',
+            format: [80, initialPageHeight]
+        });
+    
+        doc.setFontSize(15);
+        doc.text('Customer Receipt', 40, 10, null, null, 'center');
+    
+        let yPosition = 30;  // Initial yPosition after title
+        const margin = 10;
+        const lineHeight = 10;  // Space between lines
+        const itemWidth = 60;  // Width for price column
+        doc.setFontSize(8);
+    
+        // Helper function to track the total content height
+        const getContentHeight = () => yPosition + lineHeight;
+    
+        // Track total height needed
+        let totalHeight = getContentHeight();
+    
+        // Add the static content (Date and Booking Reference)
+        doc.text(`Date: ${formatDate(new Date())}`, margin, yPosition);
+        yPosition += lineHeight;
+        doc.text(`Booking Ref: ${booking_ref}`, margin, yPosition);
+        yPosition += lineHeight;
+    
+        doc.text('Items', margin, yPosition);
+        doc.text('Price', itemWidth, yPosition);
+        yPosition += lineHeight;
+    
+        // Calculate the total height after adding items
+        bookings.line_items.forEach(item => {
+            // Check if we need to adjust the page height dynamically
+            if (getContentHeight() > doc.internal.pageSize.height) {
+                // Increase the page height by 20mm
+                const newHeight = doc.internal.pageSize.height + 20;  // Increase by 20mm (or more if necessary)
+                doc.internal.pageSize.height = newHeight;  // Update internal page height
+            }
+    
+            // Add item to receipt
+            doc.text(`${item.name} (${item.quantity})`, margin, yPosition);
+            doc.text((item.amount * item.quantity).toFixed(2), itemWidth, yPosition);  // Format price
+            yPosition += lineHeight;
+            totalHeight = getContentHeight();  // Update total height
+        });
+    
+        // Draw a horizontal line after the items
+        const startX = margin;
+        const startY = yPosition;
+        const endX = 70;  // Width of receipt
+    
+        doc.setLineWidth(0.5);  // Set line width
+        doc.line(startX, startY, endX, startY);  // Draw the horizontal line
+    
+        // Add total amount
+        const totalAmount = bookings.line_items.reduce((total, current) => current.amount * current.quantity + total, 0);
+    
+        // Increase page height if needed for total
+        if (getContentHeight() > doc.internal.pageSize.height) {
+            doc.internal.pageSize.height += 15;  // Add 15mm for total and final line
+        }
+    
+        doc.setFontSize(15);
+        yPosition += lineHeight;  // Adjust Y position for total
+        doc.text(`Total: ${totalAmount.toFixed(2)}`, margin, yPosition);  // Format total to two decimals
+    
+        // Save the PDF
+        doc.save('receipt.pdf');
+    };
+    
 
     const booking = (flights) =>  { 
         return {
@@ -57,6 +134,32 @@ const FrontDeskBookingPage = () => {
             setPassengersType(passengersType);
         }
 
+        const getMaxPassengers = async () => {
+            if(bookings){
+                const lowest = await Promise.all(bookings.flights.sort(async (a, b) => {
+                    const flightA = await getFlight(a.id);
+                    const MaxA = flightA.flight.classes
+                    .find(classObj => classObj.className === decodedData.class)
+                    .seats.filter(seat => seat.status === 'available')
+                    .length;
+
+                    const flightB = await getFlight(b.id);
+                    const MaxB = flightB.flight.classes
+                    .find(classObj => classObj.className === decodedData.class)
+                    .seats.filter(seat => seat.status === 'available')
+                    .length
+                    return MaxA - MaxB
+                }));
+
+                const flight = await getFlight(lowest[0].id)
+
+                setMaximumPassengers(flight.flight.classes
+                    .find(classObj => classObj.className === decodedData.class)
+                    .seats.filter(seat => seat.status === 'available')
+                    .length)
+            }
+        }
+        getMaxPassengers();
     }, [bookings])
 
     const handleBooking = async () => {
@@ -70,7 +173,9 @@ const FrontDeskBookingPage = () => {
                     body: JSON.stringify({ bookings, email })
                 })
                 if(response.ok){
-                    window.location.href = '/frontdesk/flights'
+                    const result = await response.json();
+                    generateReceipt(result.booking_ref);
+                    //window.location.href = '/frontdesk/flights'
                 }else{
                     alert('Book failed');
                 }
@@ -96,7 +201,9 @@ const FrontDeskBookingPage = () => {
                             body: JSON.stringify({ bookings, email })
                         })
                         if(response.ok){
-                            window.location.href = '/frontdesk/flights'
+                            const result = await response.json();
+                            generateReceipt(result.booking_ref);
+                            window.location.href = '/frontdesk/flights';
                         }else{
                             alert('Book failed');
                         }
@@ -115,7 +222,10 @@ const FrontDeskBookingPage = () => {
 
     const handlePassengers = (e) => {
         e.preventDefault();
-        const updatedBookings = { ...bookings };
+        if(passengersType.length > maximumPassengers){
+            alert(`The Maximum passengers is ${maximumPassengers}`);
+        }else{
+            const updatedBookings = { ...bookings };
         
         passengersType.forEach(passengerType => {
             decodedData.flights.forEach((flight, i) => {
@@ -133,11 +243,14 @@ const FrontDeskBookingPage = () => {
                     lastname: '',
                     dateOfBirth: '',
                     type: passengerType,
-                    price: passengerType === 'Child' ? price - (price * 0.05) : price,
-                    fareType,
+                    price: price,
                     nationality: '',
                     countryOfIssue: '',
-                };
+                    request: '',
+                    pwd: false,
+                    fareType,
+                    senior_citizen: false
+                }
     
                 updatedBookings.flights[i].passengers.push(passenger);
             });
@@ -145,6 +258,7 @@ const FrontDeskBookingPage = () => {
     
         setBookings(updatedBookings);
         setShowForm(true);
+        }
     };
     
 
@@ -165,6 +279,7 @@ const FrontDeskBookingPage = () => {
             <form onSubmit={handlePassengers}>
             <div className="container">
                     <h2>Book Flight</h2>
+                    <p>Maximum Passengers Allowed: {maximumPassengers}</p>
                     <div className="select-container">
                         <div className="select-div">
                             <label htmlFor="adult">Adult</label>
@@ -198,7 +313,7 @@ const FrontDeskBookingPage = () => {
                     <button
                         className="next-btn"
                         type="submit"
-                        disabled={bookings && bookings.adult == 0 ? true : false}
+                        disabled={bookings && bookings.adult == 0 || passengersType.length > maximumPassengers ? true : false}
                     >Next</button>
                 </div>
                 </form>}

@@ -12,8 +12,6 @@ import { createPayment, getPaymentId, refundPayment } from "../service/paymentSe
 import { updatePilotStatus } from '../service/pilotService.js';
 import Payment from "../model/Payment.js";
 import crypto from 'crypto';
-import mongoose from "mongoose";
-const { ObjectId } = mongoose.Types;
 
 export const create_flight = async (req, res) => {
     try{
@@ -158,8 +156,9 @@ export const get_available_flights = async (req, res) => {
                 {'arrival.city' : { $regex: new RegExp(searchTerm, 'i') }}
             ],
             status: 'Scheduled',
-            'classes.className': flightClass,  // Ensure the flight has the specified class (e.g., 'Economy')
-            'classes.seats.status': 'available', // Ensure the seat status in the class is 'available'
+            'classes': {
+                $elemMatch: { className: flightClass, 'seats.status' : 'available' },
+            },
             'departure.time': { $gte: new Date().setHours(new Date().getHours() + 3) } // Ensure the departure time is in the future
         }
         // Find flights that meet the following criteria:
@@ -285,7 +284,6 @@ export const user_book_flight = async (req, res) => {
                 const fareAmount = isDiscounted ? passenger.price * 0.80 : passenger.price
                 return {...passenger, price: fareAmount}
             })
-            console.log(passengers.length)
             // Prepare the flight data to include all necessary flight details
             const data = {
                 id: flight.id,  // Flight ID
@@ -335,7 +333,8 @@ export const frontdesk_book_flight = async (req, res) => {
         const data = {
             flights: req.body.bookings.flights,  // Array of flight details
             class: req.body.bookings.class,  // Flight class (e.g., Economy, Business)
-            fareType: req.body.bookings.fareType  // Fare type (e.g., "Bronze", "Silver", "Gold")
+            fareType: req.body.bookings.fareType,  // Fare type (e.g., "Bronze", "Silver", "Gold")
+            line_items: req.body.bookings.line_items
         };
 
         // Extract email from the request body, which will be used to send ticket details
@@ -372,9 +371,7 @@ export const frontdesk_book_flight = async (req, res) => {
                 flightNumber: flightDetails.flightNumber,  // Flight number
                 gate_number: flightDetails.gate_number,  // Gate number for the flight
                 passengers,
-                booking_ref: `${crypto.randomBytes(4).toString('hex').toUpperCase()}`
             };
-
             // Add the structured flight data to the `flights` array
             flights.push(flightData);
         }
@@ -384,19 +381,16 @@ export const frontdesk_book_flight = async (req, res) => {
             booked_by: req.userId,  // Store the user ID of the front desk staff who made the booking
             flights,  // Include the flight details in the booking
             class: data.class,  // Store the class (e.g., Economy, Business)
-            fareType: data.fareType  // Store the fare type (e.g., Refundable, Non-refundable)
+            fareType: data.fareType, // Store the fare type (e.g., Refundable, Non-refundable)
+            booking_ref: `${crypto.randomBytes(4).toString('hex').toUpperCase()}`
         });
 
         // Create a payment record for the booking using the checkout data
         const payment = await createPayment(data, booking._id);
-
-        // Save the newly created booking record to the database
-        await booking.save();
-
         // Send the booking tickets to the user via email
-        sendTickets(email, booking._id);
-        
-        res.status(200).json(payment);
+        sendTickets(email, booking._id, booking, data.line_items);
+        await booking.save();
+        res.status(200).json(booking);
     } catch (err) {
         console.log(err)
         // If an error occurs, handle it by calling the errorHandler function

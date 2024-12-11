@@ -97,8 +97,9 @@ const FrontDeskSearchResults = () => {
                         <SearchForms />
                         <ButtonsContainer handleSearch={fetchResults}/>
                     </div>}
-                <div className="results-container">
+                <div className="results-container">   
                 <SearchFilter />
+                <div>
                 {results && !loading  && results.map((flights, i) => 
                     <div key={i} className="flights-container">
                         <div>
@@ -151,7 +152,7 @@ const FrontDeskSearchResults = () => {
                         </div>
                     </div>
                 }
-                <div></div>
+                </div>
                 </div>
             </div>
 

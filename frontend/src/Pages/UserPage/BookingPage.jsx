@@ -5,6 +5,7 @@ import SeatSelection from "../../Components/Seats/SeatSelection";
 import FareTypes from "../../Components/Booking/FareTypes";
 import PassengerForm from "../../Components/Booking/PassengerForm";
 import TermsModal from "../../Components/User/Modals/TermsModal";
+import { getFlight } from "../../Service/flightService";
 
 const BookingPage = () => {
     const queryParams = new URLSearchParams(window.location.search); // Create a new URLSearchParams object to parse the query string from the current URL
@@ -18,6 +19,7 @@ const BookingPage = () => {
     const [showSeats, setShowSeats] = useState(false);
     const [fareType, setFareType] = useState();
     const [showTerms, setShowTerms] = useState(true);
+    const [maximumPassengers, setMaximumPassengers] = useState();
 
     useEffect(() => {
         document.title = "Book Flight";
@@ -64,6 +66,33 @@ const BookingPage = () => {
             // Update the state with the constructed array of passenger types
             setPassengersType(passengersType);
         }
+
+        const getMaxPassengers = async () => {
+            if(bookings){
+                const lowest = await Promise.all(bookings.flights.sort(async (a, b) => {
+                    const flightA = await getFlight(a.id);
+                    const MaxA = flightA.flight.classes
+                    .find(classObj => classObj.className === decodedData.class)
+                    .seats.filter(seat => seat.status === 'available')
+                    .length;
+
+                    const flightB = await getFlight(b.id);
+                    const MaxB = flightB.flight.classes
+                    .find(classObj => classObj.className === decodedData.class)
+                    .seats.filter(seat => seat.status === 'available')
+                    .length
+                    return MaxA - MaxB
+                }));
+
+                const flight = await getFlight(lowest[0].id)
+
+                setMaximumPassengers(flight.flight.classes
+                    .find(classObj => classObj.className === decodedData.class)
+                    .seats.filter(seat => seat.status === 'available')
+                    .length)
+            }
+        }
+        getMaxPassengers();
     
     }, [bookings]); // Run this effect whenever the 'bookings' state changes
     
@@ -124,6 +153,10 @@ const BookingPage = () => {
 
     const handlePassengers = (e) => {
         e.preventDefault();
+        console.log(maximumPassengers)
+        if(passengersType.length > maximumPassengers){
+            alert(`The Maximum passengers is ${maximumPassengers}`);
+        }else{
         // Loop through each passenger type
         passengersType.forEach(passengerType => {
             // Loop through each flight in the decodedData.flights array
@@ -155,6 +188,7 @@ const BookingPage = () => {
             })
         })
         setShowForm(true); // Set the state to true to show the passenger form interface
+        }
     }
 
     return (
@@ -175,6 +209,7 @@ const BookingPage = () => {
             <form onSubmit={handlePassengers}>
             <div className="container">
                     <h2>Book Flight</h2>
+                    <p>Maximum Passengers Allowed: {maximumPassengers}</p>
                     <div className="select-container">
                         <div className="select-div">
                             <label htmlFor="adult">Adult</label>
@@ -202,7 +237,7 @@ const BookingPage = () => {
                     <button
                         className="next-btn"
                         type="submit"
-                        disabled={bookings && bookings.adult == 0 ? true : false}
+                        disabled={bookings && bookings.adult == 0 || passengersType.length > maximumPassengers ? true : false}
                     >Next</button>
                 </div>
                 </form>}

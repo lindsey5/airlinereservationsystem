@@ -21,3 +21,15 @@ export const cancelPassengerFlight = async ({bookId, flightId, showError, setErr
         console.error(err)
     }
 }
+
+export const getFlight = async (id) => {
+    console.log(id)
+    try{
+        const response = await fetch(`/api/flight/${id}`);
+        if(response.ok){
+            return await response.json();
+        }
+    }catch(err){
+        console.log(err)
+    }
+}
