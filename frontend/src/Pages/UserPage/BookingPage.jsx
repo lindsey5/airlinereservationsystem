@@ -5,7 +5,7 @@ import SeatSelection from "../../Components/Seats/SeatSelection";
 import FareTypes from "../../Components/Booking/FareTypes";
 import PassengerForm from "../../Components/Booking/PassengerForm";
 import TermsModal from "../../Components/User/Modals/TermsModal";
-import { getFlight } from "../../Service/flightService";
+import GetMaxPassengers from "../../utils/GetMaxPassengers";
 
 const BookingPage = () => {
     const queryParams = new URLSearchParams(window.location.search); // Create a new URLSearchParams object to parse the query string from the current URL
@@ -65,36 +65,20 @@ const BookingPage = () => {
     
             // Update the state with the constructed array of passenger types
             setPassengersType(passengersType);
-        }
 
-        const getMaxPassengers = async () => {
-            if(bookings){
-                const lowest = await Promise.all(bookings.flights.sort(async (a, b) => {
-                    const flightA = await getFlight(a.id);
-                    const MaxA = flightA.flight.classes
-                    .find(classObj => classObj.className === decodedData.class)
-                    .seats.filter(seat => seat.status === 'available')
-                    .length;
-
-                    const flightB = await getFlight(b.id);
-                    const MaxB = flightB.flight.classes
-                    .find(classObj => classObj.className === decodedData.class)
-                    .seats.filter(seat => seat.status === 'available')
-                    .length
-                    return MaxA - MaxB
-                }));
-
-                const flight = await getFlight(lowest[0].id)
-
-                setMaximumPassengers(flight.flight.classes
-                    .find(classObj => classObj.className === decodedData.class)
-                    .seats.filter(seat => seat.status === 'available')
-                    .length)
+            const getMaxPassengers = async () => {
+                setMaximumPassengers(await GetMaxPassengers(bookings.flights, decodedData.class))
             }
+
+            getMaxPassengers();
         }
-        getMaxPassengers();
+        
     
     }, [bookings]); // Run this effect whenever the 'bookings' state changes
+
+    useEffect(() => {
+        console.log(maximumPassengers)
+    }, [maximumPassengers])
     
 
     const handleBooking = async () => {

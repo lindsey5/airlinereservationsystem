@@ -10,6 +10,7 @@ import SelectContainer from "../../Components/Search/SelectContainer";
 import { formatPrice } from "../../utils/formatPrice";
 import { useNavigate } from "react-router-dom";
 import SearchFilter from "../../Components/Search/SearchFilter";
+import GetMaxPassengers from "../../utils/GetMaxPassengers";
 
 const SearchResults = () => {
     const {state} = useContext(SearchContext);
@@ -18,6 +19,7 @@ const SearchResults = () => {
     const [selectedClass, setSelectedClass] = useState();
     const [loading, setLoading] = useState(true);
     const navigate = useNavigate();
+    const [maximumPassengers, setMaximumPassengers] = useState([]);
 
     const fetchResults = async () => {
         if (state) {
@@ -31,6 +33,20 @@ const SearchResults = () => {
     useEffect(() => {
         document.title = "Search Results";
     }, []);
+
+    useEffect(() => {
+        if(results.length > 0){
+            const getMaxPassengers = async () => {
+                const maxPassengers = []
+                for(const flights of results){
+                    maxPassengers.push(await GetMaxPassengers(flights, selectedClass))
+                }
+                setMaximumPassengers(maxPassengers);
+            }
+
+            getMaxPassengers();
+        }
+    }, [results]) 
 
     useEffect(() => {
         fetchResults()
@@ -137,6 +153,7 @@ const SearchResults = () => {
                         )}
                         </div>
                         <div>
+                        <h4>Availble Seats: {maximumPassengers[i]}</h4>
                         <h4 style={{marginBottom: '5px'}}>{selectedClass}</h4>
                         <h2>{formatPrice(flights.reduce((total, flight) => total + flight.classes.find(classObj => classObj.className === selectedClass).price, 0))}</h2>
                         <button className="select-btn" onClick={() => handleSelect(flights)}>Select</button>
