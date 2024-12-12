@@ -1,24 +1,12 @@
-import { fetchUserType } from "../hooks/fetchUserType";
-import { useState, useEffect} from "react";
 import { Outlet, Navigate } from "react-router-dom";
+import useFetchUserType from "../hooks/useFetchUserType";
 
 const FrontDeskRoute = () => {
-    const [user, setUser] = useState(null);
-    const [loading, setLoading] = useState(true);
+  const { user } = useFetchUserType();
 
-    useEffect(() => {
-      const fetchData = async () => {
-        setUser(await fetchUserType())
-        setLoading(false);
-      };
-      fetchData();
-    }, []);
-
-    if (loading) {
-      return null;
-    }
-
-    return user === 'front-desk' ? <Outlet /> : <Navigate to="/" />;
+  return <>
+  {user === 'front-desk' && !loading ? <Outlet /> : <Navigate to="/" />}
+  </>
 };
 
 export default FrontDeskRoute

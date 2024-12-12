@@ -1,24 +1,12 @@
-import { fetchUserType } from "../hooks/fetchUserType";
-import { useState, useEffect} from "react";
+import useFetchUserType from "../hooks/useFetchUserType";
 import { Outlet, Navigate } from "react-router-dom";
 
 const AdminRoute = () => {
-    const [user, setUser] = useState(null);
-    const [loading, setLoading] = useState(true);
+    const { user, loading } = useFetchUserType();
 
-    useEffect(() => {
-      const fetchData = async () => {
-        setUser(await fetchUserType())
-        setLoading(false);
-      };
-      fetchData();
-    }, []);
-
-    if (loading) {
-      return null;
-    }
-
-    return user === 'admin' ? <Outlet /> : <Navigate to="/" />;
+    return <>
+    {user === 'admin' && !loading ? <Outlet /> : <Navigate to="/" />}
+    </>
 };
 
 export default AdminRoute

@@ -1,29 +1,12 @@
-import { fetchUserType } from "../hooks/fetchUserType";
-import { useState, useEffect} from "react";
-import { Outlet, Navigate } from "react-router-dom";
+import { Outlet, useNavigate } from "react-router-dom";
+import useFetchUserType from "../hooks/useFetchUserType";
 
 const PublicRoute = () => {
-    const [user, setUser] = useState(null);
-    const [loading, setLoading] = useState(true);
-
-    useEffect(() => {
-      const fetchData = async () => {
-        setUser(await fetchUserType())
-        setLoading(false);
-      };
-      fetchData();
-    }, []);
-
-    if (loading) {
-      return null;
-    }
-
-    if (user) {
-      const navigateTo = user === 'user' ? "/user/home" : user === 'admin' ? "/admin/dashboard" : '/frontdesk/flights';
-      return <Navigate to={navigateTo} />;
-    }
-
-    return <Outlet />;
+  const { user, loading} = useFetchUserType();
+  const navigate = useNavigate();
+    return <> 
+    {user && !loading ? user === 'user' ? navigate('/user/home') : user === 'admin' ? navigate("/admin/dashboard") : navigate('/frontdesk/flights') : <Outlet />}
+    </>
 };
 
 export default PublicRoute

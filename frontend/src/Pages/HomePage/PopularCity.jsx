@@ -2,20 +2,13 @@ import { useEffect, useState } from "react"
 import useFetch from "../../hooks/useFetch"
 import './PopularCity.css'
 import { useNavigate } from "react-router-dom";
-import { fetchUserType } from "../../hooks/fetchUserType";
+import useFetchUserType from "../../hooks/useFetchUserType";
 
 const PopularCity = ({elementsRef}) => {
     const [cities, setCities] = useState();
     const { data } = useFetch('/api/popular-destinations?limit=12');
-    const [user, setUser] = useState(null);
+    const { user } = useFetchUserType();
     const navigate = useNavigate();
-
-    useEffect(() => {
-      const fetchData = async () => {
-        setUser(await fetchUserType())
-      };
-      fetchData();
-    }, []);
 
     useEffect(() => {
         const setFetchedData = async () => {

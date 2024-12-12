@@ -1,6 +1,6 @@
 import axios from "axios";
 
-export const useAdminLogin = async (employeeId, password, setError) =>{
+export const adminLogin = async (employeeId, password, setError) =>{
     try {
         // Send a POST request to your Node.js server
         const response = await axios.post('/api/admin/login', {
@@ -17,7 +17,7 @@ export const useAdminLogin = async (employeeId, password, setError) =>{
     }
 }
 
-export const useFrontDeskLogin = async (employeeId, password, setError) =>{
+export const frontDeskLogin = async (employeeId, password, setError) =>{
     try {
         // Send a POST request to your Node.js server
         const response = await axios.post('/api/front-desk/login', {

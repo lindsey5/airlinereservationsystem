@@ -1,24 +1,13 @@
-import { fetchUserType } from "../hooks/fetchUserType";
-import { useState, useEffect} from "react";
+import useFetchUserType from "../hooks/useFetchUserType";
 import { Outlet, Navigate } from "react-router-dom";
 
 const UserRoute = () => {
-    const [user, setUser] = useState(null);
-    const [loading, setLoading] = useState(true);
+  const { user, loading} = useFetchUserType();
 
-    useEffect(() => {
-      const fetchData = async () => {
-        setUser(await fetchUserType())
-        setLoading(false);
-      };
-      fetchData();
-    }, []);
+  return <> 
+        {user === 'user' && !loading ? <Outlet /> : <Navigate to="/" />}
+  </>
 
-    if (loading) {
-      return null;
-    }
-    
-    return user === 'user' ? <Outlet /> : <Navigate to="/" />;
 };
 
 export default UserRoute
