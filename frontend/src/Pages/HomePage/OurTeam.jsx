@@ -123,6 +123,18 @@ const OurTeam = () => {
                             <h3>Richard Tamondong</h3>
                         </div>
                     </div>
+                    <div class="gallery">
+                        <img src="/members/Research Team/Ponce, Mikkel.png" alt="Profile" />
+                        <div>
+                            <h3>Mikkel Ponce</h3>
+                        </div>
+                    </div>
+                    <div class="gallery">
+                        <img src="/members/Research Team/Valiente, Jasmin.jpg" alt="Profile" />
+                        <div>
+                            <h3>Jasmin Valiente</h3>
+                        </div>
+                    </div>
                 </div>
             </div>
         </div>

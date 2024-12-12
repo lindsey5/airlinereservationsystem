@@ -11,11 +11,11 @@ const useFetchUserType = () => {
           if (response.ok) {
             const result = await response.json();
             setUser(result.user);
-            setLoading(false);
           }
         }catch(err){
           console.error("Error: ", err);
         }
+        setLoading(false);
       }
       fetchUserType();
     }, [])

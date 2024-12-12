@@ -41,6 +41,7 @@ const UserFlights = () => {
 
     useEffect(() => {
         if(flights.length > 0){
+            setShowSeeMore(true)
             const flightsArr = [];
             data.forEach((item) => {
                 item.flights.forEach(flight => {
