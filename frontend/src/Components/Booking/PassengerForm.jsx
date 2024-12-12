@@ -1,6 +1,7 @@
 import { useState, useEffect } from 'react';
 import './PassengerForm.css';
 import PaymentSummary from './PaymentSummary';
+import { formatDate2 } from '../../utils/dateUtils';
 
 const PassengerForms = ({setCurrentPassenger, currentPassenger, bookings, setBookings, submit}) => {
     const [isValid, setIsValid] = useState(false);
@@ -8,6 +9,7 @@ const PassengerForms = ({setCurrentPassenger, currentPassenger, bookings, setBoo
     const [lineItems, setLineItems] = useState();
     const [paymentDetails, setPaymentDetails] = useState();
     const [isAgreed, setIsAgreed] = useState(false);
+    const today = new Date();
 
     const handlePaymentSummary = () => {
         // Define the VAT rate (12%)
@@ -185,6 +187,10 @@ const PassengerForms = ({setCurrentPassenger, currentPassenger, bookings, setBoo
                             Date of Birth
                             <input 
                                 type="date" 
+                                max={bookings.flights[0].passengers[currentPassenger].type === 'Adult' ? 
+                                    formatDate2(new Date(today.setFullYear(today.getFullYear() - 12))) : 
+                                    formatDate2(new Date(today.setFullYear(today.getFullYear() - 2)))}
+                                min={bookings.flights[0].passengers[currentPassenger].type !== 'Adult' && formatDate2(new Date(today.setFullYear(today.getFullYear() - 11)))}
                                 onChange={(e) => setPassengerDetails(e, 'dateOfBirth')}
                                 value={bookings.flights[0].passengers[currentPassenger].dateOfBirth || ''}
                             />
