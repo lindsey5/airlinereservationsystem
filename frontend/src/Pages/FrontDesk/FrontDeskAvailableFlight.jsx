@@ -5,6 +5,7 @@ import { formatPrice } from "../../utils/formatPrice";
 import '../../styles/AvailableFlights.css';
 import '../../styles/Flights.css';
 import { useNavigate } from "react-router-dom";
+import GetMaxPassengers from "../../utils/GetMaxPassengers";
 
 const FrontDeskAvailableFlights = () => {
     const [limit, setLimit] = useState(5);
@@ -14,10 +15,25 @@ const FrontDeskAvailableFlights = () => {
     const searchRef = useRef();
     const {data, loading} = useFetch(`/api/flight/flights/available?limit=${limit}&&selectedClass=${selectedClass}&&searchTerm=${searchTerm}`)
     const navigate = useNavigate();
+    const [maximumPassengers, setMaximumPassengers] = useState([]);
 
     useEffect(() => {
         document.title = "Available Flights";
     },[])
+
+    useEffect(() => {
+        if(flights.length > 0){
+            const getMaxPassengers = async () => {
+                const maxPassengers = []
+                for(const flight of flights){
+                    maxPassengers.push(await GetMaxPassengers([flight], selectedClass))
+                }
+                setMaximumPassengers(maxPassengers);
+            }
+
+            getMaxPassengers();
+        }
+    }, [flights]) 
 
     useEffect(() =>{
         if(data?.flights){
@@ -75,7 +91,7 @@ const FrontDeskAvailableFlights = () => {
             </select>
             </div>
             <div className="container">
-                {flights.length > 0 && flights.map(flight => 
+                {flights.length > 0 && flights.map((flight, i) => 
                 <div key={flight._id} className="flights-container">
                     <div>
                         <div className='flight'>
@@ -111,6 +127,7 @@ const FrontDeskAvailableFlights = () => {
                         </div>
                     </div>
                     <div>
+                        <h4>Availble Seats: {maximumPassengers[i]}</h4>
                         <h4 style={{marginBottom: '5px'}}>{selectedClass}</h4>
                         <h2>{formatPrice(flight.classes.find(classObj => classObj.className === selectedClass).price)}</h2>
                         <button className="select-btn" onClick={() => handleSelect(flight)}>Select</button>

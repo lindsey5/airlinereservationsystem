@@ -612,7 +612,8 @@ export const get_customer_flights = async (req, res) => {
                     { 'flights.status': { $regex: new RegExp(searchTerm, 'i') } },
                     { 'class': { $regex: new RegExp(searchTerm, 'i') } },
                     { 'fareType': { $regex: new RegExp(searchTerm, 'i') } },
-                ]
+                ],
+                booked_by: req.userId
             }
             : {}; 
             const customerFlights = []
