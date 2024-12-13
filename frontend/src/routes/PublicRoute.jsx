@@ -13,7 +13,7 @@ const PublicRoute = () => {
         navigate('/user/home');
       } else if (user === 'admin') {
         navigate('/admin/dashboard');
-      } else if (user === 'frontdesk') {
+      } else if (user === 'front-desk') {
         navigate('/frontdesk/flights');
       }
     }

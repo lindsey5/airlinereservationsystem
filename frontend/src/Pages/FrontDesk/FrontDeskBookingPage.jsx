@@ -43,13 +43,18 @@ const FrontDeskBookingPage = () => {
     
         // Track total height needed
         let totalHeight = getContentHeight();
-    
+        doc.setFontSize(7);
         // Add the static content (Date and Booking Reference)
         doc.text(`Date: ${formatDate(new Date())}`, margin, yPosition);
         yPosition += lineHeight;
         doc.text(`Booking Ref: ${booking_ref}`, margin, yPosition);
         yPosition += lineHeight;
-    
+        doc.text(`Customer Email: ${email}`, margin, yPosition);
+        yPosition += lineHeight;
+        doc.text(`Number of Passenger(s): ${passengersType.length}`, margin, yPosition);
+        yPosition += lineHeight + 5;
+
+        doc.setFontSize(6);
         doc.text('Items', margin, yPosition);
         doc.text('Price', itemWidth, yPosition);
         yPosition += lineHeight;
@@ -75,7 +80,7 @@ const FrontDeskBookingPage = () => {
         const startY = yPosition;
         const endX = 70;  // Width of receipt
     
-        doc.setLineWidth(0.3);  // Set line width
+        doc.setLineWidth(0.1);  // Set line width
         doc.line(startX, startY, endX, startY);  // Draw the horizontal line
     
         // Add total amount
@@ -86,9 +91,9 @@ const FrontDeskBookingPage = () => {
             doc.internal.pageSize.height += 15;  // Add 15mm for total and final line
         }
     
-        yPosition += lineHeight;  // Adjust Y position for total
+        yPosition += 5;  // Adjust Y position for total
         doc.text('Total: ', margin, yPosition);  // Format total to two decimals
-        doc.text(`${totalAmount}`, 60, yPosition);
+        doc.text(`${totalAmount.toFixed(2)}`, 60, yPosition);
         // Save the PDF
         doc.save('receipt.pdf');
     };
