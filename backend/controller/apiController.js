@@ -12,9 +12,64 @@ import { get_incomes_today, get_incomes_per_month } from '../service/incomesServ
 import {get_bookings_per_month} from '../service/bookingService.js';
 import FrontDeskAgent from '../model/FrontDeskAgent.js';
 import { GoogleGenerativeAI } from "@google/generative-ai";
+import { sendVerificationCode } from '../service/emailService.js';
+import nodemailer from 'nodemailer';
 dotenv.config();
 
 const url = process.env.NODE_ENV === 'production' ? 'https://cloudpeakairlines.onrender.com' : 'http://localhost:5173';
+
+export const send_forgot_password_code = async(req, res) => {
+    try{
+        const user = await User.findOne({email: req.body.email});
+
+        if(!user) throw new Error('Email doesn\'t exist');
+
+        const verificationCode = await sendVerificationCode(req.body.email)
+        res.cookie('verificationCode', verificationCode, {
+            maxAge: 60000,
+            secure: process.env.NODE_ENV === 'production' 
+        });
+        res.status(200).json({message: 'Verification Code Successfully sent'});
+    }catch(err){
+        const errors = errorHandler(err);
+        return res.status(400).json({ errors });
+    }
+}
+
+export const sendForgotPasswordLink = async (req, res) => {
+    try{
+        const { data, email } = req.body;
+        const transporter = nodemailer.createTransport({
+            service: 'gmail',
+            auth: {
+                user: process.env.EMAIL_USER,
+                pass: process.env.EMAIL_PASS,
+            },
+        });
+        const info = await transporter.sendMail({
+            from: "cloudpeak.airlines", 
+            to: `${email}`,
+            subject: "Forgot Password",
+            html: `
+                <p>Please click here to reset your password</p>
+                <a 
+                    style="background-color: red; color: white; padding: 5px 20px; text-decoration: none;"
+                    href='${url}/user/reset-password?data=${data}'
+                >
+                    Change Password
+                </a>
+            `
+        });
+
+        if(!info) throw new Error('Failed');
+        res.status(200).json({message: 'success'})
+              
+    }catch(err){
+        console.log(err)
+        const errors = errorHandler(err);
+        return res.status(400).json({errors});
+    }
+}
 
 export const verifyCode = async (req, res) => {
     try {

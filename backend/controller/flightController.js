@@ -315,7 +315,7 @@ export const user_book_flight = async (req, res) => {
         await booking.save();
         res.clearCookie('checkoutData');
         // Send the ticket details to the user via email
-        sendTickets(user.email, booking._id, booking, checkoutData.line_items);
+        sendTickets(user.email, booking, checkoutData.line_items);
 
         // Redirect the user to a success page after completing the booking
         res.redirect(`/user/booking/success`);
@@ -386,9 +386,9 @@ export const frontdesk_book_flight = async (req, res) => {
         });
 
         // Create a payment record for the booking using the checkout data
-        const payment = await createPayment(data, booking._id);
+        await createPayment(data, booking._id);
         // Send the booking tickets to the user via email
-        sendTickets(email, booking._id, booking, data.line_items);
+        sendTickets(email, booking, data.line_items);
         await booking.save();
         res.status(200).json(booking);
     } catch (err) {

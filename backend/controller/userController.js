@@ -69,3 +69,19 @@ export const changeUserPassword = async (req, res) => {
         res.status(400).json({errors});
     }
 }
+
+export const resetUserPassword = async (req, res) =>{
+    try{    
+        const user = await User.findOne({email: req.body.email});
+        if(!user) throw new Error('User not Found');
+
+        user.password = req.body.newPassword;
+        await user.save();
+
+        res.status(200).json({message: 'Password successfully changed'});
+
+    }catch(err){
+        const errors = errorHandler(err);
+        res.status(400).json({errors});
+    }
+}

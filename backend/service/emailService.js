@@ -12,9 +12,9 @@ export const sendVerificationCode = async (email) => {
       });
       const code = Math.floor(100000 + Math.random() * 900000);
       await transporter.sendMail({
-          from: "tcu.airlines",
+          from: "cloudpeak.airlines",
           to: `${email}`,
-          subject: "Verification Code",
+          subject: "Cloud Peak Airlines Verification Code",
           text: `Your Verification Code is ${code}`,
       });
       
@@ -25,7 +25,7 @@ export const sendVerificationCode = async (email) => {
       return verificationCode;
 }
 
-export const sendTickets = async (email, id, booking, line_items) => {
+export const sendTickets = async (email, booking, line_items) => {
   const transporter = nodemailer.createTransport({
     service: "gmail",
     auth: {
@@ -52,9 +52,9 @@ export const sendTickets = async (email, id, booking, line_items) => {
           CLOUDPEAK AIRLINES
         </div>
         <h1>Your Itinerary</h1>
-        <p style="font-size: 17px;">Booking Number: ${id}</p>
+        <p style="font-size: 17px;">Booking Reference: ${booking.booking_ref}</p>
         <p style="margin: 30px 0 10px 0; font-size: 17px;">Click the link below to view your flight ticket:</p>
-        <a href="https://cloudpeakairlines.onrender.com/tickets?data=${id}" style="color: #ff3131; font-size: 17px; text-decoration: underline">https://cloudpeakairlines.onrender.com</a>
+        <a href="https://cloudpeakairlines.onrender.com/tickets?data=${booking._id}" style="color: #ff3131; font-size: 17px; text-decoration: underline">https://cloudpeakairlines.onrender.com</a>
         <table width="100%" style="margin: 50px 0 30px 0; background-color: white;">
             <thead>
               <tr>
