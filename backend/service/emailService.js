@@ -96,7 +96,6 @@ export const sendTickets = async (email, booking, line_items) => {
                 </tr>`).join('')}
             </tbody>
           </table>
-
           <table width="100%" style="margin-bottom: 30px; background-color: white;">
             <thead>
               <tr>

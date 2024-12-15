@@ -50,8 +50,7 @@ export const sendForgotPasswordLink = async (req, res) => {
             from: "cloudpeak.airlines", 
             to: `${email}`,
             subject: "Forgot Password",
-            html: `
-                <p>Please click here to reset your password</p>
+            html: `<p>Please click here to reset your password</p>
                 <a 
                     style="background-color: red; color: white; padding: 5px 20px; text-decoration: none;"
                     href='${url}/user/reset-password?data=${data}'
