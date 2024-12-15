@@ -46,18 +46,10 @@ const Footer = () => {
         <div className="mb-6 md:mb-0">
           <h2 className="text-xl font-semibold text-white">About CloudPeak Airlines</h2>
           <ul className="mt-2 text-white list-none pl-0 leading-8">
-              <li><a href="" className="text-white font-medium hover:underline-offset-4">About us</a></li>
-              <li><a href="" className="text-white font-medium hover:underline-offset-4">Contact Us</a></li>
-              <li><a href="" className="text-white font-medium hover:underline-offset-4">Help Center</a></li>
-              <li><a href="/our-team" className="text-white font-medium hover:underline-offset-4">Our Team</a></li>
-          </ul>
-        </div>
-        <div className="mb-6 md:mb-0">
-          <h2 className="text-xl font-semibold text-white">Other</h2>
-          <ul className="mt-2 text-white list-none pl-0 leading-8">
-              <li><a href="/terms-and-conditions" className="text-white font-medium hover:underline-offset-4">Terms & Conditions</a></li>
+            <li><a href="/terms-and-conditions" className="text-white font-medium hover:underline-offset-4">Terms & Conditions</a></li>
               <li><a href="/FAQ" className="text-white font-medium hover:underline-offset-4">FAQ</a></li>
               <li><a href="/privacy-policy" className="text-white font-medium hover:underline-offset-4">Privacy Policy</a></li>
+              <li><a href="/our-team" className="text-white font-medium hover:underline-offset-4">Our Team</a></li>
           </ul>
         </div>
       </div>
