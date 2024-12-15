@@ -44,7 +44,7 @@ const UserHome = () => {
        const getImages = async () => {
             setPopularCity(await Promise.all(data.map(async (item) => {
                 try{
-                    const response = await fetch(`https://pixabay.com/api/?key=46701607-d51d8d8ab7e9bf8a22e03cd3c&q=${item.city} city ${item.country}&image_type=photo`);
+                    const response = await fetch(`https://pixabay.com/api/?key=46701607-d51d8d8ab7e9bf8a22e03cd3c&q=${item.city} city, ${item.country}&image_type=photo`);
                     if(response.ok){
                         const result = await response.json();
                         return {city: item.city, image: result.hits[0].largeImageURL, country: item.country}
