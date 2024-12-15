@@ -52,7 +52,6 @@ import PrivacyPolicy from './Pages/HomePage/PrivacyPolicy';
 import AdminPayments from './Pages/AdminPage/AdminPayments';
 import AdminCustomerFlights from './Pages/AdminPage/AdminCustomerFlights';
 import UserForgotPassword from './Pages/AuthPages/UserForgotPassword';
-import ResetPassword from './Pages/AuthPages/ResetPassword';
 
 const router = createBrowserRouter(
   createRoutesFromElements(
@@ -65,7 +64,6 @@ const router = createBrowserRouter(
           <Route path='login' element={<UserLogin />} />
           <Route path='signup' element={<UserSignup />} />
           <Route path='forgot-password' element={<UserForgotPassword />}/>
-          <Route path='reset-password' element={<ResetPassword />} />
         </Route>
       </Route>
 

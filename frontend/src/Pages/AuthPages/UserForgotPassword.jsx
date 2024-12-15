@@ -10,6 +10,8 @@ const UserForgotPassword = () => {
     const [count, setCount] = useState(0);
     const [counter, setCounter] = useState(false);
     const [verified, setVerified] = useState(false);
+    const [newPassword, setNewPassword] = useState('');
+    const [confirmPass, setConfirmPass] = useState('');
 
     useEffect(() => {
             document.title = "Forgot Password";
@@ -63,36 +65,43 @@ const UserForgotPassword = () => {
         if(response.errors){
             setError(response.errors[0])
         }else{
-            // Create a UTF-8 encoded byte array from the string
-            const encoder = new TextEncoder();
-            const uint8Array = encoder.encode(email);
-            
-            // Convert the byte array to a Base64 encoded string
-            let binary = '';
-            uint8Array.forEach(byte => binary += String.fromCharCode(byte));
-            const data = btoa(binary)
+            setVerified(true);
+        }
+    }
 
-            const response = await fetch('/api/forgot-password',{
-                method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json',
-                },
-                body: JSON.stringify({data, email}),
-            })
-            
-            if(response.ok){
-                setVerified(true);
-            }else{
-                alert('Verification Failed')
+    const resetPassword = async (e) => {
+        e.preventDefault();
+        setError('')
+        if(newPassword === confirmPass){
+            try{
+                const response = await fetch('/api/user/reset-password',{
+                    method: 'PUT',
+                    headers: {
+                        'Content-Type': 'application/json',
+                    },
+                    body: JSON.stringify({email, newPassword}),
+                })
+                
+                if(response.ok){
+                    alert('Password successfully change')
+                    window.location.href = '/user/login';
+                }else{
+                    alert('Failed to change the password');
+                }
+            }catch(err){
+                alert('Failed')
             }
-    
+        }else{
+            setError('Password does\'nt match')
         }
     }
 
     return(
         <div className="user-forgot-password">
             <div className='left-container'>
-                <form className='container' onSubmit={!showVerify ? sendVerificationCode : verifySentCode}>
+                <form className='container' onSubmit={!showVerify ? 
+                    sendVerificationCode : 
+                    (!verified ? verifySentCode : resetPassword)}>
                     <img src="/icons/tcu_airlines-logo (2).png" alt="" />
                     {!verified ?
                     <>
@@ -110,15 +119,22 @@ const UserForgotPassword = () => {
                         <button onClick={sendVerificationCode}>Resend</button>
                     </div>
                     }
-                    <button>Submit</button>
                     </>
                     :
                     <>         
-                    <h2>Email Verified!</h2>
-                    <h3>Please Check your email</h3>
-                    <a href="/user/login" style={{marginTop: '30px'}}>Go Back To Login</a>
+                    <h2>Reset Your Password</h2>
+                    <p>{error}</p>
+                    <div>
+                        <p>New Password</p>
+                        <input type="password" required onChange={(e) => setNewPassword(e.target.value)}/>
+                    </div>
+                    <div>
+                        <p>Confirm New Password</p>
+                        <input type="password" required onChange={(e) => setConfirmPass(e.target.value)} />
+                    </div>
                     </>
                     }
+                    <button>Submit</button>
                 </form>
             </div>
             <img src="/icons/airplane-bg.png" alt="" />

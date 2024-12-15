@@ -1,5 +1,5 @@
 import express from 'express';
-import { chat_a_bot, createPaymentLink, get_popular_destination, getCities, getCountries, getDashboardDetails, getUserType, send_forgot_password_code, sendForgotPasswordLink, verifyCode } from '../controller/apiController.js';
+import { chat_a_bot, createPaymentLink, get_popular_destination, getCities, getCountries, getDashboardDetails, getUserType, send_forgot_password_code, verifyCode } from '../controller/apiController.js';
 import { userRequireAuth } from '../middleware/userRequireAuth.js';
 import { adminRequireAuth } from '../middleware/adminRequireAuth.js';
 
@@ -9,7 +9,6 @@ router.post('/chat', chat_a_bot);
 router.get('/popular-destinations', get_popular_destination);
 router.post('/verify-code', verifyCode);
 router.post('/forgot-password/code', send_forgot_password_code);
-router.post('/forgot-password', sendForgotPasswordLink);
 router.get('/countries', getCountries);
 router.get('/cities/:country', getCities)
 router.post('/payment-link', userRequireAuth, createPaymentLink)
