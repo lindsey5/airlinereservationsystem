@@ -144,7 +144,7 @@ const UserFlights = () => {
                                 <button onClick={() => {
                                     console.log(flight)
                                         setShowRefund(true);
-                                        setSelectedFlight({...flight, fareType: flight.fareType, bookingRef: flight.bookingRef, booking_id: flight.booking_id})
+                                        setSelectedFlight({...flight, payment_method: 'Online Payment'})
                                     }}>
                                 <img src="/icons/cancel.png" alt="cancel" />
                             </button>}

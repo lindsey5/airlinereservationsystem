@@ -49,6 +49,8 @@ import OurTeam from './Pages/HomePage/OurTeam';
 import FAQ from './Pages/HomePage/FAQ';
 import TermsAndConditions from './Pages/HomePage/TermsAndConditions';
 import PrivacyPolicy from './Pages/HomePage/PrivacyPolicy';
+import AdminPayments from './Pages/AdminPage/AdminPayments';
+import AdminCustomerFlights from './Pages/AdminPage/AdminCustomerFlights';
 
 const router = createBrowserRouter(
   createRoutesFromElements(
@@ -94,6 +96,8 @@ const router = createBrowserRouter(
             <Route path='airports' element={<AdminAirports />} />
             <Route path='admins' element={<Admins />} />
             <Route path='front-desks' element={<FrontDeskAgents />}/>
+            <Route path='payments' element={<AdminPayments />} />
+            <Route path='flights/customer' element={<AdminCustomerFlights />} />
           </Route>
         </Route>
       </Route>

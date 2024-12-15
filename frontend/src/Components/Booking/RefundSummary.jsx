@@ -26,6 +26,7 @@ const RefundSummary = ({flight, close, showError, setError}) => {
                 <div style={{padding: '0 15px'}}>
                     <p>Flight Number: {flight.flightNumber}</p>
                     <p>Booking Ref: {flight.bookingRef}</p>
+                    <p>Payment Method: {flight.payment_method}</p>
                 </div>
                 {<div className='items-container'>
                     <div className='toggle-container'>

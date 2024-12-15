@@ -1,6 +1,5 @@
 import mongoose from "mongoose";
 import PassengerSchema from "./Schema/PassengerSchema.js";
-import crypto from 'crypto'
 const Schema = mongoose.Schema;
 
 const BookingSchema = new Schema({

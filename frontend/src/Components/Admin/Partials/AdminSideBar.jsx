@@ -53,6 +53,18 @@ const AdminSideBar = () => {
                     Front Desk Agents
                     </li>
                 </Link>
+                <Link to={'payments'}>
+                    <li>
+                    <img src="/icons/peso.png" alt="" />
+                    Payments
+                    </li>
+                </Link>
+                <Link to={'flights/customer'}>
+                    <li>
+                    <img src="/icons/plane.png" alt="" />
+                    Customer Flights
+                    </li>
+                </Link>
                 <Link onClick={logout}>
                     <li>
                     <img src="/icons/logout.png" alt="" />

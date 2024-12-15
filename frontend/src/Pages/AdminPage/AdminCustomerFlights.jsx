@@ -4,19 +4,11 @@ import AdminPagination from "../../Components/Admin/Pagination/AdminPagination";
 import '../../styles/TablePage.css';
 import { formatDate } from "../../utils/dateUtils";
 import { dataStatus } from "../../utils/dataStatus";
-import ErrorCancelModal from "../../Components/Modals/ErrorCancelModal";
-import RefundSummary from "../../Components/Booking/RefundSummary";
-import { useNavigate } from "react-router-dom";
 
-const CustomerFlights = () => {
+const AdminCustomerFlights = () => {
     const [flights, setFlights] = useState();
     const [searchTerm, setSearchTerm] = useState('');
     const {state, dispatch} = useAdminPaginationReducer();
-    const [showCancelError, setShowCancelError] = useState(false);
-    const [showRefund, setShowRefund] = useState(false);
-    const [selectedFlight, setSelectedFlight] = useState();
-    const [error, setError] = useState('');
-    const navigate = useNavigate();
 
     useEffect(() => {
         const fetchFlights = async () => {
@@ -48,27 +40,8 @@ const CustomerFlights = () => {
         document.title = "Flights | Front Desk";
     }, []);
 
-    const utf8ToBase64 = (str) => {
-        // Create a UTF-8 encoded byte array from the string
-        const encoder = new TextEncoder();
-        const uint8Array = encoder.encode(str);
-    
-        // Convert the byte array to a Base64 encoded string
-        let binary = '';
-        uint8Array.forEach(byte => binary += String.fromCharCode(byte));
-        return btoa(binary);
-    }
-
-    const editPassengers = (flight) => {
-        const params = flight;
-        const encoded = encodeURIComponent(utf8ToBase64(JSON.stringify(params)));
-        navigate(`/frontdesk/flight/passengers/edit?data=${encoded}`);
-    }
-
     return (
         <main className="table-page">
-            {showRefund && <RefundSummary flight={selectedFlight} close={() => setShowRefund(false)} showError={() => setShowCancelError(true)} setError={setError}/>}
-            {showCancelError && <ErrorCancelModal close={() => setShowCancelError(false)} error={error}/>}
             <h1>Customer Flights</h1>
             <input type="search" placeholder='Search' onChange={(e) => setSearchTerm(e.target.value)}/>
             <AdminPagination state={state} dispatch={dispatch} />
@@ -88,7 +61,6 @@ const CustomerFlights = () => {
                         <th style={{fontSize: '15px'}}>Fare Type</th>
                         <th style={{fontSize: '15px'}}>Passengers</th>
                         <th style={{fontSize: '15px'}}>Payment Method</th>
-                        <th style={{fontSize: '15px'}}>Action</th>
                     </tr>
                 </thead>
                 <tbody>
@@ -110,19 +82,6 @@ const CustomerFlights = () => {
                                 <td>{flight.fareType}</td>
                                 <td>{flight.flight.passengers.length}</td>
                                 <td>{flight.payment_method}</td>
-                                <td>
-                                    {flight.fareType === 'Gold' && !(new Date() >= new Date(flight.flight.departure.time)) && flight.flight.status === 'Booked' && 
-                                        <button onClick={() => {
-                                            setShowRefund(true);
-                                            setSelectedFlight({...flight.flight, fareType: flight.fareType, booking_id: flight.booking_id, bookingRef: flight.bookingRef, payment_method: flight.payment_method })
-                                        }}>
-                                        <img src="/icons/cancel.png"/>
-                                        </button>
-                                    }
-                                        <button onClick={() => editPassengers({...flight.flight, booking_id: flight.booking_id, bookingRef: flight.bookingRef})}>
-                                            <img src="/icons/editing.png"/>
-                                        </button>
-                                </td>
                             </tr>
                         )
                     }
@@ -134,4 +93,4 @@ const CustomerFlights = () => {
     )
 }
 
-export default CustomerFlights
+export default AdminCustomerFlights

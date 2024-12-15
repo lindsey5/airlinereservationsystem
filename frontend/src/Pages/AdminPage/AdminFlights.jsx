@@ -196,8 +196,10 @@ const AdminFlights = () => {
                 </tbody>
             </table>
             </div>
-            <button className='report-btn' onClick={generateCSV}>Generate Report</button>
-            <button className='add-btn' onClick={() => setShowMakeFlight(true)}>Make Flight</button>
+           <div style={{display:"flex", justifyContent: 'space-between'}}>
+           <button className='add-btn' onClick={() => setShowMakeFlight(true)}>Make Flight</button>
+           <button className='report-btn' onClick={generateCSV}>Generate Report</button>
+           </div>
         </main>
     )
 }

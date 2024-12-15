@@ -5,6 +5,7 @@ import jwt from 'jsonwebtoken';
 import generateRandomPassword from '../utils/generateRandomPassword.js';
 import FrontDeskAgent from '../model/FrontDeskAgent.js';
 import { sendNewFrontDeskInfo } from '../service/emailService.js';
+import Booking from '../model/Booking.js';
 
 export const front_desk_login = async (req, res) => {
     const { employeeId, password } = req.body;
@@ -86,6 +87,7 @@ export const get_front_desk_agents = async (req, res) => {
             frontdesks
         });
     }catch(err){
+        console.log(err)
         const errors = errorHandler(err)
         res.status(400).json({errors});
     }

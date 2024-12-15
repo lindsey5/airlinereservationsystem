@@ -196,34 +196,53 @@ export const getDashboardDetails = async (req, res) => {
     }
 }
 
-export const get_popular_destination = async(req, res) => {
-    try{
-        const popularDestinations = [];
-        const bookings = await Booking.find({'flights.status' : {$ne: 'Cancelled'}});
-        const limit = req.query.limit || 5;
-        
-        for(const booking of bookings){
-            for(const flight of booking.flights){
-                const index = popularDestinations.findIndex(destination => destination.city === flight.arrival.city)
-                if(index > -1){
-                    popularDestinations[index].total += flight.passengers.length
-                }else{
-                    popularDestinations.push({
-                        city: flight.arrival.city,
-                        country: flight.arrival.country,
-                        total: flight.passengers.length
-                    })
-                }
-                if(popularDestinations.length === limit) break;
-            }
+export const get_popular_destination = async (req, res) => {
+    try {
+      const popularDestinations = [];
+      const bookings = await Booking.find({ 'flights.status': { $ne: 'Cancelled' } });
+  
+      // Get limit from query, default to 5 if not provided
+      const limit = parseInt(req.query.limit) || 5;
+  
+      for (const booking of bookings) {
+        for (const flight of booking.flights) {
+          const index = popularDestinations.findIndex(destination => destination.city === flight.arrival.city);
+          
+          // If the destination already exists, increment the total
+          if (index > -1) {
+            popularDestinations[index].total += flight.passengers.length;
+          } else {
+            // If it's a new destination, add it to the array
+            popularDestinations.push({
+              city: flight.arrival.city,
+              country: flight.arrival.country,
+              total: flight.passengers.length
+            });
+          }
         }
-        popularDestinations.length < 1 ?  res.status(400).json({messsage: "No popular destinations yet"}) :
-        res.status(200).json(popularDestinations.sort((current, next) =>  next.total - current.total));
-    }catch(err){
-        const errors = errorHandler(err);
-        res.status(400).json({errors});
+      }
+  
+      // Sort the destinations based on the total passengers
+      popularDestinations.sort((a, b) => b.total - a.total);
+  
+      // Limit the number of destinations returned
+      const limitedDestinations = popularDestinations.slice(0, limit);
+  
+      // If no destinations found, send a 400 response
+      if (limitedDestinations.length === 0) {
+        return res.status(400).json({ message: "No popular destinations yet" });
+      }
+  
+      // Send the sorted and limited destinations as the response
+      return res.status(200).json(limitedDestinations);
+  
+    } catch (err) {
+      // Handle errors with the errorHandler (ensure it's defined elsewhere)
+      const errors = errorHandler(err);
+      return res.status(400).json({ errors });
     }
-}
+  };
+  
 
 const formatDate = (date) => {
     return date.toLocaleString('en-US', {
