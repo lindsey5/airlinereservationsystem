@@ -18,8 +18,9 @@ export const getUser = async (req, res) => {
 
 export const update_user = async (req, res) => {
     try{
-        const { age, gender } = req.body;
-        if(!age || !gender) throw new Error('Fill out the required fields: age, gender')
+        const { gender, email } = req.body;
+        if(!gender) throw new Error('Fill out the required fields: gender')
+        
         const user = await User.findByIdAndUpdate(req.userId, req.body, {
             new: true, 
             runValidators: true,
