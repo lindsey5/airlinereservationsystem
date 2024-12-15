@@ -59,7 +59,7 @@ const ChatBotInterface = () => {
                     )}
                     </div>
                     {!loading && <form className='input-container' onSubmit={(e) => sendMessage(message, e)}>
-                        <input type="text" value={message} onChange={(e) => setMessage(e.target.value)}/>
+                        <input type="text" value={message} placeholder='Ask question...' onChange={(e) => setMessage(e.target.value)}/>
                         <button type='submit'>Send</button>
                     </form>}
                 </div>}

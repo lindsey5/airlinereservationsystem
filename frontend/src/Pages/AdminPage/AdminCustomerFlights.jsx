@@ -74,9 +74,9 @@ const AdminCustomerFlights = () => {
                                 <td>{flight.flight.flightNumber}</td>
                                 <td>{flight.flight.airline}</td>
                                 <td>{flight.flight.gate_number}</td>
-                                <td>{flight.flight.departure.airport} ({flight.flight.departure.airport_code})</td>
+                                <td>{flight.flight.departure.airport}, {flight.flight.departure.country}</td>
                                 <td>{departureTime}</td>
-                                <td>{flight.flight.arrival.airport} ({flight.flight.arrival.airport_code})</td>
+                                <td>{flight.flight.arrival.airport}, {flight.flight.arrival.country}</td>
                                 <td>{arrivalTime}</td>
                                 {dataStatus(flight.flight.status)}
                                 <td>{flight.fareType}</td>
