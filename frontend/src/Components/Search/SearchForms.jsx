@@ -6,6 +6,8 @@ import dayjs from 'dayjs';
 import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs';
 import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider';
 import { DateTimePicker } from '@mui/x-date-pickers/DateTimePicker';
+import { DatePicker } from '@mui/x-date-pickers';
+import { formatDateOnly } from "../../utils/dateUtils";
 
 const SearchForms = () =>{
     const { data: countries } = useFetch('/api/countries');
@@ -54,25 +56,22 @@ const SearchForms = () =>{
         state.flights.forEach((flight, i) => {
             if(i > 0){
                 const prevIndexDate =  new Date(state.flights[i - 1].DepartureTime);
-                const completedPrevIndexDate = new Date(prevIndexDate.setHours(prevIndexDate.getHours() + 2));
 
                 if(flight.FromCountry !== state.flights[i-1].ToCountry ||
-                    flight.FromCity !== state.flights[i-1].ToCity || flight.DepartureTime <= completedPrevIndexDate
+                    flight.FromCity !== state.flights[i-1].ToCity || flight.DepartureTime <= prevIndexDate
                  ){
                     flag = false;
                 }
             }
-            const currentDate = new Date();
             if(!flight.FromCountry 
                 || !flight.ToCountry || !flight.ToCity || !flight.FromCity || flight.FromCity === flight.ToCity
-                || flight.DepartureTime < new Date(currentDate.setHours(currentDate.getHours() + 2))
+                || flight.DepartureTime < new Date()
             ){
                 flag = false;
             }
         });
         dispatch({type: 'SET_VALIDATION', payload: flag})
     }, [state.flights]);
-
     return (
         <>
         {state.flights.map((flight, i) => (
@@ -119,7 +118,7 @@ const SearchForms = () =>{
                     <img src="/icons/time.png" alt="" />
                     <div>
                         <LocalizationProvider dateAdapter={AdapterDayjs}>
-                        <DateTimePicker 
+                        <DatePicker 
                         label={'Departure Date'} 
                         PopperProps={{
                             sx: {
@@ -128,15 +127,12 @@ const SearchForms = () =>{
                                 border: '1px solid black',
                               }
                             }
-                          }}
-                        minDateTime={
-                            i > 0 ? dayjs(new Date(state.flights[i - 1].DepartureTime)
-                            .setHours(new Date(state.flights[i - 1].DepartureTime)
-                            .getHours() + 2)) 
+                        }}
+                        minDate={
+                            i > 0 ? dayjs(new Date(new Date(state.flights[i - 1].DepartureTime).setDate(new Date(state.flights[i - 1].DepartureTime).getDate() + 1)))
                             : 
-                            dayjs(new Date(new Date()
-                            .setHours(new Date()
-                            .getHours() + 2)))}
+                            dayjs(new Date())
+                        }
                         value={dayjs(flight.DepartureTime)}
                         onChange={(newValue) => dispatch({type: 'SET_DEPARTURE_TIME', date: newValue.$d, index: i})}/>
                         </LocalizationProvider>

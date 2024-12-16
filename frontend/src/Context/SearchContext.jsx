@@ -82,7 +82,7 @@ const setFlights = (state) => {
           ToCities: null,
           FromCity: state.flights[i]?.FromCity || (i > 0 && state.flights[i - 1]?.ToCity || null),
           ToCity: state.flights[i]?.ToCity || null,
-          DepartureTime: state.flights[i]?.DepartureTime || (i > 0 ? new Date(state.flights[i - 1].DepartureTime).setHours(new Date(state.flights[i - 1].DepartureTime).getHours() + 5) : new Date().setHours(new Date().getHours() + 2)),
+          DepartureTime: state.flights[i]?.DepartureTime || (i > 0 ? new Date(new Date(state.flights[i - 1].DepartureTime).setDate(new Date(state.flights[i - 1].DepartureTime).getDate() + 1)) : new Date()),
         }));
     return flights;
   };
@@ -196,6 +196,6 @@ const setDepartureTime = (state, action) => {
             i === action.index ? { ...flight, DepartureTime: action.date } : flight
         )
 
-    if(action.index !== newFlights.length -1) newFlights[action.index + 1].DepartureTime = new Date(newFlights[action.index].DepartureTime).setHours(new Date(newFlights[action.index].DepartureTime).getHours() + 5)
+    if(action.index !== newFlights.length -1) newFlights[action.index + 1].DepartureTime = new Date(new Date(newFlights[action.index].DepartureTime).setDate(new Date(newFlights[action.index].DepartureTime).getDate() + 1))
     return newFlights
 };
