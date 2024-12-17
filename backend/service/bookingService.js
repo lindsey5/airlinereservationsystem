@@ -1,7 +1,7 @@
 import Booking from "../model/Booking.js";
 
-export const get_bookings_per_month = async () =>{
-    const currentYear = new Date().getFullYear();
+export const get_bookings_per_month = async (year) =>{
+    const currentYear = year ? Number(year) : new Date().getFullYear();
     try{
         const bookingsPerMonth = await Booking.aggregate([
             {

@@ -1,4 +1,4 @@
-import { useEffect } from 'react';
+import { useEffect, useState } from 'react';
 import useFetch from '../../hooks/useFetch'
 import './AdminDashboard.css'
 import { CChart } from '@coreui/react-chartjs';
@@ -22,12 +22,9 @@ function getRandomColor() {
   }
 
 const AdminDashboard = () => {
-    const { data } = useFetch('/api/details/dashboard');
-    const { data: popularDestinations } = useFetch('/api/popular-destinations?limit=10')
-      
-    useEffect(() => {
-        console.log(data)
-    }, [data])
+    const [year, setYear] = useState(new Date().getFullYear());
+    const { data } = useFetch(`/api/details/dashboard?year=${year}`);
+    const { data: popularDestinations } = useFetch(`/api/popular-destinations?limit=10&&year=${year}`)  
 
     return (
         <div className="admin-dashboard">
@@ -108,11 +105,14 @@ const AdminDashboard = () => {
                     </div>
                 </div>
             </div>
+                <select style={{width: '150px', height: '25px'}} onChange={(e) => setYear(e.target.value)}>
+                       {data?.years && data.years.map(year => <option value={year}>{year}</option>)}
+                    </select>
             <div className='chart-container'>
                 <div className="line-chart-container">
                     <CChart
                     type="line"
-                    style={{ width: '100%', height: '400px' }}
+                    style={{ width: '100%', height: '400px'}}
                     data={{
                         labels: [
                             "January", "February", "March", "April", "May", "June", 
@@ -120,7 +120,7 @@ const AdminDashboard = () => {
                             ],
                             datasets: [
                                 {
-                                    label: "Monthly Incomes",
+                                    label: `${year} Monthly Incomes`,
                                     backgroundColor: "white",
                                     borderColor: "rgb(110, 178, 255)",
                                     pointBackgroundColor: "rgb(0, 119, 255)",
@@ -172,7 +172,7 @@ const AdminDashboard = () => {
                             ],
                         datasets: [
                         {
-                            label: 'Number of Bookings',
+                            label: `${year} Number of Bookings`,
                             backgroundColor: '#f87979',
                             data: data?.bookingsPerMonth,
                         },

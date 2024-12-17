@@ -47,8 +47,14 @@
     padding-bottom: 20px;
 }
 
-.flights-search-filter .filter-container select{
+.flights-search-filter .filter-container > div > .status-filter,
+.flights-search-filter .filter-container > div > .airline-filter{
     width: 50%;
+    margin-right: 10px;
+}
+
+.flights-search-filter .filter-container select{
+    width: 100%;
     height: 30px;
     outline: none;
 }

@@ -1,4 +1,5 @@
 import Booking from "../model/Booking.js";
+import Flight from "../model/flight.js";
 import Payment from "../model/Payment.js";
 import { errorHandler } from "../utils/errorHandler.js"
 
@@ -47,12 +48,24 @@ export const get_payments = async (req, res) => {
         if (searchTerm) {
             // Filter bookings based on booking_ref
             const booking = await Booking.findOne({
-                booking_ref: { $regex: new RegExp(searchTerm, 'i') }
+                $or: [
+                    {booking_ref: { $regex: new RegExp(searchTerm, 'i') }},
+                    {booked_by: { $regex: new RegExp(searchTerm, 'i') }},
+                    {user_id: { $regex: new RegExp(searchTerm, 'i') }}
+                ]
             });
-            console.log(booking)
+
             // If there are any bookingIds, filter the payments by booking_id
             if (booking) {
                 paymentQuery.$or.push({booking_id: booking._id.toString()});
+            }
+
+            const flight = await Flight.findOne({
+                flight_number: { $regex: new RegExp(searchTerm, 'i') }
+            })
+
+            if(flight){
+                paymentQuery.$or.push({flight_id: flight._id.toString()});
             }
         }
 

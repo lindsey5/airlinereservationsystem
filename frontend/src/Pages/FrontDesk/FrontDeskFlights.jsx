@@ -9,10 +9,11 @@ import FlightDetailsModal from "../../Components/Modals/FlightDetailsModal";
 import FlightsSearchFilter from "../../Components/Flights/FlightsSearchFilter";
 
 const filterState = {
-    status: 'Scheduled',
+    status: 'All',
     type: 'All',
     departureTime: '',
     arrivalTime: '',
+    airline: 'All'
 }
 
 const filterReducer = (state, action) => {
@@ -25,7 +26,10 @@ const filterReducer = (state, action) => {
             return {...state, departureTime: action.payload}
         case 'SET_ARRIVAL_TIME':
             return {...state, arrivalTime: action.payload}
+        case 'SET_AIRLINE':
+            return {...state, airline: action.payload}
         case 'RESET':
+            action.callback();
             return filterState
         default: 
             return state
@@ -45,7 +49,7 @@ const FrontDeskFlights = () => {
         dispatch({type: 'SET_DISABLED_NEXT_BTN', payload: true})
         dispatch({type: 'SET_DISABLED_PREV_BTN', payload: true})
         try{
-            const response = await fetch(`/api/flight/flights?page=${state.currentPage}&&limit=50&&searchTerm=${searchTerm}&&status=${filter.status}&&type=${filter.type}&&departureTime=${filter.departureTime}&&arrivalTime=${filter.arrivalTime}`);
+            const response = await fetch(`/api/flight/flights?page=${state.currentPage}&&limit=50&&searchTerm=${searchTerm}&&status=${filter.status}&&type=${filter.type}&&departureTime=${filter.departureTime}&&arrivalTime=${filter.arrivalTime}&&airline=${filter.airline}`);
             if(response.ok){
                 const result = await response.json();
                 result.currentPage === result.totalPages || result.totalPages === 0 ? dispatch({type: 'SET_DISABLED_NEXT_BTN', payload: true}) :  dispatch({type: 'SET_DISABLED_NEXT_BTN', payload: false});

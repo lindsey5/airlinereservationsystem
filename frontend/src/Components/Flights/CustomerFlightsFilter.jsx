@@ -1,7 +1,7 @@
 import { useEffect, useRef, useState } from 'react'
 import './FlightsSearchFilter.css'
 
-const FlightsSearchFilter = ({setFilter, filter, filterResults}) => {
+const CustomerFlightsFilter = ({setFilter, filter, filterResults}) => {
     const [showFilter, setShowFilter] = useState(false)
     const filterRef = useRef();
 
@@ -45,8 +45,9 @@ const FlightsSearchFilter = ({setFilter, filter, filterResults}) => {
                         <p>Status</p>
                         <select onChange={handleStatus} value={filter.status}>
                             <option value="All">All</option>
-                            <option value="Scheduled">Scheduled</option>
+                            <option value="Booked">Booked</option>
                             <option value="In-Flight">In-Flight</option>
+                            <option value="Cancelled">Cancelled</option>
                             <option value="Completed">Completed</option>
                         </select>
                     </div>
@@ -108,7 +109,6 @@ const FlightsSearchFilter = ({setFilter, filter, filterResults}) => {
                     <button onClick={filterResults}>Filter</button>
                     <button onClick={() => {
                         setFilter({type: 'RESET', callback: filterResults});
-                        filterResults();
                     }}>Reset</button>
                 </div>
 
@@ -117,4 +117,4 @@ const FlightsSearchFilter = ({setFilter, filter, filterResults}) => {
     )
 }
 
-export default FlightsSearchFilter
+export default CustomerFlightsFilter

@@ -1,5 +1,5 @@
 import useAdminPaginationReducer from "../../hooks/adminPaginationReducer";
-import { useState, useEffect } from "react";
+import { useState, useEffect, useReducer } from "react";
 import AdminPagination from "../../Components/Admin/Pagination/AdminPagination";
 import '../../styles/TablePage.css';
 import { formatDate } from "../../utils/dateUtils";
@@ -7,6 +7,35 @@ import { dataStatus } from "../../utils/dataStatus";
 import ErrorCancelModal from "../../Components/Modals/ErrorCancelModal";
 import RefundSummary from "../../Components/Booking/RefundSummary";
 import { useNavigate } from "react-router-dom";
+import CustomerFlightsFilter from "../../Components/Flights/CustomerFlightsFilter";
+
+const filterState = {
+    status: 'All',
+    type: 'All',
+    departureTime: '',
+    arrivalTime: '',
+    airline: 'All'
+}
+
+const filterReducer = (state, action) => {
+    switch(action.type){
+        case 'SET_STATUS':
+            return {...state, status: action.payload}
+        case 'SET_TYPE':
+            return {...state, type: action.payload}        
+        case 'SET_DEPARTURE_TIME':
+            return {...state, departureTime: action.payload}
+        case 'SET_ARRIVAL_TIME':
+            return {...state, arrivalTime: action.payload}
+        case 'SET_AIRLINE' : 
+            return {...state, airline: action.payload}
+        case 'RESET':
+            action.callback();
+            return filterState
+        default: 
+            return state
+    }
+}
 
 const CustomerFlights = () => {
     const [flights, setFlights] = useState();
@@ -17,25 +46,26 @@ const CustomerFlights = () => {
     const [selectedFlight, setSelectedFlight] = useState();
     const [error, setError] = useState('');
     const navigate = useNavigate();
+    const [filter, setFilter] = useReducer(filterReducer, filterState);
+
+    const fetchFlights = async () => {
+        dispatch({type: 'SET_DISABLED_NEXT_BTN', payload: true})
+        dispatch({type: 'SET_DISABLED_PREV_BTN', payload: true})
+        try{
+            const response = await fetch(`/api/flight/flights/customer?page=${state.currentPage}&&limit=50&&searchTerm=${searchTerm}&&status=${filter.status}&&type=${filter.type}&&departureTime=${filter.departureTime}&&arrivalTime=${filter.arrivalTime}&&airline=${filter.airline}`);
+            if(response.ok){
+                const result = await response.json();
+                result.currentPage === result.totalPages || result.totalPages === 0 ? dispatch({type: 'SET_DISABLED_NEXT_BTN', payload: true}) :  dispatch({type: 'SET_DISABLED_NEXT_BTN', payload: false});
+                result.currentPage === 1 ? dispatch({type: 'SET_DISABLED_PREV_BTN', payload: true}) : dispatch({type: 'SET_DISABLED_PREV_BTN', payload: false});
+                dispatch({type: 'SET_TOTAL_PAGES', payload: result.totalPages});
+                setFlights(result.flights);
+            }
+        }catch(err){
+
+        }
+    }
 
     useEffect(() => {
-        const fetchFlights = async () => {
-            dispatch({type: 'SET_DISABLED_NEXT_BTN', payload: true})
-            dispatch({type: 'SET_DISABLED_PREV_BTN', payload: true})
-            try{
-                const response = await fetch(`/api/flight/flights/customer?page=${state.currentPage}&&limit=50&&searchTerm=${searchTerm}`);
-                if(response.ok){
-                    const result = await response.json();
-                    result.currentPage === result.totalPages || result.totalPages === 0 ? dispatch({type: 'SET_DISABLED_NEXT_BTN', payload: true}) :  dispatch({type: 'SET_DISABLED_NEXT_BTN', payload: false});
-                    result.currentPage === 1 ? dispatch({type: 'SET_DISABLED_PREV_BTN', payload: true}) : dispatch({type: 'SET_DISABLED_PREV_BTN', payload: false});
-                    dispatch({type: 'SET_TOTAL_PAGES', payload: result.totalPages});
-                    setFlights(result.flights);
-                }
-            }catch(err){
-
-            }
-        }
-
         fetchFlights();
 
     },[state.currentPage, searchTerm])
@@ -70,7 +100,10 @@ const CustomerFlights = () => {
             {showRefund && <RefundSummary flight={selectedFlight} close={() => setShowRefund(false)} showError={() => setShowCancelError(true)} setError={setError}/>}
             {showCancelError && <ErrorCancelModal close={() => setShowCancelError(false)} error={error}/>}
             <h1>Customer Flights</h1>
-            <input type="search" placeholder='Search' onChange={(e) => setSearchTerm(e.target.value)}/>
+            <div style={{display: 'flex'}}>
+                <input type="search" placeholder='Search' style={{marginRight: '30px'}} onChange={(e) => setSearchTerm(e.target.value)}/>
+                <CustomerFlightsFilter setFilter={setFilter} filter={filter} filterResults={fetchFlights}/>
+            </div>
             <div className="parent-table-container">
                 <AdminPagination state={state} dispatch={dispatch} />
                 <div className='table-container'>

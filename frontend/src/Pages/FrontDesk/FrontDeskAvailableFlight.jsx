@@ -13,7 +13,8 @@ const FrontDeskAvailableFlights = () => {
     const [selectedClass, setSelectedClass] = useState('Economy');
     const [searchTerm, setSearchTerm] = useState('');
     const searchRef = useRef();
-    const {data, loading} = useFetch(`/api/flight/flights/available?limit=${limit}&&selectedClass=${selectedClass}&&searchTerm=${searchTerm}`)
+    const [type, setType] = useState();
+    const {data, loading} = useFetch(`/api/flight/flights/available?limit=${limit}&&selectedClass=${selectedClass}&&searchTerm=${searchTerm}&&type=${type}`)
     const navigate = useNavigate();
     const [maximumPassengers, setMaximumPassengers] = useState([]);
 
@@ -81,6 +82,11 @@ const FrontDeskAvailableFlights = () => {
                 </div>}
             <div>
                 <h1>Available Flights</h1>
+                <select onChange={(e) => setType(e.target.value)} style={{marginRight: '30px'}}>
+                    <option value="">All</option>
+                    <option value="Domestic">Domestic</option>
+                    <option value="International">International</option>
+                </select>
                 <input type="search" className="search-bar" placeholder="Search city" ref={searchRef}/>
                 <button onClick={() => setSearchTerm(searchRef.current.value)}>Search</button>
             </div>

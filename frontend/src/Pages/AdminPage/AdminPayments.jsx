@@ -4,6 +4,7 @@ import AdminPagination from "../../Components/Admin/Pagination/AdminPagination";
 import '../../styles/TablePage.css';
 import { formatDate } from "../../utils/dateUtils";
 import { formatPrice } from "../../utils/formatPrice";
+import PaymentDetails from "../../Components/Modals/PaymentDetails";
 
 const AdminPayments = () => {
     const [payments, setPayments] = useState();
@@ -12,6 +13,8 @@ const AdminPayments = () => {
     const [endDate, setEndDate] = useState('');
     const [loading, setLoading] = useState(true);
     const [searchTerm, setSearchTerm] = useState('');
+    const [showPayment, setShowPayment] = useState(false);
+    const [selectedPayment, setSelectedPayment] = useState();
 
     const generateCSV = () => {
         const csvRows = [];
@@ -31,7 +34,7 @@ const AdminPayments = () => {
         // Create a link to download the CSV
         const link = document.createElement('a');
         link.href = csvUrl;
-        link.download = 'payments_report.csv';
+        link.download = 'cloudpeakairlines_payments_report.csv';
         link.click();
       };
 
@@ -65,6 +68,7 @@ const AdminPayments = () => {
 
     return (
         <main className="table-page">
+            {showPayment && <PaymentDetails payment={selectedPayment} close={() => setShowPayment(false)}/>}
             <h1>Payments</h1>
             <div style={{display: 'flex', alignItems: 'center'}}>
                 <div className="date-filter-container">
@@ -91,6 +95,7 @@ const AdminPayments = () => {
                                 <th>Payment Date</th>
                                 <th>Status</th>
                                 <th>Total Amount</th>
+                                <th>Action</th>
                             </tr>
                         </thead>
                         <tbody>
@@ -101,6 +106,14 @@ const AdminPayments = () => {
                                 <td>{formatDate(payment.createdAt)}</td>
                                 <td>{payment.status}</td>
                                 <td>{formatPrice(payment.total_amount)}</td>
+                                <td>
+                                    <button onClick={() => {
+                                        setSelectedPayment(payment);
+                                        setShowPayment(true)
+                                    }}>
+                                    <img src="/icons/eye (1).png" alt="" />
+                                    </button>
+                                </td>
                             </tr>
                         )}
                         </tbody>

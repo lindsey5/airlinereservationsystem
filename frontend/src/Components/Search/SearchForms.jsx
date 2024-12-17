@@ -63,9 +63,12 @@ const SearchForms = () =>{
                     flag = false;
                 }
             }
+            console.log(flight.DepartureTime)
+            console.log(new Date())
+            console.log(flight.DepartureTime < new Date())
             if(!flight.FromCountry 
                 || !flight.ToCountry || !flight.ToCity || !flight.FromCity || flight.FromCity === flight.ToCity
-                || flight.DepartureTime < new Date()
+                || flight.DepartureTime < formatDateOnly(new Date())
             ){
                 flag = false;
             }

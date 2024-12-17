@@ -146,7 +146,7 @@ const AirplaneForm = ({handleSubmit, data, close, title}) =>{
                     <option value="PAL">PAL</option>
                     <option value="Cebu Pacific">Cebu Pacific</option>
                     <option value="Air Asia">Air Asia</option>
-                    <option value="Skyject">Skyjet</option>
+                    <option value="Skyjet">Skyjet</option>
                 </select>
             <div className="buttons">
                 <button type='button' className='close-btn' onClick={close}>Close</button>

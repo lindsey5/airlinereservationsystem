@@ -13,6 +13,7 @@ export const one_way_search = async (data, flightClass, price) =>{
             },
             'departure.time': { $gte: new Date(departureTime) }
         };
+
         const flights = await Flight.find(query);
         const sortedFlights = flights.sort((current, next) => {
             return current.classes.find(classObj => classObj.className === flightClass).price - next.classes.find(classObj => classObj.className === flightClass).price;

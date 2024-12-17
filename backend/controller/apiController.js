@@ -13,6 +13,7 @@ import {get_bookings_per_month} from '../service/bookingService.js';
 import FrontDeskAgent from '../model/FrontDeskAgent.js';
 import { GoogleGenerativeAI } from "@google/generative-ai";
 import { sendVerificationCode } from '../service/emailService.js';
+import { getPaymentYears } from '../service/paymentService.js';
 dotenv.config();
 
 const url = process.env.NODE_ENV === 'production' ? 'https://cloudpeakairlines.onrender.com' : 'http://localhost:5173';
@@ -201,8 +202,10 @@ export const getDashboardDetails = async (req, res) => {
         const totalFrontDesks = await FrontDeskAgent.countDocuments();
 
         const incomesToday = await get_incomes_today();
-        const incomesPerMonth = await get_incomes_per_month();
-        const bookingsPerMonth = await get_bookings_per_month();
+        const incomesPerMonth = await get_incomes_per_month(req.query.year);
+        const bookingsPerMonth = await get_bookings_per_month(req.query.year);
+        const years = await getPaymentYears()
+
         const data = {
             scheduledFlights: flights,
             assignedPlanes: airplanes,
@@ -213,7 +216,8 @@ export const getDashboardDetails = async (req, res) => {
             totalFrontDesks,
             incomesToday,
             bookingsPerMonth,
-            incomesPerMonth
+            incomesPerMonth,
+            years
         }
         res.status(200).json(data);
     }catch(err){
@@ -226,8 +230,20 @@ export const getDashboardDetails = async (req, res) => {
 export const get_popular_destination = async (req, res) => {
     try {
       const popularDestinations = [];
-      const bookings = await Booking.find({ 'flights.status': { $ne: 'Cancelled' } });
-  
+      const year = req.query.year ? Number(req.query.year) : null;
+
+    const query = {
+        'flights.status': { $ne: 'Cancelled' }
+    }
+
+    if(year){
+        query.createdAt = { 
+            $gte: new Date(`${year}-01-01T00:00:00Z`),  // Start of the year
+            $lt: new Date(`${year + 1}-01-01T00:00:00Z`), // Start of the next year
+        }
+    }
+    const bookings = await Booking.find(query);
+
       // Get limit from query, default to 5 if not provided
       const limit = parseInt(req.query.limit) || 5;
   

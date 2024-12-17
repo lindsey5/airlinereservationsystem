@@ -103,3 +103,28 @@ export const createPayment = async (data, booking_id) => {
 
       await adminFee.save();
 }
+
+export const getPaymentYears = async () => {
+    const years = await Payment.aggregate([
+      {
+          $match: { status: 'paid' }
+      },
+      {
+        $project: {
+          year: { $year: "$createdAt" }, 
+        }
+      },
+      {
+        $group: {
+          _id: { year: "$year"}, 
+        }
+      },
+      {
+        $sort: { "_id.year": 1}
+      }
+    ])
+
+    const completedYears = years.map(year => year._id.year)
+
+    return completedYears;
+}

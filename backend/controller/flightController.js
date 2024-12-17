@@ -149,19 +149,29 @@ export const get_available_flights = async (req, res) => {
     const limit = parseInt(req.query.limit) || 10; // Default limit to 10 if not provided
     const flightClass = req.query.selectedClass || 'Economy'; // Default to 'Economy' class if not provided
     const searchTerm = req.query.searchTerm;
+    const type = req.query.type
 
     try {
         const query = { 
-            $or: [
-                {'departure.city' : { $regex: new RegExp(searchTerm, 'i') }},
-                {'arrival.city' : { $regex: new RegExp(searchTerm, 'i') }}
-            ],
+            'departure.city' : { $regex: new RegExp(searchTerm, 'i') },
             status: 'Scheduled',
             'classes': {
                 $elemMatch: { className: flightClass, 'seats.status' : 'available' },
             },
             'departure.time': { $gte: new Date().setHours(new Date().getHours() + 3) } // Ensure the departure time is in the future
         }
+
+        if (type === 'Domestic') {
+            query['departure.country'] = 'Philippines';
+            query['arrival.country'] = 'Philippines';
+        }
+        if(type === 'International'){
+            query.$or = [
+                {['departure.country'] : { $ne: 'Philippines'}},
+                {['arrival.country'] : { $ne: 'Philippines'}}
+            ]
+        }
+
         // Find flights that meet the following criteria:
         // - Status is not 'Completed' or 'Cancelled'
         // - The specified class (e.g., 'Economy') has available seats
@@ -215,6 +225,9 @@ export const get_flights = async (req, res) => {
             }
             : {}; // If no search term, no filtering is applied
         if(req.query.status !== 'All') searchCriteria.status = req.query.status;
+
+        if(req.query.airline !== 'All') searchCriteria.airline = req.query.airline
+
         if(departureTime) searchCriteria['departure.time'] = {
             $gte: new Date(req.query.departureTime), 
             $lte: new Date(req.query.departureTime).setHours(23, 59, 59, 999)
@@ -228,14 +241,18 @@ export const get_flights = async (req, res) => {
             searchCriteria['departure.country'] = 'Philippines';
             searchCriteria['arrival.country'] = 'Philippines';
         }
+        if(type === 'International'){
+            searchCriteria.$and = [{$or: [
+                {['departure.country'] : { $ne: 'Philippines'}},
+                {['arrival.country'] : { $ne: 'Philippines'}}
+            ]}]
+        }
+
         // Fetch flights based on search criteria, sorted by creation date (newest first)
         const flights = await Flight.find(searchCriteria)
             .sort({ 'departure.time': -1 }) 
             .skip(skip)               // Skipping records based on the pagination parameters
             .limit(limit);            // Limiting the number of records returned based on the limit
-        const filteredFlights = type === 'International' ? flights
-        .filter(flight => flight.departure.country !== 'Philippines' || flight.arrival.country !== 'Philippines') 
-        : flights;
 
         // Get the total number of flights matching the search criteria (for pagination)
         const totalFlights = await Flight.countDocuments(searchCriteria);
@@ -245,7 +262,7 @@ export const get_flights = async (req, res) => {
         res.status(200).json({
             currentPage: page,
             totalPages: totalPages,
-            flights: filteredFlights
+            flights: flights
         });
     } catch (err) {
         console.log(err)
@@ -594,6 +611,8 @@ export const get_customer_flights = async (req, res) => {
     const page = parseInt(req.query.page) || 1; 
     const limit = parseInt(req.query.limit) || 10; 
     const skip = (page - 1) * limit; 
+    const {departureTime, arrivalTime} = req.query;
+    const type = req.query.type
     // Capture the search term for filtering flights (if provided)
     const searchTerm = req.query.searchTerm;
     try {
@@ -602,8 +621,6 @@ export const get_customer_flights = async (req, res) => {
             ? {
                 $or: [
                     { 'booking_ref': { $regex: new RegExp(searchTerm, 'i') } },
-                    { 'flights.id': { $regex: new RegExp(searchTerm, 'i') } },
-                    { 'flights.airline': { $regex: new RegExp(searchTerm, 'i') } },
                     { 'flights.departure.airport': { $regex: new RegExp(searchTerm, 'i') } },
                     { 'flights.departure.airport_code': { $regex: new RegExp(searchTerm, 'i') } },
                     { 'flights.departure.country': { $regex: new RegExp(searchTerm, 'i') } },
@@ -620,6 +637,30 @@ export const get_customer_flights = async (req, res) => {
                 booked_by: req.userId
             }
             : {}; 
+            if(req.query.status !== 'All') searchCriteria['flights.status'] = req.query.status;
+
+            if(req.query.airline !== 'All') searchCriteria['flights.airline'] = req.query.airline
+
+            if(departureTime) searchCriteria['flights.departure.time'] = {
+                $gte: new Date(req.query.departureTime), 
+                $lte: new Date(req.query.departureTime).setHours(23, 59, 59, 999)
+            }
+            if(arrivalTime) searchCriteria['flights.arrival.time'] = {
+                $gte: new Date(req.query.arrivalTime), 
+                $lte: new Date(req.query.arrivalTime).setHours(23, 59, 59, 999)
+            };
+            
+            if (type === 'Domestic') {
+                searchCriteria['flights.departure.country'] = 'Philippines';
+                searchCriteria['flights.arrival.country'] = 'Philippines';
+            }
+            if(type === 'International'){
+                searchCriteria.$and = [{$or: [
+                    {['flights.departure.country'] : { $ne: 'Philippines'}},
+                    {['flights.arrival.country'] : { $ne: 'Philippines'}}
+                ]}]
+            }
+            
             const customerFlights = []
             const bookings = await Booking.find(searchCriteria).sort({createdAt: -1});
             bookings.forEach(booking => {

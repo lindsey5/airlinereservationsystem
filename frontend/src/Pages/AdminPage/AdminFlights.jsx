@@ -13,6 +13,7 @@ const filterState = {
     type: 'All',
     departureTime: '',
     arrivalTime: '',
+    airline: 'All',
 }
 
 const filterReducer = (state, action) => {
@@ -25,7 +26,10 @@ const filterReducer = (state, action) => {
             return {...state, departureTime: action.payload}
         case 'SET_ARRIVAL_TIME':
             return {...state, arrivalTime: action.payload}
+        case 'SET_AIRLINE':
+            return {...state, airline: action.payload}
         case 'RESET':
+            action.callback();
             return filterState
         default: 
             return state
@@ -45,7 +49,7 @@ const AdminFlights = () => {
   const generateCSV = () => {
     const csvRows = [];
     const headers = ['Flight No', 'Airline', 'Gate No', 'Departure Airport', 'Departure Country', 'Departure City', 'Departure Time',
-        'Arrival Airport', 'Arrival Country', 'Arrival City', 'Arrival Time', 'Status', 'Plane ID', 'Captain', 'Co-Pilot', 'Created By'];
+        'Arrival Airport', 'Arrival Country', 'Arrival City', 'Arrival Time', 'Status', 'Plane Code', 'Captain', 'Co-Pilot', 'Created By'];
     csvRows.push(headers.join(',')); // Add header row
 
     // Add data rows
@@ -55,7 +59,7 @@ const AdminFlights = () => {
         row.departure.country, row.departure.city, formatDate(row.departure.time),
         `${row.arrival.airport} (${row.arrival.airport_code})`,
         row.arrival.country, row.arrival.city, formatDate(row.arrival.time),
-        row.status, row.airplane.id, row.pilot.captain, row.pilot.co_pilot, row.added_by
+        row.status, row.airplane.code, row.pilot.captain, row.pilot.co_pilot, row.added_by
     ]
       csvRows.push(values);
     });
@@ -67,7 +71,7 @@ const AdminFlights = () => {
     // Create a link to download the CSV
     const link = document.createElement('a');
     link.href = csvUrl;
-    link.download = 'flights_report.csv';
+    link.download = 'cloudpeakairlines_flights_report.csv';
     link.click();
   };
 
@@ -75,7 +79,7 @@ const AdminFlights = () => {
         dispatch({type: 'SET_DISABLED_NEXT_BTN', payload: true})
         dispatch({type: 'SET_DISABLED_PREV_BTN', payload: true})
         try{
-            const response = await fetch(`/api/flight/flights?page=${state.currentPage}&&limit=50&&searchTerm=${searchTerm}&&status=${filter.status}&&type=${filter.type}&&departureTime=${filter.departureTime}&&arrivalTime=${filter.arrivalTime}`);
+            const response = await fetch(`/api/flight/flights?page=${state.currentPage}&&limit=50&&searchTerm=${searchTerm}&&status=${filter.status}&&type=${filter.type}&&departureTime=${filter.departureTime}&&arrivalTime=${filter.arrivalTime}&&airline=${filter.airline}`);
             if(response.ok){
                 const result = await response.json();
                 result.currentPage === result.totalPages || result.totalPages === 0 ? dispatch({type: 'SET_DISABLED_NEXT_BTN', payload: true}) :  dispatch({type: 'SET_DISABLED_NEXT_BTN', payload: false});

@@ -1,4 +1,5 @@
 import { createContext, useEffect, useReducer } from "react";
+import { formatDateOnly } from "../utils/dateUtils";
 
 export const SearchContext = createContext();
 
@@ -82,8 +83,9 @@ const setFlights = (state) => {
           ToCities: null,
           FromCity: state.flights[i]?.FromCity || (i > 0 && state.flights[i - 1]?.ToCity || null),
           ToCity: state.flights[i]?.ToCity || null,
-          DepartureTime: state.flights[i]?.DepartureTime || (i > 0 ? new Date(new Date(state.flights[i - 1].DepartureTime).setDate(new Date(state.flights[i - 1].DepartureTime).getDate() + 1)) : new Date()),
+          DepartureTime: state.flights[i]?.DepartureTime || (i > 0 ? new Date(new Date(state.flights[i - 1].DepartureTime).setDate(new Date(state.flights[i - 1].DepartureTime).getDate() + 1)) : new Date().toISOString().split('T')[0]),
         }));
+        console.log(flights)
     return flights;
   };
   
@@ -196,6 +198,5 @@ const setDepartureTime = (state, action) => {
             i === action.index ? { ...flight, DepartureTime: action.date } : flight
         )
 
-    if(action.index !== newFlights.length -1) newFlights[action.index + 1].DepartureTime = new Date(new Date(newFlights[action.index].DepartureTime).setDate(new Date(newFlights[action.index].DepartureTime).getDate() + 1))
     return newFlights
 };

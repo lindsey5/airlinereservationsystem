@@ -1,7 +1,6 @@
 import Airplane from "../model/airplane.js";
 import Flight from "../model/flight.js";
 import { errorHandler } from "../utils/errorHandler.js";
-import mongoose from "mongoose";
 import { validateColumns } from "../utils/flightUtils.js";
 
 export const create_airplane = async (req,res) => {
@@ -55,7 +54,8 @@ export const get_airplanes = async (req, res) => {
 
         const airplanes = await Airplane.find(searchCriteria)
         .skip(skip)
-        .limit(limit);
+        .limit(limit)
+        .sort({code: 1});
 
         const totalAirplanes = await Airplane.countDocuments(searchCriteria);
         const totalPages = Math.ceil(totalAirplanes / limit);
@@ -88,8 +88,6 @@ export const delete_airplane = async (req, res) => {
 
 export const update_airplane_data = async (req, res) => {
     try{
-        const airplane = await Airplane.findOne({code: req.body.code});
-        if(airplane) throw new Error('Airplane Code already exist');
 
         if (!validateColumns(req.body.columns)) {
             throw new Error('Invalid column format. Please use the format "3x3" or "3x3x3".');
