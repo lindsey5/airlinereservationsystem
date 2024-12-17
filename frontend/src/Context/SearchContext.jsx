@@ -44,6 +44,8 @@ const SearchReducer = (state, action) => {
             return {...state, isValid: action.payload}
         case 'SET_PRICE':
             return {...state, price: action.price}
+        case 'SET_RETURN_DATE':
+            return {...state, returnDate: action.payload}
         case 'RESET': 
             return SearchState
         default:
@@ -60,6 +62,7 @@ export const SearchContextProvider = ({ children }) => {
     };
 
     useEffect(() => {
+        console.log(state)
         sessionStorage.setItem('state', JSON.stringify(state));
     }, [state])
   

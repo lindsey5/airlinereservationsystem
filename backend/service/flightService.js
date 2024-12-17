@@ -27,13 +27,12 @@ export const one_way_search = async (data, flightClass, price) =>{
     }
 }
 
-export const round_trip_search = async (data, flightClass,price) => {
-    const { departureCountry, departureCity, arrivalCity, arrivalCountry, departureTime } = data;
+export const round_trip_search = async (data, flightClass,price, returnDate) => {
+    const { departureCountry, departureCity, arrivalCity, arrivalCountry, departureTime} = data;
     const searchResults = {
         outboundFlights: [],
         returnFlights: []
     };
-
     const outBoundQuery = {
         status: 'Scheduled', 
         'departure.country': departureCountry,
@@ -76,7 +75,7 @@ export const round_trip_search = async (data, flightClass,price) => {
     // Interleave outbound and return flights
     searchResults.outboundFlights.forEach((outboundFlight) => {
         searchResults.returnFlights.forEach((returnFlight) => {
-            if(outboundFlight && returnFlight && new Date(returnFlight.departure.time) > new Date(outboundFlight.arrival.time).setHours(new Date(outboundFlight.arrival.time).getHours() + 2)){
+            if(outboundFlight && returnFlight && new Date(returnFlight.departure.time) > new Date(returnDate)){
                 interleavedResults.push([
                     outboundFlight,
                     returnFlight

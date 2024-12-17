@@ -5,7 +5,6 @@ import './SearchForm.css'
 import dayjs from 'dayjs';
 import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs';
 import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider';
-import { DateTimePicker } from '@mui/x-date-pickers/DateTimePicker';
 import { DatePicker } from '@mui/x-date-pickers';
 import { formatDateOnly } from "../../utils/dateUtils";
 
@@ -63,12 +62,10 @@ const SearchForms = () =>{
                     flag = false;
                 }
             }
-            console.log(flight.DepartureTime)
-            console.log(new Date())
-            console.log(flight.DepartureTime < new Date())
+            console.log(flight.DepartureTime, state.returnDate)
             if(!flight.FromCountry 
                 || !flight.ToCountry || !flight.ToCity || !flight.FromCity || flight.FromCity === flight.ToCity
-                || flight.DepartureTime < formatDateOnly(new Date())
+                || flight.DepartureTime < formatDateOnly(new Date()) || (state.flightType === 'Round Trip' && (new Date(flight.DepartureTime) >= new Date(state.returnDate) || !state.returnDate))
             ){
                 flag = false;
             }
@@ -139,6 +136,22 @@ const SearchForms = () =>{
                         value={dayjs(flight.DepartureTime)}
                         onChange={(newValue) => dispatch({type: 'SET_DEPARTURE_TIME', date: newValue.$d, index: i})}/>
                         </LocalizationProvider>
+                        {state.flightType === 'Round Trip' && 
+                        <LocalizationProvider dateAdapter={AdapterDayjs}>
+                        <DatePicker 
+                        label={'Return Date'} 
+                        PopperProps={{
+                            sx: {
+                              '& .MuiPaper-root': {
+                                backgroundColor: 'red',
+                                border: '1px solid black',
+                              }
+                            }
+                        }}
+                        sx={{ marginTop: '16px' }}
+                        minDate={dayjs(new Date(new Date(flight.DepartureTime).setDate(new Date(flight.DepartureTime).getDate() + 1)))}
+                        onChange={(newValue) => dispatch({type: 'SET_RETURN_DATE', payload: newValue.$d,})}/>
+                        </LocalizationProvider>}
                     </div>
                 </div>
                 <div>

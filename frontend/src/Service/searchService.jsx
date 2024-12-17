@@ -21,6 +21,7 @@ export const searchFlight = async(state) => {
                     searchData,
                     flightClass: state.flightClass,
                     flightType: state.flightType,
+                    returnDate: state.returnDate,
                     price: state.price,
                 }),
             }

@@ -115,7 +115,7 @@ export const get_flight = async (req, res) => {
 export const search_flight = async (req, res) => {
     try {
         // Destructure search data and other search criteria from the request body
-        const { searchData, flightClass, flightType, price } = req.body;
+        const { searchData, flightClass, flightType, price, returnDate } = req.body;
         
         let searchResults;
 
@@ -125,7 +125,7 @@ export const search_flight = async (req, res) => {
             searchResults = await one_way_search(searchData[0], flightClass, price);
         } else if (flightType === 'Round Trip') {
             // If it's a round-trip flight, call the round_trip_search function
-            searchResults = await round_trip_search(searchData[0], flightClass, price);
+            searchResults = await round_trip_search(searchData[0], flightClass, price, returnDate);
         } else {
             // If it's a multi-city flight, call the multi_city_search function
             searchResults = await multi_city_search(searchData, flightClass, price);
