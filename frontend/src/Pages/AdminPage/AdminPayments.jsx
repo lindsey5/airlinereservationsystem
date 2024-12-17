@@ -91,6 +91,7 @@ const AdminPayments = () => {
                         <thead>
                             <tr>
                                 <th>Booking Ref</th>
+                                <th>Payment Method</th>
                                 <th>Booked By</th>
                                 <th>Payment Date</th>
                                 <th>Status</th>
@@ -102,6 +103,7 @@ const AdminPayments = () => {
                         {payments && !loading && payments.map(payment => 
                             <tr>
                                 <td>{payment.booking_ref}</td>
+                                <td>{payment.payment_method}</td>
                                 <td>{payment.booked_by}</td>
                                 <td>{formatDate(payment.createdAt)}</td>
                                 <td>{payment.status}</td>

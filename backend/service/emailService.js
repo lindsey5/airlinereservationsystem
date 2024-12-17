@@ -1,6 +1,7 @@
 import nodemailer from 'nodemailer'
 import jwt from 'jsonwebtoken';
 import { formatDate } from '../utils/dateFormatter.js';
+import formatPrice from '../utils/formatPrice.js';
 
 export const sendVerificationCode = async (email) => {
     const transporter = nodemailer.createTransport({
@@ -53,27 +54,30 @@ export const sendTickets = async (email, booking, line_items) => {
         </div>
         <h1>Your Itinerary</h1>
         <p style="font-size: 17px;">Booking Reference: ${booking.booking_ref}</p>
-        <p style="font-size: 17px;">Plane Code: ${booking.airplane}</p>
         <p style="margin: 30px 0 10px 0; font-size: 17px;">Click the link below to view your flight ticket:</p>
         <a href="https://cloudpeakairlines.onrender.com/tickets?data=${booking._id}" style="color: #ff3131; font-size: 17px; text-decoration: underline">https://cloudpeakairlines.onrender.com</a>
         <table width="100%" style="margin: 50px 0 30px 0; background-color: white;">
             <thead>
               <tr>
                 <th style="background-color: #ff3131; color: white; padding: 10px; font-size: 15px; font-weight: 400;">Flight</th>
+                <th style="background-color: #ff3131; color: white; padding: 10px; font-size: 15px; font-weight: 400;">Airline</th>
                 <th style="background-color: #ff3131; color: white; padding: 10px; font-size: 15px; font-weight: 400;">Departure</th>
                 <th style="background-color: #ff3131; color: white; padding: 10px; font-size: 15px; font-weight: 400;">Arrival</th>
                 <th style="background-color: #ff3131; color: white; padding: 10px; font-size: 15px; font-weight: 400;">Class</th>
                 <th style="background-color: #ff3131; color: white; padding: 10px; font-size: 15px; font-weight: 400;">Fare Type</th>
+                <th style="background-color: #ff3131; color: white; padding: 10px; font-size: 15px; font-weight: 400;">Airplane Code</th>
               </tr>
             </thead>
             <tbody>
               ${booking.flights.map(flight => `
                 <tr>
                   <td style="padding: 10px; text-align: center;">${flight.flightNumber}</td>
+                  <td style="padding: 10px; text-align: center;">${flight.airline}</td>
                   <td style="padding: 10px; text-align: center;">${flight.departure.airport}-${flight.departure.country} ${formatDate(flight.departure.time)}</td>
                   <td style="padding: 10px; text-align: center;">${flight.arrival.airport}-${flight.arrival.country} ${formatDate(flight.arrival.time)}</td>
                   <td style="padding: 10px; text-align: center;">${booking.class}</td>
                   <td style="padding: 10px; text-align: center;">${booking.fareType}</td>
+                  <td style="padding: 10px; text-align: center;">${flight.airplane}</td>
                 </tr>`).join('')}
             </tbody>
           </table>
@@ -92,7 +96,6 @@ export const sendTickets = async (email, booking, line_items) => {
                 <tr>
                   <td style="padding: 10px; text-align: center;">${passenger.firstname} ${passenger.lastname}</td>
                   <td style="padding: 10px; text-align: center;">${passenger.type}</td>
-                  <td style="padding: 10px; text-align: center;">${passenger.ticketNumber}</td>
                   <td style="padding: 10px; text-align: center;">${passenger.seatNumber}</td>
                 </tr>`).join('')}
             </tbody>
@@ -108,11 +111,11 @@ export const sendTickets = async (email, booking, line_items) => {
               ${line_items.map(item => `
                 <tr>
                   <td style="padding: 10px; text-align: center;">${item.name}</td>
-                  <td style="padding: 10px; text-align: center;">${item.amount * item.quantity}</td>
+                  <td style="padding: 10px; text-align: center;">${formatPrice(item.amount * item.quantity)}</td>
                 </tr>`).join('')}
               <tr>
                 <td style="padding: 10px; text-align: center;">Total</td>
-                <td style="padding: 10px; text-align: center;">${line_items.reduce((total, item) => (item.amount * item.quantity) + total, 0)}</td>
+                <td style="padding: 10px; text-align: center;">${formatPrice(line_items.reduce((total, item) => (item.amount * item.quantity) + total, 0))}</td>
               </tr>
             </tbody>
           </table>

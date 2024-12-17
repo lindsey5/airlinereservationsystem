@@ -1,5 +1,6 @@
 import Booking from "../model/Booking.js";
 import { errorHandler } from "../utils/errorHandler.js"
+import { socketInstance } from "../middleware/socket.js";
 
 export const getBookings = async (req, res) => {
     const user_id = req.userId;
@@ -34,7 +35,6 @@ export const getBookings = async (req, res) => {
                 return true; // Include this flight
             });
         }
-
         res.status(200).json(bookings);
 
     }catch(err){

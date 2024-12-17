@@ -16,10 +16,15 @@ import adminRoutes from './routes/adminRoutes.js';
 import frontDeskRoutes from './routes/frontDeskRoutes.js';
 import paymentRoutes from './routes/paymentRoutes.js';
 import session from 'express-session';
+import { createServer } from 'http';
+import { initializeSocket } from './middleware/socket.js';
 
 dotenv.config();
 const PORT = process.env.PORT; 
 const app = express();
+const server = createServer(app);
+
+initializeSocket(server);
 
 // Connect to mongodb
 const dbURI = process.env.MONGODB_URI;
@@ -76,7 +81,7 @@ if (process.env.NODE_ENV === "production") {
   });
 }
 
-//listen for express
-app.listen(PORT, () => {
-    console.log(`Server started at http://localhost:${PORT}`);
+// Start the server and connect to the database
+server.listen(PORT, () => {
+  console.log(`Server started at http://localhost:${PORT}`);
 });

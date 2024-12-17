@@ -329,7 +329,7 @@ export const user_book_flight = async (req, res) => {
         });
 
         // Create a payment record associated with the booking
-        await createPayment(checkoutData, booking._id);
+        await createPayment(checkoutData, booking._id, 'Online Payment');
 
         // Save the newly created booking to the database
         await booking.save();
@@ -407,7 +407,7 @@ export const frontdesk_book_flight = async (req, res) => {
         });
 
         // Create a payment record for the booking using the checkout data
-        await createPayment(data, booking._id);
+        await createPayment(data, booking._id, 'Cash');
         // Send the booking tickets to the user via email
         sendTickets(email, booking, data.line_items);
         await booking.save();

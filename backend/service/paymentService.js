@@ -53,7 +53,7 @@ export const refundPayment = async (payment_id, amount) => {
     }
 }
 
-export const createPayment = async (data, booking_id) => {
+export const createPayment = async (data, booking_id, payment_method) => {
       data.flights.forEach(async (flight) => {
         const vatRate = 12 / 100;
         const totalTicketPrice = flight.passengers.reduce((total, passenger) => 
@@ -88,6 +88,7 @@ export const createPayment = async (data, booking_id) => {
             booking_id: booking_id,
             flight_id: flight.id,
             total_amount, 
+            payment_method,
             line_items: paymentDetails
         })
         await payment.save();

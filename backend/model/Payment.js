@@ -3,6 +3,12 @@ const Schema = mongoose.Schema;
 
 const PaymentSchema = new Schema({
     booking_id: { type: String, required: true, ref: 'Booking' },
+    payment_method: { 
+        type: String, 
+        required: true, 
+        default: 'Online Payment',
+        enum: ['Online Payment', 'Cash']
+    },
     flight_id: { type: String },
     total_amount: { type: Number, required: true },
     status: {type: String, enum: ['paid', 'refunded'], default: 'paid'},

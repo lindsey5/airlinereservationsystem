@@ -1,0 +1,43 @@
+.notifications{
+    position: fixed;
+    bottom: 20px;
+    right: 10px;
+    display: flex;
+    flex-direction: column;
+    justify-content: end;
+    z-index: 1;
+}
+
+.notifications .notification{
+    width: 250px;
+    background-color: white;
+    margin-top: 30px;
+    border-radius: 20px;
+    padding: 20px;
+    border: 1px solid grey;
+    display: flex;
+    align-items: center;
+    position: relative;
+    cursor: pointer;
+}
+
+.notifications .notification:hover{
+    background-color: rgb(240, 240, 240);
+}
+
+.notification span{
+    position: absolute;
+    top: 15px;
+    right: 15px;
+    cursor: pointer;
+}
+
+.notification p{
+    line-height: 1.8;
+}
+
+.notifications .notification img{
+    width: 30px;
+    height: 30px;
+    margin-right: 20px;
+}

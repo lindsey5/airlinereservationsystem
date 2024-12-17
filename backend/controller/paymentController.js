@@ -35,7 +35,8 @@ export const get_payments = async (req, res) => {
         if (searchTerm) {
             paymentQuery = {
                 $or: [
-                    { status: { $regex: new RegExp(searchTerm, 'i') } }
+                    { status: { $regex: new RegExp(searchTerm, 'i') } },
+                    { payment_method: { $regex: new RegExp(searchTerm, 'i') } }
                 ]
             };
         }
@@ -72,6 +73,7 @@ export const get_payments = async (req, res) => {
         // Fetch payments based on the constructed query
         const payments = await Payment.find(paymentQuery)
             .populate('booking_id')
+            .populate('flight_id')
             .sort({ createdAt: -1 })
             .skip(skip)
             .limit(limit);

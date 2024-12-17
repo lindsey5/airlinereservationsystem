@@ -1,3 +1,4 @@
+import { socketInstance } from "../middleware/socket.js";
 import Flight from "../model/flight.js";
 
 export const one_way_search = async (data, flightClass, price) =>{
@@ -210,6 +211,13 @@ export const reserveSeats = async (data) =>{
                 available_flight.classes[classIndex].seats[seatIndex].passenger = passenger;
     
                 await available_flight.save();
+                
+                if (available_flight.classes.every(classObj => 
+                    classObj.seats.every(seat => seat.status === 'reserved')
+                )){
+                    socketInstance.emit('notification', {flight: available_flight, message: `All seats for Flight #${available_flight.flightNumber} is fully booked`});
+                }
+                socketInstance.emit('notification', {flight: available_flight, message: `A passenger booked for Flight #${available_flight.flightNumber}`});
             }
         }
     }catch(err){
