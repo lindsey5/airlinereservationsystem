@@ -52,32 +52,34 @@ const FrontDeskAgents = () => {
             {showSuccessModal && <AddFrontDeskSuccess close={() => window.location.reload()}/>}
             <h1>Front Desk Agents</h1>
             <input type="search" placeholder='Search' onChange={(e) => setSearchTerm(e.target.value)}/>
-            <AdminPagination state={state} dispatch={dispatch} />
-            <div className='table-container'>
-            <table>
-                <thead>
-                    <tr>
-                        <th>Employee Id</th>
-                        <th>Firstname</th>
-                        <th>Lastname</th>
-                        <th>Email</th>
-                        <th>Action</th>
-                    </tr>
-                </thead>
-                <tbody>
-                {agents && agents.map(agent => 
-                    <tr key={agent._id}>
-                        <td>{agent.employeeId}</td>
-                        <td>{agent.firstname}</td>
-                        <td>{agent.lastname}</td>
-                        <td>{agent.email}</td>
-                        <td>
-                            <button onClick={() => deleteFrontDeskAgent(agent._id)}><img src="/icons/delete.png" alt="" /></button>
-                        </td>
-                    </tr>
-                )}
-                </tbody>
-            </table>
+            <div className="parent-table-container">
+                <AdminPagination state={state} dispatch={dispatch} />
+                <div className='table-container'>
+                <table>
+                    <thead>
+                        <tr>
+                            <th>Employee Id</th>
+                            <th>Firstname</th>
+                            <th>Lastname</th>
+                            <th>Email</th>
+                            <th>Action</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                    {agents && agents.map(agent => 
+                        <tr key={agent._id}>
+                            <td>{agent.employeeId}</td>
+                            <td>{agent.firstname}</td>
+                            <td>{agent.lastname}</td>
+                            <td>{agent.email}</td>
+                            <td>
+                                <button onClick={() => deleteFrontDeskAgent(agent._id)}><img src="/icons/delete.png" alt="" /></button>
+                            </td>
+                        </tr>
+                    )}
+                    </tbody>
+                </table>
+                </div>
             </div>
             <button className='add-btn' onClick={() => setShowAddAgent(true)}>Add Agent</button>
         </main>

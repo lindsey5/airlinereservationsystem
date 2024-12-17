@@ -37,7 +37,7 @@ const FlightFirstForm = ({state, dispatch, handleSubmit, close}) => {
             setError('*Please select co-pilot')
         }else if(state.captain === state.co_pilot){
             setError('*The captain and co-pilot should not be the same')
-        }else if(!state.airplane.id){
+        }else if(!state.airplane.code){
             setError('*Please select an airplane')
         }else{
             handleSubmit();
@@ -84,7 +84,7 @@ const FlightFirstForm = ({state, dispatch, handleSubmit, close}) => {
 
     useEffect(() => {
         if(departure){
-            const departureAirport = airports.airports.find(airport => airport.airport === departure)
+            const departureAirport = airports?.airports.find(airport => airport.airport === departure)
             const payload = {
                 airport: departureAirport.airport,
                 airport_code: departureAirport.airport_code,
@@ -97,7 +97,7 @@ const FlightFirstForm = ({state, dispatch, handleSubmit, close}) => {
 
     useEffect(() => {
         if(arrival){
-            const arrivalAirport = airports.airports.find(airport => airport.airport === arrival)
+            const arrivalAirport = airports?.airports.find(airport => airport.airport === arrival)
             const payload = {
                 airport: arrivalAirport.airport,
                 airport_code: arrivalAirport.airport_code,
@@ -134,7 +134,7 @@ const FlightFirstForm = ({state, dispatch, handleSubmit, close}) => {
                                 }
                                 {departureCountry && 
                                     <div className="dropdown">
-                                        {airports.airports.filter(airport => airport.country === departureCountry)
+                                        {airports && airports.airports.filter(airport => airport.country === departureCountry)
                                         .map(airport =>  <div key={airport.airport} onClick={() => setDeparture(airport.airport)}>{airport.airport}</div>)}
                                     </div>
                                 }
@@ -178,7 +178,7 @@ const FlightFirstForm = ({state, dispatch, handleSubmit, close}) => {
                                 }
                                 {arrivalCountry && 
                                     <div className="dropdown">
-                                        {airports.airports.filter(airport => airport.country === arrivalCountry)
+                                        {airports && airports.airports.filter(airport => airport.country === arrivalCountry)
                                         .map(airport =>  <div key={airport.airport} onClick={() => setArrival(airport.airport)}>{airport.airport}</div>)}
                                     </div>
                                 }
@@ -202,15 +202,6 @@ const FlightFirstForm = ({state, dispatch, handleSubmit, close}) => {
                     </div>
                 </div>
                 <div className="inputs">
-                    <div>
-                        <p>Airline</p>
-                        <select onChange={(e) => dispatch({type: 'SET_AIRLINE', payload: e.target.value})}>
-                            <option value="PAL">PAL</option>
-                            <option value="Cebu Pacific">Cebu Pacific</option>
-                            <option value="Air Asia">Air Asia</option>
-                            <option value="Skyjet">Skyjet</option>
-                        </select> 
-                    </div>
                     <div>
                         <p>Gate Number</p>
                         <input 
@@ -254,12 +245,12 @@ const FlightFirstForm = ({state, dispatch, handleSubmit, close}) => {
                     <div>
                         <p>Airplane</p>
                         <select 
-                            value={state.airplane.id}
+                            value={state.airplane.code}
                             onChange={(e) => dispatch({type: 'SET_AIRPLANE', payload: e.target.value})}
                         >
                             <option></option>
                         {availablePlanes.length > 0 && availablePlanes.map(plane => 
-                            <option key={plane._id} value={plane._id}>{plane.model} ({plane._id})</option>
+                            <option key={plane.code} value={plane.code}>{plane.model} ({plane.code})</option>
                         )}
 
                         </select>

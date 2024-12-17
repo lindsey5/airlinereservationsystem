@@ -6,9 +6,11 @@ import { handleBlur, handleFocus, handleNegativeAndDecimal } from '../../../util
 const AirplaneForm = ({handleSubmit, data, close, title}) =>{
     const [airplaneData, setAirplaneData] = useState({
         model: '',
-        seatCapacity: '',
+        passengerSeatingCapacity: '',
         columns: '',
         currentLocation: '',
+        code: '',
+        airline: '',
     }) 
     const [country, setCountry] = useState('');
     const [showCountry, setShowCountry] = useState(false);
@@ -25,13 +27,13 @@ const AirplaneForm = ({handleSubmit, data, close, title}) =>{
         <div className='admin-form'>
         <div className='container'>
         <h2>{title}</h2>
-        <form onSubmit={handleSubmit}>
-            {airplaneData?.id && 
+        <form onSubmit={(e) => handleSubmit(e, airplaneData)}>
+            {airplaneData?._id && 
             <>
-                <p style={{color: 'rgb(184, 184, 184)', marginBottom: '30px'}}>ID:{airplaneData.id}</p>
-                <input type="hidden" name="id" value={airplaneData.id}/>
+                <p style={{color: 'rgb(184, 184, 184)', marginBottom: '30px'}}>ID:{airplaneData._id}</p>
             </>}
-            <div className='input-container'>
+            <div style={{display: 'flex'}}>
+            <div className='input-container' style={{marginRight: '20px'}}>
                 <input
                     className='input'
                     type="text"
@@ -45,14 +47,30 @@ const AirplaneForm = ({handleSubmit, data, close, title}) =>{
                     required
                 />
                 <span>Model</span>
+            </div>
+            <div className='input-container'>
+                <input
+                    className='input'
+                    type="text"
+                    name="code"
+                    value={airplaneData.code}
+                    onChange={(e) => setAirplaneData(prevData => ({...prevData, code: e.target.value})) }
+                    onFocus={handleFocus}
+                    onBlur={handleBlur}
+                    placeholder='Code'
+                    style={{width: '100%'}}
+                    required
+                />
+                <span>Code</span>
+            </div>    
             </div>            
             <div className='input-container'>
                 <input
                     className='input'
                     type="number"
                     name="seat-capacity"
-                    value={airplaneData.seatCapacity}
-                    onChange={(e) => setAirplaneData(prevData => ({...prevData, seatCapacity: e.target.value})) }
+                    value={airplaneData.passengerSeatingCapacity}
+                    onChange={(e) => setAirplaneData(prevData => ({...prevData, passengerSeatingCapacity: e.target.value})) }
                     onFocus={handleFocus}
                     onBlur={handleBlur}
                     placeholder='Passenger Seat Capacity'
@@ -122,6 +140,14 @@ const AirplaneForm = ({handleSubmit, data, close, title}) =>{
                         <input type="hidden" name='currentLocation' value={airplaneData.currentLocation} />
                     </div>
                 </div>
+                <p>Airline</p>
+                <select name='airline' value={airplaneData.airline} onChange={(e) => setAirplaneData(prevData => ({...prevData, airline: e.target.value}))}>
+                    <option value=""></option>
+                    <option value="PAL">PAL</option>
+                    <option value="Cebu Pacific">Cebu Pacific</option>
+                    <option value="Air Asia">Air Asia</option>
+                    <option value="Skyject">Skyjet</option>
+                </select>
             <div className="buttons">
                 <button type='button' className='close-btn' onClick={close}>Close</button>
                 <input type="submit" className="submit-btn" />

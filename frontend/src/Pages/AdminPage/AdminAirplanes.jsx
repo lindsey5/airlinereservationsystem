@@ -46,51 +46,49 @@ const AdminAirplanes = () => {
             {showEditAirplane && <AirplaneForm data={airplaneData} handleSubmit={updateAirplane} close={() => setShowEditAirplane(false)} title={'Update Airplane'}/>}
             <h1>Airplanes</h1>
             <input type="search" placeholder='Search' onChange={(e) => setSearchTerm(e.target.value)}/>
+            <div className='parent-table-container'>
             <AdminPagination state={state} dispatch={dispatch} />
-            <div className='table-container'>
-            <table>
-                <thead>
-                    <tr>
-                        <th>Id</th>
-                        <th>Model</th>
-                        <th>Current Location</th>
-                        <th>Passenger Seat Capacity</th>
-                        <th>Columns</th>
-                        <th>Status</th>
-                        <th>Action</th>
-                    </tr>
-                </thead>
-                <tbody>
-                {airplanes && airplanes.map(airplane => 
-                    <tr key={airplane._id}>
-                        <td>{airplane._id}</td>
-                        <td>{airplane.model}</td>
-                        <td>{airplane.currentLocation}</td>
-                        <td>{airplane.passengerSeatingCapacity}</td>
-                        <td>{airplane.columns}</td>
-                        {dataStatus(airplane.status)}
-                        <td>
-                            <button onClick={() =>{
-                                setShowEditAirplane(true)
-                                setAirplaneData({
-                                    id: airplane._id,
-                                    model: airplane.model,
-                                    seatCapacity: airplane.passengerSeatingCapacity,
-                                    columns: airplane.columns,
-                                    status: airplane.status,
-                                    currentLocation: airplane.currentLocation
-                                })
-                            }}>
-                                <img src="/icons/editing.png"/>
-                            </button>
-                            <button onClick={() => deleteAirplane(airplane._id)}>
-                                <img src="/icons/delete.png"/>
-                            </button>
-                        </td>
-                    </tr>
-                )}
-                </tbody>
-            </table>
+                <div className='table-container'>
+                <table>
+                    <thead>
+                        <tr>
+                            <th>Plane Code</th>
+                            <th>Airline</th>
+                            <th>Model</th>
+                            <th>Current Location</th>
+                            <th>Passenger Seat Capacity</th>
+                            <th>Columns</th>
+                            <th>Status</th>
+                            <th>Action</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                    {airplanes && airplanes.map(airplane => 
+                        <tr key={airplane._id}>
+                            <td>{airplane.code}</td>
+                            <td>{airplane.airline}</td>
+                            <td>{airplane.model}</td>
+                            <td>{airplane.currentLocation}</td>
+                            <td>{airplane.passengerSeatingCapacity}</td>
+                            <td>{airplane.columns}</td>
+                            {dataStatus(airplane.status)}
+                            <td>
+                                <button onClick={() =>{
+                                    console.log(airplane)
+                                    setShowEditAirplane(true)
+                                    setAirplaneData(airplane)
+                                }}>
+                                    <img src="/icons/editing.png"/>
+                                </button>
+                                <button onClick={() => deleteAirplane(airplane._id)}>
+                                    <img src="/icons/delete.png"/>
+                                </button>
+                            </td>
+                        </tr>
+                    )}
+                    </tbody>
+                </table>
+                </div>
             </div>
             <button className='add-btn' onClick={() => setShowAddAirplane(true)}>Add Airplane</button>
         </main>

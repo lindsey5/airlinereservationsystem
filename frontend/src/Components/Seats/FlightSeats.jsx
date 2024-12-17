@@ -49,7 +49,7 @@ const FlightSeats = ({flightData, close}) =>{
     useEffect(() => {
         const setData = async () => {
             try{
-                const response = await fetch(`/api/airplane/${flightData.airplane.id}`);
+                const response = await fetch(`/api/airplane/${flightData.airplane.code}`);
                 if(response.ok){
                     const result = await response.json();
                     setFlight({...flightData, airplane: result})

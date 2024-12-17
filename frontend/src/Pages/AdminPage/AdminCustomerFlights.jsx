@@ -44,50 +44,52 @@ const AdminCustomerFlights = () => {
         <main className="table-page">
             <h1>Customer Flights</h1>
             <input type="search" placeholder='Search' onChange={(e) => setSearchTerm(e.target.value)}/>
-            <AdminPagination state={state} dispatch={dispatch} />
-            <div className='table-container'>
-            <table>
-                <thead>
-                    <tr>
-                        <th style={{fontSize: '15px'}}>Booking Ref</th>
-                        <th style={{fontSize: '15px'}}>Flight Number</th>
-                        <th style={{fontSize: '15px'}}>Airline</th>
-                        <th style={{fontSize: '15px'}}>Gate No</th>
-                        <th style={{fontSize: '15px'}}>Departure</th>
-                        <th style={{fontSize: '15px'}}>Departure Time</th>
-                        <th style={{fontSize: '15px'}}>Arrival</th>
-                        <th style={{fontSize: '15px'}}>Arrival Time</th>
-                        <th style={{fontSize: '15px'}}>Status</th>
-                        <th style={{fontSize: '15px'}}>Fare Type</th>
-                        <th style={{fontSize: '15px'}}>Passengers</th>
-                        <th style={{fontSize: '15px'}}>Payment Method</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    {flights && flights.map((flight, i) => {
-                        const departureTime = formatDate(flight.flight.departure.time);
-                        const arrivalTime = formatDate(flight.flight.arrival.time);
+            <div className="parent-table-container">
+                <AdminPagination state={state} dispatch={dispatch} />
+                <div className='table-container'>
+                <table>
+                    <thead>
+                        <tr>
+                            <th style={{fontSize: '15px'}}>Booking Ref</th>
+                            <th style={{fontSize: '15px'}}>Flight Number</th>
+                            <th style={{fontSize: '15px'}}>Airline</th>
+                            <th style={{fontSize: '15px'}}>Gate No</th>
+                            <th style={{fontSize: '15px'}}>Departure</th>
+                            <th style={{fontSize: '15px'}}>Departure Time</th>
+                            <th style={{fontSize: '15px'}}>Arrival</th>
+                            <th style={{fontSize: '15px'}}>Arrival Time</th>
+                            <th style={{fontSize: '15px'}}>Status</th>
+                            <th style={{fontSize: '15px'}}>Fare Type</th>
+                            <th style={{fontSize: '15px'}}>Passengers</th>
+                            <th style={{fontSize: '15px'}}>Payment Method</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {flights && flights.map((flight, i) => {
+                            const departureTime = formatDate(flight.flight.departure.time);
+                            const arrivalTime = formatDate(flight.flight.arrival.time);
 
-                        return (
-                            <tr key={i}>
-                                <td>{flight.bookingRef}</td>
-                                <td>{flight.flight.flightNumber}</td>
-                                <td>{flight.flight.airline}</td>
-                                <td>{flight.flight.gate_number}</td>
-                                <td>{flight.flight.departure.airport}, {flight.flight.departure.country}</td>
-                                <td>{departureTime}</td>
-                                <td>{flight.flight.arrival.airport}, {flight.flight.arrival.country}</td>
-                                <td>{arrivalTime}</td>
-                                {dataStatus(flight.flight.status)}
-                                <td>{flight.fareType}</td>
-                                <td>{flight.flight.passengers.length}</td>
-                                <td>{flight.payment_method}</td>
-                            </tr>
-                        )
-                    }
-                    )}
-                </tbody>
-            </table>
+                            return (
+                                <tr key={i}>
+                                    <td>{flight.bookingRef}</td>
+                                    <td>{flight.flight.flightNumber}</td>
+                                    <td>{flight.flight.airline}</td>
+                                    <td>{flight.flight.gate_number}</td>
+                                    <td>{flight.flight.departure.airport}, {flight.flight.departure.country}</td>
+                                    <td>{departureTime}</td>
+                                    <td>{flight.flight.arrival.airport}, {flight.flight.arrival.country}</td>
+                                    <td>{arrivalTime}</td>
+                                    {dataStatus(flight.flight.status)}
+                                    <td>{flight.fareType}</td>
+                                    <td>{flight.flight.passengers.length}</td>
+                                    <td>{flight.payment_method}</td>
+                                </tr>
+                            )
+                        }
+                        )}
+                    </tbody>
+                </table>
+                </div>
             </div>
         </main>
     )

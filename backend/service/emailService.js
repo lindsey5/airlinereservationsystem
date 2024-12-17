@@ -53,6 +53,7 @@ export const sendTickets = async (email, booking, line_items) => {
         </div>
         <h1>Your Itinerary</h1>
         <p style="font-size: 17px;">Booking Reference: ${booking.booking_ref}</p>
+        <p style="font-size: 17px;">Plane Code: ${booking.airplane}</p>
         <p style="margin: 30px 0 10px 0; font-size: 17px;">Click the link below to view your flight ticket:</p>
         <a href="https://cloudpeakairlines.onrender.com/tickets?data=${booking._id}" style="color: #ff3131; font-size: 17px; text-decoration: underline">https://cloudpeakairlines.onrender.com</a>
         <table width="100%" style="margin: 50px 0 30px 0; background-color: white;">

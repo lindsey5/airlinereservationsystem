@@ -1,8 +1,9 @@
-import { useEffect, useState } from 'react'
+import { useEffect, useRef, useState } from 'react'
 import './FlightsSearchFilter.css'
 
 const FlightsSearchFilter = ({setFilter, filter, filterResults}) => {
     const [showFilter, setShowFilter] = useState(false)
+    const filterRef = useRef();
 
     const handleType = (type) => {
         setFilter({type: 'SET_TYPE', payload: type})
@@ -13,11 +14,23 @@ const FlightsSearchFilter = ({setFilter, filter, filterResults}) => {
     }
 
     useEffect(() => {
+        const handleClickOutside = (event) => {
+            if (filterRef.current && !filterRef.current.contains(event.target) && showFilter) {
+                setShowFilter(false);
+            }
+        };
 
-    }, [filter])
+        // Add event listener on mount
+        document.addEventListener('click', handleClickOutside);
+
+        // Cleanup event listener on unmount
+        return () => {
+            document.removeEventListener('click', handleClickOutside);
+        };
+    }, [showFilter]);
 
     return(
-        <div className='flights-search-filter'>
+        <div className='flights-search-filter' ref={filterRef}>
             <button onClick={() => setShowFilter(prev => !prev)}>
                 Filter
                 <img src="/icons/filter.png" alt="" />

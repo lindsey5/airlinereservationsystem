@@ -40,6 +40,7 @@ const TicketPage = () => {
                                     <h3>CLOUDPEAK AIRLINES TICKET</h3>
                                 </div>
                                 <p style={{marginLeft: '20px', fontSize: '20px'}}>Booking ref: {data.booking_ref}</p>
+                                <p style={{marginLeft: '20px', fontSize: '15px'}}>Plane Code: {flight.airplane}</p>
                                 <div className="passenger-ticket-container">
                                     <div>
                                         <p>Flight:</p>
@@ -81,6 +82,7 @@ const TicketPage = () => {
                                     <img src="/icons/plane (1).png" alt="" />
                                     <h4>{flight.arrival.airport_code}</h4>
                                 </div>
+                                <div className="mid-container">
                                 <h3>{data.class} Class</h3>
                                 <div className="flight-info">
                                     <div>
@@ -102,6 +104,7 @@ const TicketPage = () => {
                                         value={passenger.ticketNumber}
                                         viewBox={`0 0 256 256`}
                                     />
+                                </div>
                                 </div>
                                 <div style={{padding: '5px', fontWeight: '600', fontSize: '13px'}}>
                                     <p>Boarding Time: {getTime(new Date(flight.departure.time).setMinutes(new Date(flight.departure.time).getMinutes() - 30))} </p>

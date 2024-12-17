@@ -13,7 +13,6 @@ import {get_bookings_per_month} from '../service/bookingService.js';
 import FrontDeskAgent from '../model/FrontDeskAgent.js';
 import { GoogleGenerativeAI } from "@google/generative-ai";
 import { sendVerificationCode } from '../service/emailService.js';
-import nodemailer from 'nodemailer';
 dotenv.config();
 
 const url = process.env.NODE_ENV === 'production' ? 'https://cloudpeakairlines.onrender.com' : 'http://localhost:5173';
@@ -193,9 +192,13 @@ export const getUserType = async(req, res) => {
 
 export const getDashboardDetails = async (req, res) => {
     try{
-        const flights = await Flight.countDocuments({status: 'Scheduled'});
+        const flights = await Flight.countDocuments({status: 'Scheduled', 'arrival.time' : {$gte: new Date()}});
         const airplanes = await Airplane.countDocuments({status: 'Assigned'});
         const pilots = await Pilot.countDocuments({status: 'Assigned'});
+        const totalPilots = await Pilot.countDocuments();
+        const totalAirplanes = await Airplane.countDocuments();
+        const totalAdmins = await Admin.countDocuments();
+        const totalFrontDesks = await FrontDeskAgent.countDocuments();
 
         const incomesToday = await get_incomes_today();
         const incomesPerMonth = await get_incomes_per_month();
@@ -204,6 +207,10 @@ export const getDashboardDetails = async (req, res) => {
             scheduledFlights: flights,
             assignedPlanes: airplanes,
             assignedPilot: pilots,
+            totalPilots,
+            totalAirplanes,
+            totalAdmins,
+            totalFrontDesks,
             incomesToday,
             bookingsPerMonth,
             incomesPerMonth

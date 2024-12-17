@@ -52,32 +52,34 @@ const Admins = () => {
             {showSuccessModal && <AddAdminSuccess close={() => window.location.reload()}/>}
             <h1>Admins</h1>
             <input type="search" placeholder='Search' onChange={(e) => setSearchTerm(e.target.value)}/>
+            <div className="parent-table-container">
             <AdminPagination state={state} dispatch={dispatch} />
-            <div className='table-container'>
-            <table>
-                <thead>
-                    <tr>
-                        <th>Employee Id</th>
-                        <th>Firstname</th>
-                        <th>Lastname</th>
-                        <th>Email</th>
-                        <th>Action</th>
-                    </tr>
-                </thead>
-                <tbody>
-                {admins && admins.map(admin => 
-                    <tr key={admin._id}>
-                        <td>{admin.employeeId}</td>
-                        <td>{admin.firstname}</td>
-                        <td>{admin.lastname}</td>
-                        <td>{admin.email}</td>
-                        <td>
-                            <button onClick={() => deleteAdmin(admin._id)}><img src="/icons/delete.png" alt="" /></button>
-                        </td>
-                    </tr>
-                )}
-                </tbody>
-            </table>
+                <div className='table-container'>
+                <table>
+                    <thead>
+                        <tr>
+                            <th>Employee Id</th>
+                            <th>Firstname</th>
+                            <th>Lastname</th>
+                            <th>Email</th>
+                            <th>Action</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                    {admins && admins.map(admin => 
+                        <tr key={admin._id}>
+                            <td>{admin.employeeId}</td>
+                            <td>{admin.firstname}</td>
+                            <td>{admin.lastname}</td>
+                            <td>{admin.email}</td>
+                            <td>
+                                <button onClick={() => deleteAdmin(admin._id)}><img src="/icons/delete.png" alt="" /></button>
+                            </td>
+                        </tr>
+                    )}
+                    </tbody>
+                </table>
+                </div>
             </div>
             <button className='add-btn' onClick={() => setShowAddAdmin(true)}>Add Admin</button>
         </main>

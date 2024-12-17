@@ -49,46 +49,48 @@ const AdminAirports = () => {
             {showEditAirport && <AirportForm title={'Update Airport'} handleSubmit={updateAirport} close={() => setShowEditAirport(false)} data={airportData}/>}
             <h1>Airports</h1>
             <input type="search" placeholder='Search' onChange={(e) => setSearchTerm(e.target.value)}/>
-            <AdminPagination state={state} dispatch={dispatch} />
-            <div className='table-container'>
-            <table>
-                <thead>
-                    <tr>
-                        <th>Airport</th>
-                        <th>Airport Code</th>
-                        <th>City / State</th>
-                        <th>Country</th>
-                        <th>Action</th>
-                    </tr>
-                </thead>
-                <tbody>
-                {airports && airports.map(airport => 
-                    <tr key={airport._id}>
-                        <td>{airport.airport}</td>
-                        <td>{airport.airport_code}</td>
-                        <td>{airport.city}</td>
-                        <td>{airport.country}</td>
-                        <td>
-                            <button onClick={() =>{
-                                setShowEditAirport(true)
-                                setAirportData({
-                                    id: airport._id,
-                                    airport: airport.airport,
-                                    airport_code: airport.airport_code,
-                                    city: airport.city,
-                                    country: airport.country
-                                })
-                            }}>
-                                <img src="/icons/editing.png"/>
-                            </button>
-                            <button onClick={() => deleteAirport(airport._id)}>
-                                <img src="/icons/delete.png"/>
-                            </button>
-                        </td>
-                    </tr>
-                )}
-                </tbody>
-            </table>
+            <div className="parent-table-container">
+                <AdminPagination state={state} dispatch={dispatch} />
+                <div className='table-container'>
+                    <table>
+                        <thead>
+                            <tr>
+                                <th>Airport</th>
+                                <th>Airport Code</th>
+                                <th>City / State</th>
+                                <th>Country</th>
+                                <th>Action</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                        {airports && airports.map(airport => 
+                            <tr key={airport._id}>
+                                <td>{airport.airport}</td>
+                                <td>{airport.airport_code}</td>
+                                <td>{airport.city}</td>
+                                <td>{airport.country}</td>
+                                <td>
+                                    <button onClick={() =>{
+                                        setShowEditAirport(true)
+                                        setAirportData({
+                                            id: airport._id,
+                                            airport: airport.airport,
+                                            airport_code: airport.airport_code,
+                                            city: airport.city,
+                                            country: airport.country
+                                        })
+                                    }}>
+                                        <img src="/icons/editing.png"/>
+                                    </button>
+                                    <button onClick={() => deleteAirport(airport._id)}>
+                                        <img src="/icons/delete.png"/>
+                                    </button>
+                                </td>
+                            </tr>
+                        )}
+                        </tbody>
+                    </table>
+                </div>
             </div>
             <button className='add-btn' onClick={() => setShowAddAirport(true)}>Add Airport</button>
         </main>

@@ -24,6 +24,7 @@ const BookingSchema = new Schema({
                 country: { type: String, required: true },
                 time: {type: Date, required: true},
             },
+            airplane: { type: String, required: true},
             flightNumber: { type: String, required: true },
             gate_number: { type: String, required: true},
             passengers: { type: [PassengerSchema], required: true},

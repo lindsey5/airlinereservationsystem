@@ -84,12 +84,18 @@
     background-color: #fff0db;
     display: flex;
     flex-direction: column;
-    justify-content: space-between;
     text-align: center;
 }
 
-.boarding-pass > h3{
+.boarding-pass .mid-container{
     border-left: 2px dashed #000000;
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-around;
+}
+
+.boarding-pass > h3{
     margin: 0;
     padding: 10px 0;
 }
@@ -98,7 +104,6 @@
     display: grid;
     width: 100%;
     grid-template-columns: repeat(3, 1fr);
-    border-left: 2px dashed #000000;
 }
 
 .boarding-pass .qr-container{
@@ -107,7 +112,6 @@
     align-items: center;
     justify-content: center;
     height: 150px;
-    border-left: 2px dashed #000000;
 }
 
 .boarding-pass .ticket-header{

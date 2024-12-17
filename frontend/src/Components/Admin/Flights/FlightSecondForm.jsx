@@ -43,7 +43,7 @@ const FlightSecondForm = ({state, dispatch, close}) => {
         return state.classes.find(classType => classType.className === className).seats;
     }
 
-    const { data } = useFetch(`/api/airplane/${state.airplane.id}`);
+    const { data } = useFetch(`/api/airplane/${state.airplane.code}`);
 
     useEffect(() => {
         if(state.classes.length > 0){
@@ -61,7 +61,7 @@ const FlightSecondForm = ({state, dispatch, close}) => {
              <span className='close'onClick={close}>X</span>
             <form onSubmit={createFlight}>
                 <h2>Select Classes</h2>
-                <p>Plane ID: {state.airplane.id}</p>
+                <p>Plane Code: {state.airplane.code}</p>
                 <p>Seat Capacity: {data && data.passengerSeatingCapacity}</p>
                 <p>Columns: {data && data.columns}</p>
                 <div style={{marginTop: '50px'}}>

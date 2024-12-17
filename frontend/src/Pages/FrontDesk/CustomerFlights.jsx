@@ -71,64 +71,66 @@ const CustomerFlights = () => {
             {showCancelError && <ErrorCancelModal close={() => setShowCancelError(false)} error={error}/>}
             <h1>Customer Flights</h1>
             <input type="search" placeholder='Search' onChange={(e) => setSearchTerm(e.target.value)}/>
-            <AdminPagination state={state} dispatch={dispatch} />
-            <div className='table-container'>
-            <table>
-                <thead>
-                    <tr>
-                        <th style={{fontSize: '15px'}}>Booking Ref</th>
-                        <th style={{fontSize: '15px'}}>Flight Number</th>
-                        <th style={{fontSize: '15px'}}>Airline</th>
-                        <th style={{fontSize: '15px'}}>Gate No</th>
-                        <th style={{fontSize: '15px'}}>Departure</th>
-                        <th style={{fontSize: '15px'}}>Departure Time</th>
-                        <th style={{fontSize: '15px'}}>Arrival</th>
-                        <th style={{fontSize: '15px'}}>Arrival Time</th>
-                        <th style={{fontSize: '15px'}}>Status</th>
-                        <th style={{fontSize: '15px'}}>Fare Type</th>
-                        <th style={{fontSize: '15px'}}>Passengers</th>
-                        <th style={{fontSize: '15px'}}>Payment Method</th>
-                        <th style={{fontSize: '15px'}}>Action</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    {flights && flights.map((flight, i) => {
-                        const departureTime = formatDate(flight.flight.departure.time);
-                        const arrivalTime = formatDate(flight.flight.arrival.time);
-                        console.log(flight)
-                        return (
-                            <tr key={i}>
-                                <td>{flight.bookingRef}</td>
-                                <td>{flight.flight.flightNumber}</td>
-                                <td>{flight.flight.airline}</td>
-                                <td>{flight.flight.gate_number}</td>
-                                <td>{flight.flight.departure.airport}, {flight.flight.departure.country}</td>
-                                <td>{departureTime}</td>
-                                <td>{flight.flight.arrival.airport}, {flight.flight.arrival.country}</td>
-                                <td>{arrivalTime}</td>
-                                {dataStatus(flight.flight.status)}
-                                <td>{flight.fareType}</td>
-                                <td>{flight.flight.passengers.length}</td>
-                                <td>{flight.payment_method}</td>
-                                <td>
-                                    {flight.fareType === 'Gold' && !(new Date() >= new Date(flight.flight.departure.time)) && flight.flight.status === 'Booked' && 
-                                        <button onClick={() => {
-                                            setShowRefund(true);
-                                            setSelectedFlight({...flight.flight, fareType: flight.fareType, booking_id: flight.booking_id, bookingRef: flight.bookingRef, payment_method: flight.payment_method })
-                                        }}>
-                                        <img src="/icons/cancel.png"/>
-                                        </button>
-                                    }
-                                        <button onClick={() => editPassengers({...flight.flight, booking_id: flight.booking_id, bookingRef: flight.bookingRef})}>
-                                            <img src="/icons/editing.png"/>
-                                        </button>
-                                </td>
-                            </tr>
-                        )
-                    }
-                    )}
-                </tbody>
-            </table>
+            <div className="parent-table-container">
+                <AdminPagination state={state} dispatch={dispatch} />
+                <div className='table-container'>
+                <table>
+                    <thead>
+                        <tr>
+                            <th style={{fontSize: '15px'}}>Booking Ref</th>
+                            <th style={{fontSize: '15px'}}>Flight Number</th>
+                            <th style={{fontSize: '15px'}}>Airline</th>
+                            <th style={{fontSize: '15px'}}>Gate No</th>
+                            <th style={{fontSize: '15px'}}>Departure</th>
+                            <th style={{fontSize: '15px'}}>Departure Time</th>
+                            <th style={{fontSize: '15px'}}>Arrival</th>
+                            <th style={{fontSize: '15px'}}>Arrival Time</th>
+                            <th style={{fontSize: '15px'}}>Status</th>
+                            <th style={{fontSize: '15px'}}>Fare Type</th>
+                            <th style={{fontSize: '15px'}}>Passengers</th>
+                            <th style={{fontSize: '15px'}}>Payment Method</th>
+                            <th style={{fontSize: '15px'}}>Action</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {flights && flights.map((flight, i) => {
+                            const departureTime = formatDate(flight.flight.departure.time);
+                            const arrivalTime = formatDate(flight.flight.arrival.time);
+                            console.log(flight)
+                            return (
+                                <tr key={i}>
+                                    <td>{flight.bookingRef}</td>
+                                    <td>{flight.flight.flightNumber}</td>
+                                    <td>{flight.flight.airline}</td>
+                                    <td>{flight.flight.gate_number}</td>
+                                    <td>{flight.flight.departure.airport}, {flight.flight.departure.country}</td>
+                                    <td>{departureTime}</td>
+                                    <td>{flight.flight.arrival.airport}, {flight.flight.arrival.country}</td>
+                                    <td>{arrivalTime}</td>
+                                    {dataStatus(flight.flight.status)}
+                                    <td>{flight.fareType}</td>
+                                    <td>{flight.flight.passengers.length}</td>
+                                    <td>{flight.payment_method}</td>
+                                    <td>
+                                        {flight.fareType === 'Gold' && !(new Date() >= new Date(flight.flight.departure.time)) && flight.flight.status === 'Booked' && 
+                                            <button onClick={() => {
+                                                setShowRefund(true);
+                                                setSelectedFlight({...flight.flight, fareType: flight.fareType, booking_id: flight.booking_id, bookingRef: flight.bookingRef, payment_method: flight.payment_method })
+                                            }}>
+                                            <img src="/icons/cancel.png"/>
+                                            </button>
+                                        }
+                                            <button onClick={() => editPassengers({...flight.flight, booking_id: flight.booking_id, bookingRef: flight.bookingRef})}>
+                                                <img src="/icons/editing.png"/>
+                                            </button>
+                                    </td>
+                                </tr>
+                            )
+                        }
+                        )}
+                    </tbody>
+                </table>
+                </div>
             </div>
         </main>
     )

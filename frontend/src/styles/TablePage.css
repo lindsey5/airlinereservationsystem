@@ -39,14 +39,20 @@
     outline: none;
 }
 
-.table-page .table-container{
+.table-page .parent-table-container{
     width: 100%;
     height: 67%;
+    background-color: red;
+    position: relative;
+}
+
+.table-page .table-container{
+    width: 100%;
+    height: 100%;
     overflow-y: auto;
     overflow-x: auto;
     background-color: white;
     border: 2px solid rgb(235, 235, 235);
-    position: relative;
 }
 
 .table-page .table-container .loading{

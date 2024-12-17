@@ -15,11 +15,11 @@ import crypto from 'crypto';
 
 export const create_flight = async (req, res) => {
     try{
-        const {airplane: {id : airplane_id}, classes, captain, co_pilot, ...data} = req.body; // Destructured the request body
+        const {airplane: {code}, classes, captain, co_pilot, ...data} = req.body;
         
         // Checks if the airplane, captain, and co-pilot ID is exist in the database
         const [airplane, captainPilot, coPilot ] = await Promise.all([
-            await Airplane.findById(airplane_id),
+            await Airplane.findOne({code}),
             await Pilot.findById(captain),
             await Pilot.findById(co_pilot)
         ]);
@@ -76,8 +76,9 @@ export const create_flight = async (req, res) => {
         // This object contains the flight's details like the airplane, pilot information, flight classes, and the user who added the flight.
         const flightData = {
             ...data,  // Spread the other flight details (e.g., destination, departure time, etc.)
+            airline: airplane.airline,
             pilot: { captain, co_pilot },  // Add pilot information to the flight data
-            airplane: { id: airplane_id },  // Associate the flight with the airplane by its ID
+            airplane: { code },  // Associate the flight with the airplane by its ID
             classes: newClasses,  // Assign the distributed class information with seats to the flight
             added_by: req.userId  // Track the user who is creating the flight
         };
@@ -209,6 +210,7 @@ export const get_flights = async (req, res) => {
                     { 'pilot.captain': { $regex: new RegExp(searchTerm, 'i') } },
                     { 'pilot.co_pilot': { $regex: new RegExp(searchTerm, 'i') } },
                     { flightNumber: { $regex: new RegExp(searchTerm, 'i') } },
+                    { 'airplane.code': { $regex: new RegExp(searchTerm, 'i') }}
                 ],
             }
             : {}; // If no search term, no filtering is applied
@@ -292,7 +294,8 @@ export const user_book_flight = async (req, res) => {
                 arrival: flightDetails.arrival,  // Arrival information
                 flightNumber: flightDetails.flightNumber,  // Flight number
                 gate_number: flightDetails.gate_number,  // Gate number for the flight
-                passengers
+                passengers,
+                airplane: flightDetails.airplane.code,
             };
 
             // Push the detailed flight data to the `flights` array
@@ -371,6 +374,7 @@ export const frontdesk_book_flight = async (req, res) => {
                 flightNumber: flightDetails.flightNumber,  // Flight number
                 gate_number: flightDetails.gate_number,  // Gate number for the flight
                 passengers,
+                airplane: flightDetails.airplane.code
             };
             // Add the structured flight data to the `flights` array
             flights.push(flightData);

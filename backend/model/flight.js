@@ -22,7 +22,7 @@ export const FlightSchema = new Schema({
         country: { type: String, required: true },
         time: {type: Date, required: true},
     },
-    airplane: { id: { type: String, required: true } },
+    airplane: { code: { type: String, required: true} } ,
     pilot: { 
         captain: {
             type:String, required: true

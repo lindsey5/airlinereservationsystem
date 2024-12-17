@@ -9,7 +9,7 @@ import FlightDetailsModal from "../../Components/Modals/FlightDetailsModal";
 import FlightsSearchFilter from "../../Components/Flights/FlightsSearchFilter";
 
 const filterState = {
-    status: 'Scheduled',
+    status: 'All',
     type: 'All',
     departureTime: '',
     arrivalTime: '',
@@ -141,60 +141,64 @@ const AdminFlights = () => {
             {showMakeFlight && <FlightForm close={() => setShowMakeFlight(false)}/>}
             {showFlightDetails && <FlightDetailsModal flightData={flightData} close={() => setShowFlightDetails(false)}/>}
             <h1>Flights</h1>
-            <AdminPagination state={state} dispatch={dispatch} />
             <div style={{display: 'flex'}}>
                 <input type="search" placeholder='Search' style={{marginRight: '30px'}} onChange={(e) => setSearchTerm(e.target.value)}/>
                 <FlightsSearchFilter setFilter={setFilter} filter={filter} filterResults={fetchFlights}/>
             </div>
-            <div className='table-container'>
-            <table>
-                <thead>
-                    <tr>
-                        <th>Flight Number</th>
-                        <th>Airline</th>
-                        <th>Gate No</th>
-                        <th>Departure</th>
-                        <th>Departure Time</th>
-                        <th>Arrival</th>
-                        <th>Arrival Time</th>
-                        <th>Status</th>
-                        <th>Action</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    {flights && flights.map(flight => {
-                        const departureTime = formatDate(flight.departure.time);
-                        const arrivalTime = formatDate(flight.arrival.time);
-
-                        return (
-                            <tr key={flight._id}>
-                                <td>{flight.flightNumber}</td>
-                                <td>{flight.airline}</td>
-                                <td>{flight.gate_number}</td>
-                                <td>{flight.departure.airport} ({flight.departure.airport_code})</td>
-                                <td>{departureTime}</td>
-                                <td>{flight.arrival.airport} ({flight.arrival.airport_code})</td>
-                                <td>{arrivalTime}</td>
-                                {dataStatus(flight.status)}
-                                <td>
-                                    {flight.status !== 'Completed' && flight.status !== 'Cancelled' &&
-                                    <button onClick={() => flight.status === 'Scheduled' ? updateFlight(flight._id) : completeFlight(flight._id)}>
-                                        <img src="/icons/check.png" alt="" />
-                                    </button>
-                                    }
-                                    <button onClick={() => {
-                                        setFlightData(flight)
-                                        setShowFlightDetails(true)
-                                    }}>
-                                    <img src="/icons/eye (1).png"/>
-                                    </button>
-                                </td>
+            <div className="parent-table-container">
+            <AdminPagination state={state} dispatch={dispatch} />
+                <div className='table-container'>
+                    <table>
+                        <thead>
+                            <tr>
+                                <th>Flight Number</th>
+                                <th>Airline</th>
+                                <th>Plane</th>
+                                <th>Gate No</th>
+                                <th>Departure</th>
+                                <th>Departure Time</th>
+                                <th>Arrival</th>
+                                <th>Arrival Time</th>
+                                <th>Status</th>
+                                <th>Action</th>
                             </tr>
-                        )
-                    }
-                    )}
-                </tbody>
-            </table>
+                        </thead>
+                        <tbody>
+                            {flights && flights.map(flight => {
+                                const departureTime = formatDate(flight.departure.time);
+                                const arrivalTime = formatDate(flight.arrival.time);
+
+                                return (
+                                    <tr key={flight._id}>
+                                        <td>{flight.flightNumber}</td>
+                                        <td>{flight.airline}</td>
+                                        <td>{flight.airplane.code}</td>
+                                        <td>{flight.gate_number}</td>
+                                        <td>{flight.departure.airport} ({flight.departure.airport_code})</td>
+                                        <td>{departureTime}</td>
+                                        <td>{flight.arrival.airport} ({flight.arrival.airport_code})</td>
+                                        <td>{arrivalTime}</td>
+                                        {dataStatus(flight.status)}
+                                        <td>
+                                            {flight.status !== 'Completed' && flight.status !== 'Cancelled' &&
+                                            <button onClick={() => flight.status === 'Scheduled' ? updateFlight(flight._id) : completeFlight(flight._id)}>
+                                                <img src="/icons/check.png" alt="" />
+                                            </button>
+                                            }
+                                            <button onClick={() => {
+                                                setFlightData(flight)
+                                                setShowFlightDetails(true)
+                                            }}>
+                                            <img src="/icons/eye (1).png"/>
+                                            </button>
+                                        </td>
+                                    </tr>
+                                )
+                            }
+                            )}
+                        </tbody>
+                    </table>
+                </div>
             </div>
            <div style={{display:"flex", justifyContent: 'space-between'}}>
            <button className='add-btn' onClick={() => setShowMakeFlight(true)}>Make Flight</button>

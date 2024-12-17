@@ -19,7 +19,6 @@ const flightState = {
         country: '',
         time: new Date(new Date().getTime() + 24 * 60 * 60 * 1000)
     },
-    airline: 'PAL',
     gate_number: '',
     captain: '',
     co_pilot: '',
@@ -67,8 +66,6 @@ const flightReducer = (state, action) => {
                    country: action.payload.country
                }
             }
-        case 'SET_AIRLINE': 
-             return { ...state, airline: action.payload }
         case 'SET_GATE_NUMBER':
             return { ...state, gate_number: action.payload }
         case 'SET_CAPTAIN':
@@ -76,7 +73,7 @@ const flightReducer = (state, action) => {
         case 'SET_CO_PILOT':
             return {...state, co_pilot: action.payload }
         case 'SET_AIRPLANE':
-            return {...state, airplane: {id: action.payload}}
+            return {...state, airplane: {code: action.payload}}
         case 'SET_CLASSES':
             return {...state, classes: action.payload}
         case 'SET_CLASS_PRICE':

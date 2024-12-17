@@ -70,6 +70,44 @@ const AdminDashboard = () => {
                     </div>
                 </div>
             </div>
+            <div className='top-container'>
+                <div>
+                    <div className='img-container'>
+                        <img src="/icons/user (1).png" alt="" />
+                    </div>
+                    <div>
+                        <h2>{data?.totalAdmins && data.totalAdmins}</h2>
+                        <p>Total Admins</p>
+                    </div>
+                </div>
+                <div>
+                    <div className='img-container'>
+                        <img src="/icons/receptionist.png" alt="" />
+                    </div>
+                    <div>
+                        <h2>{data?.totalFrontDesks && data.totalFrontDesks}</h2>
+                        <p>Total Front Desks</p>
+                    </div>
+                </div>
+                <div>
+                    <div className='img-container'>
+                        <img src="/icons/hat.png" alt="" />
+                    </div>
+                    <div>
+                        <h2>{data?.totalPilots && data.totalPilots}</h2>
+                        <p>Total Pilots</p>
+                    </div>
+                </div>
+                <div>
+                    <div className='img-container'>
+                        <img src="/icons/plane.png" alt="" />
+                    </div>
+                    <div>
+                        <h2>{data?.totalAirplanes && data.totalAirplanes}</h2>
+                        <p>Total Planes</p>
+                    </div>
+                </div>
+            </div>
             <div className='chart-container'>
                 <div className="line-chart-container">
                     <CChart

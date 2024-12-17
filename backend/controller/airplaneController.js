@@ -2,11 +2,13 @@ import Airplane from "../model/airplane.js";
 import Flight from "../model/flight.js";
 import { errorHandler } from "../utils/errorHandler.js";
 import mongoose from "mongoose";
-const { ObjectId } = mongoose.Types;
 import { validateColumns } from "../utils/flightUtils.js";
 
 export const create_airplane = async (req,res) => {
     try{
+        const airplane = await Airplane.findOne({code: req.body.code});
+        if(airplane) throw new Error('Airplane Code already exist');
+        
         if (!validateColumns(req.body.columns)) {
             throw new Error('Invalid column format. Please use the format "3x3" or "3x3x3".');
         }
@@ -15,6 +17,7 @@ export const create_airplane = async (req,res) => {
         await newAirplane.save();
         res.status(200).json(newAirplane);
     }catch(err){
+        console.log(err)
         const errors = errorHandler(err);
         res.status(400).json({errors});
     }
@@ -22,8 +25,8 @@ export const create_airplane = async (req,res) => {
 
 export const get_airplane = async (req, res) => {
     try{
-        const id = req.params.id;
-        const airplane = await Airplane.findById(id);
+        const code = req.params.code;
+        const airplane = await Airplane.findOne({code})
         res.status(200).json(airplane);
     }catch(err){
         const errors = errorHandler(err);
@@ -40,7 +43,8 @@ export const get_airplanes = async (req, res) => {
         const searchCriteria = searchTerm
         ? {
             $or: [
-                { _id: ObjectId.isValid(searchTerm) ? new ObjectId(searchTerm) : null },
+                {code: { $regex: new RegExp(searchTerm, 'i') }},
+                {airline: { $regex: new RegExp(searchTerm, 'i') }},
                 {model: { $regex: new RegExp(searchTerm, 'i') }},
                 {currentLocation: { $regex: new RegExp(searchTerm, 'i') }},
                 {columns: { $regex: new RegExp(searchTerm, 'i') }},
@@ -84,6 +88,9 @@ export const delete_airplane = async (req, res) => {
 
 export const update_airplane_data = async (req, res) => {
     try{
+        const airplane = await Airplane.findOne({code: req.body.code});
+        if(airplane) throw new Error('Airplane Code already exist');
+
         if (!validateColumns(req.body.columns)) {
             throw new Error('Invalid column format. Please use the format "3x3" or "3x3x3".');
         }

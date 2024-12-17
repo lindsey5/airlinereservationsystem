@@ -17,7 +17,7 @@ const SeatSelection = ({bookings, currentFlightIndex, currentPassenger, handleSe
         const setData = async () => {
             if(data?.flight){
                 try{
-                    const response = await fetch(`/api/airplane/${data.flight.airplane.id}`);
+                    const response = await fetch(`/api/airplane/${data.flight.airplane.code}`);
                     if(response.ok){
                         const result = await response.json();
                         setFlight({...data.flight, airplane: result})

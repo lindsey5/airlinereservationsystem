@@ -50,54 +50,56 @@ const AdminPilots = () => {
             {showEditPilot && <PilotForm close={() => setShowEditPilot(false)} handleSubmit={updatePilot} data={pilotData} title={'Update Pilot'}/>}
             <h1>Pilots</h1>
             <input type="search" placeholder='Search' onChange={(e) => setSearchTerm(e.target.value)}/>
+            <div className='parent-table-container'>
             <AdminPagination state={state} dispatch={dispatch} />
-            <div className='table-container'>
-            <table>
-                <thead>
-                    <tr>
-                        <th>Id</th>
-                        <th>Firstname</th>
-                        <th>Lastname</th>
-                        <th>Age</th>
-                        <th>Date of Birth</th>
-                        <th>Nationality</th>
-                        <th>Status</th>
-                        <th>Action</th>
-                    </tr>
-                </thead>
-                <tbody>
-                {pilots && pilots.map(pilot => 
-                    <tr key={pilot._id}>
-                        <td>{pilot._id}</td>
-                        <td>{pilot.firstname}</td>
-                        <td>{pilot.lastname}</td>
-                        <td>{pilot.age}</td>
-                        <td>{new Date(pilot.dateOfBirth).toISOString().split('T')[0]}</td>
-                        <td>{pilot.nationality}</td>
-                        {dataStatus(pilot.status)}
-                        <td>
-                            <button onClick={() =>{
-                                setShowEditPilot(true);
-                                setPilotData({
-                                    id: pilot._id,
-                                    firstname: pilot.firstname,
-                                    lastname: pilot.lastname,
-                                    age: pilot.age,
-                                    dateOfBirth: new Date(pilot.dateOfBirth).toISOString().split('T')[0],
-                                    nationality: pilot.nationality,
-                                    status: pilot.status,
-                                })
-                            }}>
-                                <img src="/icons/editing.png"/>
-                            </button>
-                            <button onClick={() => deletePilot(pilot._id)}>
-                                <img src="/icons/delete.png"/>
-                            </button>
-                        </td>
-                    </tr>
-                )}
-            </tbody>
-            </table>
+                <div className='table-container'>
+                <table>
+                    <thead>
+                        <tr>
+                            <th>Id</th>
+                            <th>Firstname</th>
+                            <th>Lastname</th>
+                            <th>Age</th>
+                            <th>Date of Birth</th>
+                            <th>Nationality</th>
+                            <th>Status</th>
+                            <th>Action</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                    {pilots && pilots.map(pilot => 
+                        <tr key={pilot._id}>
+                            <td>{pilot._id}</td>
+                            <td>{pilot.firstname}</td>
+                            <td>{pilot.lastname}</td>
+                            <td>{pilot.age}</td>
+                            <td>{new Date(pilot.dateOfBirth).toISOString().split('T')[0]}</td>
+                            <td>{pilot.nationality}</td>
+                            {dataStatus(pilot.status)}
+                            <td>
+                                <button onClick={() =>{
+                                    setShowEditPilot(true);
+                                    setPilotData({
+                                        id: pilot._id,
+                                        firstname: pilot.firstname,
+                                        lastname: pilot.lastname,
+                                        age: pilot.age,
+                                        dateOfBirth: new Date(pilot.dateOfBirth).toISOString().split('T')[0],
+                                        nationality: pilot.nationality,
+                                        status: pilot.status,
+                                    })
+                                }}>
+                                    <img src="/icons/editing.png"/>
+                                </button>
+                                <button onClick={() => deletePilot(pilot._id)}>
+                                    <img src="/icons/delete.png"/>
+                                </button>
+                            </td>
+                        </tr>
+                    )}
+                </tbody>
+                </table>
+                </div>
             </div>
             <button className='add-btn' onClick={() => setShowAddPilot(true)}>Add Pilot</button>
         </main>
