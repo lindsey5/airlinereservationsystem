@@ -62,7 +62,6 @@ export const SearchContextProvider = ({ children }) => {
     };
 
     useEffect(() => {
-        console.log(state)
         sessionStorage.setItem('state', JSON.stringify(state));
     }, [state])
   
@@ -86,9 +85,8 @@ const setFlights = (state) => {
           ToCities: null,
           FromCity: state.flights[i]?.FromCity || (i > 0 && state.flights[i - 1]?.ToCity || null),
           ToCity: state.flights[i]?.ToCity || null,
-          DepartureTime: state.flights[i]?.DepartureTime || (i > 0 ? new Date(new Date(state.flights[i - 1].DepartureTime).setDate(new Date(state.flights[i - 1].DepartureTime).getDate() + 1)) : new Date().toISOString().split('T')[0]),
+          DepartureTime: state.flights[i]?.DepartureTime || (i > 0 ? new Date(new Date(state.flights[i - 1].DepartureTime).setDate(new Date(state.flights[i - 1].DepartureTime).getDate() + 1)) : formatDateOnly(new Date())),
         }));
-        console.log(flights)
     return flights;
   };
   

@@ -62,10 +62,9 @@ const SearchForms = () =>{
                     flag = false;
                 }
             }
-            console.log(flight.DepartureTime, state.returnDate)
             if(!flight.FromCountry 
                 || !flight.ToCountry || !flight.ToCity || !flight.FromCity || flight.FromCity === flight.ToCity
-                || flight.DepartureTime < formatDateOnly(new Date()) || (state.flightType === 'Round Trip' && (new Date(flight.DepartureTime) >= new Date(state.returnDate) || !state.returnDate))
+                || new Date(flight.DepartureTime) < new Date(formatDateOnly(new Date())) || (state.flightType === 'Round Trip' && !state.returnDate && new Date(flight.DepartureTime) >= new Date(state.returnDate))
             ){
                 flag = false;
             }
@@ -149,6 +148,7 @@ const SearchForms = () =>{
                             }
                         }}
                         sx={{ marginTop: '16px' }}
+                        value={dayjs(state.returnDate)}
                         minDate={dayjs(new Date(new Date(flight.DepartureTime).setDate(new Date(flight.DepartureTime).getDate() + 1)))}
                         onChange={(newValue) => dispatch({type: 'SET_RETURN_DATE', payload: newValue.$d,})}/>
                         </LocalizationProvider>}

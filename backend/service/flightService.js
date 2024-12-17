@@ -1,5 +1,6 @@
 import { socketInstance } from "../middleware/socket.js";
 import Flight from "../model/flight.js";
+import { getMaxPassengers } from "../utils/flightUtils.js";
 
 export const one_way_search = async (data, flightClass, price) =>{
     try{
@@ -20,7 +21,9 @@ export const one_way_search = async (data, flightClass, price) =>{
             return current.classes.find(classObj => classObj.className === flightClass).price - next.classes.find(classObj => classObj.className === flightClass).price;
         }).filter((flight) => price > 0 ? flight.classes.find(classObj => classObj.className === flightClass).price <= price : true);
         const flightsArr = [];
-        sortedFlights.forEach(flight => flightsArr.push([flight]));
+        sortedFlights.forEach(flight => flightsArr.push([
+            {...flight.toJSON(), maximum_passengers: getMaxPassengers([flight], flightClass)}
+        ]));
         return flightsArr;
     }catch(err){
         console.log(err)
@@ -178,7 +181,7 @@ export const multi_city_search = async (searchSegments, flightClass, price) => {
         return price > 0 ? totalPrice <= price : true
     })
 
-    return sortedFlights;
+    return sortedFlights
 };
 
 export const reserveSeats = async (data) =>{
@@ -215,9 +218,12 @@ export const reserveSeats = async (data) =>{
                 if (available_flight.classes.every(classObj => 
                     classObj.seats.every(seat => seat.status === 'reserved')
                 )){
-                    socketInstance.emit('notification', {flight: available_flight, message: `All seats for Flight #${available_flight.flightNumber} is fully booked`});
+                    socketInstance.emit('notification', {flight: available_flight, message: `All seats for Flight #${available_flight.flightNumber} is fully booked.`});
                 }
-                socketInstance.emit('notification', {flight: available_flight, message: `A passenger booked for Flight #${available_flight.flightNumber}`});
+                socketInstance.emit('notification', { 
+                    flight: available_flight, 
+                    message: `A new booking has been made for Flight #${available_flight.flightNumber}.` 
+                });
             }
         }
     }catch(err){

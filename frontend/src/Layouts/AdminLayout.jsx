@@ -3,8 +3,8 @@ import AdminSideBar from "../Components/Admin/Partials/AdminSideBar"
 import AdminHeader from "../Components/Admin/Partials/AdminHeader"
 import { useEffect, useState } from "react";
 import io from 'socket.io-client';
-import AdminNotifications from "../Components/Admin/Notifications/AdminNotifications";
 import FlightDetailsModal from "../Components/Modals/FlightDetailsModal";
+import PopUp from "../Components/Admin/Notifications/PopUp";
 
 const URL = process.env.NODE_ENV === 'production' ? undefined : 'http://localhost:3000';
 
@@ -31,7 +31,7 @@ export default function AdminLayout() {
             <AdminHeader />
             <AdminSideBar />
             <Outlet />
-            <AdminNotifications notifications={notifications} setNotifications={setNotifications} setFlightData={setFlightData}/>
+            <PopUp notifications={notifications} setNotifications={setNotifications} setFlightData={setFlightData}/>
         </main>
     )
 

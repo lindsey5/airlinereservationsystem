@@ -71,3 +71,27 @@ export const createClasses = (classes, seats) => {
     // Return the generated list of class objects
     return newClasses;
 };
+
+export const getMaxPassengers = (flights, className) => {
+    console.log(flights)
+    const lowest = flights.sort(async (a, b) => {
+        const flightA = a;
+        const MaxA = flightA.classes
+        .find(classObj => classObj.className === className)
+        .seats.filter(seat => seat.status === 'available')
+        .length;
+
+        const flightB = b;
+            const MaxB = flightB.classes
+            .find(classObj => classObj.className === className)
+            .seats.filter(seat => seat.status === 'available')
+            .length
+            return MaxA - MaxB
+        });
+
+        const flight = lowest[0];
+        return flight.classes
+        .find(classObj => classObj.className === className)
+        .seats.filter(seat => seat.status === 'available')
+        .length
+}

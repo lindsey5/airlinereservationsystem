@@ -1,6 +1,6 @@
-import './AdminNotifications.css'
+import './PopUp.css'
 
-const AdminNotifications = ({notifications, setNotifications, setFlightData}) => {
+const PopUp = ({notifications, setNotifications, setFlightData}) => {
     
     const closeNotification = (index) => {
         setNotifications(notifications.filter((notif, i) => i!==index));
@@ -23,4 +23,4 @@ const AdminNotifications = ({notifications, setNotifications, setFlightData}) =>
     )
 }
 
-export default AdminNotifications
+export default PopUp

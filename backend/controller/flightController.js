@@ -7,7 +7,7 @@ import { errorHandler } from "../utils/errorHandler.js";
 import jwt from "jsonwebtoken";
 import { sendTickets } from "../service/emailService.js";
 import Booking from "../model/Booking.js";
-import { calculateSeats, createSeats, createClasses } from "../utils/flightUtils.js";
+import { calculateSeats, createSeats, createClasses, getMaxPassengers } from "../utils/flightUtils.js";
 import { createPayment, getPaymentId, refundPayment } from "../service/paymentService.js";
 import { updatePilotStatus } from '../service/pilotService.js';
 import Payment from "../model/Payment.js";
@@ -135,6 +135,7 @@ export const search_flight = async (req, res) => {
         res.status(200).json(searchResults);
 
     } catch (err) {
+        console.log(err)
         // Handle any errors that occur during the search process
         const errors = errorHandler(err);
         
@@ -178,15 +179,19 @@ export const get_available_flights = async (req, res) => {
         // - The flight's departure time is in the future (greater than or equal to the current time)
         const flights = await Flight.find(query).limit(limit);
 
+
         // Sort the flights by price (ascending order) based on the selected flight class
-        const sortedFlights = flights.sort((current, next) => 
+
+        const completedFlights = flights
+        .sort((current, next) => 
             current.departure.time - next.departure.time
         );
         const totalFlights = await Flight.countDocuments(query);
 
         // Return the sorted flights, limiting the results to the specified number (e.g., 10)
-        res.status(200).json({flights: sortedFlights, totalFlights});
+        res.status(200).json({flights: completedFlights, totalFlights});
     } catch (err) {
+        console.log(err)
         // If an error occurs, handle it and send a 400 status with the error message
         const errors = errorHandler(err);
         res.status(400).json({ errors });

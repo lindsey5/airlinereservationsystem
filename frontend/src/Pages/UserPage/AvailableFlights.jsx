@@ -16,25 +16,10 @@ const AvailableFlights = () => {
     const [type, setType] = useState();
     const {data, loading} = useFetch(`/api/flight/flights/available?limit=${limit}&&selectedClass=${selectedClass}&&searchTerm=${searchTerm}&&type=${type}`)
     const navigate = useNavigate();
-    const [maximumPassengers, setMaximumPassengers] = useState([]);
 
     useEffect(() => {
         document.title = "Available Flights";
     },[])
-
-    useEffect(() => {
-        if(flights.length > 0){
-            const getMaxPassengers = async () => {
-                const maxPassengers = []
-                for(const flight of flights){
-                    maxPassengers.push(await GetMaxPassengers([flight], selectedClass))
-                }
-                setMaximumPassengers(maxPassengers);
-            }
-
-            getMaxPassengers();
-        }
-    }, [flights]) 
 
     useEffect(() =>{
         if(data?.flights){
@@ -141,7 +126,7 @@ const AvailableFlights = () => {
                         </div>
                     </div>
                     <div>
-                        <h4>Availble Seats: {maximumPassengers[i]}</h4>
+                        <h4>Availble Seats: {GetMaxPassengers([flight], selectedClass)}</h4>
                         <h4 style={{marginBottom: '5px'}}>{selectedClass}</h4>
                         <h2>{formatPrice(flight.classes.find(classObj => classObj.className === selectedClass)?.price)}</h2>
                         <button className="select-btn" onClick={() => handleSelect(flight)}>Select</button>
