@@ -1,8 +1,9 @@
 import './AdminHeader.css';
 import { SideBarContext } from "../../../Context/SideBarContext";
 import { useContext } from 'react';
+import Notifications from '../Notifications/Notifications';
 
-const AdminHeader = () => {
+const AdminHeader = ({socket, setFlightData}) => {
     const { setShowSideBar } = useContext(SideBarContext);
 
     return (
@@ -12,6 +13,7 @@ const AdminHeader = () => {
                 <img src="/icons/tcu_airlines-logo (2).png"/>
                 <h3>Admin</h3>
             </div>
+            <Notifications socket={socket} setFlightData={setFlightData}/>
         </header>
     )
 

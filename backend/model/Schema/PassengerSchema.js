@@ -1,4 +1,3 @@
-import { request } from "express";
 import mongoose from "mongoose";
 const Schema = mongoose.Schema;
 import { v4 as uuidv4 } from "uuid";

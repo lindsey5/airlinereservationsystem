@@ -163,16 +163,13 @@ export const getUserType = async(req, res) => {
                 const admin = await Admin.findById(decodedToken.id);
                 const frontDesk = await FrontDeskAgent.findById(decodedToken.id);
                 if(user){
-                    console.log(user)
                     return res.status(200).json({user: 'user'});
                 }
                 if(admin){
-                    console.log(admin)
                     return res.status(200).json({user: 'admin'});
                 }
 
                 if(frontDesk){
-                    console.log(frontDesk)
                     return res.status(200).json({user: 'front-desk'});
                 }
 
@@ -186,6 +183,7 @@ export const getUserType = async(req, res) => {
         }
 
     }catch(err){
+        console.log(err)
         const errors = errorHandler(err);
         res.status(400).json(errors);
     }

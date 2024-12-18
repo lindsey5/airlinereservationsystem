@@ -4,7 +4,7 @@ import crypto from 'crypto';
 const Schema = mongoose.Schema;
 
 export const FlightSchema = new Schema({
-    flightNumber: { type: String, unique: true },
+    flightNumber: { type: String  },
     airline: { type: String,required: true, },
     status: { type: String, default: 'Scheduled', enum: ['Scheduled', 'Cancelled', 'In-Flight', 'Completed']},
     gate_number: { type: String, required: true}, 

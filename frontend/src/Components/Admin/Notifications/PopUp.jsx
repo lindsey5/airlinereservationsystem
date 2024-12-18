@@ -1,22 +1,36 @@
+import { useEffect, useState } from 'react';
 import './PopUp.css'
 
-const PopUp = ({notifications, setNotifications, setFlightData}) => {
+const PopUp = ({socket, setFlightData}) => {
+    const [popUps, setPopUps] = useState([]);
     
-    const closeNotification = (index) => {
-        setNotifications(notifications.filter((notif, i) => i!==index));
+    const closePopUp = (index) => {
+        setPopUps(popUps.filter((popUp, i) => i!==index));
     }
 
     const handleClick = (index, flight) => {
         setFlightData(flight);
+        closePopUp(index);
     }
+
+    useEffect(() => {
+        if(socket){
+            socket.on('notification', (value) => {
+                setPopUps(prev => [...prev, value]);
+            })
+
+        }
+    },[socket])
     
     return(
-        <div className="notifications">
-        {notifications && notifications.map((notification, i) => 
-            <div className="notification" key={i} onClick={() => handleClick(i, notification.flight)}>
-                <span onClick={() => closeNotification(i)}>X</span>
+        <div className="pop-ups">
+        {popUps && popUps.map((popUp, i) => 
+            <div className="pop-up" key={i}>
+                <span onClick={() => closePopUp(i)}>X</span>
+                <div onClick={() => handleClick(i, popUp.flight)}>
                 <img src="/icons/bell.png" alt="" />
-                <p>{notification.message}</p>
+                <p>{popUp.message}</p>
+                </div>
             </div>
         )}
         </div>

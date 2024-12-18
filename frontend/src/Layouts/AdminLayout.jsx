@@ -9,29 +9,21 @@ import PopUp from "../Components/Admin/Notifications/PopUp";
 const URL = process.env.NODE_ENV === 'production' ? undefined : 'http://localhost:3000';
 
 export default function AdminLayout() {
-    const [notifications, setNotifications] = useState([]);
     const [flightData, setFlightData] = useState();
+    const [socket, setSocket] = useState();
 
     useEffect(() => {
         const socket = io(URL);
-
-        socket.on('notification', (value) => {
-            setNotifications(prev => [...prev, value]);
-        })
-
-        return () => {
-            socket.off('notification');
-        }
-        
+        setSocket(socket);
     }, []);
 
     return(
         <main>
             {flightData && <FlightDetailsModal flightData={flightData} close={() => setFlightData() }/>}
-            <AdminHeader />
+            <AdminHeader socket={socket} setFlightData={setFlightData}/>
             <AdminSideBar />
             <Outlet />
-            <PopUp notifications={notifications} setNotifications={setNotifications} setFlightData={setFlightData}/>
+            <PopUp socket={socket} setFlightData={setFlightData}/>
         </main>
     )
 

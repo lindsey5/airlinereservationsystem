@@ -31,6 +31,10 @@ export const getBookings = async (req, res) => {
                 if (req.query.filter === 'In-Flight' && flightStatus !== 'In-Flight') {
                     return false; // Exclude this flight
                 }
+
+                socketInstance.emit('notification', { 
+                    message: `A new booking has been made for Flight #$.` 
+                })
         
                 return true; // Include this flight
             });

@@ -1,4 +1,5 @@
 import { Server } from 'socket.io';
+import Notification from '../model/Notification.js';
 
 let socketInstance;
 
@@ -19,9 +20,14 @@ const initializeSocket = (server) => {
     console.log('A user connected with ID:', socket.id);
     socketInstance = socket
 
-    socket.on('notifications', async ({message}) => {
-      socket.emit('notifications', message);
+    socket.on('notifications', async ({limit}) => {
+      const notifications = await Notification.find().limit(limit).sort({createdAt: -1});
+      socket.emit('notifications', notifications);
     });
+
+    socket.on('update-notifications', async () => {
+      await Notification.updateMany({}, {status: 'Seen'});
+    })
 
     socket.on('disconnect', () => {
       console.log('User disconnected:', socket.id);

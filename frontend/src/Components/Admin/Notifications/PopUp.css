@@ -1,4 +1,4 @@
-.notifications{
+.pop-ups{
     position: fixed;
     bottom: 20px;
     right: 10px;
@@ -8,35 +8,39 @@
     z-index: 1;
 }
 
-.notifications .notification{
+.pop-ups .pop-up{
     width: 250px;
     background-color: white;
     margin-top: 30px;
     border-radius: 20px;
     padding: 20px;
     border: 1px solid grey;
-    display: flex;
-    align-items: center;
     position: relative;
     cursor: pointer;
 }
 
-.notifications .notification:hover{
+.pop-up div{
+    display: flex;
+    align-items: center;
+}
+
+.pop-ups .pop-up:hover{
     background-color: rgb(240, 240, 240);
 }
 
-.notification span{
+.pop-up span{
     position: absolute;
     top: 15px;
     right: 15px;
     cursor: pointer;
+    z-index: 2;
 }
 
-.notification p{
+.pop-up p{
     line-height: 1.8;
 }
 
-.notifications .notification img{
+.pop-ups .pop-up img{
     width: 30px;
     height: 30px;
     margin-right: 20px;
