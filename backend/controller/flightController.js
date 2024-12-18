@@ -626,6 +626,7 @@ export const get_customer_flights = async (req, res) => {
             ? {
                 $or: [
                     { 'booking_ref': { $regex: new RegExp(searchTerm, 'i') } },
+                    { 'flights.airplane' : { $regex: new RegExp(searchTerm, 'i') } },
                     { 'flights.departure.airport': { $regex: new RegExp(searchTerm, 'i') } },
                     { 'flights.departure.airport_code': { $regex: new RegExp(searchTerm, 'i') } },
                     { 'flights.departure.country': { $regex: new RegExp(searchTerm, 'i') } },

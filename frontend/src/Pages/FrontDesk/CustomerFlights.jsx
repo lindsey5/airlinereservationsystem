@@ -112,6 +112,7 @@ const CustomerFlights = () => {
                         <tr>
                             <th style={{fontSize: '15px'}}>Booking Ref</th>
                             <th style={{fontSize: '15px'}}>Flight Number</th>
+                            <th style={{fontSize: '15px'}}>Airplane</th>
                             <th style={{fontSize: '15px'}}>Airline</th>
                             <th style={{fontSize: '15px'}}>Gate No</th>
                             <th style={{fontSize: '15px'}}>Departure</th>
@@ -134,6 +135,7 @@ const CustomerFlights = () => {
                                 <tr key={i}>
                                     <td>{flight.bookingRef}</td>
                                     <td>{flight.flight.flightNumber}</td>
+                                    <td>{flight.flight.airplane}</td>
                                     <td>{flight.flight.airline}</td>
                                     <td>{flight.flight.gate_number}</td>
                                     <td>{flight.flight.departure.airport}, {flight.flight.departure.country}</td>
