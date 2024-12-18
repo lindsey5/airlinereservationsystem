@@ -25,8 +25,8 @@ const initializeSocket = (server) => {
       socket.emit('notifications', notifications);
     });
 
-    socket.on('update-notifications', async () => {
-      await Notification.updateMany({}, {status: 'Seen'});
+    socket.on('update-notification', async ({id}) => {
+      await Notification.findByIdAndUpdate(id, {status: 'Seen'});
     })
 
     socket.on('disconnect', () => {

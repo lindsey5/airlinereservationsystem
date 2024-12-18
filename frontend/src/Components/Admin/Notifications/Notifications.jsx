@@ -40,8 +40,6 @@ const Notifications = ({socket, setFlightData}) => {
         <div className="notifications">
             <button onClick={() => {
                 setShowNotifs(prev => !prev);
-                socket.emit('update-notifications');
-                socket.emit('notifications', {limit});
             }}>
                 <img src="/icons/bell.png" alt="" />
             </button>
@@ -52,7 +50,11 @@ const Notifications = ({socket, setFlightData}) => {
             <div className='notifications-container'>
                 {notifications.map(notification => 
                 <div 
-                    onClick={() => setFlightData(notification.flight)}
+                    onClick={() => {
+                        socket.emit('update-notification', {id: notification._id});
+                        socket.emit('notifications', {limit});
+                        setFlightData(notification.flight)
+                    }}
                     key={notification._id} 
                     className={`notification ${notification.status === 'Delivered' ? 'delivered' : ''}`}
                 >

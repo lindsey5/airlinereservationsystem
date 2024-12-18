@@ -43,10 +43,6 @@
     overflow-y: auto;
 }
 
-.notifications .notifications-container::-webkit-scrollbar {
-    display: none;  /* Hides the scrollbar */
-  }
-
 .notifications .notification{
     width: 250px;
     margin-top: 5px;
