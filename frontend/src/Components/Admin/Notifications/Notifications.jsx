@@ -35,7 +35,10 @@ const Notifications = ({socket, setFlightData}) => {
 
     useEffect(() => {
         const handleClickOutside = (event) => {
-            if (notifRef.current && !notifRef.current.contains(event.target) && event.target.classList === 'show-more-btn' && showNotifs) {
+            if (notifRef.current && 
+                !notifRef.current.contains(event.target) && 
+                showNotifs && 
+                event.target.classList.value !== 'show-more-btn') {
                 setShowNotifs(false)
             }
         };
@@ -62,12 +65,13 @@ const Notifications = ({socket, setFlightData}) => {
             <div className='notifications-parent-container'>
             <h2>Notifications</h2>
             <div className='notifications-container'>
-                {notifications?.notifications.map(notification => 
+                {notifications?.notifications && notifications?.notifications.map(notification => 
                 <div 
                     onClick={() => {
                         socket.emit('update-notification', {id: notification._id});
                         socket.emit('notifications', {limit});
                         setFlightData(notification.flight)
+                        setShowNotifs(false)
                     }}
                     key={notification._id} 
                     className={`notification ${notification.status === 'Delivered' ? 'delivered' : ''}`}
@@ -79,7 +83,11 @@ const Notifications = ({socket, setFlightData}) => {
                     </div>
                 </div>)}
             </div>
-            {notifications.total >= limit && <button className='show-more-btn' onClick={handleShowMoreClick}>Show More</button>}
+            {notifications.total >= limit && 
+            <button 
+                className='show-more-btn' 
+                onClick={handleShowMoreClick}>
+                Show More</button>}
             </div>}
         </div>
     )
