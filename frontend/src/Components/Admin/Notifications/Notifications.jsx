@@ -6,7 +6,7 @@ import { formatDate } from '../../../utils/dateUtils';
 const Notifications = ({socket, setFlightData}) => {
     const [showNotifs, setShowNotifs] = useState(false);
     const [notifications, setNotifications] = useState([]);
-    const [limit, setLimit] = useState(10);
+    const [limit, setLimit] = useState(5);
 
     useEffect(() => {
         if(socket){
@@ -32,10 +32,6 @@ const Notifications = ({socket, setFlightData}) => {
         }
     }, [limit])
 
-    useEffect(() => {
-        console.log(notifications)
-    }, [notifications])
-
     return (
         <div className="notifications">
             <button onClick={() => {
@@ -43,12 +39,12 @@ const Notifications = ({socket, setFlightData}) => {
             }}>
                 <img src="/icons/bell.png" alt="" />
             </button>
-            {notifications.filter(notification => notification.status === 'Delivered').length !== 0 && <span>{notifications.filter(notification => notification.status === 'Delivered').length}</span>}
+            {notifications?.deliveredNotifications > 0 && <span>{notifications.deliveredNotifications}</span>}
             {showNotifs && 
             <div className='notifications-parent-container'>
             <h2>Notifications</h2>
             <div className='notifications-container'>
-                {notifications.map(notification => 
+                {notifications?.notifications.map(notification => 
                 <div 
                     onClick={() => {
                         socket.emit('update-notification', {id: notification._id});

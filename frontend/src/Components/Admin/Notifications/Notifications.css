@@ -39,18 +39,22 @@
 }
 
 .notifications .notifications-container{
-    height: 200px;
+    width: 320px;
+    height: 320px;
     overflow-y: auto;
 }
 
 .notifications .notification{
-    width: 250px;
     margin-top: 5px;
     padding: 10px 20px;
     display: flex;
     align-items: center;
     cursor: pointer;
     position: relative;
+}
+
+.notifications .notification.delivered div{
+    margin-right: 10px;
 }
 
 .notifications .notification.delivered div > p:first-child{

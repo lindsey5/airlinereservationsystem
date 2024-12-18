@@ -1,5 +1,8 @@
 import { Server } from 'socket.io';
 import Notification from '../model/Notification.js';
+import jwt from 'jsonwebtoken'
+import cookie from 'cookie';
+import Admin from '../model/Admin.js';
 
 let socketInstance;
 
@@ -15,26 +18,47 @@ const initializeSocket = (server) => {
     }
   });
 
-  // Event listeners
-  io.on('connection', (socket) => {
-    console.log('A user connected with ID:', socket.id);
-    socketInstance = socket
+io.on('connection', (socket) => {
+  // Parse cookies from the handshake header
+  const cookies = cookie.parse(socket.handshake.headers.cookie || '');
 
-    socket.on('notifications', async ({limit}) => {
-      const notifications = await Notification.find().limit(limit).sort({createdAt: -1});
-      socket.emit('notifications', notifications);
+  // Get the 'jwt' token from the cookies
+  const token = cookies.jwt;
+
+  if (!token) {
+    console.log('No JWT token found in cookies');
+    socket.disconnect();  // Disconnect if no token is present
+    return;
+  }
+
+  try {
+    // Verify the JWT token
+    const decodedToken = jwt.verify(token, process.env.JWT_SECRET);
+
+    // Attach user info to the socket
+    socket.user = decodedToken;
+
+    // Handle socket events
+    socket.on('notifications', async ({ limit }) => {
+      const deliveredNotifications = await Notification.countDocuments({admin_id: decodedToken.id, status: 'Delivered'});
+      const notifications = await Notification.find({admin_id: decodedToken.id}).limit(limit).sort({ createdAt: -1 });
+      socket.emit('notifications',{notifications, deliveredNotifications});
     });
 
-    socket.on('update-notification', async ({id}) => {
-      await Notification.findByIdAndUpdate(id, {status: 'Seen'});
-    })
-
-    socket.on('disconnect', () => {
-      console.log('User disconnected:', socket.id);
+    socket.on('update-notification', async ({ id }) => {
+      await Notification.findByIdAndUpdate(id, { status: 'Seen' });
     });
+
+  } catch (err) {
+    console.log('Error verifying token:', err.message);
+    socket.disconnect(); // Disconnect if token is malformed or verification fails
+  }
+  socketInstance = socket;
+  socket.on('disconnect', () => {
+    console.log('User disconnected:', socket.id);
   });
-};
+});
 
+}
 
-  
-  export { initializeSocket, socketInstance };
+ export { initializeSocket, socketInstance };

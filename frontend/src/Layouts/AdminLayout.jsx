@@ -13,7 +13,9 @@ export default function AdminLayout() {
     const [socket, setSocket] = useState();
 
     useEffect(() => {
-        const socket = io(URL);
+        const socket = io(URL,{
+            withCredentials: true,
+        });
         setSocket(socket);
     }, []);
 

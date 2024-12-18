@@ -13,6 +13,10 @@ const NotificationSchema = new Schema({
         default: 'Delivered',
         required: true,
     },
+    admin_id:{
+        type: String,
+        required: true
+    },
     flight: {
         type: {
             flightNumber: { type: String, unique: true },

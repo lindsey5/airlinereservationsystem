@@ -67,12 +67,17 @@ export const get_admins = async (req, res) => {
     ? {
         $or: [
             { employeeId: { $regex: new RegExp(searchTerm, 'i') } },
-            { fisrtname: { $regex: new RegExp(searchTerm, 'i') } },
+            { firstname: { $regex: new RegExp(searchTerm, 'i') } },
             { lastname: { $regex: new RegExp(searchTerm, 'i') } },
             { email: { $regex: new RegExp(searchTerm, 'i') } },
         ]
     }
     : {};
+    console.log(req.userId)
+        // Exclude the current user (using req.userId) from the results
+        if (req.userId) {
+            searchCriteria._id = { $ne: req.userId };
+        }
         const admins = await Admin.find(searchCriteria)
         .sort({ createdAt: -1 })
         .skip(skip)
@@ -86,6 +91,7 @@ export const get_admins = async (req, res) => {
             admins
         });
     }catch(err){
+        console.log(err)
         const errors = errorHandler(err)
         res.status(400).json({errors});
     }

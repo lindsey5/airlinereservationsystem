@@ -1,7 +1,7 @@
 import { socketInstance } from "../middleware/socket.js";
 import Flight from "../model/flight.js";
-import Notification from "../model/Notification.js";
 import { getMaxPassengers } from "../utils/flightUtils.js";
+import { createNotifications } from "./notificationService.js";
 
 export const one_way_search = async (data, flightClass, price) =>{
     try{
@@ -219,15 +219,15 @@ export const reserveSeats = async (data) =>{
                 if (available_flight.classes.every(classObj => 
                     classObj.seats.every(seat => seat.status === 'reserved')
                 )){
-                    const notification = await Notification.create({flight: available_flight, message: `All seats for Flight #${available_flight.flightNumber} is fully booked.`})
-                    await notification.save();
+                    const notification = { message: `All seats for Flight #${available_flight.flightNumber} is fully booked.`, flight: available_flight};
+                    await createNotifications(notification);
                     socketInstance.emit('notification', notification);
                 }
-                const notification = await Notification.create({ 
-                    flight: available_flight, 
-                    message: `A new booking has been made for Flight #${available_flight.flightNumber}.` 
-                })
-                await notification.save();
+                const notification = {
+                    message: `A new booking has been made for Flight #${available_flight.flightNumber}.`,
+                    flight: available_flight
+                }
+                await createNotifications(notification);
                 socketInstance.emit('notification', notification);
             }
         }
