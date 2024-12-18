@@ -72,6 +72,12 @@
     gap: 30px;
 }
 
+.passengers-modal-container .view-tickets{
+    margin-top: 20px;
+    padding: 7px 20px;
+    cursor: pointer;
+}
+
 .passengers-modal-container .modal > button{
     background-color: #ff3131;
     color: white;

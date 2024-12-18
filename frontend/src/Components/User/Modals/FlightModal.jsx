@@ -1,21 +1,7 @@
 import './FlightModal.css'
 import { formatDate } from "../../../utils/dateUtils"
-import { formatPrice } from '../../../utils/formatPrice'
-import { useNavigate } from 'react-router-dom'
 
-const FlightModal = ({flight, close}) => {
-    const navigate = useNavigate();
-
-    const utf8ToBase64 = (str) => {
-        // Create a UTF-8 encoded byte array from the string
-        const encoder = new TextEncoder();
-        const uint8Array = encoder.encode(str);
-    
-        // Convert the byte array to a Base64 encoded string
-        let binary = '';
-        uint8Array.forEach(byte => binary += String.fromCharCode(byte));
-        return btoa(binary);
-    }
+const FlightModal = ({flight, close, booking_id}) => {
 
     return(
         <div className="passengers-modal-container">
@@ -28,6 +14,7 @@ const FlightModal = ({flight, close}) => {
                 <p>Flight No: {flight.flightNumber}</p>
                 <p>Gate Number: {flight.gate_number}</p>
                 <p>Booking Ref: {flight.bookingRef}</p>
+                <p>Airplane Code: {flight.airplane}</p>
                 <p>{flight.fareType} Tier</p>
                 <p>{flight.class} Class</p>
                 <div className="passengers-destination">
@@ -43,6 +30,12 @@ const FlightModal = ({flight, close}) => {
                         <p>{flight.arrival.airport} ({flight.arrival.airport_code})</p>
                         <p>{formatDate(flight.arrival.time)}</p>
                     </div>
+                </div>
+                <div style={{display: 'flex', justifyContent: 'center'}}>
+                    <button 
+                        onClick={() => window.open(`/tickets?data=${flight.booking_id}`, 'blank')}
+                        className='view-tickets'
+                    >View Tickets</button>
                 </div>
                 <button onClick={close}>Close</button>
             </div>
