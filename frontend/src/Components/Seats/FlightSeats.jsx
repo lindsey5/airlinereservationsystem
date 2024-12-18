@@ -2,6 +2,7 @@ import { useEffect, useReducer, useState, useRef } from "react";
 import './Seats.css'
 import './FlightSeats.css'
 import { formatPrice } from "../../utils/formatPrice";
+import { formatDate } from "../../utils/dateUtils";
 
 const passengerState = {
     name: '',
@@ -23,6 +24,14 @@ const passengerReducer = (state, action) => {
             return state
     }
 }
+
+function isFiveMinutesAgo(date) {
+    const now = new Date(); // current date and time
+    const fiveMinutesAgo = new Date(now - 5 * 60 * 1000); // current time minus 5 minutes in milliseconds
+  
+    // Check if the date is within 5 minutes of the current time
+    return date >= fiveMinutesAgo && date <= now;
+  }
 
 const FlightSeats = ({flightData, close}) =>{
     const [flight, setFlight] = useState();
@@ -114,6 +123,8 @@ const FlightSeats = ({flightData, close}) =>{
                         <p>{state.fareType} Tier</p>
                         <p>Seat: {state.seatNumber}</p>
                         <p>Request: {state.request ? state.request : 'No request'}</p>
+                        <p>Book Date: {state.bookDate}</p>
+                        <p></p>
                     </div>
                     <button onClick={hidePassenger}>Close</button>
                 </div>
@@ -156,14 +167,16 @@ const FlightSeats = ({flightData, close}) =>{
                                             handleShowPassenger({
                                                 ...seat.passenger, 
                                                 flightClass: classObj.className,
-                                                seatNumber: seat.seatNumber
+                                                seatNumber: seat.seatNumber,
+                                                bookDate: formatDate(new Date(seat.updatedAt))
                                             })}
                                         className='seat'
                                         key={seat._id} 
                                         disabled={seat.status === 'reserved' ? false : true}
                                         value={seat.seatNumber}
                                     >
-                                    {seat.status === 'reserved' && <img className='check' src="/icons/check (3).png" alt="" />}
+                                    {seat.status === 'reserved' && 
+                                    (isFiveMinutesAgo(new Date(seat.updatedAt)) ? <img className='new' src="/icons/new.png" alt="" /> : <img className='check' src="/icons/check (3).png" alt="" />)}
                                     <img src={`/icons/${classObj.className}-seat.png`}/>
                                     </button>
                                     {position % columns[index] === 0 && position !== sumOfColumns && 

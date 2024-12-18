@@ -6,6 +6,6 @@ const SeatSchema = new Schema({
     seatNumber: {type: String, required: true},
     status: { type: String, enum: ['available', 'reserved'], default: 'available' },
     passenger: { type: PassengerSchema},
-});
+},  { timestamps: true });
 
 export default SeatSchema
