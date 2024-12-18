@@ -40,6 +40,7 @@
     display: flex;
     align-items: center;
     justify-content: space-between;
+    flex-wrap: wrap;
     margin: 15px 0;
 }
 
@@ -90,4 +91,22 @@
 .settings .buttons button:not(:disabled):hover,
 .settings .container .close-btn:hover{
     background-color: #ffa4a4;
+}
+
+@media screen and (max-width: 425px){
+    .settings .container{
+        max-width: 90%;
+    }
+
+    .settings .container .details-container > div{
+        position: relative;
+        margin-top: 25px;
+    }
+
+    .settings .container .details-container > div .change-btn{
+        position: absolute;
+        right: 0;
+        top: 100%;
+    }
+
 }
