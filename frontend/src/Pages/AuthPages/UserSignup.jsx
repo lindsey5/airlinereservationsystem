@@ -1,7 +1,7 @@
 import { Link, useNavigate } from 'react-router-dom'
 import './UserSignup.css'
 import {  sendVerificationCode, verifyCode } from '../../Service/emailService'
-import {  useState, useEffect } from 'react'
+import {  useState, useEffect, useRef } from 'react'
 import { handleNegativeAndDecimal } from '../../utils/handleInput'
 import { signupUser } from '../../Service/userService'
 
@@ -15,6 +15,7 @@ const UserSignup = () => {
     const [count, setCount] = useState(60);
     const [counter, setCounter] = useState(false);
     const navigate = useNavigate();
+    const inputsRef = useRef([]);
     const [userData, setUserData] = useState({
         email: '',
         password: '',
@@ -74,6 +75,7 @@ const UserSignup = () => {
                 newCode[index] = valueStr.charAt(valueStr.length -1);
                 return newCode;
             });
+        if(index < inputsRef.current.length - 1 && e.target.value) inputsRef.current[index + 1].focus();
     };
 
     const verifyEmail = async (e) => {
@@ -134,6 +136,7 @@ const UserSignup = () => {
                             max="9"
                             onKeyPress={handleNegativeAndDecimal}
                             onChange={(e) => handleCode(e, 0)}
+                            ref={(e) => inputsRef.current.push(e)}
                             />
                             <input
                             type="number"
@@ -142,6 +145,7 @@ const UserSignup = () => {
                             max="9"
                             onKeyPress={handleNegativeAndDecimal}
                             onChange={(e) => handleCode(e, 1)}
+                            ref={(e) => inputsRef.current.push(e)}
                             />
                         <input
                             type="number"
@@ -150,6 +154,7 @@ const UserSignup = () => {
                             max="9"
                             onKeyPress={handleNegativeAndDecimal}
                             onChange={(e) => handleCode(e, 2)}
+                            ref={(e) => inputsRef.current.push(e)}
                         />
                         <input
                             type="number"
@@ -158,6 +163,7 @@ const UserSignup = () => {
                             max="9"
                             onKeyPress={handleNegativeAndDecimal}
                             onChange={(e) => handleCode(e, 3)}
+                            ref={(e) => inputsRef.current.push(e)}
                         />
                         <input
                             type="number"
@@ -166,6 +172,7 @@ const UserSignup = () => {
                             max="9"
                             onKeyPress={handleNegativeAndDecimal}
                             onChange={(e) => handleCode(e, 4)}
+                            ref={(e) => inputsRef.current.push(e)}
                         />
                         <input
                             type="number"
@@ -174,6 +181,7 @@ const UserSignup = () => {
                             max="9"
                             onKeyPress={handleNegativeAndDecimal}
                             onChange={(e) => handleCode(e, 5)}
+                            ref={(e) => inputsRef.current.push(e)}
                         />
                         </div>}
                         <button type='submit'>Verify</button>

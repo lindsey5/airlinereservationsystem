@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react'
+import { useEffect, useRef, useState } from 'react'
 import './Notifications.css'
 import { formatDate } from '../../../utils/dateUtils';
 
@@ -7,13 +7,13 @@ const Notifications = ({socket, setFlightData}) => {
     const [showNotifs, setShowNotifs] = useState(false);
     const [notifications, setNotifications] = useState([]);
     const [limit, setLimit] = useState(10);
+    const notifRef = useRef();
 
     useEffect(() => {
         if(socket){
             socket.emit('notifications', {limit})
 
             socket.on('notifications', (value) => {
-                console.log(value)
                 setNotifications(value);
             })
 
@@ -33,9 +33,25 @@ const Notifications = ({socket, setFlightData}) => {
         }
     }, [limit])
 
+    useEffect(() => {
+        const handleClickOutside = (event) => {
+            if (notifRef.current && !notifRef.current.contains(event.target) && showNotifs) {
+                setShowNotifs(false)
+            }
+        };
+
+        // Add event listener on mount
+        document.addEventListener('click', handleClickOutside);
+
+        // Cleanup event listener on unmount
+        return () => {
+            document.removeEventListener('click', handleClickOutside);
+        };
+    }, [showNotifs]);
+
     return (
         <div className="notifications">
-            <button onClick={() => {
+            <button ref={notifRef} onClick={() => {
                 setShowNotifs(prev => !prev);
                 setLimit(10);
             }}>
