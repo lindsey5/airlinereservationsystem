@@ -25,8 +25,16 @@ export const get_payments = async (req, res) => {
         const limit = parseInt(req.query.limit) || 10;
         const skip = (page - 1) * limit;
         const searchTerm = req.query.searchTerm;
-        const startDate = req.query.from ? new Date(req.query.from).toISOString().split('T')[0] : null;
-        const endDate = req.query.to ? new Date(req.query.to).toISOString().split('T')[0] : null;
+        const startDate = req.query.from ? new Date(req.query.from) : null;
+        const endDate = req.query.to ? new Date(req.query.to) : null;
+
+        // Normalize the start and end dates to ensure they're full date ranges
+        if (startDate) {
+            startDate.setHours(0, 0, 0, 0);  // Set to start of the day
+        }
+        if (endDate) {
+            endDate.setHours(23, 59, 59, 999);  // Set to end of the day
+        }
 
         // Initialize the query for Payments
         let paymentQuery = {};
@@ -43,9 +51,10 @@ export const get_payments = async (req, res) => {
 
         // Add date range filter if provided
         if (startDate && endDate) {
-            paymentQuery.payment_date = { $gte: startDate, $lte: endDate };
+            paymentQuery.createdAt = { $gte: startDate, $lte: endDate };
         }
 
+        
         if (searchTerm) {
             // Filter bookings based on booking_ref
             const booking = await Booking.findOne({
