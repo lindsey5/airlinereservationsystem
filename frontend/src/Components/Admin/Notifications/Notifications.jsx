@@ -35,7 +35,7 @@ const Notifications = ({socket, setFlightData}) => {
 
     useEffect(() => {
         const handleClickOutside = (event) => {
-            if (notifRef.current && !notifRef.current.contains(event.target) && showNotifs) {
+            if (notifRef.current && !notifRef.current.contains(event.target) && event.target.classList === 'show-more-btn' && showNotifs) {
                 setShowNotifs(false)
             }
         };
@@ -50,8 +50,8 @@ const Notifications = ({socket, setFlightData}) => {
     }, [showNotifs]);
 
     return (
-        <div className="notifications">
-            <button ref={notifRef} onClick={() => {
+        <div className="notifications" ref={notifRef}>
+            <button onClick={() => {
                 setShowNotifs(prev => !prev);
                 setLimit(10);
             }}>
