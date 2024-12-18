@@ -23,8 +23,25 @@ function getRandomColor() {
 
 const AdminDashboard = () => {
     const [year, setYear] = useState(new Date().getFullYear());
-    const { data } = useFetch(`/api/details/dashboard?year=${year}`);
-    const { data: popularDestinations } = useFetch(`/api/popular-destinations?limit=10&&year=${year}`)  
+    const { data, loading } = useFetch(`/api/details/dashboard?year=${year}`);  
+    const [popularDestinations, setPopularDestinations] = useState([]);
+
+    useEffect(() => {
+        const fetchDestinations = async () => {
+            try{
+                const response = await fetch(`/api/popular-destinations?limit=10&&year=${year}`);
+                if(response.ok){
+                    setPopularDestinations(await response.json());
+                }else{
+                    setPopularDestinations([])
+                }
+            }catch(err){
+                console.error(err)
+            }
+        }
+
+        fetchDestinations();
+    }, [year])
 
     return (
         <div className="admin-dashboard">
@@ -105,11 +122,16 @@ const AdminDashboard = () => {
                     </div>
                 </div>
             </div>
-                <select style={{width: '150px', height: '25px'}} onChange={(e) => setYear(e.target.value)}>
-                       {data?.years && data.years.map(year => <option value={year}>{year}</option>)}
-                    </select>
+                <select 
+                    value={year}
+                    style={{width: '150px', height: '25px'}} 
+                    onChange={(e) => setYear(e.target.value)}>
+                        <option value="2023">2023</option>
+                    {data?.years && data.years.map(year => <option value={year}>{year}</option>)}
+                </select>
             <div className='chart-container'>
                 <div className="line-chart-container">
+                    {loading && <p>Please wait</p>}
                     <CChart
                     type="line"
                     style={{ width: '100%', height: '400px'}}
@@ -159,9 +181,10 @@ const AdminDashboard = () => {
                             maintainAspectRatio: false, 
                         }}
                     />
-                    <p>Top 10 Most Popular Cities</p>
+                    <p>{year} Top 10 Most Popular Cities</p>
                 </div>
                 <div className="bar-chart-container">
+                    {loading && <p>Please wait</p>}
                     <CChart
                     type="bar"
                     style={{ width: '100%', height: '400px' }}

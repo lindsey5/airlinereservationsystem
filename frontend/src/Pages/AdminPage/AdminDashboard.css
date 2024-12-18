@@ -85,6 +85,15 @@
     position: relative;
 }
 
+.admin-dashboard .bar-chart-container p,
+.admin-dashboard .line-chart-container p{
+    position: absolute;
+    left: 50%;
+    top: 50%;
+    transform: translate(-50%, -50%);
+    font-size: 25px;
+}
+
 .admin-dashboard .pie-container{
     height: 400px;
     font-size: 13px;

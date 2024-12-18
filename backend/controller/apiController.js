@@ -233,7 +233,6 @@ export const get_popular_destination = async (req, res) => {
     const query = {
         'flights.status': { $ne: 'Cancelled' }
     }
-
     if(year){
         query.createdAt = { 
             $gte: new Date(`${year}-01-01T00:00:00Z`),  // Start of the year
