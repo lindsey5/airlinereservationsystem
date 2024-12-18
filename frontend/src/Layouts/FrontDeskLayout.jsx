@@ -7,7 +7,7 @@ export default function FrontDeskLayout() {
         <main>
             <FrontDeskHeader/>
             <FrontDeskSideBar />
-                <Outlet />
+            <Outlet />
         </main>
     )
 
