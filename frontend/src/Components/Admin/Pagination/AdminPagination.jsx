@@ -35,11 +35,13 @@ const AdminPagination = ({state, dispatch}) =>{
 
     return (
             <div className="pagination-controls">
+                <button disabled={state.disabledPrevBtn} onClick={() => handlePageClick(1)}>{`<<`}</button>
                 <button id="prevPage" disabled={state.disabledPrevBtn} className="pagination-button" onClick={prevPage}>{"<"}</button>
                     <div className="pagination">
                         {generatePaginationButtons()}
                     </div>
                 <button id="nextPage" disabled={state.disabledNextbtn} className="pagination-button" onClick={nextPage}>{">"}</button>
+                <button disabled={state.disabledNextbtn} onClick={() => handlePageClick(state.totalPages)}>{`>>`}</button>
             </div>
     );
 }
