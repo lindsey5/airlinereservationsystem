@@ -41,8 +41,9 @@ io.on('connection', (socket) => {
     // Handle socket events
     socket.on('notifications', async ({ limit }) => {
       const deliveredNotifications = await Notification.countDocuments({admin_id: decodedToken.id, status: 'Delivered'});
+      const total = await Notification.countDocuments({admin_id: decodedToken.id});
       const notifications = await Notification.find({admin_id: decodedToken.id}).limit(limit).sort({ createdAt: -1 });
-      socket.emit('notifications',{notifications, deliveredNotifications});
+      socket.emit('notifications',{notifications, deliveredNotifications, total});
     });
 
     socket.on('update-notification', async ({ id }) => {

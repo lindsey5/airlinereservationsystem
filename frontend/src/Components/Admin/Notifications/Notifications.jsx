@@ -6,13 +6,14 @@ import { formatDate } from '../../../utils/dateUtils';
 const Notifications = ({socket, setFlightData}) => {
     const [showNotifs, setShowNotifs] = useState(false);
     const [notifications, setNotifications] = useState([]);
-    const [limit, setLimit] = useState(5);
+    const [limit, setLimit] = useState(10);
 
     useEffect(() => {
         if(socket){
             socket.emit('notifications', {limit})
 
             socket.on('notifications', (value) => {
+                console.log(value)
                 setNotifications(value);
             })
 
@@ -36,6 +37,7 @@ const Notifications = ({socket, setFlightData}) => {
         <div className="notifications">
             <button onClick={() => {
                 setShowNotifs(prev => !prev);
+                setLimit(10);
             }}>
                 <img src="/icons/bell.png" alt="" />
             </button>
@@ -61,7 +63,7 @@ const Notifications = ({socket, setFlightData}) => {
                     </div>
                 </div>)}
             </div>
-            <button className='show-more-btn' onClick={handleShowMoreClick}>Show More</button>
+            {notifications.total >= limit && <button className='show-more-btn' onClick={handleShowMoreClick}>Show More</button>}
             </div>}
         </div>
     )
