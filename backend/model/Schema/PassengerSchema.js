@@ -64,6 +64,6 @@ const PassengerSchema = new Schema({
       required: true,
       default: uuidv4()
   },
-});
+}, { timestamps: true});
 
 export default PassengerSchema;

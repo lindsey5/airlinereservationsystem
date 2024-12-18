@@ -168,7 +168,7 @@ const FlightSeats = ({flightData, close}) =>{
                                                 ...seat.passenger, 
                                                 flightClass: classObj.className,
                                                 seatNumber: seat.seatNumber,
-                                                bookDate: formatDate(new Date(seat.updatedAt))
+                                                bookDate: formatDate(new Date(seat.passenger.createdAt))
                                             })}
                                         className='seat'
                                         key={seat._id} 
@@ -176,7 +176,7 @@ const FlightSeats = ({flightData, close}) =>{
                                         value={seat.seatNumber}
                                     >
                                     {seat.status === 'reserved' && 
-                                    (isFiveMinutesAgo(new Date(seat.updatedAt)) ? <img className='new' src="/icons/new.png" alt="" /> : <img className='check' src="/icons/check (3).png" alt="" />)}
+                                    (isFiveMinutesAgo(new Date(seat.passenger.createdAt)) ? <img className='new' src="/icons/new.png" alt="" /> : <img className='check' src="/icons/check (3).png" alt="" />)}
                                     <img src={`/icons/${classObj.className}-seat.png`}/>
                                     </button>
                                     {position % columns[index] === 0 && position !== sumOfColumns && 

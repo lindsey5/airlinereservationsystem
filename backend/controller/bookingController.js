@@ -1,6 +1,5 @@
 import Booking from "../model/Booking.js";
 import { errorHandler } from "../utils/errorHandler.js"
-import { socketInstance } from "../middleware/socket.js";
 
 export const getBookings = async (req, res) => {
     const user_id = req.userId;
@@ -32,10 +31,6 @@ export const getBookings = async (req, res) => {
                     return false; // Exclude this flight
                 }
 
-                socketInstance.emit('notification', { 
-                    message: `A new booking has been made for Flight #$.` 
-                })
-        
                 return true; // Include this flight
             });
         }

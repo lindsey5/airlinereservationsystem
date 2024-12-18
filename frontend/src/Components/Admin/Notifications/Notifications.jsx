@@ -52,9 +52,9 @@ const Notifications = ({socket, setFlightData}) => {
             <div className='notifications-container'>
                 {notifications.map(notification => 
                 <div 
-                    key={notification._id}
-                    className='notification' 
                     onClick={() => setFlightData(notification.flight)}
+                    key={notification._id} 
+                    className={`notification ${notification.status === 'Delivered' ? 'delivered' : ''}`}
                 >
                     <img src="/icons/bell.png" alt="" />
                     <div>

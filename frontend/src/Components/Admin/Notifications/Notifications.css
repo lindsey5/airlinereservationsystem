@@ -50,10 +50,25 @@
 .notifications .notification{
     width: 250px;
     margin-top: 5px;
-    padding: 10px;
+    padding: 10px 20px;
     display: flex;
     align-items: center;
     cursor: pointer;
+    position: relative;
+}
+
+.notifications .notification.delivered div > p:first-child{
+    font-weight: 600;
+}
+
+.notifications .notification.delivered::after{
+    content: "";
+    position: absolute;
+    right: 10px;
+    background-color: #ff3131;
+    padding: 5px;
+    border-radius: 50%;
+
 }
 
 .notifications .notification:hover{

@@ -306,7 +306,7 @@ export const user_book_flight = async (req, res) => {
                 && checkoutData.class !== 'First';
                 // Apply a 20% discount if the passenger qualifies for the discount
                 const fareAmount = isDiscounted ? passenger.price * 0.80 : passenger.price
-                return {...passenger, price: fareAmount}
+                return {...passenger, price: fareAmount }
             })
             // Prepare the flight data to include all necessary flight details
             const data = {

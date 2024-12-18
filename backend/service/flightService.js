@@ -212,7 +212,7 @@ export const reserveSeats = async (data) =>{
     
                 available_flight.classes[classIndex].seats[seatIndex].status = 'reserved';
                 passenger.seatNumber = available_flight.classes[classIndex].seats[seatIndex].seatNumber;
-                available_flight.classes[classIndex].seats[seatIndex].passenger = passenger;
+                available_flight.classes[classIndex].seats[seatIndex].passenger = {...passenger, book_date: new Date()};
     
                 await available_flight.save();
                 
@@ -228,7 +228,6 @@ export const reserveSeats = async (data) =>{
                     message: `A new booking has been made for Flight #${available_flight.flightNumber}.` 
                 })
                 await notification.save();
-                console.log(notification)
                 socketInstance.emit('notification', notification);
             }
         }
