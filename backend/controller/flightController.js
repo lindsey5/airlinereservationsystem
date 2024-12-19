@@ -286,13 +286,13 @@ export const user_book_flight = async (req, res) => {
 
         // Extract the checkout data from cookies and verify it to ensure integrity
         const checkoutData = req.session.checkoutData
+        res.clearCookie('checkoutData');
         // Find the user in the database using the ID from the decoded token
         const user = await User.findById(id);
         // Reserve seats based on the checkout data (this function updates seat availability)
         await reserveSeats(checkoutData);
         // Prepare an array to hold the flight details for the user's booking
         const flights = [];
-
         // Iterate over each flight in the checkout data to fetch detailed flight information
         for (const flight of checkoutData.flights) {
             // Fetch the full details of each flight using its ID
@@ -337,7 +337,6 @@ export const user_book_flight = async (req, res) => {
 
         // Save the newly created booking to the database
         await booking.save();
-        res.clearCookie('checkoutData');
         // Send the ticket details to the user via email
         sendTickets(user.email, booking, checkoutData.line_items);
 

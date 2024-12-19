@@ -62,6 +62,7 @@ export const sendTickets = async (email, booking, line_items) => {
                 <th style="background-color: #ff3131; color: white; padding: 10px; font-size: 15px; font-weight: 400;">Flight</th>
                 <th style="background-color: #ff3131; color: white; padding: 10px; font-size: 15px; font-weight: 400;">Airline</th>
                 <th style="background-color: #ff3131; color: white; padding: 10px; font-size: 15px; font-weight: 400;">Departure</th>
+                <th style="background-color: #ff3131; color: white; padding: 10px; font-size: 15px; font-weight: 400;">Departure Date</th>
                 <th style="background-color: #ff3131; color: white; padding: 10px; font-size: 15px; font-weight: 400;">Arrival</th>
                 <th style="background-color: #ff3131; color: white; padding: 10px; font-size: 15px; font-weight: 400;">Class</th>
                 <th style="background-color: #ff3131; color: white; padding: 10px; font-size: 15px; font-weight: 400;">Fare Type</th>
@@ -73,15 +74,17 @@ export const sendTickets = async (email, booking, line_items) => {
                 <tr>
                   <td style="padding: 10px; text-align: center;">${flight.flightNumber}</td>
                   <td style="padding: 10px; text-align: center;">${flight.airline}</td>
-                  <td style="padding: 10px; text-align: center;">${flight.departure.airport}-${flight.departure.country} ${formatDate(flight.departure.time)}</td>
-                  <td style="padding: 10px; text-align: center;">${flight.arrival.airport}-${flight.arrival.country} ${formatDate(flight.arrival.time)}</td>
+                  <td style="padding: 10px; text-align: center;">${flight.departure.airport}-${flight.departure.country}</td>
+                  <td style="padding: 10px; text-align: center;">${formatDate(flight.departure.time)}</td>
+                  <td style="padding: 10px; text-align: center;">${flight.arrival.airport}-${flight.arrival.country}</td>
+                  <td style="padding: 10px; text-align: center;">${formatDate(flight.arrival.time)}</td>
                   <td style="padding: 10px; text-align: center;">${booking.class}</td>
                   <td style="padding: 10px; text-align: center;">${booking.fareType}</td>
                   <td style="padding: 10px; text-align: center;">${flight.airplane}</td>
                 </tr>`).join('')}
             </tbody>
           </table>
-                
+
           <table width="100%" style="margin-bottom: 30px; background-color: white;">
             <thead>
               <tr>
@@ -94,7 +97,6 @@ export const sendTickets = async (email, booking, line_items) => {
                 <tr>
                   <td style="padding: 10px; text-align: center;">${passenger.firstname} ${passenger.lastname}</td>
                   <td style="padding: 10px; text-align: center;">${passenger.type}</td>
-                  <td style="padding: 10px; text-align: center;">${passenger.seatNumber}</td>
                 </tr>`).join('')}
             </tbody>
           </table>
