@@ -61,7 +61,7 @@ const AvailableFlights = () => {
     
         // Encode the params object (flight details and price) into a URL-friendly string
         const encoded = encodeURIComponent(utf8ToBase64(JSON.stringify(params)));
-    
+        sessionStorage.setItem('flights', JSON.stringify([flight]));
         // Navigate to the booking page with the encoded flight data as a URL parameter
         navigate(`/user/booking?data=${encoded}`);
     };
@@ -90,7 +90,7 @@ const AvailableFlights = () => {
             </select>
             </div>
             <div className="container">
-                {flights.length > 0 && flights.map((flight, i) => 
+                {flights.length > 0 && !loading && flights.map((flight, i) => 
                 <div key={flight._id} className="flights-container">
                     <div>
                         <div className='flight'>
@@ -126,7 +126,7 @@ const AvailableFlights = () => {
                         </div>
                     </div>
                     <div>
-                        <h4>Availble Seats: {GetMaxPassengers([flight], selectedClass)}</h4>
+                        <h4>Availble Seats: {flight.classes.find(classObj => classObj.className === selectedClass) && GetMaxPassengers([flight], selectedClass)}</h4>
                         <h4 style={{marginBottom: '5px'}}>{selectedClass}</h4>
                         <h2>{formatPrice(flight.classes.find(classObj => classObj.className === selectedClass)?.price)}</h2>
                         <button className="select-btn" onClick={() => handleSelect(flight)}>Select</button>

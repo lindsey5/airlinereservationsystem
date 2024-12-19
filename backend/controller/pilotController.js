@@ -122,7 +122,6 @@ export const get_available_pilots = async (req, res) => {
             return pilot;
         }));
         const filteredPilots = availablePilots.filter(pilot => pilot !== null)
-        console.log(filteredPilots)
         res.status(200).json(filteredPilots)
 
     }catch(err){

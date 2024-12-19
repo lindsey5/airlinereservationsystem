@@ -2,30 +2,49 @@ import { useEffect, useState } from "react";
 import { handleBlur, handleFocus, handleNegative, handleNegativeAndDecimal } from "../../../utils/handleInput";
 import useFetch from "../../../hooks/useFetch";
 
+const validateColumns = (columns) => {
+    const regex = /^(\d+x)+\d+$/;
+    return regex.test(columns);
+};
+
 const FlightSecondForm = ({state, dispatch, close}) => {
     const [error, setError] = useState();
 
     const createFlight = async (e) => {
         e.preventDefault();
-        try{
-            const response = await fetch('/api/flight',{
-                method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json',
-                },
-                body: JSON.stringify(state),
-            })
-            const result = await response.json();
-            if(response.ok){
-                window.location.reload()
+        const isNotValid = state.classes.find(classObj => {
+            return classObj.seats % classObj.columns.split('x').reduce((total, acc) => total + parseInt(acc), 0) !== 0
+        })
+
+        const columnsIsNotValid = state.classes.find(classObj => {
+            return !validateColumns(classObj.columns);
+        })
+
+        if(isNotValid){
+            setError(`${isNotValid.className} seats should be divisible by ${isNotValid.columns.split('x').reduce((total, acc) => total + parseInt(acc), 0)}`)
+        }else if(columnsIsNotValid){
+            setError(`${columnsIsNotValid.className} columns format is invalid. Please use the format "3x3"`)
+        }else{
+            try{
+                const response = await fetch('/api/flight',{
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                    },
+                    body: JSON.stringify(state),
+                })
+                const result = await response.json();
+                if(response.ok){
+                    window.location.reload()
+                }
+        
+                if(result.errors){
+                    setError(result.errors[0]);
+                }
+        
+            }catch(err){
+                setError('Error adding pilot')
             }
-    
-            if(result.errors){
-                setError(result.errors[0]);
-            }
-    
-        }catch(err){
-            setError('Error adding pilot')
         }
     }
 
@@ -52,6 +71,7 @@ const FlightSecondForm = ({state, dispatch, close}) => {
                 state.classes.find(classObj => classObj.className === className)
             ).filter(classObj => classObj)
             dispatch({type: 'SET_CLASSES', payload: sortedClasses})
+            
         }
 
     }, [state.classes])
@@ -63,7 +83,6 @@ const FlightSecondForm = ({state, dispatch, close}) => {
                 <h2>Select Classes</h2>
                 <p>Plane Code: {state.airplane.code}</p>
                 <p>Seat Capacity: {data && data.passengerSeatingCapacity}</p>
-                <p>Columns: {data && data.columns}</p>
                 <div style={{marginTop: '50px'}}>
                     <label htmlFor="ecomony">Economy</label>
                     <input type="checkbox" name="economy" onClick={() => handleClasses('Economy')}/>
@@ -72,6 +91,7 @@ const FlightSecondForm = ({state, dispatch, close}) => {
                     <label htmlFor="first">First</label>
                     <input type="checkbox" name="first" onClick={() => handleClasses('First')}/>
                 </div>
+                <div className='classes-container'>
                 {state.classes.length > 0 && state.classes.map(className =>  
                     <div key={className.className}>
                         <h3>{className.className}</h3>
@@ -87,6 +107,7 @@ const FlightSecondForm = ({state, dispatch, close}) => {
                                     value={getClassSeats(className.className)}
                                     onKeyPress={handleNegativeAndDecimal}
                                     required
+                                    disabled={!className.columns}
                                     onChange={(e) => dispatch({type: 'SET_CLASS_SEATS', payload: {seats: e.target.value, className: className.className}})}
                                     
                                 />
@@ -106,9 +127,22 @@ const FlightSecondForm = ({state, dispatch, close}) => {
                                 />
                                 <span>Price</span>
                             </div>
+                            <div className='input-container'>
+                                <input 
+                                    className='input'
+                                    type="text" 
+                                    placeholder="Columns"
+                                    onFocus={handleFocus}
+                                    onBlur={handleBlur}
+                                    required
+                                    onChange={(e) => dispatch({type: 'SET_CLASS_COLUMNS', payload: {columns: e.target.value, className: className.className}})}
+                                />
+                                <span>Columns</span>
+                            </div>
                         </div>
                     </div>
                 )}
+                </div>
                 <p style={{color: '#ff3131'}}>{error}</p>
                 <input type="submit" 
                     className="next-btn" 

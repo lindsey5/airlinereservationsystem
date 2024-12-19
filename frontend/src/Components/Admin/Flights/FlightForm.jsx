@@ -98,6 +98,15 @@ const flightReducer = (state, action) => {
                         : classItem
                 )
             };
+        case 'SET_CLASS_COLUMNS':
+            return {
+                ...state,
+                classes: state.classes.map(classItem => 
+                    classItem.className === action.payload.className
+                        ? { ...classItem, columns: action.payload.columns }
+                        : classItem
+                )
+            };
         default: 
             return state
     }

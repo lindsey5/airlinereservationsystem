@@ -1,9 +1,3 @@
-export const validateColumns = (columns) => {
-    const regex = /^(\d+x)+\d+$/;
-    return regex.test(columns);
-};
-
-
 export const calculateSeats = (classes) => {
     let totalSeats = 0;
 
@@ -16,33 +10,31 @@ export const calculateSeats = (classes) => {
 }
 
 // This function generates a list of seat objects based on the total number of seats and the column configuration of the airplane.
-export const createSeats = (totalSeats, columns) => {
-    // Split the column configuration (e.g., "3x3") into an array of integers
-    const totalColumns = columns.split('x').map(column => parseInt(column, 10));
-
-    // Calculate the total number of columns by adding the values in the array (e.g., 3 + 3 = 6 columns total)
-    const sumOfColumns = totalColumns.reduce((accumulator, currentValue) => accumulator + currentValue, 0);
-
+export const createSeats = (totalSeats, classes) => {
     // Initialize an empty array to store the generated seat objects
     const newSeats = [];
-    
-    // Seat numbering starts from 1
     let num = 1;
 
-    // Loop through the total seats divided by the sum of columns (this will create rows of seats)
-    for (let i = 0; i < totalSeats / sumOfColumns; i++) {
-        // For each row, loop through the sum of columns (e.g., 6 columns for a "3x3" layout)
-        for (let j = 0; j < sumOfColumns; j++) {
+    for(let i = 0; i < classes.length; i++){
+        const classSeats = []
+        let position = 0;
+        for(let j = 0; j < classes[i].seats; j++){
             // Generate the seat number, where `String.fromCharCode(65)` converts 65 to 'A', 66 to 'B', etc.
-            const letter = String.fromCharCode(65 + j);
-            newSeats.push({
+            const letter = String.fromCharCode(65 + position);
+            classSeats.push({
                 seatNumber: `${letter}${num}`,  // e.g., "A1", "B1", etc.
             });
-        }
-        num++;  // Increment the seat number for the next row
-    }
 
-    // Return the generated list of seat objects
+            if(position === classes[i].columns.split('x').reduce((total, column) => total + parseInt(column), 0) -1){
+                position = 0;
+                num++;
+            }else{
+                position++;
+            }
+        }
+        newSeats.push({className: classes[i].className, classSeats});
+        }
+
     return newSeats;
 };
 
@@ -52,19 +44,12 @@ export const createClasses = (classes, seats) => {
     
     // Map over the classes and assign seats to each class.
     const newClasses = classes.map(classObj => {
-        const classSeats = [];
-
-        // Loop through the number of seats for this class and assign seats from the `seats` array
-        for (let i = 0; i < classObj.seats; i++) {
-            classSeats.push(seats[offset]);  // Assign a seat from the available seats array
-            offset++;  // Move to the next available seat in the `seats` array
-        }
-
         // Return a new object representing the class with its name, price, and the seats it contains.
         return {
             className: classObj.className,  // e.g., "Economy", "Business", "First".
             price: classObj.price,  // The price for this class
-            seats: classSeats,  // List of seats assigned to this class
+            seats: seats.find(seat => seat.className === classObj.className).classSeats,  // List of seats assigned to this class
+            columns: classObj.columns
         };
     });
 

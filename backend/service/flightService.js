@@ -188,6 +188,7 @@ export const multi_city_search = async (searchSegments, flightClass, price) => {
 export const reserveSeats = async (data) =>{
     try{
         for (const flight of data.flights) {
+            let selected_flight;
             for (const passenger of flight.passengers) {
                 const available_flight = await Flight.findOne({
                     _id: flight.id,
@@ -223,13 +224,24 @@ export const reserveSeats = async (data) =>{
                     await createNotifications(notification);
                     socketInstance.emit('notification', notification);
                 }
-                const notification = {
-                    message: `A new booking has been made for Flight #${available_flight.flightNumber}.`,
-                    flight: available_flight
+
+                const fullClass = available_flight.classes.find(classObj => classObj.className === data.class && classObj.seats.every(seat => seat.status === 'reserved'));
+
+                if(fullClass){
+                    const notification = { message: `All ${fullClass.className} Class  seats for Flight #${available_flight.flightNumber} is fully booked.`, flight: available_flight};
+                    await createNotifications(notification);
+                    socketInstance.emit('notification', notification);
                 }
-                await createNotifications(notification);
-                socketInstance.emit('notification', notification);
+
+                selected_flight = available_flight;
             }
+
+            const notification = {
+                message: `A new booking has been made for Flight #${selected_flight.flightNumber}.`,
+                flight: selected_flight
+            }
+            await createNotifications(notification);
+            socketInstance.emit('notification', notification);
         }
     }catch(err){
         console.log(err)

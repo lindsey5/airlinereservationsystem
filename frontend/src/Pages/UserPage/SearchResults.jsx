@@ -68,6 +68,7 @@ const SearchResults = () => {
         params.price = flights.reduce((total, flight) => total + flight.classes.find(classObj => classObj.className === selectedClass).price, 0)
        
         const encoded = encodeURIComponent(utf8ToBase64(JSON.stringify(params)));
+        sessionStorage.setItem('flights', JSON.stringify(flights));
         navigate(`/user/booking?data=${encoded}`);
     }
 

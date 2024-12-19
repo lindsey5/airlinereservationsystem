@@ -35,14 +35,11 @@ function isFiveMinutesAgo(date) {
 
 const FlightSeats = ({flightData, close}) =>{
     const [flight, setFlight] = useState();
-    const [sumOfColumns, setSumOfColumns] = useState();
-    const [columns, setColumns] = useState();
     const [showPassenger, setShowPassenger] = useState(false);
     const [state, dispatch] = useReducer(passengerReducer, passengerState)
-    const [letters, setLetters] = useState([]);
-    let index = 0;
-    let num = 1;
     const passengerRef = useRef();
+    let index = 0;
+    let num = 1
 
     useEffect(() => {
         if (passengerRef.current) {
@@ -68,30 +65,6 @@ const FlightSeats = ({flightData, close}) =>{
         }
         setData();
     }, [flightData])
-
-    useEffect(() => {
-        if(flight){
-            const planeColumns = flight.airplane.columns.split('x').map(column => parseInt(column, 10));
-            setSumOfColumns(planeColumns.reduce((accumulator, currentValue) => accumulator + currentValue, 0));
-            setColumns(planeColumns);
-        }   
-    }, [flight])
-
-    useEffect(() => {
-        if(columns){
-            let currentPosition = 65;
-            const letters = [];
-            columns.forEach((column, i) => {
-                for(let i = 0; i < column; i++){
-                    letters.push(String.fromCharCode(currentPosition))
-                    currentPosition += 1;
-                }
-                if(i < columns.length -1) letters.push('');
-            })
-
-            setLetters(letters)
-        }
-    }, [columns])
 
     const handleShowPassenger = (passenger) => {
         const passengerObj = {
@@ -143,50 +116,60 @@ const FlightSeats = ({flightData, close}) =>{
                     </div>
                 </div>
                 <button className="close-btn" onClick={close}>Close</button>
-                {flight && sumOfColumns && 
-                <div className='seats-rows-container' style={{gridTemplateColumns: columns.length > 1 ? `repeat(${sumOfColumns+ columns.length -1}, 1fr)` : `repeat(${sumOfColumns}, 1fr)`}}>
-                    {letters.length > 0 && letters.map(letter => <div className="letter">{letter}</div>)}
-                    {
-                        flight.classes.map((classObj) => 
-                            classObj.seats.map((seat) =>{
-                                const position = seat.seatNumber.charAt(0).toUpperCase().charCodeAt(0) - 64;
-                                if(position % columns[index] === 0 && position !== sumOfColumns){
-                                    index ++;
-                                }else{
-                                    index = 0;
-                                }
+                {flight && flight.classes.map(classObj => {
+                    const columns = classObj.columns.split('x').map(column => parseInt(column));
+                    index = 0;
+                    const totalColumns = columns.reduce((total, acc) => total + parseInt(acc), 0) + 1
+                    const letters = [];
+                    let currentPosition = 65
+                    columns.forEach((column, i) => {
+                        for(let i = 0; i < column; i++){
+                            letters.push(String.fromCharCode(currentPosition))
+                            currentPosition += 1;
+                        }
+                        if(i < columns.length -1) letters.push('');
+                    })
+                    
+                    return (
+                    <div className="seats-rows-container" style={{gridTemplateColumns: `repeat(${totalColumns}, 1fr)`, borderTop: '3px solid black'}}>
+                    {letters.length > 0 && letters.map(letter => <div className="letter" style={{margin: '10px'}}>{letter}</div>)}
+                    {classObj.seats.map(seat => {
+                        const position = seat.seatNumber.charAt(0).toUpperCase().charCodeAt(0) - 64;
+                        
+                        if(position % columns[index] === 0 && position !== (totalColumns -1)){
+                            index ++;
+                        }else{
+                            index = 0;
+                        }
+                        
 
-                                if(position === sumOfColumns){
-                                    num++
-                                }
-
-                                return (
-                                    <>
-                                    <button 
-                                        onClick={() => 
-                                            handleShowPassenger({
-                                                ...seat.passenger, 
-                                                flightClass: classObj.className,
-                                                seatNumber: seat.seatNumber,
-                                                bookDate: formatDate(new Date(seat.passenger.createdAt))
-                                            })}
-                                        className='seat'
-                                        key={seat._id} 
-                                        disabled={seat.status === 'reserved' ? false : true}
-                                        value={seat.seatNumber}
-                                    >
-                                    {seat.status === 'reserved' && 
-                                    (isFiveMinutesAgo(new Date(seat.passenger.createdAt)) ? <img className='new' src="/icons/new.png" alt="" /> : <img className='check' src="/icons/check (3).png" alt="" />)}
-                                    <img src={`/icons/${classObj.className}-seat.png`}/>
-                                    </button>
-                                    {position % columns[index] === 0 && position !== sumOfColumns && 
-                                    <div style={{textAlign: 'center', padding: '10px'}}>{num}</div>}
-                                    </>
-                                )
-                            })
+                        return (
+                            <>
+                            <button 
+                                onClick={() => 
+                                    handleShowPassenger({
+                                        ...seat.passenger, 
+                                        flightClass: classObj.className,
+                                        seatNumber: seat.seatNumber,
+                                        bookDate: formatDate(new Date(seat.passenger.createdAt))
+                                    })}
+                                className='seat'
+                                key={seat._id} 
+                                disabled={seat.status === 'reserved' ? false : true}
+                                value={seat.seatNumber}
+                            >
+                            {seat.status === 'reserved' && 
+                            (isFiveMinutesAgo(new Date(seat.passenger.createdAt)) ? <img className='new' src="/icons/new.png" alt="" /> : <img className='check' src="/icons/check (3).png" alt="" />)}
+                            <img src={`/icons/${classObj.className}-seat.png`}/>
+                            </button>
+                            {position % columns[index] === 0 && position !== (totalColumns -1) && 
+                            <div style={{textAlign: 'center', padding: '10px'}}>{num++}</div>}
+                            </>
                         )
-                    }
-                </div>}
+                    })}
+                    </div>)}
+                )
+                }
             </div>
         </div>
     );

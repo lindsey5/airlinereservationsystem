@@ -1,16 +1,11 @@
 import Airplane from "../model/airplane.js";
 import Flight from "../model/flight.js";
 import { errorHandler } from "../utils/errorHandler.js";
-import { validateColumns } from "../utils/flightUtils.js";
 
 export const create_airplane = async (req,res) => {
     try{
         const airplane = await Airplane.findOne({code: req.body.code});
         if(airplane) throw new Error('Airplane Code already exist');
-        
-        if (!validateColumns(req.body.columns)) {
-            throw new Error('Invalid column format. Please use the format "3x3" or "3x3x3".');
-        }
 
         const newAirplane = new Airplane({...req.body, added_by: req.userId});
         await newAirplane.save();
@@ -88,11 +83,6 @@ export const delete_airplane = async (req, res) => {
 
 export const update_airplane_data = async (req, res) => {
     try{
-
-        if (!validateColumns(req.body.columns)) {
-            throw new Error('Invalid column format. Please use the format "3x3" or "3x3x3".');
-        }
-        
         const updatedAirplane = await Airplane.findByIdAndUpdate(
             req.params.id,
             req.body,
@@ -117,8 +107,7 @@ export const get_available_airplanes = async (req, res) => {
     try{
         const airplanes = await Airplane.find();
         const availableAirplanes = await Promise.all(airplanes.map(async (airplane) => {
-
-            const flight = await Flight.findOne({'airplane.id' : airplane._id}).sort({'arrival.time' : -1});
+            const flight = await Flight.findOne({'airplane.code' : airplane.code}).sort({'arrival.time' : -1});
             if(flight){
                 const flightArrivalTime = new Date(flight.arrival.time);
                 const isAvailable = flight.arrival.airport === departureAirport && 

@@ -14,7 +14,6 @@ const GetMaxPassengers = (flights, className) => {
             .length
             return MaxA - MaxB
         });
-
         const flight = lowest[0];
 
         return flight.classes

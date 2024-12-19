@@ -67,7 +67,7 @@ const BookingPage = () => {
             setPassengersType(passengersType);
 
             const getMaxPassengers = async () => {
-                setMaximumPassengers(await GetMaxPassengers(bookings.flights, decodedData.class))
+                setMaximumPassengers(GetMaxPassengers(JSON.parse(sessionStorage.getItem('flights')), decodedData.class))
             }
 
             getMaxPassengers();
@@ -75,10 +75,6 @@ const BookingPage = () => {
         
     
     }, [bookings]); // Run this effect whenever the 'bookings' state changes
-
-    useEffect(() => {
-        console.log(maximumPassengers)
-    }, [maximumPassengers])
     
 
     const handleBooking = async () => {
@@ -137,7 +133,6 @@ const BookingPage = () => {
 
     const handlePassengers = (e) => {
         e.preventDefault();
-        console.log(maximumPassengers)
         if(passengersType.length > maximumPassengers){
             alert(`The Maximum passengers is ${maximumPassengers}`);
         }else{

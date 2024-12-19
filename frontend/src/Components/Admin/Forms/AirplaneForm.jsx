@@ -7,7 +7,6 @@ const AirplaneForm = ({handleSubmit, data, close, title}) =>{
     const [airplaneData, setAirplaneData] = useState({
         model: '',
         passengerSeatingCapacity: '',
-        columns: '',
         currentLocation: '',
         code: '',
         airline: '',
@@ -79,21 +78,6 @@ const AirplaneForm = ({handleSubmit, data, close, title}) =>{
                     required
                 />
                 <span>Passenger Seat Capacity</span>
-            </div>
-            <div className='input-container'>
-                <input
-                    className='input'
-                    type="text"
-                    name="seats-column"
-                    value={airplaneData.columns}
-                    onChange={(e) => setAirplaneData(prevData => ({...prevData, columns: e.target.value})) }
-                    onFocus={handleFocus}
-                    onBlur={handleBlur}
-                    placeholder='Seats Column'
-                    style={{width: '100%'}}
-                    required
-                />
-                <span>Seats Column</span>
             </div>
             {airplaneData?.id && 
                     <div className='input-container'>
