@@ -52,6 +52,8 @@ import PrivacyPolicy from './Pages/HomePage/PrivacyPolicy';
 import AdminPayments from './Pages/AdminPage/AdminPayments';
 import AdminCustomerFlights from './Pages/AdminPage/AdminCustomerFlights';
 import UserForgotPassword from './Pages/AuthPages/UserForgotPassword';
+import AdminForgotPassword from './Pages/AuthPages/AdminForgotPassword';
+import FrontDeskForgotPassword from './Pages/AuthPages/FrontDeskForgotPassword';
 
 const router = createBrowserRouter(
   createRoutesFromElements(
@@ -65,6 +67,8 @@ const router = createBrowserRouter(
           <Route path='signup' element={<UserSignup />} />
           <Route path='forgot-password' element={<UserForgotPassword />}/>
         </Route>
+        <Route path='/admin/forgot-password' element={<AdminForgotPassword />}/>
+        <Route path='/frontdesk/forgot-password' element={<FrontDeskForgotPassword />}/>
       </Route>
 
       <Route path='/our-team' element={<OurTeam />}/>

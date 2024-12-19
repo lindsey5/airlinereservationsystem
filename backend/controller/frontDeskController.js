@@ -4,8 +4,7 @@ import bcrypt from 'bcrypt';
 import jwt from 'jsonwebtoken';
 import generateRandomPassword from '../utils/generateRandomPassword.js';
 import FrontDeskAgent from '../model/FrontDeskAgent.js';
-import { sendNewFrontDeskInfo } from '../service/emailService.js';
-import Booking from '../model/Booking.js';
+import { sendNewFrontDeskInfo, sendNewPassword, sendVerificationCode } from '../service/emailService.js';
 
 export const front_desk_login = async (req, res) => {
     const { employeeId, password } = req.body;
@@ -95,7 +94,7 @@ export const get_front_desk_agents = async (req, res) => {
 
 export const delete_front_desk_agent = async (req, res) => {
     try{
-        const frontdesk= await  FrontDeskAgent.findByIdAndDelete(req.params.id);
+        const frontdesk= await FrontDeskAgent.findByIdAndDelete(req.params.id);
         if(!frontdesk){
             throw new Error('Front Desk Agent not found')
         }
@@ -106,3 +105,42 @@ export const delete_front_desk_agent = async (req, res) => {
         res.status(400).json({errors});
     }
 }
+
+export const frontdesk_send_verification_code = async (req, res) => {
+    try{    
+        const user = await FrontDeskAgent.findOne({ email: req.body.email});
+        if(!user){
+            throw new Error('Email doesn\t exist')
+        }
+        const verificationCode = await sendVerificationCode(req.body.email)
+        res.cookie('verificationCode', verificationCode, {
+          maxAge: 60000,
+          secure: process.env.NODE_ENV === 'production' });
+        res.status(200).json({message: 'Verification code successfully sent'})
+    }catch(err){
+        const errors = errorHandler(err);
+        res.status(400).json({errors});
+    }
+}
+
+export const frontdeskResetPassword = async (req, res) => {
+    try {
+        const front_desk = await FrontDeskAgent.findOne({email: req.body.email});
+        if (!front_desk) {
+           throw new Error('Email doesn\t exist');
+        }
+        const randomPassword = generateRandomPassword();
+        front_desk.password = randomPassword;
+        await front_desk.save();
+        const data = {
+            ...front_desk.toJSON(),
+            password: randomPassword,
+        }
+        await sendNewPassword(data, 'Front Desk New Password');
+        res.status(201).json({success: 'Reset password success'});
+    } catch (error) {
+        console.log(error)
+        const errors = errorHandler(error);
+        res.status(400).json({errors});
+    }
+};

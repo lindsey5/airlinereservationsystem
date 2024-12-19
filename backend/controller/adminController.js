@@ -4,7 +4,7 @@ import crypto from 'crypto';
 import bcrypt from 'bcrypt';
 import jwt from 'jsonwebtoken';
 import generateRandomPassword from '../utils/generateRandomPassword.js';
-import { sendNewAdminInfo } from '../service/emailService.js';
+import { sendNewAdminInfo, sendNewPassword, sendVerificationCode } from '../service/emailService.js';
 
 export const adminLogin = async (req, res) => {
     const { employeeId, password } = req.body;
@@ -49,7 +49,7 @@ export const addAdmin = async (req, res) => {
             employeeId: randomEmployeeId,
             password: randomPassword,
         }
-        sendNewAdminInfo(data);
+        await sendNewAdminInfo(data);
         res.status(201).json({success: 'New admin successfully added'});
     } catch (error) {
         const errors = errorHandler(error);
@@ -110,3 +110,42 @@ export const delete_admin = async (req, res) => {
         res.status(400).json({errors});
     }
 }
+
+export const admin_send_verification_code = async (req, res) => {
+    try{    
+        const user = await Admin.findOne({ email: req.body.email});
+        if(!user){
+            throw new Error('Email doesn\t exist')
+        }
+        const verificationCode = await sendVerificationCode(req.body.email)
+        res.cookie('verificationCode', verificationCode, {
+          maxAge: 60000,
+          secure: process.env.NODE_ENV === 'production' });
+        res.status(200).json({message: 'Verification code successfully sent'})
+    }catch(err){
+        const errors = errorHandler(err);
+        res.status(400).json({errors});
+    }
+}
+
+export const adminResetPassword = async (req, res) => {
+    try {
+        const admin = await Admin.findOne({email: req.body.email});
+        if (!admin) {
+           throw new Error('Email doesn\t exist');
+        }
+        const randomPassword = generateRandomPassword();
+        admin.password = randomPassword;
+        await admin.save();
+        const data = {
+            ...admin.toJSON(),
+            password: randomPassword,
+        }
+        await sendNewPassword(data, 'New Admin Password');
+        res.status(201).json({success: 'Reset password success'});
+    } catch (error) {
+        console.log(error)
+        const errors = errorHandler(error);
+        res.status(400).json({errors});
+    }
+};

@@ -25,7 +25,6 @@ const AdminSchema = new Schema({
     },
     added_by: {
         type: String,
-        required: true
     }
 }, { timestamps: true })
 

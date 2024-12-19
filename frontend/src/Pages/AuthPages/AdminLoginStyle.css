@@ -129,6 +129,10 @@
     animation: show-span 0.3s ease-out forwards;
 }
 
+.admin-login-page a{
+    margin-top: 20px;
+}
+
 @keyframes show-span {
     from{
         top: 6px;

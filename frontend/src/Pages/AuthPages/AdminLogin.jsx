@@ -60,6 +60,7 @@ function AdminLogin() {
                     </div>
                 </div>
                 <button className='login-btn' onClick={handleLogin}>LOG IN</button>
+                <a href={userType === 'Admin' ? '/admin/forgot-password' : '/frontdesk/forgot-password'}>Forgot Password</a>
             </div>
         </div>
     );

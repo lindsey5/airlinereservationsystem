@@ -171,3 +171,26 @@ export const sendNewFrontDeskInfo= async (data) => {
     `
 });
 }
+
+export const sendNewPassword= async (data, message) => {
+  const transporter = nodemailer.createTransport({
+    service: 'gmail',
+    auth: {
+      user: process.env.EMAIL_USER,
+      pass: process.env.EMAIL_PASS,
+    },
+  });
+  await transporter.sendMail({
+    from: "CloudPeakAirlines@gmail.com", 
+    to: `${data.email}`, 
+    subject: message,
+    html: `
+        <p>${message}</p>
+        <p>Employee Id: ${data.employeeId}</p>
+        <p>Password: ${data.password}</p>
+        <p>Email: ${data.email}</p>
+        <p>Firstname: ${data.firstname}</p>
+        <p>Lastname: ${data.lastname}</p>
+    `
+});
+}
