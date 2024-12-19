@@ -1,4 +1,4 @@
-import React, { useRef, useState } from 'react';
+import React, { useRef, useState, useEffect } from 'react';
 import './AdminLoginStyle.css';
 import { handleBlur, handleFocus } from '../../utils/handleInput';
 import { adminLogin, frontDeskLogin } from '../../utils/loginUtils';
@@ -9,6 +9,10 @@ function AdminLogin() {
     const [error, setError] = useState('');
     const [userType, setUserType] = useState('Admin');
     const userTypeRef = useRef([]);
+
+    useEffect(() => {
+                document.title = "Log In";
+        },[]);
 
     const handleLogin = async () => {
         userType === 'Admin' ? await adminLogin(employeeId, password, setError) : await frontDeskLogin(employeeId, password, setError);

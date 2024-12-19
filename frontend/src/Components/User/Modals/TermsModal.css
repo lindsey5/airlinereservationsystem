@@ -2,7 +2,7 @@
     background-color: white;
     border-radius: 20px;
     min-width: 300px;
-    width: 35%;
+    width: 40%;
 }
 
 .main-container .header{
@@ -50,4 +50,10 @@
 
 .main-container > div:last-child button:hover{
     background-color: #ff9a9a;
+}
+
+@media screen and (max-width: 425px) {
+    .main-container{
+        width: 90%;
+    }
 }

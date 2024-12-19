@@ -12,7 +12,7 @@ const AdminForgotPassword = () => {
     const [verified, setVerified] = useState(false);
 
     useEffect(() => {
-            document.title = "Forgot Password";
+            document.title = "Forgot Password | Admin";
     },[]);
 
     useEffect(() => {

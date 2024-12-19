@@ -53,6 +53,15 @@
     flex-direction: column;
 }
 
+@media screen and (max-width: 900px) {
+    .available-flights > div:first-child > div{
+        display: grid;
+        grid-template-columns: 1fr;
+        gap: 20px;
+    }
+
+}
+
 @media screen and (max-width: 630px) {
     .available-flights > div:first-child{
         flex-direction: column;
@@ -64,7 +73,6 @@
         margin-bottom: 20px;
     }
     .available-flights .search-bar{
-        width: 80%;
         margin-bottom: 10px;
     }
 

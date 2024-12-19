@@ -12,7 +12,7 @@ const FrontDeskForgotPassword = () => {
     const [verified, setVerified] = useState(false);
 
     useEffect(() => {
-            document.title = "Forgot Password";
+            document.title = "Forgot Password | Front Desk";
     },[]);
 
     useEffect(() => {
