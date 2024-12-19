@@ -1,7 +1,7 @@
 import './FlightModal.css'
 import { formatDate } from "../../../utils/dateUtils"
 
-const FlightModal = ({flight, close, booking_id}) => {
+const FlightModal = ({flight, close}) => {
 
     return(
         <div className="passengers-modal-container">
@@ -33,7 +33,7 @@ const FlightModal = ({flight, close, booking_id}) => {
                 </div>
                 <div style={{display: 'flex', justifyContent: 'center'}}>
                     <button 
-                        onClick={() => window.open(`/tickets?data=${flight.booking_id}`, 'blank')}
+                        onClick={() => window.open(`/tickets?data=${flight.booking_id}&&f=${flight.id}`, 'blank')}
                         className='view-tickets'
                     >View Tickets</button>
                 </div>

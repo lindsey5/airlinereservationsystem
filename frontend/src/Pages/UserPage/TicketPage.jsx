@@ -8,6 +8,7 @@ import { formatDate, getTime } from "../../utils/dateUtils";
 const TicketPage = () => {
     const queryParams = new URLSearchParams(window.location.search);
     const id = queryParams.get('data');
+    const flight_id = queryParams.get('f');
     const {data} = useFetch(`/api/booking/${id}`)
     const printRef = useRef();
 
@@ -32,6 +33,8 @@ const TicketPage = () => {
         <div className="ticket-page">
             <div className='ticket-parent-container' ref={printRef}>
             {data && data.flights.map(flight => {
+                    if(flight_id && flight.id !== flight_id) return null
+
                     return flight.passengers.map(passenger => 
                         <div className="ticket-container">
                             <div className='ticket'>

@@ -44,7 +44,7 @@ const AdminPayments = () => {
             dispatch({type: 'SET_DISABLED_PREV_BTN', payload: true})
             setLoading(true)
             try{
-                const response = await fetch(`/api/payment/payments?page=${state.currentPage}&&limit=30&&from=${startDate ? new Date(startDate) : ''}&&to=${endDate ? new Date(endDate) : ''}&&searchTerm=${searchTerm}`);
+                const response = await fetch(`/api/payment/payments?page=${state.currentPage}&&limit=100&&from=${startDate ? new Date(startDate) : ''}&&to=${endDate ? new Date(endDate) : ''}&&searchTerm=${searchTerm}`);
                 if(response.ok){
                     const result = await response.json();
                     result.currentPage === result.totalPages || result.totalPages === 0 ? dispatch({type: 'SET_DISABLED_NEXT_BTN', payload: true}) :  dispatch({type: 'SET_DISABLED_NEXT_BTN', payload: false});
