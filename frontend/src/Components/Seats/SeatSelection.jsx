@@ -18,7 +18,8 @@ const SeatSelection = ({bookings, currentFlightIndex, currentPassenger, handleSe
                     if(response.ok){
                         const result = await response.json();
                         setFlight({...data.flight, airplane: result})
-                        }
+                        setLoading(false)
+                    }
                 }catch(err){
                 }
             }
@@ -38,6 +39,8 @@ const SeatSelection = ({bookings, currentFlightIndex, currentPassenger, handleSe
                     <p>Flight #{currentFlightIndex + 1}</p>
                     <p>Passenger: {bookings.flights[currentFlightIndex].passengers[currentPassenger].firstname} {bookings.flights[currentFlightIndex].passengers[currentPassenger].lastname}</p>
                     <h3>{bookings.flights[currentFlightIndex].destination}</h3>
+                    <p>{flight.departure.city}, {flight.departure.country} ✈ {flight.arrival.city}, {flight.arrival.country}</p>
+                    
                     <p>{bookings.fareType} Tier</p>
                     <p>{bookings.class}</p>
                     <div className="seats">

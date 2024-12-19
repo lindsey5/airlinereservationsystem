@@ -34,6 +34,10 @@ const Notifications = ({socket, setFlightData}) => {
     }, [limit])
 
     useEffect(() => {
+        console.log(notifications)
+    }, [notifications])
+
+    useEffect(() => {
         const handleClickOutside = (event) => {
             if (notifRef.current && 
                 !notifRef.current.contains(event.target) && 

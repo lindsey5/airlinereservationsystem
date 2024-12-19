@@ -3,12 +3,13 @@
     flex-direction: column;
     padding: 20px;
     box-sizing: border-box;
-    align-items: center;
+
 }
 
 .seats-rows-container{
     display: grid;
     gap: 10px;
+    padding: 10px;
 }
 
 .seats-rows-container .letter{
@@ -90,6 +91,7 @@
 .seats .close-btn{
     background-color: #ff3131;
     margin: 20px 0;
+    height: 25px;
 }
 
 

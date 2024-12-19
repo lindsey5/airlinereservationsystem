@@ -5,7 +5,7 @@ import FareTypes from "../../Components/Booking/FareTypes";
 import PassengerForm from "../../Components/Booking/PassengerForm";
 import jsPDF from 'jspdf'
 import { formatDate } from "../../utils/dateUtils";
-import { getFlight } from "../../Service/flightService";
+import GetMaxPassengers from "../../utils/GetMaxPassengers";
 
 const FrontDeskBookingPage = () => {
     const queryParams = new URLSearchParams(window.location.search);
@@ -20,6 +20,7 @@ const FrontDeskBookingPage = () => {
     const [fareType, setFareType] = useState();
     const [email, setEmail] = useState('');
     const [maximumPassengers, setMaximumPassengers] = useState();
+    const [loading, setLoading] = useState(false);
 
     const generateReceipt = (booking_ref) => {
         const initialPageHeight = 200;  
@@ -140,35 +141,14 @@ const FrontDeskBookingPage = () => {
         }
 
         const getMaxPassengers = async () => {
-            if(bookings){
-                const lowest = await Promise.all(bookings.flights.sort(async (a, b) => {
-                    const flightA = await getFlight(a.id);
-                    const MaxA = flightA.flight.classes
-                    .find(classObj => classObj.className === decodedData.class)
-                    .seats.filter(seat => seat.status === 'available')
-                    .length;
-
-                    const flightB = await getFlight(b.id);
-                    const MaxB = flightB.flight.classes
-                    .find(classObj => classObj.className === decodedData.class)
-                    .seats.filter(seat => seat.status === 'available')
-                    .length
-                    return MaxA - MaxB
-                }));
-
-                const flight = await getFlight(lowest[0].id)
-
-                setMaximumPassengers(flight.flight.classes
-                    .find(classObj => classObj.className === decodedData.class)
-                    .seats.filter(seat => seat.status === 'available')
-                    .length)
-            }
+            setMaximumPassengers(GetMaxPassengers(JSON.parse(sessionStorage.getItem('flights')), decodedData.class))
         }
         getMaxPassengers();
     }, [bookings])
 
     const handleBooking = async () => {
         if(fareType === 'Bronze'){
+            setLoading(true);
             try{
                 const response = await fetch('/api/flight/book/frontdesk', {
                     method: 'POST',
@@ -197,6 +177,7 @@ const FrontDeskBookingPage = () => {
             bookings.flights[currentFlightIndex].passengers[currentPassenger].seatNumber = seatNumber;
             if(bookings.flights[currentFlightIndex].passengers.length - 1 === currentPassenger){
                 if(currentFlightIndex === bookings.flights.length -1){
+                    setLoading(true);
                     try{
                         const response = await fetch('/api/flight/book/frontdesk', {
                             method: 'POST',
@@ -279,6 +260,11 @@ const FrontDeskBookingPage = () => {
                 </div>
             )}
             </div>
+            {loading && 
+                <div className="loader-container">
+                    <div className="loader"></div>
+                </div>
+            }
             {!fareType && <FareTypes setFareType={setFareType} frontDesk={true}/>}
             {fareType && !showForm &&
             <form onSubmit={handlePassengers}>

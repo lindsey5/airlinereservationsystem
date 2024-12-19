@@ -10,7 +10,7 @@ import SelectContainer from "../../Components/Search/SelectContainer";
 import { formatPrice } from "../../utils/formatPrice";
 import { useNavigate } from "react-router-dom";
 import SearchFilter from "../../Components/Search/SearchFilter";
-import { getMaxPassengers } from "../../../../backend/utils/flightUtils";
+import GetMaxPassengers from "../../utils/GetMaxPassengers";
 
 const SearchResults = () => {
     const {state} = useContext(SearchContext);
@@ -139,7 +139,7 @@ const SearchResults = () => {
                         )}
                         </div>
                         <div>
-                        <h4>Availble Seats: {getMaxPassengers(flights, selectedClass)}</h4>
+                        <h4>Availble Seats: {GetMaxPassengers(flights, selectedClass)}</h4>
                         <h4 style={{marginBottom: '5px'}}>{selectedClass}</h4>
                         <h2>{formatPrice(flights.reduce((total, flight) => total + flight.classes.find(classObj => classObj.className === selectedClass).price, 0))}</h2>
                         <button className="select-btn" onClick={() => handleSelect(flights)}>Select</button>

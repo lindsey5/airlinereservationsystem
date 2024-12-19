@@ -1,6 +1,5 @@
 import { socketInstance } from "../middleware/socket.js";
 import Flight from "../model/flight.js";
-import { getMaxPassengers } from "../utils/flightUtils.js";
 import { createNotifications } from "./notificationService.js";
 
 export const one_way_search = async (data, flightClass, price) =>{
@@ -22,9 +21,7 @@ export const one_way_search = async (data, flightClass, price) =>{
             return current.classes.find(classObj => classObj.className === flightClass).price - next.classes.find(classObj => classObj.className === flightClass).price;
         }).filter((flight) => price > 0 ? flight.classes.find(classObj => classObj.className === flightClass).price <= price : true);
         const flightsArr = [];
-        sortedFlights.forEach(flight => flightsArr.push([
-            {...flight.toJSON(), maximum_passengers: getMaxPassengers([flight], flightClass)}
-        ]));
+        sortedFlights.forEach(flight => flightsArr.push([flight]))
         return flightsArr;
     }catch(err){
         console.log(err)
@@ -194,7 +191,7 @@ export const reserveSeats = async (data) =>{
                     _id: flight.id,
                     'classes.className': data.class,
                 });
-                // Find the index of the class matching the given class name
+                // Find the index of the  class matching the given class name
                 const classIndex = available_flight.classes.findIndex(classObj => classObj.className === data.class);
     
                 // Find the seat index that matches the passenger's seatNumber or available status

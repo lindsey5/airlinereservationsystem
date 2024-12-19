@@ -18,7 +18,6 @@ const FrontDeskSearchResults = () => {
     const [showEdit, setShowEdit] = useState(false);
     const [selectedClass, setSelectedClass] = useState();
     const [loading, setLoading] = useState(true);
-    const [maximumPassengers, setMaximumPassengers] = useState([]);
     const navigate = useNavigate();
 
     const fetchResults = async () => {
@@ -29,20 +28,6 @@ const FrontDeskSearchResults = () => {
             setLoading(false);
         }
     }
-
-    useEffect(() => {
-        if(results.length > 0){
-            const getMaxPassengers = async () => {
-                const maxPassengers = []
-                for(const flights of results){
-                    maxPassengers.push(await GetMaxPassengers(flights, selectedClass))
-                }
-                setMaximumPassengers(maxPassengers);
-            }
-
-            getMaxPassengers();
-        }
-    }, [results]) 
 
     useEffect(() => {
         fetchResults();
@@ -82,7 +67,7 @@ const FrontDeskSearchResults = () => {
         })
 
         params.price = flights.reduce((total, flight) => total + flight.classes.find(classObj => classObj.className === selectedClass).price, 0)
-       
+        sessionStorage.setItem('flights', JSON.stringify(flights));
         const encoded = encodeURIComponent(utf8ToBase64(JSON.stringify(params)));
         navigate(`/frontdesk/booking?data=${encoded}`);
     }
@@ -154,7 +139,7 @@ const FrontDeskSearchResults = () => {
                         )}
                         </div>
                         <div>
-                        <h4>Availble Seats: {maximumPassengers[i]}</h4>
+                        <h4>Availble Seats: {GetMaxPassengers(flights, selectedClass)}</h4>
                         <h4 style={{marginBottom: '5px'}}>{selectedClass}</h4>
                         <h2>{formatPrice(flights.reduce((total, flight) => total + flight.classes.find(classObj => classObj.className === selectedClass).price, 0))}</h2>
                         <button className="select-btn" onClick={() => handleSelect(flights)}>Select</button>

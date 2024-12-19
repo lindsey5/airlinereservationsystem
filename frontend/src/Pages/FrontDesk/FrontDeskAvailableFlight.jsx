@@ -22,20 +22,6 @@ const FrontDeskAvailableFlights = () => {
         document.title = "Available Flights";
     },[])
 
-    useEffect(() => {
-        if(flights.length > 0){
-            const getMaxPassengers = async () => {
-                const maxPassengers = []
-                for(const flight of flights){
-                    maxPassengers.push(await GetMaxPassengers([flight], selectedClass))
-                }
-                setMaximumPassengers(maxPassengers);
-            }
-
-            getMaxPassengers();
-        }
-    }, [flights]) 
-
     useEffect(() =>{
         if(data?.flights){
             setFlights(data.flights);
@@ -69,6 +55,7 @@ const FrontDeskAvailableFlights = () => {
             price: flight.classes.find(classObj => classObj.className === selectedClass).price,
         })
         const encoded = encodeURIComponent(utf8ToBase64(JSON.stringify(params)));
+        sessionStorage.setItem('flights', JSON.stringify([flight]));
         navigate(`/frontdesk/booking?data=${encoded}`);
     }
 
@@ -133,7 +120,7 @@ const FrontDeskAvailableFlights = () => {
                         </div>
                     </div>
                     <div>
-                        <h4>Availble Seats: {maximumPassengers[i]}</h4>
+                        <h4>Availble Seats: {flight.classes.find(classObj => classObj.className === selectedClass) && GetMaxPassengers([flight], selectedClass)}</h4>
                         <h4 style={{marginBottom: '5px'}}>{selectedClass}</h4>
                         <h2>{formatPrice(flight.classes.find(classObj => classObj.className === selectedClass).price)}</h2>
                         <button className="select-btn" onClick={() => handleSelect(flight)}>Select</button>
