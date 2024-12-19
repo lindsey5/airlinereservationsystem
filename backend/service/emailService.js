@@ -81,14 +81,12 @@ export const sendTickets = async (email, booking, line_items) => {
                 </tr>`).join('')}
             </tbody>
           </table>
-
+                
           <table width="100%" style="margin-bottom: 30px; background-color: white;">
             <thead>
               <tr>
                 <th style="background-color: #ff3131; color: white; padding: 10px; font-size: 15px; font-weight: 400;">Passenger Name</th>
                 <th style="background-color: #ff3131; color: white; padding: 10px; font-size: 15px; font-weight: 400;">Passenger Type</th>
-                <th style="background-color: #ff3131; color: white; padding: 10px; font-size: 15px; font-weight: 400;">Ticket Number</th>
-                <th style="background-color: #ff3131; color: white; padding: 10px; font-size: 15px; font-weight: 400;">Seat Number</th>
               </tr>
             </thead>
             <tbody>
