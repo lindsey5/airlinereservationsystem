@@ -94,6 +94,12 @@ const OurTeam = () => {
                             <h3>Abba Faith Salude</h3>
                         </div>
                     </div>
+                    <div class="gallery">
+                        <img src="/members/Design Team/Regaspi, Kristine.jpg" alt="Profile" />
+                        <div>
+                            <h3>Abba Faith Salude</h3>
+                        </div>
+                    </div>
                 </div>
             </div>
             <div class="container" ref={el => elementsRef.current[2] = el}>
@@ -106,9 +112,9 @@ const OurTeam = () => {
                         </div>
                     </div>
                     <div class="gallery">
-                        <img src="/members/Research Team/adrian, querubin.jpg" alt="Profile" />
+                        <img src="/members/Research Team/Sanchez, Van.jpeg" alt="Profile" />
                         <div>
-                            <h3>Adrian Querubin</h3>
+                            <h3>Vandondale Sanchez</h3>
                         </div>
                     </div>
                     <div class="gallery">
@@ -118,9 +124,27 @@ const OurTeam = () => {
                         </div>
                     </div>
                     <div class="gallery">
+                        <img src="/members/Research Team/Salde, John Oliver.png" alt="Profile" />
+                        <div>
+                            <h3>John Oliver Salde</h3>
+                        </div>
+                    </div>
+                    <div class="gallery">
+                        <img src="/members/Research Team/adrian, querubin.jpg" alt="Profile" />
+                        <div>
+                            <h3>Adrian Querubin</h3>
+                        </div>
+                    </div>
+                    <div class="gallery">
                         <img src="/members/Research Team/Richard Tamondong, research team .jpeg" alt="Profile" />
                         <div>
                             <h3>Richard Tamondong</h3>
+                        </div>
+                    </div>
+                    <div class="gallery">
+                        <img src="/members/Research Team/Pacto, Rafael C.jpg" alt="Profile" />
+                        <div>
+                            <h3>Rafael Pacto</h3>
                         </div>
                     </div>
                     <div class="gallery">

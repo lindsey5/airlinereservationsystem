@@ -77,13 +77,13 @@ const setFlights = (state) => {
     const flights = Array.from({ length: state.count }, (_, i) => ({
           showFromCountries: false,
           showToCountries: false,
-          FromCountry: state.flights[i]?.FromCountry || (i > 0 && state.flights[i - 1]?.ToCountry || null),
+          FromCountry: state.flights[i]?.FromCountry || (i > 0 && state.flights[i - 1]?.ToCountry || 'Philippines'),
           ToCountry: state.flights[i]?.ToCountry || null,
           showFromCities: false,
           FromCities: null,
           showToCities: false,
           ToCities: null,
-          FromCity: state.flights[i]?.FromCity || (i > 0 && state.flights[i - 1]?.ToCity || null),
+          FromCity: state.flights[i]?.FromCity || (i > 0 && state.flights[i - 1]?.ToCity || 'Manila'),
           ToCity: state.flights[i]?.ToCity || null,
           DepartureTime: state.flights[i]?.DepartureTime || (i > 0 ? new Date(new Date(state.flights[i - 1].DepartureTime).setDate(new Date(state.flights[i - 1].DepartureTime).getDate() + 1)) : formatDateOnly(new Date())),
         }));
