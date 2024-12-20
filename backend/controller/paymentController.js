@@ -92,10 +92,10 @@ export const get_payments = async (req, res) => {
         const totalPages = Math.ceil(totalPayments / limit);
 
         // Map the payments to include booking_ref and booked_by details
-        const completedPayments = payments.map(payment => {
+        const completedPayments = payments.map((payment) => {
             return {
                 ...payment.toJSON(),
-                booking_ref: payment.booking_id.booking_ref,
+                booking_ref: payment.booking_id.booking_ref || '',
                 booked_by: payment.booking_id.booked_by
                     ? `${payment.booking_id.booked_by} (Front Desk)`
                     : `${payment.booking_id.user_id} (User)`

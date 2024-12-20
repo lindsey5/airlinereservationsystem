@@ -97,6 +97,7 @@ export const createPayment = async (data, booking_id, payment_method) => {
       const adminFee = await Payment.create({
         booking_id: booking_id,
         total_amount: 400,
+        payment_method,
         line_items: [
           {amount: 400, name: 'Administration Fee', quantity: 1}
         ]

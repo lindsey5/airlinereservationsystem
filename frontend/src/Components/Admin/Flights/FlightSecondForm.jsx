@@ -9,6 +9,7 @@ const validateColumns = (columns) => {
 
 const FlightSecondForm = ({state, dispatch, close}) => {
     const [error, setError] = useState();
+    const [loading, setLoading] = useState(false);
 
     const createFlight = async (e) => {
         e.preventDefault();
@@ -25,6 +26,7 @@ const FlightSecondForm = ({state, dispatch, close}) => {
         }else if(columnsIsNotValid){
             setError(`${columnsIsNotValid.className} columns format is invalid. Please use the format "3x3"`)
         }else{
+            setLoading(true);
             try{
                 const response = await fetch('/api/flight',{
                     method: 'POST',
@@ -45,6 +47,8 @@ const FlightSecondForm = ({state, dispatch, close}) => {
             }catch(err){
                 setError('Error adding pilot')
             }
+
+            setLoading(false);
         }
     }
 
@@ -78,6 +82,9 @@ const FlightSecondForm = ({state, dispatch, close}) => {
 
     return (
         <div className="container">
+            {loading && <div className="loader-container">
+                <div className="loader"></div>
+            </div>}
              <span className='close'onClick={close}>X</span>
             <form onSubmit={createFlight}>
                 <h2>Select Classes</h2>
