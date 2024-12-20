@@ -352,8 +352,8 @@ export const chat_a_bot = async (req, res) => {
             Available Flights are: 
                 ${
                     flights.map(flight => {
-                        return `${flight.departure.airport}(${formatDate(new Date(flight.departure.time))}) 
-                        to ${flight.arrival.airport} (${formatDate(new Date(flight.arrival.time))}) 
+                        return `${flight.departure.airport}, ${flight.departure.city} ${flight.departure.country} (${formatDate(new Date(flight.departure.time))}) 
+                        to ${flight.arrival.airport}, ${flight.arrival.city} ${flight.arrival.country} (${formatDate(new Date(flight.arrival.time))}) 
                         prices: ${flight.classes.map(classObj => `${classObj.className} (${classObj.price})`)}\n`
                     })
                 }
