@@ -47,8 +47,10 @@ const CustomerFlights = () => {
     const [error, setError] = useState('');
     const navigate = useNavigate();
     const [filter, setFilter] = useReducer(filterReducer, filterState);
+    const [loading, setLoading] = useState(true);
 
     const fetchFlights = async () => {
+        setLoading(true);
         dispatch({type: 'SET_DISABLED_NEXT_BTN', payload: true})
         dispatch({type: 'SET_DISABLED_PREV_BTN', payload: true})
         try{
@@ -63,6 +65,7 @@ const CustomerFlights = () => {
         }catch(err){
 
         }
+        setLoading(false)
     }
 
     useEffect(() => {
@@ -107,6 +110,7 @@ const CustomerFlights = () => {
             <div className="parent-table-container">
                 <AdminPagination state={state} dispatch={dispatch} />
                 <div className='table-container'>
+                {loading && <p className="loading">Please Wait</p>}
                 <table>
                     <thead>
                         <tr>

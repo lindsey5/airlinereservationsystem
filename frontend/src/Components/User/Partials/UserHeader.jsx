@@ -7,7 +7,7 @@ import { SettingsContext } from '../../../Context/SettingsContext';
 const UserHeader = () => {
     const navigate = useNavigate();
     const [showDropdown, setShowDropdown] = useState(false);
-    const logout = useLogout();
+    const logout = useLogout('/');
     const { setShowSettings } = useContext(SettingsContext);
 
     return (

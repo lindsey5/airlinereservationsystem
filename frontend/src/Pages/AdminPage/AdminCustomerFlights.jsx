@@ -39,6 +39,7 @@ const AdminCustomerFlights = () => {
     const [searchTerm, setSearchTerm] = useState('');
     const {state, dispatch} = useAdminPaginationReducer();
     const [filter, setFilter] = useReducer(filterReducer, filterState);
+    const [loading, setLoading] = useState(true);
 
     const generateCSV = () => {
         const csvRows = [];
@@ -67,6 +68,7 @@ const AdminCustomerFlights = () => {
       };
 
     const fetchFlights = async () => {
+        setLoading(true);
         dispatch({type: 'SET_DISABLED_NEXT_BTN', payload: true})
         dispatch({type: 'SET_DISABLED_PREV_BTN', payload: true})
         try{
@@ -82,6 +84,7 @@ const AdminCustomerFlights = () => {
         }catch(err){
             console.log(err)
         }
+        setLoading(false);
     }
 
     useEffect(() => {
@@ -107,6 +110,7 @@ const AdminCustomerFlights = () => {
             <div className="parent-table-container">
                 <AdminPagination state={state} dispatch={dispatch} />
                 <div className='table-container'>
+                {loading && <p className="loading">Please Wait</p>}
                 <table>
                     <thead>
                         <tr>

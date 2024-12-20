@@ -5,7 +5,7 @@ import { useContext } from 'react';
 import { SideBarContext } from '../../../Context/SideBarContext';
 
 const FrontDeskSideBar = () => {
-    const logout = useLogout();
+    const logout = useLogout('/login');
     const { showSideBar } = useContext(SideBarContext);
 
     return (
