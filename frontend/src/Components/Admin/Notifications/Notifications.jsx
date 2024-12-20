@@ -17,7 +17,7 @@ const Notifications = ({socket, setFlightData}) => {
                 setNotifications(value);
             })
 
-            socket.on('notification', (value) => {
+            socket.on('notification', () => {
                 socket.emit('notifications', {limit});
             })
         }
@@ -32,10 +32,6 @@ const Notifications = ({socket, setFlightData}) => {
             socket.emit('notifications', {limit})
         }
     }, [limit])
-
-    useEffect(() => {
-        console.log(notifications)
-    }, [notifications])
 
     useEffect(() => {
         const handleClickOutside = (event) => {
@@ -56,6 +52,13 @@ const Notifications = ({socket, setFlightData}) => {
         };
     }, [showNotifs]);
 
+    const handleDelete = async () => {
+        if(confirm('Delete all notifications?')){
+            await socket.emit('delete-notifications');
+            await socket.emit('notifications', {limit});
+        }
+    }
+
     return (
         <div className="notifications" ref={notifRef}>
             <button onClick={() => {
@@ -67,7 +70,15 @@ const Notifications = ({socket, setFlightData}) => {
             {notifications?.deliveredNotifications > 0 && <span>{notifications.deliveredNotifications}</span>}
             {showNotifs && 
             <div className='notifications-parent-container'>
+            <div>
             <h2>Notifications</h2>
+            {notifications?.notifications.length > 0 && <button 
+                className='delete-btn'
+                onClick={handleDelete}
+            >
+                Delete All
+            </button>}
+            </div>
             <div className='notifications-container'>
                 {notifications?.notifications && notifications?.notifications.map(notification => 
                 <div 

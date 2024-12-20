@@ -6,7 +6,6 @@ const PilotForm = ({handleSubmit, data, close, title}) => {
     const [pilotData, setPilotData] = useState({
         firstname: '',
         lastname: '',
-        age: '',
         dateOfBirth: new Date().toISOString().split('T')[0],
         nationality: '',
     })
@@ -61,24 +60,6 @@ const PilotForm = ({handleSubmit, data, close, title}) => {
                         />
                         <span>Lastname</span>
                     </div>
-                </div>
-                <div className='input-container'>
-                        <input
-                            className='input'
-                            type="number"
-                            name="age"
-                            value={pilotData.age}
-                            onChange={(e) => {
-                                setPilotData(prevData => ({...prevData, age: e.target.value}))
-                            }}
-                            onFocus={handleFocus}
-                            onBlur={handleBlur}
-                            min="1"
-                            placeholder='Age'
-                            onKeyPress={handleNegativeAndDecimal}
-                            required
-                        />
-                        <span>Age</span>
                 </div>
                 <div className='input-container'>
                         <input

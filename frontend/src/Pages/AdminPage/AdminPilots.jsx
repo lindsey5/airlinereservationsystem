@@ -79,15 +79,7 @@ const AdminPilots = () => {
                             <td>
                                 <button onClick={() =>{
                                     setShowEditPilot(true);
-                                    setPilotData({
-                                        id: pilot._id,
-                                        firstname: pilot.firstname,
-                                        lastname: pilot.lastname,
-                                        age: pilot.age,
-                                        dateOfBirth: new Date(pilot.dateOfBirth).toISOString().split('T')[0],
-                                        nationality: pilot.nationality,
-                                        status: pilot.status,
-                                    })
+                                    setPilotData({...pilot, dateOfBirth: new Date(pilot.dateOfBirth).toISOString().split('T')[0]})
                                 }}>
                                     <img src="/icons/editing.png"/>
                                 </button>

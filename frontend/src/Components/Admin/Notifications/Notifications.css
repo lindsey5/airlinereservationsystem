@@ -19,11 +19,14 @@
     background-color: rgb(59, 59, 255);
     position: absolute;
     padding: 3px;
+    min-width: 15px;
+    height: 15px;
     top: -5px;
     right: 0px;
-    border-radius: 50%;
     text-align: center;
     color: white;
+    border-radius: 100%;
+    font-size: 13px;
 }
 
 .notifications .notifications-parent-container{
@@ -36,8 +39,22 @@
     border-radius: 10px;
 }
 
+.notifications .notifications-parent-container > div:first-child{
+    display: flex;
+    justify-content: space-between;
+}
+
+.notifications .delete-btn{
+    font-size: 15px;
+    font-weight: 500;
+}
+
+.notifications .delete-btn:hover{
+    color: red;
+}
+
 .notifications .notifications-container{
-    width: 320px;
+    width: 350px;
     height: 320px;
     overflow-y: auto;
 }
@@ -73,16 +90,20 @@
     background-color: rgb(230, 230, 230);
 }
 
-.notifications .notification img{
+.notifications .notification > img:first-child{
     width: 30px;
     height: 30px;
-    margin-right: 20px;
+}
+
+.notifications .notification  div{
+    margin: 0 30px;
 }
 
 .notifications .notification  div p:last-child{
     font-size: 15px;
     color: grey;
 }
+
 
 .notifications .show-more-btn{
     width: 100%;

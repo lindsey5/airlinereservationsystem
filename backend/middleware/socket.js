@@ -50,6 +50,14 @@ io.on('connection', (socket) => {
       await Notification.findByIdAndUpdate(id, { status: 'Seen' });
     });
 
+    socket.on('delete-notification', async({id}) => {
+      await Notification.findByIdAndDelete(id);
+    })
+
+    socket.on('delete-notifications', async() => {
+      await Notification.deleteMany({admin_id: decodedToken.id})
+    })
+
   } catch (err) {
     console.log('Error verifying token:', err.message);
     socket.disconnect(); // Disconnect if token is malformed or verification fails

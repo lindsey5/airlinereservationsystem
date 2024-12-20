@@ -17,7 +17,6 @@ import frontDeskRoutes from './routes/frontDeskRoutes.js';
 import paymentRoutes from './routes/paymentRoutes.js';
 import session from 'express-session';
 import { createServer } from 'http';
-import jwt from 'jsonwebtoken';
 import { initializeSocket } from './middleware/socket.js';
 
 dotenv.config();

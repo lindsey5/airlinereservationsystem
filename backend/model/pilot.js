@@ -10,10 +10,6 @@ const PilotSchema = new Schema({
         type: String,
         required: true
     },
-    age: {
-        type: Number,
-        required: true,
-    },
     dateOfBirth: {
         type: Date,
         required: true,
