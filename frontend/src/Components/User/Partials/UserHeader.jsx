@@ -1,14 +1,16 @@
 import { useNavigate } from 'react-router-dom'
 import { useLogout } from '../../../hooks/useLogout'
 import './UserHeader.css'
-import { useContext, useState } from 'react';
+import { useContext, useEffect, useState } from 'react';
 import { SettingsContext } from '../../../Context/SettingsContext';
+import useFetch from '../../../hooks/useFetch';
 
 const UserHeader = () => {
     const navigate = useNavigate();
     const [showDropdown, setShowDropdown] = useState(false);
     const logout = useLogout('/');
     const { setShowSettings } = useContext(SettingsContext);
+    const {data} = useFetch('/api/user');
 
     return (
         <header>
@@ -16,7 +18,10 @@ const UserHeader = () => {
                 <img src="/icons/tcu_airlines-logo (2).png" alt="" />
                 <h3>CLOUDPEAK <span>AIRLINES</span></h3>
             </div>
-            <button onClick={() => setShowDropdown(!showDropdown)}><img src="/icons/profile.png" alt="" /></button>
+            <div className='right-container'>
+                <p>{data?.email}</p>
+                <button onClick={() => setShowDropdown(!showDropdown)}><img src="/icons/profile.png" alt="" /></button>
+            </div>
             {showDropdown && 
             <div className='dropdown'>
                 <a href="/user/flights">

@@ -34,15 +34,26 @@
     color: #ffbd59;
 }
 
-.user-page header > button{
+.user-page header .right-container > button{
     border-radius: 50%;
     background-color: white;
     border: none;
     height: 40px;
     cursor: pointer;
+    margin-left: 10px;
 }
 
-.user-page header button img{
+.user-page header .right-container{
+    display: flex;
+    align-items: center;
+}
+
+.user-page .right-container p{
+    color: #ff3131;
+    font-weight: 500;
+}
+
+.user-page header .right-container button img{
     width: 100%;
     height: 100%;
 }
