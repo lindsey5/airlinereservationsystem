@@ -149,3 +149,14 @@ export const adminResetPassword = async (req, res) => {
         res.status(400).json({errors});
     }
 };
+
+export const get_admin = async (req,res) => {
+    try{
+        const admin = await Admin.findById(req.userId);
+        if(!admin) throw new Error('Admin not found');
+        res.status(200).json(admin);
+    }catch(err){
+        const errors = errorHandler(err);
+        res.status(400).json({errors});
+    }
+}

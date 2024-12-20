@@ -1,6 +1,8 @@
 import Booking from "../model/Booking.js";
 import Flight from "../model/flight.js";
+import FrontDeskAgent from "../model/FrontDeskAgent.js";
 import Payment from "../model/Payment.js";
+import User from "../model/user.js";
 import { errorHandler } from "../utils/errorHandler.js"
 
 export const get_payment = async (req,res) => {
@@ -92,15 +94,23 @@ export const get_payments = async (req, res) => {
         const totalPages = Math.ceil(totalPayments / limit);
 
         // Map the payments to include booking_ref and booked_by details
-        const completedPayments = payments.map((payment) => {
-            return {
-                ...payment.toJSON(),
-                booking_ref: payment.booking_id.booking_ref || '',
-                booked_by: payment.booking_id.booked_by
-                    ? `${payment.booking_id.booked_by} (Front Desk)`
-                    : `${payment.booking_id.user_id} (User)`
-            };
-        });
+        const completedPayments = await Promise.all(
+            payments.map(async (payment) => {
+                let booked_by;
+                if(payment.booking_id.booked_by){
+                    const front_desk = await FrontDeskAgent.findById(payment.booking_id.booked_by);
+                    booked_by = `${front_desk.email} (Front Desk)`
+                }else{
+                    const user = await User.findById(payment.booking_id.user_id);
+                    booked_by = `${user.email} (User)`
+                }
+                return {
+                    ...payment.toJSON(),
+                    booking_ref: payment.booking_id.booking_ref || '',
+                    booked_by
+                };
+            })
+        )
 
         // Return the response
         res.status(200).json({

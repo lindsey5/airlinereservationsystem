@@ -24,6 +24,7 @@ function getRandomColor() {
 const AdminDashboard = () => {
     const [year, setYear] = useState(new Date().getFullYear());
     const { data, loading } = useFetch(`/api/details/dashboard?year=${year}`);  
+    const { data: admin } = useFetch('/api/admin');
     const [popularDestinations, setPopularDestinations] = useState([]);
 
     useEffect(() => {
@@ -45,7 +46,7 @@ const AdminDashboard = () => {
 
     return (
         <div className="admin-dashboard">
-            <h1>Admin Dashboard</h1>
+            <h1>Hello! {admin?.firstname} {admin?.lastname}.</h1>
             <div className='top-container'>
                 <div>
                     <div className='img-container'>

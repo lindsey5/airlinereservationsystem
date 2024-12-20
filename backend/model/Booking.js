@@ -3,7 +3,7 @@ import PassengerSchema from "./Schema/PassengerSchema.js";
 const Schema = mongoose.Schema;
 
 const BookingSchema = new Schema({
-    user_id: { type: String },
+    user_id: { type: String},
     booked_by: { type: String},
     booking_ref: { type: String, unique: true },
     flights: {

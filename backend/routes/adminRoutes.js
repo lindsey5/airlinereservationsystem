@@ -1,10 +1,11 @@
 import express from 'express';
-import { addAdmin, admin_send_verification_code, adminLogin, adminResetPassword, delete_admin, get_admins } from '../controller/adminController.js';
+import { addAdmin, admin_send_verification_code, adminLogin, adminResetPassword, delete_admin, get_admin, get_admins } from '../controller/adminController.js';
 import { adminRequireAuth } from '../middleware/adminRequireAuth.js';
 const router = express.Router();
 
 router.post('/', adminRequireAuth, addAdmin);
 router.post('/login', adminLogin);
+router.get('/', adminRequireAuth, get_admin);
 router.get('/admins', adminRequireAuth, get_admins);
 router.put('/reset-password', adminResetPassword);
 router.post('/forgot-password/code', admin_send_verification_code);

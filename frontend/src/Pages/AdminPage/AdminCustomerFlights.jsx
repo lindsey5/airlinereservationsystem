@@ -40,6 +40,32 @@ const AdminCustomerFlights = () => {
     const {state, dispatch} = useAdminPaginationReducer();
     const [filter, setFilter] = useReducer(filterReducer, filterState);
 
+    const generateCSV = () => {
+        const csvRows = [];
+        const headers = ['Booking Ref', 'Booked By', 'Flight Number', 'Airplane', 'Airline', 'Gate No', 'Departure', 'Departure Time', 'Arrival', 'Arrival Time', 'Status', 'Fare Type', 'No of Passengers', 'Payment Method'];
+        csvRows.push(headers.join(',')); // Add header row
+
+        // Add data rows
+        flights.forEach(row => {
+          const values = [row.bookingRef, row.booked_by, row.flight.flightNumber, row.flight.airplane, row.flight.airline, row.flight.gate_number,
+            `${row.flight.departure.airport}-${row.flight.departure.country}`, formatDate(row.flight.departure.time),
+            `${row.flight.arrival.airport}-${row.flight.arrival.country}`, formatDate(row.flight.arrival.time),
+            row.flight.status, row.fareType, row.flight.passengers.length, row.payment_method
+        ]
+          csvRows.push(values);
+        });
+    
+        // Create a Blob from the CSV string
+        const csvBlob = new Blob([csvRows.join('\n')], { type: 'text/csv' });
+        const csvUrl = URL.createObjectURL(csvBlob);
+    
+        // Create a link to download the CSV
+        const link = document.createElement('a');
+        link.href = csvUrl;
+        link.download = 'cloudpeakairlines_customer_flights_report.csv';
+        link.click();
+      };
+
     const fetchFlights = async () => {
         dispatch({type: 'SET_DISABLED_NEXT_BTN', payload: true})
         dispatch({type: 'SET_DISABLED_PREV_BTN', payload: true})
@@ -85,6 +111,7 @@ const AdminCustomerFlights = () => {
                     <thead>
                         <tr>
                             <th style={{fontSize: '15px'}}>Booking Ref</th>
+                            <th style={{fontSize: '15px'}}>Booked By</th>
                             <th style={{fontSize: '15px'}}>Flight Number</th>
                             <th style={{fontSize: '15px'}}>Airplane</th>
                             <th style={{fontSize: '15px'}}>Airline</th>
@@ -107,6 +134,7 @@ const AdminCustomerFlights = () => {
                             return (
                                 <tr key={i}>
                                     <td>{flight.bookingRef}</td>
+                                    <td>{flight.booked_by}</td>
                                     <td>{flight.flight.flightNumber}</td>
                                     <td>{flight.flight.airplane}</td>
                                     <td>{flight.flight.airline}</td>
@@ -126,6 +154,7 @@ const AdminCustomerFlights = () => {
                     </tbody>
                 </table>
                 </div>
+                <button className="add-btn" style={{padding: '7px 50px'}} onClick={generateCSV}>Export</button>
             </div>
         </main>
     )

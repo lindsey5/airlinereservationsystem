@@ -12,6 +12,7 @@ import { createPayment, getPaymentId, refundPayment } from "../service/paymentSe
 import { updatePilotStatus } from '../service/pilotService.js';
 import Payment from "../model/Payment.js";
 import crypto from 'crypto';
+import FrontDeskAgent from "../model/FrontDeskAgent.js";
 
 export const create_flight = async (req, res) => {
     try{
@@ -666,9 +667,20 @@ export const get_customer_flights = async (req, res) => {
             }
             
             const customerFlights = []
-            const bookings = await Booking.find(searchCriteria).sort({createdAt: -1});
-            bookings.forEach(booking => {
-                booking.flights.forEach(flight => {
+            const bookings = await Booking.find(searchCriteria)
+            .sort({createdAt: -1})
+
+            for (const booking of bookings) {
+                let booked_by;
+                if (booking.booked_by) {
+                    const front_desk = await FrontDeskAgent.findById(booking.booked_by);
+                    booked_by = `${front_desk.email} (Front Desk)`;
+                } else {
+                    const user = await User.findById(booking.user_id);
+                    booked_by = `${user.email} (User)`;
+                }
+        
+                for (const flight of booking.flights) {
                     customerFlights.push({
                         booking_id: booking._id,
                         class: booking.class,    
@@ -676,10 +688,11 @@ export const get_customer_flights = async (req, res) => {
                         flight,
                         bookingRef: booking.booking_ref,
                         bookDate: booking.createdAt,
+                        booked_by,
                         payment_method: booking.payment_checkout_id ? 'Online Payment' : 'Cash'
-                      });
-                })
-            })
+                    });
+                }
+            }
             const totalPages = Math.ceil(customerFlights.length / limit);
             res.status(200).json({
                 currentPage: page,
@@ -687,6 +700,7 @@ export const get_customer_flights = async (req, res) => {
                 flights: customerFlights.slice(skip, limit * (skip + 1))
             });
     }catch(err){
+        console.log(err)
         const errors= errorHandler(err);
         res.status(400).json({errors});
     }
