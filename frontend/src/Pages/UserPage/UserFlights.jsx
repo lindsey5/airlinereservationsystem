@@ -90,6 +90,9 @@ const UserFlights = () => {
 
     return(
         <div className="user-bookings">
+            {loading && <div className="loader-container">
+                <div className="loader"></div>
+            </div>}
             {showRefund && <RefundSummary flight={selectedFlight} close={() => setShowRefund(false)} showError={() => setShowCancelError(true)} setError={setError}/>}
             {showCancelError && <ErrorCancelModal close={() => setShowCancelError(false)} error={error}/>}
             {showFlight && <FlightModal flight={selectedFlight} close={() => setShowFlight(false)}/>}
