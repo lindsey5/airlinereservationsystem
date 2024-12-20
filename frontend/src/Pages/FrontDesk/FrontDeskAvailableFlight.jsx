@@ -16,7 +16,6 @@ const FrontDeskAvailableFlights = () => {
     const [type, setType] = useState();
     const {data, loading} = useFetch(`/api/flight/flights/available?limit=${limit}&&selectedClass=${selectedClass}&&searchTerm=${searchTerm}&&type=${type}`)
     const navigate = useNavigate();
-    const [maximumPassengers, setMaximumPassengers] = useState([]);
 
     useEffect(() => {
         document.title = "Available Flights";

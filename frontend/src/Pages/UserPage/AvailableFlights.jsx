@@ -90,7 +90,7 @@ const AvailableFlights = () => {
             </select>
             </div>
             <div className="container">
-                {flights.length > 0 && !loading && flights.map((flight, i) => 
+                {flights.length > 0 && flights.map((flight, i) => 
                 <div key={flight._id} className="flights-container">
                     <div>
                         <div className='flight'>
@@ -144,7 +144,7 @@ const AvailableFlights = () => {
                 </div>
                 }
             </div>
-            {flights.length > 0 && data?.totalFlights !== flights.length && <button className='see-more' onClick={() => setLimit(prev => prev += 5)} >See more</button>}
+            {flights.length > 0 && data?.totalFlights !== flights.length && !loading &&  <button className='see-more' onClick={() => setLimit(prev => prev += 5)} >See more</button>}
         </div>
     )
 }
