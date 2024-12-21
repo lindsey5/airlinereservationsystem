@@ -85,23 +85,24 @@ const CustomerFlightsFilter = ({setFilter, filter, filterResults}) => {
                         />International
                     </div>
                 </div>
-                <div>
+                <div className='date-parent-container'>
+                    <p>Booked Date:</p>
                     <div className='date-container'>
-                        Departure Date
+                        From
                         <input 
                             type="date" 
                             name='type' 
-                            value={filter.departureTime}
-                            onChange={(e) => setFilter({type: 'SET_DEPARTURE_TIME', payload: e.target.value})}
+                            value={filter.from}
+                            onChange={(e) => setFilter({type: 'SET_FROM', payload: e.target.value})}
                         />
                     </div>
                     <div className='date-container'>
-                        Arrival Date
+                        To
                         <input 
                             type="date" 
                             name='type' 
-                            value={filter.arrivalTime}
-                            onChange={(e) => setFilter({type: 'SET_ARRIVAL_TIME', payload: e.target.value})}
+                            value={filter.to}
+                            onChange={(e) => setFilter({type: 'SET_TO', payload: e.target.value})}
                         />
                     </div>
                 </div>

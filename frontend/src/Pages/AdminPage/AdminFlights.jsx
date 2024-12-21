@@ -163,6 +163,7 @@ const AdminFlights = () => {
                                 <th>Departure Time</th>
                                 <th>Arrival</th>
                                 <th>Arrival Time</th>
+                                <th>Created At</th>
                                 <th>Status</th>
                                 <th>Action</th>
                             </tr>
@@ -182,6 +183,7 @@ const AdminFlights = () => {
                                         <td>{departureTime}</td>
                                         <td>{flight.arrival.airport} ({flight.arrival.airport_code})</td>
                                         <td>{arrivalTime}</td>
+                                        <td>{formatDate(flight.createdAt)}</td>
                                         {dataStatus(flight.status)}
                                         <td>
                                             {flight.status !== 'Completed' && flight.status !== 'Cancelled' &&

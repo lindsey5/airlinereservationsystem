@@ -9,9 +9,9 @@ import CustomerFlightsFilter from "../../Components/Flights/CustomerFlightsFilte
 const filterState = {
     status: 'All',
     type: 'All',
-    departureTime: '',
-    arrivalTime: '',
-    airline: 'All'
+    airline: 'All',
+    from: '',
+    to: '',
 }
 
 const filterReducer = (state, action) => {
@@ -20,12 +20,12 @@ const filterReducer = (state, action) => {
             return {...state, status: action.payload}
         case 'SET_TYPE':
             return {...state, type: action.payload}        
-        case 'SET_DEPARTURE_TIME':
-            return {...state, departureTime: action.payload}
-        case 'SET_ARRIVAL_TIME':
-            return {...state, arrivalTime: action.payload}
         case 'SET_AIRLINE' : 
             return {...state, airline: action.payload}
+        case 'SET_FROM': 
+             return {...state, from: action.payload}
+        case 'SET_TO':
+            return {...state, to: action.payload}
         case 'RESET':
             action.callback();
             return filterState
@@ -43,7 +43,10 @@ const AdminCustomerFlights = () => {
 
     const generateCSV = () => {
         const csvRows = [];
-        const headers = ['Booking Ref', 'Booked By', 'Flight Number', 'Airplane', 'Airline', 'Gate No', 'Departure', 'Departure Time', 'Arrival', 'Arrival Time', 'Status', 'Fare Type', 'No of Passengers', 'Payment Method'];
+        const headers = ['Booking Ref', 'Booked By', 'Flight Number', 
+            'Airplane', 'Airline', 'Gate No', 'Departure', 'Departure Time', 
+            'Arrival', 'Arrival Time', 'Status', 'Fare Type', 
+            'No of Passengers', 'Payment Method', 'Booekd Date'];
         csvRows.push(headers.join(',')); // Add header row
 
         // Add data rows
@@ -51,7 +54,7 @@ const AdminCustomerFlights = () => {
           const values = [row.bookingRef, row.booked_by, row.flight.flightNumber, row.flight.airplane, row.flight.airline, row.flight.gate_number,
             `${row.flight.departure.airport}-${row.flight.departure.country}`, formatDate(row.flight.departure.time),
             `${row.flight.arrival.airport}-${row.flight.arrival.country}`, formatDate(row.flight.arrival.time),
-            row.flight.status, row.fareType, row.flight.passengers.length, row.payment_method
+            row.flight.status, row.fareType, row.flight.passengers.length, row.payment_method, row.bookDate
         ]
           csvRows.push(values);
         });
@@ -72,8 +75,7 @@ const AdminCustomerFlights = () => {
         dispatch({type: 'SET_DISABLED_NEXT_BTN', payload: true})
         dispatch({type: 'SET_DISABLED_PREV_BTN', payload: true})
         try{
-            
-            const response = await fetch(`/api/flight/flights/customer?page=${state.currentPage}&&limit=50&&searchTerm=${searchTerm}&&status=${filter.status}&&type=${filter.type}&&departureTime=${filter.departureTime}&&arrivalTime=${filter.arrivalTime}&&airline=${filter.airline}`);
+            const response = await fetch(`/api/flight/flights/customer?page=${state.currentPage}&&limit=50&&searchTerm=${searchTerm}&&status=${filter.status}&&type=${filter.type}&&from=${filter.from}&&to=${filter.to}&&airline=${filter.airline}`);
             if(response.ok){
                 const result = await response.json();
                 result.currentPage === result.totalPages || result.totalPages === 0 ? dispatch({type: 'SET_DISABLED_NEXT_BTN', payload: true}) :  dispatch({type: 'SET_DISABLED_NEXT_BTN', payload: false});
@@ -128,10 +130,11 @@ const AdminCustomerFlights = () => {
                             <th style={{fontSize: '15px'}}>Fare Type</th>
                             <th style={{fontSize: '15px'}}>Passengers</th>
                             <th style={{fontSize: '15px'}}>Payment Method</th>
+                            <th style={{fontSize: '15px'}}>Booked Date</th> 
                         </tr>
                     </thead>
                     <tbody>
-                        {flights && flights.map((flight, i) => {
+                        {flights && !loading && flights.map((flight, i) => {
                             const departureTime = formatDate(flight.flight.departure.time);
                             const arrivalTime = formatDate(flight.flight.arrival.time);
 
@@ -151,6 +154,7 @@ const AdminCustomerFlights = () => {
                                     <td>{flight.fareType}</td>
                                     <td>{flight.flight.passengers.length}</td>
                                     <td>{flight.payment_method}</td>
+                                    <td>{formatDate(flight.bookDate)}</td>
                                 </tr>
                             )
                         }

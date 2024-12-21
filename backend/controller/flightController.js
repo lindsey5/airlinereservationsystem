@@ -159,7 +159,7 @@ export const get_available_flights = async (req, res) => {
             'classes': {
                 $elemMatch: { className: flightClass, 'seats.status' : 'available' },
             },
-            'departure.time': { $gte: new Date().setHours(new Date().getHours() + 3) } // Ensure the departure time is in the future
+            'departure.time': { $gte: new Date().setHours(new Date().getHours() + 4) } // Ensure the departure time is in the future
         }
 
         if (type === 'Domestic') {
@@ -615,7 +615,7 @@ export const get_customer_flights = async (req, res) => {
     const page = parseInt(req.query.page) || 1; 
     const limit = parseInt(req.query.limit) || 10; 
     const skip = (page - 1) * limit; 
-    const {departureTime, arrivalTime} = req.query;
+    const {from, to} = req.query;
     const type = req.query.type
     // Capture the search term for filtering flights (if provided)
     const searchTerm = req.query.searchTerm;
@@ -639,21 +639,16 @@ export const get_customer_flights = async (req, res) => {
                     { 'class': { $regex: new RegExp(searchTerm, 'i') } },
                     { 'fareType': { $regex: new RegExp(searchTerm, 'i') } },
                 ],
-                booked_by: req.userId
             }
             : {}; 
             if(req.query.status !== 'All') searchCriteria['flights.status'] = req.query.status;
 
             if(req.query.airline !== 'All') searchCriteria['flights.airline'] = req.query.airline
 
-            if(departureTime) searchCriteria['flights.departure.time'] = {
-                $gte: new Date(req.query.departureTime), 
-                $lte: new Date(req.query.departureTime).setHours(23, 59, 59, 999)
+            if(from && to) searchCriteria.createdAt = {
+                $gte: new Date(from), 
+                $lte: new Date(to).setHours(23, 59, 59, 999)
             }
-            if(arrivalTime) searchCriteria['flights.arrival.time'] = {
-                $gte: new Date(req.query.arrivalTime), 
-                $lte: new Date(req.query.arrivalTime).setHours(23, 59, 59, 999)
-            };
             
             if (type === 'Domestic') {
                 searchCriteria['flights.departure.country'] = 'Philippines';

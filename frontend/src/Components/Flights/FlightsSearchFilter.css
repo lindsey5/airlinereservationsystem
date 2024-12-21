@@ -38,6 +38,7 @@
     display: flex;
     width: 100%;
     color: rgb(156, 156, 156);
+    flex-wrap: wrap;
     justify-content: space-between;
 }
 
@@ -49,7 +50,7 @@
 
 .flights-search-filter .filter-container > div > .status-filter,
 .flights-search-filter .filter-container > div > .airline-filter{
-    width: 50%;
+    width: 40%;
     margin-right: 10px;
 }
 
@@ -59,7 +60,16 @@
     outline: none;
 }
 
+.flights-search-filter .filter-container .date-parent-container p{
+    width: 100%;
+    margin: 0;
+    margin-bottom: 20px;
+
+}
+
+
 .flights-search-filter .filter-container .date-container input{
+    display: block;
     margin-top: 5px;
 }
 

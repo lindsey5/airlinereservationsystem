@@ -54,6 +54,8 @@ const FrontDeskBookingPage = () => {
         yPosition += lineHeight;
         doc.text(`Number of Passenger(s): ${passengersType.length}`, margin, yPosition);
         yPosition += lineHeight + 5;
+        doc.text(`Fare Type: ${fareType} Tier`, margin, yPosition);
+        yPosition += lineHeight + 5;
 
         doc.setFontSize(6);
         doc.text('Items', margin, yPosition);
@@ -95,6 +97,11 @@ const FrontDeskBookingPage = () => {
         yPosition += 5;  // Adjust Y position for total
         doc.text('Total: ', margin, yPosition);  // Format total to two decimals
         doc.text(`${totalAmount.toFixed(2)}`, 60, yPosition);
+        yPosition += 10;
+        doc.text('Note:', margin, yPosition);
+        yPosition += 5;
+        doc.text('Cancellation is for Gold Tier Only')
+        doc.text('You can change the passenger(s) information atleast two hours before departure')
         // Save the PDF
         doc.save('receipt.pdf');
     };

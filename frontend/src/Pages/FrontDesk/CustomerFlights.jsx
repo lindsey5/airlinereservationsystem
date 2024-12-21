@@ -12,9 +12,9 @@ import CustomerFlightsFilter from "../../Components/Flights/CustomerFlightsFilte
 const filterState = {
     status: 'All',
     type: 'All',
-    departureTime: '',
-    arrivalTime: '',
-    airline: 'All'
+    airline: 'All',
+    from: '',
+    to: '',
 }
 
 const filterReducer = (state, action) => {
@@ -23,12 +23,12 @@ const filterReducer = (state, action) => {
             return {...state, status: action.payload}
         case 'SET_TYPE':
             return {...state, type: action.payload}        
-        case 'SET_DEPARTURE_TIME':
-            return {...state, departureTime: action.payload}
-        case 'SET_ARRIVAL_TIME':
-            return {...state, arrivalTime: action.payload}
         case 'SET_AIRLINE' : 
             return {...state, airline: action.payload}
+        case 'SET_FROM': 
+             return {...state, from: action.payload}
+        case 'SET_TO':
+            return {...state, to: action.payload}
         case 'RESET':
             action.callback();
             return filterState
@@ -54,7 +54,7 @@ const CustomerFlights = () => {
         dispatch({type: 'SET_DISABLED_NEXT_BTN', payload: true})
         dispatch({type: 'SET_DISABLED_PREV_BTN', payload: true})
         try{
-            const response = await fetch(`/api/flight/flights/customer?page=${state.currentPage}&&limit=50&&searchTerm=${searchTerm}&&status=${filter.status}&&type=${filter.type}&&departureTime=${filter.departureTime}&&arrivalTime=${filter.arrivalTime}&&airline=${filter.airline}`);
+            const response = await fetch(`/api/flight/flights/customer?page=${state.currentPage}&&limit=50&&searchTerm=${searchTerm}&&status=${filter.status}&&type=${filter.type}&&from=${filter.from}&&to=${filter.to}&&airline=${filter.airline}`);
             if(response.ok){
                 const result = await response.json();
                 result.currentPage === result.totalPages || result.totalPages === 0 ? dispatch({type: 'SET_DISABLED_NEXT_BTN', payload: true}) :  dispatch({type: 'SET_DISABLED_NEXT_BTN', payload: false});
@@ -128,14 +128,14 @@ const CustomerFlights = () => {
                             <th style={{fontSize: '15px'}}>Fare Type</th>
                             <th style={{fontSize: '15px'}}>Passengers</th>
                             <th style={{fontSize: '15px'}}>Payment Method</th>
+                            <th style={{fontSize: '15px'}}>Booked Date</th>
                             <th style={{fontSize: '15px'}}>Action</th>
                         </tr>
                     </thead>
                     <tbody>
-                        {flights && flights.map((flight, i) => {
+                        {flights && !loading && flights.map((flight, i) => {
                             const departureTime = formatDate(flight.flight.departure.time);
                             const arrivalTime = formatDate(flight.flight.arrival.time);
-                            console.log(flight)
                             return (
                                 <tr key={i}>
                                     <td>{flight.bookingRef}</td>
@@ -152,6 +152,7 @@ const CustomerFlights = () => {
                                     <td>{flight.fareType}</td>
                                     <td>{flight.flight.passengers.length}</td>
                                     <td>{flight.payment_method}</td>
+                                    <td>{formatDate(flight.bookDate)}</td>
                                     <td>
                                         {flight.fareType === 'Gold' && !(new Date() >= new Date(flight.flight.departure.time)) && flight.flight.status === 'Booked' && 
                                             <button onClick={() => {

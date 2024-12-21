@@ -196,7 +196,7 @@ const setCity = (state, action) => {
 
 const setDepartureTime = (state, action) => {
     const newFlights =  state.flights.map((flight, i) =>
-            i === action.index ? { ...flight, DepartureTime: action.date } : flight
+            i === action.index ? { ...flight, DepartureTime: formatDateOnly(action.date) } : flight
         )
 
     return newFlights

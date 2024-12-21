@@ -88,7 +88,7 @@ const SearchResults = () => {
                             <img src="/icons/airplane.png" alt="" />
                             <h3>{state.flights[0].ToCity && state.flights[0].ToCity}</h3>
                             <div className="line"></div>
-                            {formatDate(state.flights[0].DepartureTime)}
+                            {formatDateOnly(state.flights[0].DepartureTime)}
                         </div>
                         <button onClick={() => setShowEdit(!showEdit)}>{showEdit ? 'Hide Search' : 'Edit Search'}</button>
                     </div>

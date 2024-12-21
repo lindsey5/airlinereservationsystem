@@ -4,6 +4,11 @@ import { createNotifications } from "./notificationService.js";
 
 export const one_way_search = async (data, flightClass, price) =>{
     try{
+        const now = new Date().toLocaleString('en-US', {
+            month: '2-digit',
+            day: '2-digit',
+            year: 'numeric',
+        })
         const { departureCountry, departureCity, arrivalCity, arrivalCountry, departureTime } = data;
         const query = {
             'departure.country': departureCountry,
@@ -13,9 +18,8 @@ export const one_way_search = async (data, flightClass, price) =>{
             'classes': {
                 $elemMatch: { className: flightClass, 'seats.status' : 'available' },
             },
-            'departure.time': { $gte: new Date(departureTime) }
+            'departure.time': { $gte: now === departureTime ? new Date().setHours(new Date().getHours() + 4) : new Date(departureTime) }
         };
-
         const flights = await Flight.find(query);
         const sortedFlights = flights.sort((current, next) => {
             return current.classes.find(classObj => classObj.className === flightClass).price - next.classes.find(classObj => classObj.className === flightClass).price;
@@ -30,6 +34,12 @@ export const one_way_search = async (data, flightClass, price) =>{
 }
 
 export const round_trip_search = async (data, flightClass,price, returnDate) => {
+    const now = new Date().toLocaleString('en-US', {
+        month: '2-digit',
+        day: '2-digit',
+        year: 'numeric',
+    })
+
     const { departureCountry, departureCity, arrivalCity, arrivalCountry, departureTime} = data;
     const searchResults = {
         outboundFlights: [],
@@ -44,7 +54,7 @@ export const round_trip_search = async (data, flightClass,price, returnDate) => 
         'classes': {
             $elemMatch: { className: flightClass, 'seats.status' : 'available' },
         },
-        'departure.time': { $gte: new Date(departureTime) }
+        'departure.time': { $gte: now === departureTime ? new Date().setHours(new Date().getHours() + 4) : new Date(departureTime) }
     };
 
     const returnQuery = {
@@ -56,7 +66,7 @@ export const round_trip_search = async (data, flightClass,price, returnDate) => 
         'classes': {
             $elemMatch: { className: flightClass, 'seats.status' : 'available' },
         },
-        'departure.time': { $gte: new Date(departureTime) }
+        'departure.time': { $gte: now === departureTime ? new Date().setHours(new Date().getHours() + 4) : new Date(departureTime) }
     }
 
     // Fetch outbound flight results
@@ -105,6 +115,11 @@ export const round_trip_search = async (data, flightClass,price, returnDate) => 
 };
 
 export const multi_city_search = async (searchSegments, flightClass, price) => {
+    const now = new Date().toLocaleString('en-US', {
+        month: '2-digit',
+        day: '2-digit',
+        year: 'numeric',
+    })
     const segmentResults = [];
 
     // Fetch flights for each search segment
@@ -121,7 +136,7 @@ export const multi_city_search = async (searchSegments, flightClass, price) => {
             'classes': {
                 $elemMatch: { className: flightClass, 'seats.status' : 'available' },
             },
-            'departure.time': { $gte: new Date(departureTime) }
+            'departure.time': { $gte: now === departureTime ? new Date().setHours(new Date().getHours() + 4) : new Date(departureTime) }
         });
         segmentResults.push(flights);
     }
