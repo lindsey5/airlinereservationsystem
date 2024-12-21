@@ -99,7 +99,7 @@ const AdminCustomerFlights = () => {
     }, [searchTerm])
 
     useEffect(() => {
-        document.title = "Flights | Front Desk";
+        document.title = "Customer Flights | Admin";
     }, []);
 
     return (

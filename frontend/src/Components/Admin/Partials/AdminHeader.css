@@ -43,6 +43,17 @@
     margin-right: 10px;
 }
 
+.admin-header .right-container{
+    display: flex;
+    align-items: center;
+}
+
+.admin-header .right-container > p{
+    color: #ff3131;
+    font-weight: 500;
+}
+
+
 @media screen and (max-width: 768px) {
     .admin-header .logo-container button{
         display: flex;

@@ -14,6 +14,10 @@ const Admins = () => {
     const [showSuccessModal, setShowSuccessModal] = useState(false);
 
     useEffect(() => {
+        document.title = "Admins | Admin";
+    }, []);
+
+    useEffect(() => {
         const fetchAirplanes = async () => {
             dispatch({type: 'SET_DISABLED_NEXT_BTN', payload: true})
             dispatch({type: 'SET_DISABLED_PREV_BTN', payload: true})

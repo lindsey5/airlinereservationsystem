@@ -165,6 +165,7 @@ const AdminFlights = () => {
                                 <th>Arrival Time</th>
                                 <th>Created At</th>
                                 <th>Status</th>
+                                <th>Created By</th>
                                 <th>Action</th>
                             </tr>
                         </thead>
@@ -185,6 +186,7 @@ const AdminFlights = () => {
                                         <td>{arrivalTime}</td>
                                         <td>{formatDate(flight.createdAt)}</td>
                                         {dataStatus(flight.status)}
+                                        <td>{flight.added_by.firstname} {flight.added_by.lastname}</td>
                                         <td>
                                             {flight.status !== 'Completed' && flight.status !== 'Cancelled' &&
                                             <button onClick={() => flight.status === 'Scheduled' ? updateFlight(flight._id) : completeFlight(flight._id)}>

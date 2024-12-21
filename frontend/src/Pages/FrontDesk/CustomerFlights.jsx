@@ -78,7 +78,7 @@ const CustomerFlights = () => {
     }, [searchTerm])
 
     useEffect(() => {
-        document.title = "Flights | Front Desk";
+        document.title = "Customer Flights | Front Desk";
     }, []);
 
     const utf8ToBase64 = (str) => {

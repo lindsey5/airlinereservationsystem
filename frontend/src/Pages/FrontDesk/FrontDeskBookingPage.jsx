@@ -6,6 +6,7 @@ import PassengerForm from "../../Components/Booking/PassengerForm";
 import jsPDF from 'jspdf'
 import { formatDate } from "../../utils/dateUtils";
 import GetMaxPassengers from "../../utils/GetMaxPassengers";
+import formatPrice from "../../../../backend/utils/formatPrice";
 
 const FrontDeskBookingPage = () => {
     const queryParams = new URLSearchParams(window.location.search);
@@ -23,7 +24,7 @@ const FrontDeskBookingPage = () => {
     const [loading, setLoading] = useState(false);
 
     const generateReceipt = (booking_ref) => {
-        const initialPageHeight = 200;  
+        const initialPageHeight = 220;  
         const doc = new jsPDF({
             unit: 'mm',
             format: [80, initialPageHeight]
@@ -53,7 +54,7 @@ const FrontDeskBookingPage = () => {
         doc.text(`Customer Email: ${email}`, margin, yPosition);
         yPosition += lineHeight;
         doc.text(`Number of Passenger(s): ${passengersType.length}`, margin, yPosition);
-        yPosition += lineHeight + 5;
+        yPosition += lineHeight;
         doc.text(`Fare Type: ${fareType} Tier`, margin, yPosition);
         yPosition += lineHeight + 5;
 
@@ -73,7 +74,7 @@ const FrontDeskBookingPage = () => {
     
             // Add item to receipt
             doc.text(`${item.name} (${item.quantity})`, margin, yPosition);
-            doc.text((item.amount * item.quantity).toFixed(2), itemWidth, yPosition);  // Format price
+            doc.text(formatPrice(item.amount * item.quantity), itemWidth, yPosition);  // Format price
             yPosition += lineHeight;
             totalHeight = getContentHeight();  // Update total height
         });
@@ -96,12 +97,14 @@ const FrontDeskBookingPage = () => {
     
         yPosition += 5;  // Adjust Y position for total
         doc.text('Total: ', margin, yPosition);  // Format total to two decimals
-        doc.text(`${totalAmount.toFixed(2)}`, 60, yPosition);
+        doc.text(`${formatPrice(totalAmount)}`, 60, yPosition);
         yPosition += 10;
+        doc.setFontSize(6);
         doc.text('Note:', margin, yPosition);
         yPosition += 5;
-        doc.text('Cancellation is for Gold Tier Only')
-        doc.text('You can change the passenger(s) information atleast two hours before departure')
+        doc.text('Flight cancellation is for Gold Tier Only',  margin, yPosition)
+        yPosition += 5;
+        doc.text('You can change the passenger(s) information atleast 2 hrs before departure', margin, yPosition)
         // Save the PDF
         doc.save('receipt.pdf');
     };
@@ -167,6 +170,7 @@ const FrontDeskBookingPage = () => {
                 if(response.ok){
                     const result = await response.json();
                     generateReceipt(result.booking_ref);
+                    window.open(`/tickets?data=${result._id}`, 'blank')
                     window.location.href = '/frontdesk/flights/customer'
                 }else{
                     alert('Book failed');
@@ -196,6 +200,7 @@ const FrontDeskBookingPage = () => {
                         if(response.ok){
                             const result = await response.json();
                             generateReceipt(result.booking_ref);
+                            window.open(`/tickets?data=${result._id}`, 'blank')
                             window.location.href = '/frontdesk/flights/customer';
                         }else{
                             alert('Book failed');

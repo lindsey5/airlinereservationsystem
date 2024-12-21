@@ -32,7 +32,7 @@ export const FlightSchema = new Schema({
         }
      },
     classes: { type: [ClassSchema], required: true,},
-    added_by: { type: String, required: true }
+    added_by: { type: String, required: true, ref: 'Admin' }
 }, { timestamps: true });
 
 FlightSchema.pre('save', function (next) {

@@ -28,6 +28,10 @@ const AdminDashboard = () => {
     const [popularDestinations, setPopularDestinations] = useState([]);
 
     useEffect(() => {
+        document.title = "Dashboard | Admin";
+    }, []);
+
+    useEffect(() => {
         const fetchDestinations = async () => {
             try{
                 const response = await fetch(`/api/popular-destinations?limit=10&&year=${year}`);

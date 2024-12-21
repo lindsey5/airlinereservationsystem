@@ -33,6 +33,10 @@ const FrontDeskAgents = () => {
         fetchAirplanes();
     },[state.currentPage, searchTerm])
 
+    useEffect(() => {
+        document.title = "Front Desks | Admin";
+    }, []);
+
     const handleAddAgent = async (e) => {
         e.preventDefault();
         if(confirm('Click ok to continue')){
