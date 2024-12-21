@@ -97,12 +97,16 @@
     margin-right: 15px;
 }
 
-@media screen and (max-width: 425px) {
+@media screen and (max-width: 650px) {
     .user-page header > div > h3{
         font-size: 15px
     }
 
     .user-page header > button{
         height: 30px;
+    }
+
+    .user-page .right-container p{
+        display: none;
     }
 }
