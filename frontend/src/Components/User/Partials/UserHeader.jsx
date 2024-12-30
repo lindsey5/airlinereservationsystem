@@ -1,7 +1,7 @@
 import { useNavigate } from 'react-router-dom'
 import { useLogout } from '../../../hooks/useLogout'
 import './UserHeader.css'
-import { useContext, useEffect, useState } from 'react';
+import { useContext, useState } from 'react';
 import { SettingsContext } from '../../../Context/SettingsContext';
 import useFetch from '../../../hooks/useFetch';
 

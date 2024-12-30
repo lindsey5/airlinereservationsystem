@@ -1,6 +1,6 @@
 import useFetch from "../../hooks/useFetch";
 import { SearchContext } from "../../Context/SearchContext";
-import { useContext, useEffect } from "react";
+import React, { useContext, useEffect } from "react";
 import './SearchForm.css'
 import dayjs from 'dayjs';
 import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs';
@@ -8,7 +8,7 @@ import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider';
 import { DatePicker } from '@mui/x-date-pickers';
 import { formatDateOnly } from "../../utils/dateUtils";
 
-const SearchForms = () =>{
+const SearchForms = React.memo (() =>{
     const { data: countries } = useFetch('/api/countries');
     const { state, dispatch, setCountryAsync} = useContext(SearchContext);
 
@@ -165,6 +165,6 @@ const SearchForms = () =>{
                 ))}
             </>
     )
-}
+})
 
 export default SearchForms

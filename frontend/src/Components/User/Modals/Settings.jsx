@@ -4,6 +4,7 @@ import './Settings.css';
 import { useContext } from 'react';
 import { SettingsContext } from '../../../Context/SettingsContext';
 import { updateUser } from '../../../Service/userService';
+import { useNavigate } from 'react-router-dom';
 
 const Settings = () => {
     const { data } = useFetch('/api/user');
@@ -11,6 +12,7 @@ const Settings = () => {
     const [disableGender, setDisableGender] = useState(true)
     const { setShowSettings } = useContext(SettingsContext);
     const [isValid, setIsValid] = useState(false);
+    const navigate = useNavigate();
 
     useEffect(() => {
         if(data){
@@ -38,7 +40,7 @@ const Settings = () => {
                     <div>
                         <p>Email:</p>
                         <input type="text" disabled value={details && details.email}/>
-                        <button className='change-btn'>Change</button>
+                        <button className='change-btn' onClick={() => navigate('/user/email')}>Change</button>
                     </div>
                     <div>
                         <p>Gender: </p>

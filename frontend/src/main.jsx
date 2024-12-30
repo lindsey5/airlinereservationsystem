@@ -54,6 +54,7 @@ import AdminCustomerFlights from './Pages/AdminPage/AdminCustomerFlights';
 import UserForgotPassword from './Pages/AuthPages/UserForgotPassword';
 import AdminForgotPassword from './Pages/AuthPages/AdminForgotPassword';
 import FrontDeskForgotPassword from './Pages/AuthPages/FrontDeskForgotPassword';
+import ChangeEmail from './Pages/UserPage/ChangeEmail';
 
 const router = createBrowserRouter(
   createRoutesFromElements(
@@ -88,6 +89,7 @@ const router = createBrowserRouter(
             <Route path='flights' element={<UserFlights />} />
             <Route path='passengers/edit' element={<EditPassengers />} />
             <Route path='change-password' element={<ChangePassword />} />
+            <Route path='email' element={<ChangeEmail />}/>
           </Route>
         </Route>
       </Route>
