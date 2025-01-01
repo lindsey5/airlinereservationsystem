@@ -40,7 +40,10 @@ const Settings = () => {
                     <div>
                         <p>Email:</p>
                         <input type="text" disabled value={details && details.email}/>
-                        <button className='change-btn' onClick={() => navigate('/user/email')}>Change</button>
+                        <button className='change-btn' onClick={() => {
+                            setShowSettings(false)
+                            navigate('/user/email')
+                        }}>Change</button>
                     </div>
                     <div>
                         <p>Gender: </p>

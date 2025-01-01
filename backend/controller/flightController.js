@@ -450,7 +450,7 @@ const isPlaneHaveNextFlight = async (currentFlight, airplane) => {
     // Search for a flight where the airplane has the same ID and the departure is from the same airport as the current flight's arrival airport
     // and the departure time is after the current flight's arrival time.
     const flight = await Flight.findOne({
-        'airplane.id': airplane,  // Same airplane ID
+        'airplane.code': airplane,  // Same airplane ID
         'departure.airport': currentFlight.arrival.airport,  // Same departure airport as current flight arrival airport
         'departure.time': { $gt: currentFlight.arrival.time }  // Departure time should be after current flight's arrival time
     });
@@ -469,7 +469,8 @@ export const completeFlight = async (req, res) => {
         updatedFlight.status = 'Completed';
 
         // Fetch the airplane associated with the current flight
-        const plane = await Airplane.findById(updatedFlight.airplane.id);
+        const plane = await Airplane.findOne({code: updatedFlight.airplane.code})
+
         plane.currentLocation = updatedFlight.arrival.airport;  // Update the airplane's current location to the arrival airport
 
         // Check if the captain and co-pilot have a next flight
@@ -491,8 +492,8 @@ export const completeFlight = async (req, res) => {
         }
 
         // Check if the airplane does not have a next flight. If so, mark the airplane as 'Available'
-        if (!await isPlaneHaveNextFlight(updatedFlight, updatedFlight.airplane.id)) {
-            const airplane = await Airplane.findById(updatedFlight.airplane.id);
+        if (!await isPlaneHaveNextFlight(updatedFlight, updatedFlight.airplane.code)) {
+            const airplane = await Airplane.findOne({code: updatedFlight.airplane.code});
             airplane.status = 'Available';  // Mark airplane as available
             await airplane.save();
         }

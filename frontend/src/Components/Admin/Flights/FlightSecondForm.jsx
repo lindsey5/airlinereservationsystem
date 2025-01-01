@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useCallback, useEffect, useMemo, useState } from "react";
 import { handleBlur, handleFocus, handleNegative, handleNegativeAndDecimal } from "../../../utils/handleInput";
 import useFetch from "../../../hooks/useFetch";
 
@@ -10,6 +10,7 @@ const validateColumns = (columns) => {
 const FlightSecondForm = ({state, dispatch, close}) => {
     const [error, setError] = useState();
     const [loading, setLoading] = useState(false);
+    const { data } = useFetch(`/api/airplane/${state.airplane.code}`);
 
     const createFlight = async (e) => {
         e.preventDefault();
@@ -58,26 +59,18 @@ const FlightSecondForm = ({state, dispatch, close}) => {
         if (classname) {
             dispatch({type: 'SET_CLASSES', payload: state.classes.filter(class_name => class_name !== classname)})
         } else {
-            dispatch({type: 'SET_CLASSES', payload: [...state.classes, { className }]})
+            const newClasses = [...state.classes, { className }]
+            const classes = ['First', 'Business', 'Economy'];
+            const sortedNewClasses = classes.map(className => 
+                newClasses.find(classObj => classObj.className === className)
+            ).filter(Boolean)
+
+            dispatch({type: 'SET_CLASSES', payload: sortedNewClasses})
         }
     };
-    
-    const getClassSeats = (className) => {
+
+    const getClassSeats = useCallback((className) => {
         return state.classes.find(classType => classType.className === className).seats;
-    }
-
-    const { data } = useFetch(`/api/airplane/${state.airplane.code}`);
-
-    useEffect(() => {
-        if(state.classes.length > 0){
-            const classes = ['First', 'Business', 'Economy'];
-            const sortedClasses = classes.map(className => 
-                state.classes.find(classObj => classObj.className === className)
-            ).filter(classObj => classObj)
-            dispatch({type: 'SET_CLASSES', payload: sortedClasses})
-            
-        }
-
     }, [state.classes])
 
     return (
