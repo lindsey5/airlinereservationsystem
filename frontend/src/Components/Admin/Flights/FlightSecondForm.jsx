@@ -68,10 +68,7 @@ const FlightSecondForm = ({state, dispatch, close}) => {
             dispatch({type: 'SET_CLASSES', payload: sortedNewClasses})
         }
     };
-
-    const getClassSeats = useCallback((className) => {
-        return state.classes.find(classType => classType.className === className).seats;
-    }, [state.classes])
+    
 
     return (
         <div className="container">
@@ -104,7 +101,7 @@ const FlightSecondForm = ({state, dispatch, close}) => {
                                     min='1'
                                     onFocus={handleFocus}
                                     onBlur={handleBlur}
-                                    value={getClassSeats(className.className)}
+                                    value={className.seats || ''}
                                     onKeyPress={handleNegativeAndDecimal}
                                     required
                                     disabled={!className.columns}
