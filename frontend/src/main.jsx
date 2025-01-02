@@ -44,7 +44,7 @@ import { SideBarContextProvider } from './Context/SideBarContext';
 import CustomerFlights from './Pages/FrontDesk/CustomerFlights';
 import './styles/loader.css';
 import EditPassengers from './Components/Booking/EditPassengers';
-import ChangePassword from './Pages/AdminPage/ChangePassword';
+import ChangePassword from './Pages/UserPage/ChangePassword';
 import OurTeam from './Pages/HomePage/OurTeam';
 import FAQ from './Pages/HomePage/FAQ';
 import TermsAndConditions from './Pages/HomePage/TermsAndConditions';

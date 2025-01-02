@@ -50,7 +50,7 @@ export const updateUser = async (data) => {
             })
     
             if(response.ok){
-                window.location.reload();
+                window.location.href = '/user/home';
             }
         }catch(err){
             alert('Updating error');

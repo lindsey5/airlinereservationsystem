@@ -18,9 +18,6 @@ export const getUser = async (req, res) => {
 
 export const update_user = async (req, res) => {
     try{
-        const { gender, email } = req.body;
-        if(!gender) throw new Error('Fill out the required fields: gender')
-        
         const user = await User.findByIdAndUpdate(req.userId, req.body, {
             new: true, 
             runValidators: true,
@@ -34,32 +31,12 @@ export const update_user = async (req, res) => {
     }
 }
 
-export const update_user_email = async (req, res) => {
-    try{
-        const { newEmail, password } = req.body;
-        const isEmailExist = await User.findOne({email: newEmail});
-        if(isEmailExist) throw new Error('The email is already registered, try another one');
-
-        const user = await User.findById(req.userId);
-        const isMatch = await bcrypt.compare(password, user.password);
-  
-        if (!isMatch) throw new Error('Incorrect Password');
-        
-        user.email = newEmail;
-        await user.save();
-        res.status(200).json({message: 'Email successfully changed'});
-    }catch(err){
-        const errors = errorHandler(err);
-        res.status(400).json({errors});
-    }
-}
-
 export const changeUserPassword = async (req, res) => {
     try{
         const user = await User.findOne({email: req.body.email});
         const isMatch = await bcrypt.compare(req.body.password, user.password);
         
-        if (!isMatch) throw new Error('Current password is incorrect password');
+        if (!isMatch) throw new Error('Current password is incorrect');
 
         user.password = req.body.newPassword;
         await user.save();
