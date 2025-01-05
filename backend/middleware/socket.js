@@ -64,6 +64,7 @@ io.on('connection', (socket) => {
   }
   socketInstance = socket;
   socket.on('disconnect', () => {
+    socketInstance = undefined
     console.log('User disconnected:', socket.id);
   });
 });
