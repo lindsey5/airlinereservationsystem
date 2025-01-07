@@ -61,7 +61,9 @@ const Notifications = ({socket, setFlightData}) => {
 
     return (
         <div className="notifications" ref={notifRef}>
-            <button onClick={() => {
+            <button onClick={async() => {
+                if(showNotifs)  socket.emit('notifications', {limit});
+                await socket.emit('update-notifications');
                 setShowNotifs(prev => !prev);
                 setLimit(10);
             }}>
@@ -83,8 +85,6 @@ const Notifications = ({socket, setFlightData}) => {
                 {notifications?.notifications && notifications?.notifications.map(notification => 
                 <div 
                     onClick={() => {
-                        socket.emit('update-notification', {id: notification._id});
-                        socket.emit('notifications', {limit});
                         setFlightData(notification.flight)
                         setShowNotifs(false)
                     }}
