@@ -17,6 +17,8 @@ export const get_pagination_airports = async (req, res) => {
     const limit = parseInt(req.query.limit) || 10; 
     const skip = (page - 1) * limit;
     const searchTerm = req.query.searchTerm;
+    const type = req.query.type
+
     try{
         const searchCriteria = searchTerm
         ? {
@@ -25,9 +27,16 @@ export const get_pagination_airports = async (req, res) => {
                 { airport_code: { $regex: new RegExp(searchTerm, 'i') } },
                 { city: { $regex: new RegExp(searchTerm, 'i') } },
                 { country: { $regex: new RegExp(searchTerm, 'i') }}
-            ]
+            ],
+            
         }
         : {};
+
+        if(type === 'Domestic'){
+            searchCriteria.country = 'Philippines'
+        }else if(type === 'International'){
+            searchCriteria.country = { $ne: 'Philippines'}
+        }
 
         const airports = await Airport.find(searchCriteria)
         .sort({airport: 1})
@@ -42,6 +51,7 @@ export const get_pagination_airports = async (req, res) => {
             airports,
         });
     }catch(err){
+        console.log(err)
         const errors = errorHandler(err);
         res.status(400).json({errors});
     }

@@ -12,13 +12,14 @@ const AdminAirports = () => {
     const [showAddAirport, setShowAddAirport] = useState(false);
     const [showEditAirport, setShowEditAirport] = useState(false);
     const [airportData, setAirportData] = useState();
+    const [type, setType] = useState('All');
 
     useEffect(() => {
         const fetchAirports = async () => {
             dispatch({type: 'SET_DISABLED_NEXT_BTN', payload: true})
             dispatch({type: 'SET_DISABLED_PREV_BTN', payload: true})
             try{
-                const response = await fetch(`/api/airport/airports/pagination?page=${state.currentPage}&&limit=50&&searchTerm=${searchTerm}`);
+                const response = await fetch(`/api/airport/airports/pagination?page=${state.currentPage}&&limit=50&&searchTerm=${searchTerm}&&type=${type}`);
                 if(response.ok){
                     const result = await response.json();
                     result.currentPage === result.totalPages || result.totalPages === 0 ? dispatch({type: 'SET_DISABLED_NEXT_BTN', payload: true}) :  dispatch({type: 'SET_DISABLED_NEXT_BTN', payload: false});
@@ -33,7 +34,7 @@ const AdminAirports = () => {
 
         fetchAirports();
 
-    },[state.currentPage, searchTerm])
+    },[state.currentPage, searchTerm, type])
 
     useEffect(() => {
         dispatch({type:'SET_CURRENT_PAGE', payload: 1})
@@ -49,6 +50,11 @@ const AdminAirports = () => {
             {showEditAirport && <AirportForm title={'Update Airport'} handleSubmit={updateAirport} close={() => setShowEditAirport(false)} data={airportData}/>}
             <h1>Airports</h1>
             <input type="search" placeholder='Search' onChange={(e) => setSearchTerm(e.target.value)}/>
+            <select onChange={(e) => setType(e.target.value)} style={{outline: 'none',height: '30px', marginLeft: '20px'}}>
+                <option value="All">All</option>
+                <option value="International">International</option>
+                <option value="Domestic">Domestic</option>
+            </select>
             <div className="parent-table-container">
                 <AdminPagination state={state} dispatch={dispatch} />
                 <div className='table-container'>

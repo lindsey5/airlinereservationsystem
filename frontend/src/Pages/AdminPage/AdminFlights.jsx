@@ -59,7 +59,7 @@ const AdminFlights = () => {
         row.departure.country, row.departure.city, formatDate(row.departure.time),
         `${row.arrival.airport} (${row.arrival.airport_code})`,
         row.arrival.country, row.arrival.city, formatDate(row.arrival.time),
-        row.status, row.airplane.code, row.pilot.captain, row.pilot.co_pilot, row.added_by
+        row.status, row.airplane.code, row.pilot.captain, row.pilot.co_pilot, `${row.added_by.firstname} ${row.added_by.lastname}`
     ]
       csvRows.push(values);
     });
