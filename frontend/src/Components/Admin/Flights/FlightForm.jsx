@@ -22,7 +22,7 @@ const flightState = {
     gate_number: '',
     captain: '',
     co_pilot: '',
-    airplane: { id: '' },
+    airplane: { code: '' },
 }
 
 const flightReducer = (state, action) => {
@@ -73,6 +73,19 @@ const flightReducer = (state, action) => {
             return {...state, co_pilot: action.payload }
         case 'SET_AIRPLANE':
             return {...state, airplane: {code: action.payload}}
+        case 'SET_CLASSES':
+            return {...state,  classes: action.payload}
+        case 'SET_CLASS_PRICE':
+            const price = action.payload.price;
+            const className = action.payload.className;
+            return {
+                ...state,
+                classes: state.classes.map(classItem => 
+                    classItem.className === className 
+                        ? { ...classItem, price }
+                        : classItem
+                )
+            };
         default: 
             return state
     }
@@ -91,14 +104,7 @@ const FlightForm = ({close}) => {
                 },
                 body: JSON.stringify(state),
             })
-            const result = await response.json();
-            if(response.ok){
-                window.location.reload()
-            }
-    
-            if(result.errors){
-                setError(result.errors[0]);
-            }
+            return await response.json();
     
         }catch(err){
             setError('Error adding flight')
@@ -109,7 +115,7 @@ const FlightForm = ({close}) => {
         <div className="admin-form">
             {!showPrices ? 
                 <FlightFirstForm state={state} dispatch={dispatch} close={close} handleSubmit={() => setShowPrices(true)} /> : 
-                <FlightClassesPrice state/>
+                <FlightClassesPrice state={state} createFlight={createFlight} dispatch={dispatch} close={() => setShowPrices(false)}/>
             }
             
         </div>
