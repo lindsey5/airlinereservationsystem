@@ -1,18 +1,44 @@
-import { useCallback, useEffect, useMemo, useState } from "react";
-import { handleBlur, handleFocus, handleNegative, handleNegativeAndDecimal } from "../../../utils/handleInput";
-import useFetch from "../../../hooks/useFetch";
+import {  useReducer, useState } from "react";
+import { handleBlur, handleFocus, handleNegativeAndDecimal } from "../../../utils/handleInput";
 
 const validateColumns = (columns) => {
     const regex = /^(\d+x)+\d+$/;
     return regex.test(columns);
 };
 
-const FlightSecondForm = ({state, dispatch, close}) => {
+const airplaneReducer = (state, action) => {
+    switch(action.type){
+        case 'SET_CLASSES':
+            return {...state, classes: action.payload}
+        case 'SET_CLASS_SEATS':
+            const classname = action.payload.className;
+            const seats = action.payload.seats;
+            return {
+                ...state,
+                classes: state.classes.map(classItem => 
+                    classItem.className === classname 
+                        ? { ...classItem, seats }
+                        : classItem
+                )
+            };
+        case 'SET_CLASS_COLUMNS':
+            return {
+                ...state,
+                classes: state.classes.map(classItem => 
+                    classItem.className === action.payload.className
+                        ? { ...classItem, columns: action.payload.columns }
+                        : classItem
+                )
+            };
+    }
+}
+
+const FlightSecondForm = ({airplaneData, handleSubmit, close}) => {
     const [error, setError] = useState();
     const [loading, setLoading] = useState(false);
-    const { data } = useFetch(`/api/airplane/${state.airplane.code}`);
+    const [state, dispatch] = useReducer(airplaneReducer, {...airplaneData, classes: airplaneData.classes || []});
 
-    const createFlight = async (e) => {
+    const submit = async (e) => {
         e.preventDefault();
         const isNotValid = state.classes.find(classObj => {
             return classObj.seats % classObj.columns.split('x').reduce((total, acc) => total + parseInt(acc), 0) !== 0
@@ -28,28 +54,8 @@ const FlightSecondForm = ({state, dispatch, close}) => {
             setError(`${columnsIsNotValid.className} columns format is invalid. Please use the format "3x3"`)
         }else{
             setLoading(true);
-            try{
-                const response = await fetch('/api/flight',{
-                    method: 'POST',
-                    headers: {
-                        'Content-Type': 'application/json',
-                    },
-                    body: JSON.stringify(state),
-                })
-                const result = await response.json();
-                if(response.ok){
-                    window.location.reload()
-                }
-        
-                if(result.errors){
-                    setError(result.errors[0]);
-                }
-        
-            }catch(err){
-                setError('Error adding pilot')
-            }
-
-            setLoading(false);
+            await handleSubmit(state);
+            setLoading(false)
         }
     }
 
@@ -75,18 +81,16 @@ const FlightSecondForm = ({state, dispatch, close}) => {
             {loading && <div className="loader-container">
                 <div className="loader"></div>
             </div>}
-             <span className='close'onClick={close}>X</span>
-            <form onSubmit={createFlight}>
+             <span className='close' onClick={close}>X</span>
+            <form onSubmit={submit}>
                 <h2>Select Classes</h2>
-                <p>Plane Code: {state.airplane.code}</p>
-                <p>Seat Capacity: {data && data.passengerSeatingCapacity}</p>
                 <div style={{marginTop: '50px'}}>
-                    <label htmlFor="ecomony">Economy</label>
-                    <input type="checkbox" name="economy" onClick={() => handleClasses('Economy')}/>
-                    <label htmlFor="business">Business</label>
-                    <input type="checkbox" name="business" onClick={() => handleClasses('Business')}/>
                     <label htmlFor="first">First</label>
-                    <input type="checkbox" name="first" onClick={() => handleClasses('First')}/>
+                    <input type="checkbox" checked={state?.classes.find(classObj => classObj.className === 'First')} name="first" onClick={() => handleClasses('First')}/>
+                    <label htmlFor="business">Business</label>
+                    <input type="checkbox" checked={state?.classes.find(classObj => classObj.className === 'Business')} name="business" onClick={() => handleClasses('Business')}/>
+                    <label htmlFor="ecomony">Economy</label>
+                    <input type="checkbox" checked={state?.classes.find(classObj => classObj.className === 'Economy')} name="economy" onClick={() => handleClasses('Economy')}/>
                 </div>
                 <div className='classes-container'>
                 {state.classes.length > 0 && state.classes.map(className =>  
@@ -113,25 +117,12 @@ const FlightSecondForm = ({state, dispatch, close}) => {
                             <div className='input-container'>
                                 <input 
                                     className='input'
-                                    type="number" 
-                                    placeholder="Price"
-                                    min='1'
-                                    onFocus={handleFocus}
-                                    onBlur={handleBlur}
-                                    required
-                                    onKeyPress={handleNegative}
-                                    onChange={(e) => dispatch({type: 'SET_CLASS_PRICE', payload: {price: e.target.value, className: className.className}})}
-                                />
-                                <span>Price</span>
-                            </div>
-                            <div className='input-container'>
-                                <input 
-                                    className='input'
                                     type="text" 
                                     placeholder="Columns"
                                     onFocus={handleFocus}
                                     onBlur={handleBlur}
                                     required
+                                    value={className.columns || ''}
                                     onChange={(e) => dispatch({type: 'SET_CLASS_COLUMNS', payload: {columns: e.target.value, className: className.className}})}
                                 />
                                 <span>Columns</span>

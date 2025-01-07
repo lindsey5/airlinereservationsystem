@@ -56,7 +56,6 @@ const AdminAirplanes = () => {
                             <th>Airline</th>
                             <th>Model</th>
                             <th>Current Location</th>
-                            <th>Passenger Seat Capacity</th>
                             <th>Status</th>
                             <th>Action</th>
                         </tr>
@@ -68,7 +67,6 @@ const AdminAirplanes = () => {
                             <td>{airplane.airline}</td>
                             <td>{airplane.model}</td>
                             <td>{airplane.currentLocation}</td>
-                            <td>{airplane.passengerSeatingCapacity}</td>
                             {dataStatus(airplane.status)}
                             <td>
                                 <button onClick={() =>{

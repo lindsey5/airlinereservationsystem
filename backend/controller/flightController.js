@@ -7,7 +7,7 @@ import { errorHandler } from "../utils/errorHandler.js";
 import jwt from "jsonwebtoken";
 import { sendTickets } from "../service/emailService.js";
 import Booking from "../model/Booking.js";
-import { calculateSeats, createSeats, createClasses } from "../utils/flightUtils.js";
+import {  createSeats, createClasses } from "../utils/flightUtils.js";
 import { createPayment, getPaymentId, refundPayment } from "../service/paymentService.js";
 import { updatePilotStatus } from '../service/pilotService.js';
 import Payment from "../model/Payment.js";
@@ -59,14 +59,9 @@ export const create_flight = async (req, res) => {
             airplane.updateOne({ status: 'Assigned' })
         ]);
 
-        // Checks if the filterd classes seats is equal to the airplane seating capacity
-        if (calculateSeats(filteredClasses) !== airplane.passengerSeatingCapacity) {
-            // Throw an error if it is not equal
-            throw new Error(`The total number of seats must equal the plane's seating capacity of ${airplane.passengerSeatingCapacity}`);
-        }
         // Generate seats based on the airplane's seating capacity and the column configuration.
         // The `createSeats` function calculates the total number of seats, taking into account the number of columns and total capacity.
-        const newSeats = createSeats(airplane.passengerSeatingCapacity, classes);
+        const newSeats = createSeats(classes);
 
         // Distribute the generated seats to the different flight classes.
         // The `createClasses` function maps the seats to each class based on the number of seats per class and assigns them accordingly.

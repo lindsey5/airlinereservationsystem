@@ -1,8 +1,8 @@
 import { useReducer, useState } from "react"
 import FlightFirstForm from "./FlightFirstForm"
-import FlightSecondForm from "./FlightSecondForm";
 import '../Forms/AdminForm.css'
 import './FlightForm.css'
+import FlightClassesPrice from "./FlightPrices"
 
 const flightState = {
     departure: {
@@ -23,7 +23,6 @@ const flightState = {
     captain: '',
     co_pilot: '',
     airplane: { id: '' },
-    classes : []
 }
 
 const flightReducer = (state, action) => {
@@ -74,39 +73,6 @@ const flightReducer = (state, action) => {
             return {...state, co_pilot: action.payload }
         case 'SET_AIRPLANE':
             return {...state, airplane: {code: action.payload}}
-        case 'SET_CLASSES':
-            return {...state, classes: action.payload}
-        case 'SET_CLASS_PRICE':
-            const price = action.payload.price;
-            const className = action.payload.className;
-            return {
-                ...state,
-                classes: state.classes.map(classItem => 
-                    classItem.className === className 
-                        ? { ...classItem, price }
-                        : classItem
-                )
-            };
-        case 'SET_CLASS_SEATS':
-            const classname = action.payload.className;
-            const seats = action.payload.seats;
-            return {
-                ...state,
-                classes: state.classes.map(classItem => 
-                    classItem.className === classname 
-                        ? { ...classItem, seats }
-                        : classItem
-                )
-            };
-        case 'SET_CLASS_COLUMNS':
-            return {
-                ...state,
-                classes: state.classes.map(classItem => 
-                    classItem.className === action.payload.className
-                        ? { ...classItem, columns: action.payload.columns }
-                        : classItem
-                )
-            };
         default: 
             return state
     }
@@ -114,18 +80,38 @@ const flightReducer = (state, action) => {
 
 const FlightForm = ({close}) => {
     const [state, dispatch] = useReducer(flightReducer, flightState);
-    const [showFirstForm, setShowFirstForm] = useState(true);
-    const [showSecondForm, setShowSecondForm] = useState(false);
+    const [showPrices, setShowPrices] = useState(false);
 
-    const goToSecondForm = () => {
-        setShowSecondForm(true);
-        setShowFirstForm(false);
+    const createFlight = async () => {
+        try{
+            const response = await fetch('/api/flight',{
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify(state),
+            })
+            const result = await response.json();
+            if(response.ok){
+                window.location.reload()
+            }
+    
+            if(result.errors){
+                setError(result.errors[0]);
+            }
+    
+        }catch(err){
+            setError('Error adding flight')
+        }
     }
 
     return (
         <div className="admin-form">
-            {showFirstForm && <FlightFirstForm state={state} dispatch={dispatch} close={close} handleSubmit={goToSecondForm}/>}
-            {showSecondForm && <FlightSecondForm state={state} dispatch={dispatch} close={close}/>}
+            {!showPrices ? 
+                <FlightFirstForm state={state} dispatch={dispatch} close={close} handleSubmit={() => setShowPrices(true)} /> : 
+                <FlightClassesPrice state/>
+            }
+            
         </div>
     )
 }

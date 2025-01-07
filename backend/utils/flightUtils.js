@@ -1,16 +1,5 @@
-export const calculateSeats = (classes) => {
-    let totalSeats = 0;
-
-    classes.forEach(classObj => {
-        if(classObj){
-            totalSeats += parseInt(classObj.seats);
-        }
-    });
-    return totalSeats
-}
-
 // This function generates a list of seat objects based on the total number of seats and the column configuration of the airplane.
-export const createSeats = (totalSeats, classes) => {
+export const createSeats = (classes) => {
     // Initialize an empty array to store the generated seat objects
     const newSeats = [];
     let num = 1;

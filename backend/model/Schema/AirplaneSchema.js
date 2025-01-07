@@ -19,15 +19,25 @@ const AirPlaneSchema = new Schema({
         type: String,
         required: true
     },
-    passengerSeatingCapacity: {
-        type: Number,
-        required: true,
-    },
     status: {
         type: String,
         enum: ['Available', 'Assigned', 'In Flight', 'Unavailable'], 
         default: 'Available'
     },
+    classes: [{
+        seats: {
+            type: Number,
+            required: true,
+        }, 
+        columns: {
+            type: String,
+            required: true,
+        },
+        className: {
+            type: String,
+            required: true
+        }
+    }],
     added_by: {
         type: String,
         required: true

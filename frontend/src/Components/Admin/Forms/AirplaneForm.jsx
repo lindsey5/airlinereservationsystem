@@ -1,12 +1,12 @@
 import { useState, useEffect} from 'react'
 import './AdminForm.css'
 import useFetch from '../../../hooks/useFetch'
-import { handleBlur, handleFocus, handleNegativeAndDecimal } from '../../../utils/handleInput'
+import { handleBlur, handleFocus } from '../../../utils/handleInput'
+import AirplaneSecondForm from './AirplaneSecondForm'
 
 const AirplaneForm = ({handleSubmit, data, close, title}) =>{
     const [airplaneData, setAirplaneData] = useState({
         model: '',
-        passengerSeatingCapacity: '',
         currentLocation: '',
         code: '',
         airline: '',
@@ -15,6 +15,7 @@ const AirplaneForm = ({handleSubmit, data, close, title}) =>{
     const [showCountry, setShowCountry] = useState(false);
     const { data: airports } = useFetch('/api/airport/airports')
     const { data: countries} = useFetch('/api/countries');
+    const [showSecondForm, setShowSecondForm] = useState(false);
 
     useEffect(() => {
         if(data){
@@ -22,11 +23,17 @@ const AirplaneForm = ({handleSubmit, data, close, title}) =>{
         }
     },[data])
 
+    const submit = (e) => {
+        e.preventDefault();
+        if(!showSecondForm) setShowSecondForm(true)
+    }
+
     return(
         <div className='admin-form'>
-        <div className='container'>
+        {showSecondForm && <AirplaneSecondForm airplaneData={airplaneData} handleSubmit={handleSubmit} close={() => setShowSecondForm(false)}/>}
+        {!showSecondForm && <div className='container'>
         <h2>{title}</h2>
-        <form onSubmit={(e) => handleSubmit(e, airplaneData)}>
+        <form onSubmit={submit}>
             {airplaneData?._id && 
             <>
                 <p style={{color: 'rgb(184, 184, 184)', marginBottom: '30px'}}>ID:{airplaneData._id}</p>
@@ -63,22 +70,6 @@ const AirplaneForm = ({handleSubmit, data, close, title}) =>{
                 <span>Code</span>
             </div>    
             </div>            
-            <div className='input-container'>
-                <input
-                    className='input'
-                    type="number"
-                    name="seat-capacity"
-                    value={airplaneData.passengerSeatingCapacity}
-                    onChange={(e) => setAirplaneData(prevData => ({...prevData, passengerSeatingCapacity: e.target.value})) }
-                    onFocus={handleFocus}
-                    onBlur={handleBlur}
-                    placeholder='Passenger Seat Capacity'
-                    style={{width: '100%'}}
-                    onKeyPress={handleNegativeAndDecimal}
-                    required
-                />
-                <span>Passenger Seat Capacity</span>
-            </div>
             {airplaneData?.id && 
                     <div className='input-container'>
                         <input
@@ -134,10 +125,10 @@ const AirplaneForm = ({handleSubmit, data, close, title}) =>{
                 </select>
             <div className="buttons">
                 <button type='button' className='close-btn' onClick={close}>Close</button>
-                <input type="submit" className="submit-btn" />
+                <button className="submit-btn">Next</button>
             </div>
         </form>
-        </div>
+        </div>}
     </div>
     )
 }

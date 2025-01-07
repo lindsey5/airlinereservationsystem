@@ -1,14 +1,4 @@
-export const addAirplane = async (e) => {
-    e.preventDefault();
-    const formData = new FormData(e.target);
-    const newAirplane = {
-        model: formData.get('model'),
-        passengerSeatingCapacity: formData.get('seat-capacity'),
-        columns: formData.get('seats-column'),
-        currentLocation: formData.get('currentLocation'),
-        code: formData.get('code'),
-        airline: formData.get('airline')
-    }
+export const addAirplane = async (newAirplane) => {
     try{
         const response = await fetch('/api/airplane',{
             method: 'POST',
@@ -52,9 +42,7 @@ export const deleteAirplane = async (id) => {
 
  }
 
-export const updateAirplane = async (e, newData) => {
-    e.preventDefault();
-    console.log(newData)
+export const updateAirplane = async (newData) => {
     const id = newData._id;
 
     if(confirm('Click ok to continue')){
