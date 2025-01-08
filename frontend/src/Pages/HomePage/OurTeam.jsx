@@ -97,7 +97,7 @@ const OurTeam = () => {
                     <div class="gallery">
                         <img src="/members/Design Team/Regaspi, Kristine.jpg" alt="Profile" />
                         <div>
-                            <h3>Abba Faith Salude</h3>
+                            <h3>Regaspi, Kristine</h3>
                         </div>
                     </div>
                 </div>
