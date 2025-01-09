@@ -244,7 +244,7 @@ export const reserveSeats = async (data) =>{
                 if(fullClass){
                     const notification = { message: `All ${fullClass.className} Class  seats for Flight #${available_flight.flightNumber} is fully booked.`, flight: available_flight};
                     await createNotifications(notification);
-                    socketInstance.emit('notification', notification);
+                    if(socketInstance) socketInstance.emit('notification', notification);
                 }
 
                 selected_flight = available_flight;
