@@ -67,7 +67,7 @@ export const round_trip_search = async (data, flightClass,price, returnDate) => 
         'classes': {
             $elemMatch: { className: flightClass, 'seats.status' : 'available' },
         },
-        'departure.time': { $gte: now === departureTime ? new Date().setHours(new Date().getHours() + 4) : new Date(departureTime) }
+        'departure.time': { $gte: new Date(returnDate) }
     }
 
     // Fetch outbound flight results
@@ -88,7 +88,7 @@ export const round_trip_search = async (data, flightClass,price, returnDate) => 
     // Interleave outbound and return flights
     searchResults.outboundFlights.forEach((outboundFlight) => {
         searchResults.returnFlights.forEach((returnFlight) => {
-            if(outboundFlight && returnFlight && new Date(returnFlight.departure.time) > new Date(returnDate)){
+            if(outboundFlight && returnFlight){
                 interleavedResults.push([
                     outboundFlight,
                     returnFlight
