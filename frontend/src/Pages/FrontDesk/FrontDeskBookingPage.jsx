@@ -104,7 +104,7 @@ const FrontDeskBookingPage = () => {
         yPosition += 5;
         doc.text('Flight cancellation is for Gold Tier Only',  margin, yPosition)
         yPosition += 5;
-        doc.text('You can change the passenger(s) information atleast 2 hrs before departure', margin, yPosition)
+        doc.text('You can change the passenger(s) information atleast 2 hrs before departure', 5, yPosition)
         // Save the PDF
         doc.save('receipt.pdf');
     };
