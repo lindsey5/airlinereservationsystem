@@ -74,7 +74,7 @@ const FrontDeskBookingPage = () => {
     
             // Add item to receipt
             doc.text(`${item.name} (${item.quantity})`, margin, yPosition);
-            doc.text(formatPrice(item.amount * item.quantity), itemWidth, yPosition);  // Format price
+            doc.text((item.amount * item.quantity).toFixed(2), itemWidth, yPosition);  // Format price
             yPosition += lineHeight;
             totalHeight = getContentHeight();  // Update total height
         });
