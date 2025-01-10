@@ -162,7 +162,7 @@ const CustomerFlights = () => {
                                             <img src="/icons/cancel.png"/>
                                             </button>
                                         }
-                                            <button onClick={() => editPassengers({...flight.flight, booking_id: flight.booking_id, bookingRef: flight.bookingRef})}>
+                                            <button onClick={() => editPassengers({...flight.flight, booking_id: flight.booking_id, bookingRef: flight.bookingRef, fareType: flight.fareType})}>
                                                 <img src="/icons/editing.png"/>
                                             </button>
                                     </td>
