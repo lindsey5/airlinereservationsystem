@@ -64,7 +64,7 @@ export const sendTickets = async (email, booking, line_items) => {
                 <th style="background-color: #ff3131; color: white; padding: 10px; font-size: 15px; font-weight: 400;">Departure</th>
                 <th style="background-color: #ff3131; color: white; padding: 10px; font-size: 15px; font-weight: 400;">Departure Date</th>
                 <th style="background-color: #ff3131; color: white; padding: 10px; font-size: 15px; font-weight: 400;">Arrival</th>
-                <th style="background-color: #ff3131; color: white; padding: 10px; font-size: 15px; font-weight: 400;">Airplane Date</th>
+                <th style="background-color: #ff3131; color: white; padding: 10px; font-size: 15px; font-weight: 400;">Arrival Date</th>
                 <th style="background-color: #ff3131; color: white; padding: 10px; font-size: 15px; font-weight: 400;">Class</th>
                 <th style="background-color: #ff3131; color: white; padding: 10px; font-size: 15px; font-weight: 400;">Fare Type</th>
                 <th style="background-color: #ff3131; color: white; padding: 10px; font-size: 15px; font-weight: 400;">Airplane Code</th>
